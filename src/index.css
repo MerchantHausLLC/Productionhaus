@@ -101,10 +101,23 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
     font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Ubuntu', sans-serif;
     font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    html {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    html {
+      font-size: 13px;
+    }
   }
 }
