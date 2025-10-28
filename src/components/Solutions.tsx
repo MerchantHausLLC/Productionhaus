@@ -1,0 +1,413 @@
+import { CreditCard, Shield, Smartphone, Globe, X, Lock, ShoppingCart, BarChart2, Repeat, ShieldCheck, Shuffle, ShieldAlert } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Button } from "./ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+const solutions = [
+  {
+    icon: CreditCard,
+    title: "Payment Processing",
+    description: "Accept all major credit cards, debit cards, and digital wallets with competitive rates and instant settlements.",
+    fullDescription: "Our comprehensive payment processing solution enables businesses to accept all major credit cards, debit cards, and digital wallets seamlessly. With competitive transaction rates, instant settlements, and advanced reconciliation tools, you can streamline your payment operations and improve cash flow. Our platform supports EMV chip cards, contactless payments, and mobile wallets like Apple Pay and Google Pay. Get real-time reporting, automated invoicing, and dedicated merchant support available 24/7.",
+    borderColor: "border-crimson",
+    buttonColor: "bg-crimson hover:bg-crimson/90",
+    bannerImage: "/card-banners/card1.webp"
+  },
+  {
+    icon: ShieldAlert,
+    title: "Advanced Fraud Detection",
+    description: "Protect your business and your customers with our multi-layered fraud prevention system.",
+    fullDescription: "Stay protected with our multi-layered fraud prevention system featuring AI-powered transaction monitoring, real-time risk assessment, and advanced encryption protocols. Our system automatically flags suspicious activities, uses machine learning to detect patterns, and provides customizable security rules. Features include 3D Secure authentication, tokenization, PCI DSS Level 1 compliance, and chargeback management tools. Reduce fraud losses while maintaining a smooth customer experience with intelligent risk scoring.",
+    borderColor: "border-green-600",
+    buttonColor: "bg-green-600 hover:bg-green-600/90",
+    bannerImage: "/card-banners/card2.webp"
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile Solutions",
+    description: "Process payments anywhere with our mobile-ready technology and POS systems for on-the-go businesses.",
+    fullDescription: "Transform any smartphone or tablet into a powerful point-of-sale system with our mobile payment solutions. Perfect for businesses on the go, our mobile POS accepts payments anywhere with reliable offline mode capabilities. Features include inventory management, customer relationship tools, digital receipts, tip management, and split payment options. Compatible with Bluetooth card readers and supports both iOS and Android devices. Ideal for food trucks, pop-up shops, delivery services, and field service providers.",
+    borderColor: "border-orange-400",
+    buttonColor: "bg-orange-400 hover:bg-orange-400/90",
+    bannerImage: "/card-banners/card4.webp"
+  },
+  {
+    icon: Globe,
+    title: "Global Payments",
+    description: "Expand internationally with multi-currency support and local payment methods in over 200 countries.",
+    fullDescription: "Expand your business globally with our international payment infrastructure supporting 135+ currencies and local payment methods across 200+ countries. Accept popular regional payment methods including Alipay, WeChat Pay, iDEAL, and SEPA transfers. Features include automatic currency conversion, dynamic currency conversion at checkout, multi-currency settlements, and local acquiring to reduce cross-border fees. Our platform handles complex tax calculations, compliance requirements, and provides localized checkout experiences to maximize conversion rates in every market.",
+    borderColor: "border-emerald-600",
+    buttonColor: "bg-emerald-600 hover:bg-emerald-600/90",
+    bannerImage: "/card-banners/card5.webp"
+  },
+  {
+    icon: Lock,
+    title: "Network Tokenization",
+    description: "Enhance payment security and approval rates with network tokenization.",
+    fullDescription: "Enhance payment security and approval rates with network tokenization. By replacing sensitive card data with unique, encrypted tokens, you minimize the risk of breaches and keep recurring payments running smoothly—even when cards are updated or replaced. Features include up to 3% increase in transaction approvals, reduces PCI compliance burdens, automatic card updater to prevent failed recurring payments, and vault-stored tokens for maximum safety.",
+    borderColor: "border-indigo-600",
+    buttonColor: "bg-indigo-600 hover:bg-indigo-600/90",
+    bannerImage: "/card-banners/card6.webp"
+  },
+  {
+    icon: ShoppingCart,
+    title: "Ecommerce Solutions",
+    description: "Launch and grow your online presence with robust ecommerce tools.",
+    fullDescription: "Launch and grow your online presence with robust ecommerce tools that keep you agile and secure. From payment gateways to customizable checkouts, we give you everything you need to sell, scale, and connect with customers—without the technical pain. Features include pre-built integrations with top shopping carts, customizable checkout pages for any brand, secure PCI-compliant transactions, and advanced ecommerce tools that help stores grow 35% faster.",
+    borderColor: "border-purple-600",
+    buttonColor: "bg-purple-600 hover:bg-purple-600/90",
+    bannerImage: "/card-banners/card7.webp"
+  },
+  {
+    icon: BarChart2,
+    title: "Data & Analytics",
+    description: "Unlock powerful insights from your transaction data with real-time analytics.",
+    fullDescription: "Unlock powerful insights from your transaction data. Our analytics dashboard turns complex numbers into actionable trends, letting you track sales, customer behaviors, and campaign results in real time—no spreadsheets, no guesswork. Features include live dashboards with instant sales and refund metrics, custom reporting by product, channel, or region, customer segmentation and loyalty analytics. Merchants with analytics tools make decisions 2x faster.",
+    borderColor: "border-blue-600",
+    buttonColor: "bg-blue-600 hover:bg-blue-600/90",
+    bannerImage: "/card-banners/card10.webp"
+  },
+  {
+    icon: Repeat,
+    title: "Subscription Billing",
+    description: "Automate your billing and grow your subscription base with smart recurring revenue tools.",
+    fullDescription: "Automate your billing and grow your subscription base with tools that handle the complexity for you. Create, manage, and optimize plans—while smart dunning and card updating keep your revenue steady. Features include flexible trial, renewal, and proration options, automated failed payment recovery, card updater and retry logic to reduce churn. 46% of consumers pay for at least one subscription service, making this a crucial revenue stream.",
+    borderColor: "border-amber-500",
+    buttonColor: "bg-amber-500 hover:bg-amber-500/90",
+    bannerImage: "/card-banners/card1.webp"
+  },
+  {
+    icon: ShieldCheck,
+    title: "Chargeback Management",
+    description: "Win more disputes and keep more revenue with automated chargeback management.",
+    fullDescription: "Don't let disputes eat into your bottom line. Our automated system tracks, compiles, and submits evidence on your behalf, making it easier to contest chargebacks and reclaim lost revenue. Features include real-time chargeback alerts, 20% higher reversal rates with rapid response, integrated evidence templates for major card brands, and analytics to spot and stop patterns before they repeat.",
+    borderColor: "border-indigo-700",
+    buttonColor: "bg-indigo-700 hover:bg-indigo-700/90",
+    bannerImage: "/card-banners/card2.webp"
+  },
+  {
+    icon: Shuffle,
+    title: "Payment Orchestration",
+    description: "Smart routing for better approvals, lower costs, and optimized payment paths.",
+    fullDescription: "Connect to multiple payment processors and dynamically route every transaction for the best outcome—lower fees, higher approval rates, fewer declines. Control your entire payment stack without extra IT overhead. Features include lower transaction costs by up to 20%, built-in failover for always-on acceptance, unified reporting across all channels and providers, and automatic optimization of every payment path.",
+    borderColor: "border-teal-600",
+    buttonColor: "bg-teal-600 hover:bg-teal-600/90",
+    bannerImage: "/card-banners/card4.webp"
+  }
+];
+
+export const Solutions = () => {
+  const [selectedCard, setSelectedCard] = useState<number | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [visibleCards, setVisibleCards] = useState<number[]>([]);
+  const [typewriterText, setTypewriterText] = useState("");
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Scroll reveal animation with fade in/out
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const index = cardRefs.current.indexOf(entry.target as HTMLDivElement);
+          if (index !== -1) {
+            if (entry.isIntersecting) {
+              if (!visibleCards.includes(index)) {
+                setVisibleCards((prev) => [...prev, index]);
+              }
+            } else {
+              // Remove from visible when leaving viewport for fade out effect
+              setVisibleCards((prev) => prev.filter(i => i !== index));
+            }
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    cardRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Typewriter effect for modal title
+  useEffect(() => {
+    if (selectedCard !== null) {
+      const fullText = solutions[selectedCard].title;
+      setTypewriterText("");
+      let index = 0;
+      
+      const interval = setInterval(() => {
+        if (index <= fullText.length) {
+          setTypewriterText(fullText.slice(0, index));
+          index++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 100);
+
+      return () => clearInterval(interval);
+    }
+  }, [selectedCard]);
+
+  const handleCardClick = (index: number) => {
+    setSelectedCard(index);
+  };
+
+  const closeFullscreen = () => {
+    setSelectedCard(null);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    // Calculate rotation based on mouse position (-3 to 3 degrees for subtle tilt)
+    const rotateY = ((x - centerX) / centerX) * 3;
+    const rotateX = ((centerY - y) / centerY) * 3;
+    
+    setMousePosition({ x: rotateY, y: rotateX });
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredCard(null);
+    setMousePosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <section id="solutions" className="py-20 px-6 bg-muted/50 relative overflow-visible">
+      {/* Globe Background */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+        <img 
+          src="/images/globe-background.png" 
+          alt="Global Payment Network" 
+          className="w-full max-w-4xl h-auto object-contain"
+        />
+      </div>
+      
+      <div className="max-w-7xl mx-auto overflow-visible relative z-10">
+        <div className="text-center mb-16 animate-fade-in">
+          <h2 className="font-ubuntu font-bold text-4xl md:text-5xl text-neutral-dark mb-4">
+            CORE SERVICES
+          </h2>
+          <p className="font-inter text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
+            Comprehensive payment solutions designed to help your business thrive in today's digital economy.
+          </p>
+          <Button 
+            asChild
+            className="bg-crimson hover:bg-crimson/90 text-white font-semibold rounded-full px-8 py-6 text-base shadow-lg hover:shadow-xl transition-all"
+          >
+            <a href="/apply">Get a Quote</a>
+          </Button>
+        </div>
+
+        {/* Carousel for desktop, stacked for mobile */}
+        <div className="relative">
+          <Carousel
+            opts={{
+              align: "center",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 py-8">
+              {solutions.map((solution, index) => {
+                const Icon = solution.icon;
+                const isHovered = hoveredCard === index;
+                const isVisible = visibleCards.includes(index);
+                
+                return (
+                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-2 pr-2">
+                    <div
+                      ref={(el) => (cardRefs.current[index] = el)}
+                      className={`relative perspective-1000 transition-all duration-700 ${
+                        isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
+                      }`}
+                      style={{
+                        transitionDelay: `${index * 150}ms`,
+                      }}
+                      onMouseEnter={() => setHoveredCard(index)}
+                      onMouseMove={(e) => handleMouseMove(e, index)}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      {/* Mirror reflection effect */}
+                      <div 
+                        className="absolute inset-0 top-full opacity-30 pointer-events-none"
+                        style={{
+                          transform: 'scaleY(-1) translateY(10px)',
+                          background: 'linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 80%)',
+                          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 60%)',
+                          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 60%)',
+                        }}
+                      >
+                        <div className="bg-white/20 rounded-2xl h-full blur-sm" />
+                      </div>
+
+                      <div
+                        className={`rounded-2xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer border-2 bg-gradient-to-br from-neutral-light/5 via-white to-muted/30 ${
+                          isHovered 
+                            ? `shadow-2xl ${solution.borderColor}` 
+                            : 'border-transparent'
+                        }`}
+                        style={{
+                          transform: isHovered 
+                            ? `perspective(1000px) rotateY(${mousePosition.x * 0.3}deg) rotateX(${mousePosition.y * 0.3}deg)` 
+                            : 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
+                          transformStyle: 'preserve-3d',
+                          transition: 'transform 0.2s ease-out, box-shadow 0.3s ease-out',
+                        }}
+                      >
+                        {/* Banner Image */}
+                        {solution.bannerImage && (
+                          <div className="w-full h-48 overflow-hidden">
+                            <img 
+                              src={solution.bannerImage} 
+                              alt={solution.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+
+                        <div className="p-8">
+                          {/* Icon container */}
+                          <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-6 transition-all duration-300">
+                            <Icon 
+                              className="w-10 h-10 text-crimson" 
+                              strokeWidth={2} 
+                            />
+                          </div>
+                        
+                          {/* Text content */}
+                          <div>
+                            <h3 className="font-ubuntu font-bold text-2xl text-neutral-dark mb-3">
+                              {solution.title}
+                            </h3>
+                            <p className="font-inter text-muted-foreground leading-relaxed mb-6">
+                              {solution.description}
+                            </p>
+                            
+                            <Button
+                              onClick={() => handleCardClick(index)}
+                              className="bg-crimson hover:bg-crimson/90 text-white font-inter font-medium rounded-lg px-6 transition-all hover:shadow-lg w-full"
+                            >
+                              Learn More
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                );
+              })}
+            </CarouselContent>
+            {/* Navigation Arrows Below Carousel - Must stay inside Carousel component */}
+            <div className="flex justify-center gap-4 mt-8">
+              <CarouselPrevious className="static translate-x-0 translate-y-0 h-11 w-11" style={{ transform: 'scale(1.1)' }} />
+              <CarouselNext className="static translate-x-0 translate-y-0 h-11 w-11" style={{ transform: 'scale(1.1)' }} />
+            </div>
+          </Carousel>
+        </div>
+      </div>
+
+      {/* Fullscreen Modal with Flip Animation */}
+      {selectedCard !== null && (
+        <div 
+          className="fixed inset-0 z-50 bg-neutral-dark/95 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in"
+          onClick={closeFullscreen}
+        >
+          <div 
+            className="relative max-w-4xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              animation: 'flipIn 0.6s ease-out'
+            }}
+          >
+            {/* Banner Image in Modal */}
+            {solutions[selectedCard].bannerImage && (
+              <div className="w-full h-64 overflow-hidden">
+                <img 
+                  src={solutions[selectedCard].bannerImage} 
+                  alt={solutions[selectedCard].title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            {/* Close button */}
+            <button
+              onClick={closeFullscreen}
+              className="absolute top-6 right-6 z-10 p-2 rounded-full bg-neutral-dark/10 hover:bg-neutral-dark/20 transition-colors"
+            >
+              <X className="w-6 h-6 text-neutral-dark" />
+            </button>
+
+            <div className="p-12">
+              {/* Large icon */}
+              <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-8 animate-scale-in">
+                {(() => {
+                  const Icon = solutions[selectedCard].icon;
+                  return <Icon className="w-12 h-12 text-crimson" strokeWidth={2} />;
+                })()}
+              </div>
+
+              {/* Content with typewriter effect */}
+              <h2 className="font-ubuntu font-bold text-4xl md:text-5xl text-neutral-dark mb-6 min-h-[4rem]">
+                {typewriterText}
+                <span className="animate-pulse">|</span>
+              </h2>
+              <p className="font-inter text-lg text-muted-foreground leading-relaxed mb-8">
+                {solutions[selectedCard].fullDescription}
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex gap-4">
+                <Button className={`${solutions[selectedCard].buttonColor} text-white font-inter font-medium rounded-lg px-8`}>
+                  Get Started
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={closeFullscreen}
+                  className="font-inter font-medium rounded-lg px-8"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        
+        @keyframes flipIn {
+          0% {
+            transform: perspective(1000px) rotateY(-90deg) scale(0.8);
+            opacity: 0;
+          }
+          50% {
+            transform: perspective(1000px) rotateY(10deg) scale(1.05);
+          }
+          100% {
+            transform: perspective(1000px) rotateY(0deg) scale(1);
+            opacity: 1;
+          }
+        }
+      `}</style>
+    </section>
+  );
+};
