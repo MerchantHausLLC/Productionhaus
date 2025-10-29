@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ArrowRight, ShieldCheck, Lock, DollarSign, CreditCard } from "lucide-react";
+import { ArrowRight, ShieldCheck, Lock, CreditCard } from "lucide-react";
 import { useEffect, useRef } from "react";
 import shieldLogo from "@/assets/shield.webp";
 
@@ -91,7 +91,7 @@ const Blog = () => {
 
       <main ref={mainRef} className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Blog Hero / Featured Article */}
-        <section className="mb-16">
+        <section id="category-compliance" className="mb-16">
           <h2 className="text-4xl sm:text-5xl font-extrabold mb-8" style={{ fontFamily: 'Ubuntu, sans-serif', color: '#1A1A1A' }}>
             Latest Insights <span style={{ color: '#00CEDB' }}>on the Digital Frontier</span>
           </h2>
@@ -137,17 +137,26 @@ const Blog = () => {
             Explore Topics
           </h3>
           <div className="flex flex-wrap gap-3">
-            <a href="#" className="px-4 py-2 text-sm text-white rounded-full hover:bg-opacity-90 transition-colors flex items-center" style={{ backgroundColor: '#DC143C' }}>
-              <ShieldCheck className="w-4 h-4 mr-2" /> Compliance (4)
+            <a
+              href="#category-compliance"
+              className="px-4 py-2 text-sm text-white rounded-full hover:bg-opacity-90 transition-colors flex items-center"
+              style={{ backgroundColor: '#DC143C' }}
+            >
+              <ShieldCheck className="w-4 h-4 mr-2" /> Compliance Insights
             </a>
-            <a href="#" className="px-4 py-2 text-sm bg-gray-200 rounded-full hover:bg-gray-300 transition-colors flex items-center" style={{ color: '#1A1A1A' }}>
-              <Lock className="w-4 h-4 mr-2" /> Fraud Prevention (7)
+            <a
+              href="#category-fraud-prevention"
+              className="px-4 py-2 text-sm bg-gray-200 rounded-full hover:bg-gray-300 transition-colors flex items-center"
+              style={{ color: '#1A1A1A' }}
+            >
+              <Lock className="w-4 h-4 mr-2" /> Fraud Prevention Strategies
             </a>
-            <a href="#" className="px-4 py-2 text-sm bg-gray-200 rounded-full hover:bg-gray-300 transition-colors flex items-center" style={{ color: '#1A1A1A' }}>
-              <DollarSign className="w-4 h-4 mr-2" /> FinTech News (12)
-            </a>
-            <a href="#" className="px-4 py-2 text-sm bg-gray-200 rounded-full hover:bg-gray-300 transition-colors flex items-center" style={{ color: '#1A1A1A' }}>
-              <CreditCard className="w-4 h-4 mr-2" /> Payments Tech (5)
+            <a
+              href="#category-payments-tech"
+              className="px-4 py-2 text-sm bg-gray-200 rounded-full hover:bg-gray-300 transition-colors flex items-center"
+              style={{ color: '#1A1A1A' }}
+            >
+              <CreditCard className="w-4 h-4 mr-2" /> Payments Tech Innovations
             </a>
           </div>
         </section>
@@ -157,7 +166,7 @@ const Blog = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             
             {/* Card 1: VAMP Article */}
-            <div className="card-container">
+            <div className="card-container" id="category-compliance-secondary">
               <div className="bg-white rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/vamp" className="block">
                   <img 
@@ -185,7 +194,7 @@ const Blog = () => {
             </div>
 
             {/* Card 2: 3D Secure Article */}
-            <div className="card-container">
+            <div className="card-container" id="category-fraud-prevention">
               <div className="bg-white rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/3ds" className="block">
                   <img 
@@ -213,9 +222,9 @@ const Blog = () => {
             </div>
 
             {/* Card 3: POS Solutions */}
-            <div className="card-container">
+            <div className="card-container" id="category-payments-tech">
               <div className="bg-white rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
-                <a href="#" className="block">
+                <a href="/services#omnichannel-payments" className="block">
                   <img 
                     src="/blog-images/pos_terminal.png" 
                     alt="Point of Sale Solutions" 

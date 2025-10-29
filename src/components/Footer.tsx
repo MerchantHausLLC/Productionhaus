@@ -68,7 +68,12 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="https://retailmanager.merchant.haus" className="text-silver-grey hover:text-cyber-teal transition-colors">
+                <a
+                  href="https://retailmanager.merchant.haus"
+                  className="text-silver-grey hover:text-cyber-teal transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Client Login
                 </a>
               </li>
@@ -104,7 +109,12 @@ const Footer = () => {
             <h4 className="font-ubuntu font-semibold text-lg text-white mb-6">Follow Us</h4>
             <ul className="space-y-3 font-montserrat text-base">
               <li>
-                <a href="#" className="text-silver-grey hover:text-cyber-teal transition-colors">
+                <a
+                  href="https://www.linkedin.com/company/merchanthaus/"
+                  className="text-silver-grey hover:text-cyber-teal transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   LinkedIn
                 </a>
               </li>
