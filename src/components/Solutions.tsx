@@ -105,6 +105,7 @@ const solutions = [
 export const Solutions = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
   const [typewriterText, setTypewriterText] = useState("");
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -165,8 +166,24 @@ export const Solutions = () => {
     setSelectedCard(null);
   };
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    // Calculate rotation based on mouse position (-3 to 3 degrees for subtle tilt)
+    const rotateY = ((x - centerX) / centerX) * 3;
+    const rotateX = ((centerY - y) / centerY) * 3;
+    
+    setMousePosition({ x: rotateY, y: rotateX });
+  };
+
   const handleMouseLeave = () => {
     setHoveredCard(null);
+    setMousePosition({ x: 0, y: 0 });
   };
 
   return (
@@ -200,99 +217,107 @@ export const Solutions = () => {
         <div className="relative">
           <Carousel
             opts={{
-              align: "start",
+              align: "center",
               loop: true,
-              containScroll: "trimSnaps",
-              dragFree: true,
             }}
             className="w-full"
           >
-            <CarouselContent className="py-6">
+            <CarouselContent className="-ml-2 py-8">
               {solutions.map((solution, index) => {
                 const Icon = solution.icon;
                 const isHovered = hoveredCard === index;
                 const isVisible = visibleCards.includes(index);
-
+                
                 return (
-                  <CarouselItem
-                    key={index}
-                    className="sm:basis-3/4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-                  >
+                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-2 pr-2">
                     <div
                       ref={(el) => (cardRefs.current[index] = el)}
-                      className={`h-full transition-all duration-700 ${
-                        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                      className={`relative perspective-1000 transition-all duration-700 ${
+                        isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
                       }`}
                       style={{
-                        transitionDelay: `${index * 120}ms`,
+                        transitionDelay: `${index * 150}ms`,
                       }}
                       onMouseEnter={() => setHoveredCard(index)}
+                      onMouseMove={(e) => handleMouseMove(e, index)}
                       onMouseLeave={handleMouseLeave}
                     >
-                      <article
-                        className={`group flex h-full flex-col overflow-hidden rounded-3xl border bg-card shadow-lg transition-all duration-300 ${
-                          isHovered ? `${solution.borderColor} shadow-xl -translate-y-2` : "border-border/60"
-                        }`}
+                      {/* Mirror reflection effect */}
+                      <div 
+                        className="absolute inset-0 top-full opacity-30 pointer-events-none"
                         style={{
-                          transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+                          transform: 'scaleY(-1) translateY(10px)',
+                          background: 'linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 80%)',
+                          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 60%)',
+                          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 60%)',
                         }}
                       >
+                        <div className="bg-white/20 rounded-2xl h-full blur-sm" />
+                      </div>
+
+                      <div
+                        className={`rounded-2xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer border-2 bg-gradient-to-br from-neutral-light/5 via-white to-muted/30 ${
+                          isHovered 
+                            ? `shadow-2xl ${solution.borderColor}` 
+                            : 'border-transparent'
+                        }`}
+                        style={{
+                          transform: isHovered 
+                            ? `perspective(1000px) rotateY(${mousePosition.x * 0.3}deg) rotateX(${mousePosition.y * 0.3}deg)` 
+                            : 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
+                          transformStyle: 'preserve-3d',
+                          transition: 'transform 0.2s ease-out, box-shadow 0.3s ease-out',
+                        }}
+                      >
+                        {/* Banner Image */}
                         {solution.bannerImage && (
-                          <div className="relative h-48 w-full overflow-hidden">
-                            <img
-                              src={solution.bannerImage}
+                          <div className="w-full h-48 overflow-hidden">
+                            <img 
+                              src={solution.bannerImage} 
                               alt={solution.title}
-                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              className="w-full h-full object-cover"
                             />
                           </div>
                         )}
 
-                        <div className="flex flex-1 flex-col gap-6 p-6 md:p-8">
-                          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-crimson/15 via-transparent to-cyber-teal/20 md:h-20 md:w-20">
-                            <Icon className="h-8 w-8 text-crimson md:h-10 md:w-10" strokeWidth={2} />
+                        <div className="p-6 md:p-8">
+                          {/* Icon container */}
+                          <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-4 md:mb-6 transition-all duration-300">
+                            <Icon 
+                              className="w-8 h-8 md:w-10 md:h-10 text-crimson" 
+                              strokeWidth={2} 
+                            />
                           </div>
-
-                          <div className="flex flex-1 flex-col">
-                            <h3 className="font-ubuntu text-xl font-bold text-foreground md:text-2xl">
+                        
+                          {/* Text content */}
+                          <div>
+                            <h3 className="font-ubuntu font-bold text-xl md:text-2xl text-foreground mb-3">
                               {solution.title}
                             </h3>
-                            <p className="mt-3 flex-1 font-inter leading-relaxed text-muted-foreground">
+                            <p className="font-inter text-muted-foreground leading-relaxed mb-6">
                               {solution.description}
                             </p>
-
+                            
                             <Button
                               onClick={() => handleCardClick(index)}
-                              className="mt-6 w-full rounded-xl bg-crimson font-inter font-medium text-white transition-all hover:-translate-y-0.5 hover:bg-crimson/90 hover:shadow-lg"
+                              className="bg-crimson hover:bg-crimson/90 text-white font-inter font-medium rounded-lg px-6 transition-all hover:shadow-lg w-full"
                             >
                               Learn More
                             </Button>
                           </div>
                         </div>
-                      </article>
+                      </div>
                     </div>
                   </CarouselItem>
                 );
               })}
             </CarouselContent>
-            <CarouselPrevious
-              aria-label="View previous core service"
-              className="hidden !h-12 !w-12 !-translate-y-1/2 items-center justify-center rounded-full border border-border/80 bg-background/90 text-foreground shadow-md backdrop-blur-sm transition hover:bg-background md:flex md:!left-4"
-            />
-            <CarouselNext
-              aria-label="View next core service"
-              className="hidden !h-12 !w-12 !-translate-y-1/2 items-center justify-center rounded-full border border-border/80 bg-background/90 text-foreground shadow-md backdrop-blur-sm transition hover:bg-background md:flex md:!right-4"
-            />
+            {/* Navigation Arrows Below Carousel - Must stay inside Carousel component */}
+            <div className="flex justify-center gap-4 mt-8">
+              <CarouselPrevious className="static translate-x-0 translate-y-0 h-11 w-11" style={{ transform: 'scale(1.1)' }} />
+              <CarouselNext className="static translate-x-0 translate-y-0 h-11 w-11" style={{ transform: 'scale(1.1)' }} />
+            </div>
           </Carousel>
-          <div className="mt-6 flex items-center justify-center gap-4 md:hidden">
-            <CarouselPrevious
-              aria-label="View previous core service"
-              className="!static !h-11 !w-11 !translate-x-0 !translate-y-0 rounded-full border border-border/80 bg-background text-foreground shadow-sm hover:bg-background/90"
-            />
-            <CarouselNext
-              aria-label="View next core service"
-              className="!static !h-11 !w-11 !translate-x-0 !translate-y-0 rounded-full border border-border/80 bg-background text-foreground shadow-sm hover:bg-background/90"
-            />
-          </div>
         </div>
       </div>
 
@@ -365,6 +390,10 @@ export const Solutions = () => {
       )}
 
       <style>{`
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        
         @keyframes flipIn {
           0% {
             transform: perspective(1000px) rotateY(-90deg) scale(0.8);
