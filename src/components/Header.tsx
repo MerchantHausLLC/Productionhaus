@@ -26,7 +26,7 @@ export const Header = () => {
 
   return (
     <header 
-      className={`sticky top-0 z-50 bg-neutral-light border-b border-border transition-all duration-300 ${
+      className={`sticky top-0 z-50 bg-background dark:bg-neutral-dark border-b border-border transition-all duration-300 ${
         isScrolled ? 'shadow-md' : ''
       }`}
     >
@@ -39,7 +39,7 @@ export const Header = () => {
             className={`transition-all duration-300 relative z-20 ${isScrolled ? 'h-7 w-7' : 'h-9 w-9'}`}
           />
           <div className="relative z-10">
-            <h1 className={`font-ubuntu font-bold text-neutral-dark transition-all duration-300 ${
+            <h1 className={`font-ubuntu font-bold text-foreground transition-all duration-300 ${
               isScrolled ? 'text-xl' : 'text-2xl'
             }`}>
               MerchantHaus
@@ -59,31 +59,31 @@ export const Header = () => {
         <nav className="hidden md:flex items-center gap-8">
           <a 
             href="/about" 
-            className="font-montserrat font-medium text-neutral-dark hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
+            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
           >
             About
           </a>
           <a 
             href="/services" 
-            className="font-montserrat font-medium text-neutral-dark hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
+            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
           >
             Services
           </a>
           <a 
             href="/blog" 
-            className="font-montserrat font-medium text-neutral-dark hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
+            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
           >
             Blog
           </a>
           <button 
             onClick={() => setIsContactOpen(true)}
-            className="font-montserrat font-medium text-neutral-dark hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
+            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
           >
             Contact
           </button>
           <a 
             href="https://retailmanager.merchant.haus"
-            className="font-montserrat font-medium text-neutral-dark hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
+            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
           >
             Client Login
           </a>

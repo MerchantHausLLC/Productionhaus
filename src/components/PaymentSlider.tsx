@@ -164,7 +164,7 @@ export default function ImprovedPaymentSlider() {
   };
 
   return (
-    <section id="payments" className="py-12 relative overflow-hidden">
+    <section id="payments" className="py-12 relative overflow-hidden bg-gradient-to-br from-neutral-dark via-black to-neutral-dark">
       <div className="max-w-5xl mx-auto px-4 text-center mb-12">
         <div className="inline-block px-8 py-3 rounded-full border-2 border-white bg-transparent">
           <h2 className="text-3xl sm:text-4xl font-ubuntu font-bold text-white">
@@ -184,6 +184,10 @@ export default function ImprovedPaymentSlider() {
         onTouchEnd={handleTouchEnd}
         style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       >
+        {/* Center Shield Logo */}
+        <div className="center-shield">
+          <img src="/redshield.webp" alt="Shield" className="w-full h-full object-contain" />
+        </div>
         
         {/* Slider B - Behind shield (z-index: 3) - Shows positions 5-9 (back half) */}
         <div className="slider-3d slider-back">
@@ -264,6 +268,17 @@ export default function ImprovedPaymentSlider() {
           perspective: 1500px;
         }
 
+        .center-shield {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 520px;
+          height: 520px;
+          z-index: 5;
+          pointer-events: none;
+          filter: drop-shadow(0 10px 40px rgba(220, 20, 60, 0.6));
+        }
 
         .slider-3d {
           position: absolute;
@@ -370,8 +385,8 @@ export default function ImprovedPaymentSlider() {
 
         @media (max-width: 1023px) {
           .center-shield {
-            width: 440px;
-            height: 440px;
+            width: 420px;
+            height: 420px;
           }
           .slider-3d {
             width: 140px;
