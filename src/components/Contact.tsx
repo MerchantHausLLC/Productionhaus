@@ -39,13 +39,13 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 bg-neutral-dark dark:bg-black">
+    <section id="contact" className="py-20 px-6 bg-neutral-dark">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12 animate-fade-in">
-          <h2 className="font-ubuntu font-bold text-3xl sm:text-4xl md:text-5xl text-white mb-4">
+          <h2 className="font-ubuntu font-bold text-4xl md:text-5xl text-white mb-4">
             Get in Touch
           </h2>
-          <p className="font-inter text-lg sm:text-xl text-silver-grey max-w-2xl mx-auto">
+          <p className="font-inter text-xl text-silver-grey max-w-2xl mx-auto">
             Ready to transform your payment processing? Contact us today.
           </p>
         </div>
@@ -60,7 +60,7 @@ export const Contact = () => {
         >
           <input type="hidden" name="form-name" value="contact" />
           
-          <div className="grid sm:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6">
             <div>
               <Input 
                 name="name" 
@@ -109,7 +109,7 @@ export const Contact = () => {
           <Button 
             type="submit" 
             disabled={isSubmitting}
-            className="w-full bg-cyber-teal hover:bg-cyber-teal/90 text-white font-inter font-semibold text-base sm:text-lg py-5 sm:py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
+            className="w-full bg-cyber-teal hover:bg-cyber-teal/90 text-white font-inter font-semibold text-lg py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
           >
             {isSubmitting ? "Sending..." : "Send Message"}
           </Button>

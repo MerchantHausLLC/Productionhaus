@@ -187,7 +187,7 @@ export const Solutions = () => {
   };
 
   return (
-    <section id="solutions" className="py-20 px-4 sm:px-6 bg-muted/50 dark:bg-neutral-dark/30 relative overflow-visible">
+    <section id="solutions" className="py-20 px-6 bg-muted/50 relative overflow-visible">
       {/* Globe Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
         <img 
@@ -199,7 +199,7 @@ export const Solutions = () => {
       
       <div className="max-w-7xl mx-auto overflow-visible relative z-10">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="font-ubuntu font-bold text-3xl sm:text-4xl md:text-5xl text-foreground mb-4">
+          <h2 className="font-ubuntu font-bold text-4xl md:text-5xl text-neutral-dark mb-4">
             CORE SERVICES
           </h2>
           <p className="font-inter text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
@@ -280,18 +280,18 @@ export const Solutions = () => {
                           </div>
                         )}
 
-                        <div className="p-6 md:p-8">
+                        <div className="p-8">
                           {/* Icon container */}
-                          <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-4 md:mb-6 transition-all duration-300">
+                          <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-6 transition-all duration-300">
                             <Icon 
-                              className="w-8 h-8 md:w-10 md:h-10 text-crimson" 
+                              className="w-10 h-10 text-crimson" 
                               strokeWidth={2} 
                             />
                           </div>
                         
                           {/* Text content */}
                           <div>
-                            <h3 className="font-ubuntu font-bold text-xl md:text-2xl text-foreground mb-3">
+                            <h3 className="font-ubuntu font-bold text-2xl text-neutral-dark mb-3">
                               {solution.title}
                             </h3>
                             <p className="font-inter text-muted-foreground leading-relaxed mb-6">
@@ -324,11 +324,11 @@ export const Solutions = () => {
       {/* Fullscreen Modal with Flip Animation */}
       {selectedCard !== null && (
         <div 
-          className="fixed inset-0 z-50 bg-neutral-dark/95 dark:bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-fade-in"
+          className="fixed inset-0 z-50 bg-neutral-dark/95 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in"
           onClick={closeFullscreen}
         >
           <div 
-            className="relative max-w-4xl w-full bg-background dark:bg-card rounded-3xl shadow-2xl overflow-hidden animate-scale-in"
+            className="relative max-w-4xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden animate-scale-in"
             onClick={(e) => e.stopPropagation()}
             style={{
               animation: 'flipIn 0.6s ease-out'
@@ -348,31 +348,31 @@ export const Solutions = () => {
             {/* Close button */}
             <button
               onClick={closeFullscreen}
-              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 p-2 rounded-full bg-neutral-dark/10 dark:bg-white/10 hover:bg-neutral-dark/20 dark:hover:bg-white/20 transition-colors"
+              className="absolute top-6 right-6 z-10 p-2 rounded-full bg-neutral-dark/10 hover:bg-neutral-dark/20 transition-colors"
             >
-              <X className="w-6 h-6 text-foreground" />
+              <X className="w-6 h-6 text-neutral-dark" />
             </button>
 
-            <div className="p-6 sm:p-8 md:p-12">
+            <div className="p-12">
               {/* Large icon */}
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-6 md:mb-8 animate-scale-in">
+              <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-8 animate-scale-in">
                 {(() => {
                   const Icon = solutions[selectedCard].icon;
-                  return <Icon className="w-10 h-10 md:w-12 md:h-12 text-crimson" strokeWidth={2} />;
+                  return <Icon className="w-12 h-12 text-crimson" strokeWidth={2} />;
                 })()}
               </div>
 
               {/* Content with typewriter effect */}
-              <h2 className="font-ubuntu font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground mb-4 md:mb-6 min-h-[3rem] md:min-h-[4rem]">
+              <h2 className="font-ubuntu font-bold text-4xl md:text-5xl text-neutral-dark mb-6 min-h-[4rem]">
                 {typewriterText}
                 <span className="animate-pulse">|</span>
               </h2>
-              <p className="font-inter text-base md:text-lg text-muted-foreground leading-relaxed mb-6 md:mb-8">
+              <p className="font-inter text-lg text-muted-foreground leading-relaxed mb-8">
                 {solutions[selectedCard].fullDescription}
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex gap-4">
                 <Button className={`${solutions[selectedCard].buttonColor} text-white font-inter font-medium rounded-lg px-8`}>
                   Get Started
                 </Button>

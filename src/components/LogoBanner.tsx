@@ -19,8 +19,8 @@ const LogoBanner = () => {
   ];
 
   return (
-    <section className="py-16 overflow-hidden bg-muted/20 dark:bg-neutral-dark/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-8">
+    <section className="py-16 overflow-hidden bg-muted/20">
+      <div className="max-w-7xl mx-auto px-6 mb-8">
         <div className="text-center">
           <p className="font-montserrat text-sm uppercase tracking-wider text-muted-foreground mb-3">
             Integrations & Partnerships
