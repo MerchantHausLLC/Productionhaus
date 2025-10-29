@@ -105,7 +105,6 @@ const solutions = [
 export const Solutions = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
   const [typewriterText, setTypewriterText] = useState("");
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -166,28 +165,12 @@ export const Solutions = () => {
     setSelectedCard(null);
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    // Calculate rotation based on mouse position (-3 to 3 degrees for subtle tilt)
-    const rotateY = ((x - centerX) / centerX) * 3;
-    const rotateX = ((centerY - y) / centerY) * 3;
-    
-    setMousePosition({ x: rotateY, y: rotateX });
-  };
-
   const handleMouseLeave = () => {
     setHoveredCard(null);
-    setMousePosition({ x: 0, y: 0 });
   };
 
   return (
-    <section id="solutions" className="py-20 px-6 bg-muted/50 relative overflow-visible">
+    <section id="solutions" className="py-20 px-4 sm:px-6 bg-muted/50 dark:bg-neutral-dark/30 relative overflow-visible">
       {/* Globe Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
         <img 
@@ -199,7 +182,7 @@ export const Solutions = () => {
       
       <div className="max-w-7xl mx-auto overflow-visible relative z-10">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="font-ubuntu font-bold text-4xl md:text-5xl text-neutral-dark mb-4">
+          <h2 className="font-ubuntu font-bold text-3xl sm:text-4xl md:text-5xl text-foreground mb-4">
             CORE SERVICES
           </h2>
           <p className="font-inter text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
@@ -217,118 +200,110 @@ export const Solutions = () => {
         <div className="relative">
           <Carousel
             opts={{
-              align: "center",
+              align: "start",
               loop: true,
+              containScroll: "trimSnaps",
+              dragFree: true,
             }}
             className="w-full"
           >
-            <CarouselContent className="-ml-2 py-8">
+            <CarouselContent className="py-6">
               {solutions.map((solution, index) => {
                 const Icon = solution.icon;
                 const isHovered = hoveredCard === index;
                 const isVisible = visibleCards.includes(index);
-                
+
                 return (
-                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-2 pr-2">
+                  <CarouselItem
+                    key={index}
+                    className="sm:basis-3/4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                  >
                     <div
                       ref={(el) => (cardRefs.current[index] = el)}
-                      className={`relative perspective-1000 transition-all duration-700 ${
-                        isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
+                      className={`h-full transition-all duration-700 ${
+                        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                       }`}
                       style={{
-                        transitionDelay: `${index * 150}ms`,
+                        transitionDelay: `${index * 120}ms`,
                       }}
                       onMouseEnter={() => setHoveredCard(index)}
-                      onMouseMove={(e) => handleMouseMove(e, index)}
                       onMouseLeave={handleMouseLeave}
                     >
-                      {/* Mirror reflection effect */}
-                      <div 
-                        className="absolute inset-0 top-full opacity-30 pointer-events-none"
-                        style={{
-                          transform: 'scaleY(-1) translateY(10px)',
-                          background: 'linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 80%)',
-                          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 60%)',
-                          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 60%)',
-                        }}
-                      >
-                        <div className="bg-white/20 rounded-2xl h-full blur-sm" />
-                      </div>
-
-                      <div
-                        className={`rounded-2xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer border-2 bg-gradient-to-br from-neutral-light/5 via-white to-muted/30 ${
-                          isHovered 
-                            ? `shadow-2xl ${solution.borderColor}` 
-                            : 'border-transparent'
+                      <article
+                        className={`group flex h-full flex-col overflow-hidden rounded-3xl border bg-card shadow-lg transition-all duration-300 ${
+                          isHovered ? `${solution.borderColor} shadow-xl -translate-y-2` : "border-border/60"
                         }`}
                         style={{
-                          transform: isHovered 
-                            ? `perspective(1000px) rotateY(${mousePosition.x * 0.3}deg) rotateX(${mousePosition.y * 0.3}deg)` 
-                            : 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
-                          transformStyle: 'preserve-3d',
-                          transition: 'transform 0.2s ease-out, box-shadow 0.3s ease-out',
+                          transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
                         }}
                       >
-                        {/* Banner Image */}
                         {solution.bannerImage && (
-                          <div className="w-full h-48 overflow-hidden">
-                            <img 
-                              src={solution.bannerImage} 
+                          <div className="relative h-48 w-full overflow-hidden">
+                            <img
+                              src={solution.bannerImage}
                               alt={solution.title}
-                              className="w-full h-full object-cover"
+                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                           </div>
                         )}
 
-                        <div className="p-8">
-                          {/* Icon container */}
-                          <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-6 transition-all duration-300">
-                            <Icon 
-                              className="w-10 h-10 text-crimson" 
-                              strokeWidth={2} 
-                            />
+                        <div className="flex flex-1 flex-col gap-6 p-6 md:p-8">
+                          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-crimson/15 via-transparent to-cyber-teal/20 md:h-20 md:w-20">
+                            <Icon className="h-8 w-8 text-crimson md:h-10 md:w-10" strokeWidth={2} />
                           </div>
-                        
-                          {/* Text content */}
-                          <div>
-                            <h3 className="font-ubuntu font-bold text-2xl text-neutral-dark mb-3">
+
+                          <div className="flex flex-1 flex-col">
+                            <h3 className="font-ubuntu text-xl font-bold text-foreground md:text-2xl">
                               {solution.title}
                             </h3>
-                            <p className="font-inter text-muted-foreground leading-relaxed mb-6">
+                            <p className="mt-3 flex-1 font-inter leading-relaxed text-muted-foreground">
                               {solution.description}
                             </p>
-                            
+
                             <Button
                               onClick={() => handleCardClick(index)}
-                              className="bg-crimson hover:bg-crimson/90 text-white font-inter font-medium rounded-lg px-6 transition-all hover:shadow-lg w-full"
+                              className="mt-6 w-full rounded-xl bg-crimson font-inter font-medium text-white transition-all hover:-translate-y-0.5 hover:bg-crimson/90 hover:shadow-lg"
                             >
                               Learn More
                             </Button>
                           </div>
                         </div>
-                      </div>
+                      </article>
                     </div>
                   </CarouselItem>
                 );
               })}
             </CarouselContent>
-            {/* Navigation Arrows Below Carousel - Must stay inside Carousel component */}
-            <div className="flex justify-center gap-4 mt-8">
-              <CarouselPrevious className="static translate-x-0 translate-y-0 h-11 w-11" style={{ transform: 'scale(1.1)' }} />
-              <CarouselNext className="static translate-x-0 translate-y-0 h-11 w-11" style={{ transform: 'scale(1.1)' }} />
-            </div>
+            <CarouselPrevious
+              aria-label="View previous core service"
+              className="hidden !h-12 !w-12 !-translate-y-1/2 items-center justify-center rounded-full border border-border/80 bg-background/90 text-foreground shadow-md backdrop-blur-sm transition hover:bg-background md:flex md:!left-4"
+            />
+            <CarouselNext
+              aria-label="View next core service"
+              className="hidden !h-12 !w-12 !-translate-y-1/2 items-center justify-center rounded-full border border-border/80 bg-background/90 text-foreground shadow-md backdrop-blur-sm transition hover:bg-background md:flex md:!right-4"
+            />
           </Carousel>
+          <div className="mt-6 flex items-center justify-center gap-4 md:hidden">
+            <CarouselPrevious
+              aria-label="View previous core service"
+              className="!static !h-11 !w-11 !translate-x-0 !translate-y-0 rounded-full border border-border/80 bg-background text-foreground shadow-sm hover:bg-background/90"
+            />
+            <CarouselNext
+              aria-label="View next core service"
+              className="!static !h-11 !w-11 !translate-x-0 !translate-y-0 rounded-full border border-border/80 bg-background text-foreground shadow-sm hover:bg-background/90"
+            />
+          </div>
         </div>
       </div>
 
       {/* Fullscreen Modal with Flip Animation */}
       {selectedCard !== null && (
         <div 
-          className="fixed inset-0 z-50 bg-neutral-dark/95 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in"
+          className="fixed inset-0 z-50 bg-neutral-dark/95 dark:bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-fade-in"
           onClick={closeFullscreen}
         >
           <div 
-            className="relative max-w-4xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden animate-scale-in"
+            className="relative max-w-4xl w-full bg-background dark:bg-card rounded-3xl shadow-2xl overflow-hidden animate-scale-in"
             onClick={(e) => e.stopPropagation()}
             style={{
               animation: 'flipIn 0.6s ease-out'
@@ -348,31 +323,31 @@ export const Solutions = () => {
             {/* Close button */}
             <button
               onClick={closeFullscreen}
-              className="absolute top-6 right-6 z-10 p-2 rounded-full bg-neutral-dark/10 hover:bg-neutral-dark/20 transition-colors"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 p-2 rounded-full bg-neutral-dark/10 dark:bg-white/10 hover:bg-neutral-dark/20 dark:hover:bg-white/20 transition-colors"
             >
-              <X className="w-6 h-6 text-neutral-dark" />
+              <X className="w-6 h-6 text-foreground" />
             </button>
 
-            <div className="p-12">
+            <div className="p-6 sm:p-8 md:p-12">
               {/* Large icon */}
-              <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-8 animate-scale-in">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-6 md:mb-8 animate-scale-in">
                 {(() => {
                   const Icon = solutions[selectedCard].icon;
-                  return <Icon className="w-12 h-12 text-crimson" strokeWidth={2} />;
+                  return <Icon className="w-10 h-10 md:w-12 md:h-12 text-crimson" strokeWidth={2} />;
                 })()}
               </div>
 
               {/* Content with typewriter effect */}
-              <h2 className="font-ubuntu font-bold text-4xl md:text-5xl text-neutral-dark mb-6 min-h-[4rem]">
+              <h2 className="font-ubuntu font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground mb-4 md:mb-6 min-h-[3rem] md:min-h-[4rem]">
                 {typewriterText}
                 <span className="animate-pulse">|</span>
               </h2>
-              <p className="font-inter text-lg text-muted-foreground leading-relaxed mb-8">
+              <p className="font-inter text-base md:text-lg text-muted-foreground leading-relaxed mb-6 md:mb-8">
                 {solutions[selectedCard].fullDescription}
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <Button className={`${solutions[selectedCard].buttonColor} text-white font-inter font-medium rounded-lg px-8`}>
                   Get Started
                 </Button>
@@ -390,10 +365,6 @@ export const Solutions = () => {
       )}
 
       <style>{`
-        .perspective-1000 {
-          perspective: 1000px;
-        }
-        
         @keyframes flipIn {
           0% {
             transform: perspective(1000px) rotateY(-90deg) scale(0.8);

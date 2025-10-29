@@ -137,12 +137,12 @@ export const Hero = () => {
 
       {/* Desktop: Left hemisphere layout, Mobile: Full width */}
       <div className="relative max-w-7xl mx-auto px-6 md:px-12 py-20 md:grid md:grid-cols-2 md:gap-12 items-center">
-        {/* Content - Left side on desktop */}
-        <div className="text-left space-y-8">
+        {/* Desktop: Left hemisphere layout, Mobile: Full width */}
+        <div className="text-left space-y-6 md:space-y-8 max-w-3xl md:max-w-xl">
 
         {/* Animated Headline */}
         <div 
-          className={`font-ubuntu font-semibold text-5xl md:text-7xl text-white leading-tight transition-all duration-700 delay-300 drop-shadow-2xl ${
+          className={`font-ubuntu font-semibold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight transition-all duration-700 delay-300 drop-shadow-2xl ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
           style={{ letterSpacing: '0.05em' }}
@@ -187,7 +187,7 @@ export const Hero = () => {
 
         {/* Subheadline with Typewriter Effect */}
         <p 
-          className={`font-montserrat text-xl md:text-2xl text-neutral-light max-w-2xl transition-all duration-700 delay-500 drop-shadow-lg ${
+          className={`font-montserrat text-lg sm:text-xl md:text-2xl text-neutral-light max-w-2xl transition-all duration-700 delay-500 drop-shadow-lg ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
@@ -196,7 +196,7 @@ export const Hero = () => {
 
         {/* Hero Body Text */}
         <p 
-          className={`font-montserrat text-base md:text-lg text-neutral-light/90 max-w-3xl transition-all duration-700 delay-[2200ms] drop-shadow-lg ${
+          className={`font-montserrat text-sm sm:text-base md:text-lg text-neutral-light/90 max-w-3xl md:max-w-2xl transition-all duration-700 delay-[2200ms] drop-shadow-lg ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
@@ -205,14 +205,14 @@ export const Hero = () => {
 
         {/* CTA Buttons */}
         <div 
-          className={`pt-4 flex gap-4 transition-all duration-700 delay-[2400ms] ${
+          className={`pt-4 flex flex-col sm:flex-row gap-4 transition-all duration-700 delay-[2400ms] ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
           <Button 
             asChild
             size="lg"
-            className="bg-crimson hover:opacity-90 text-white font-montserrat font-semibold text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+            className="bg-crimson hover:opacity-90 text-white font-montserrat font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all w-full sm:w-auto"
           >
             <a href="/apply">Apply Now</a>
           </Button>
@@ -220,7 +220,7 @@ export const Hero = () => {
             <Button 
               size="lg"
               variant="outline"
-              className="border-2 border-white/60 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-montserrat font-semibold text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+              className="border-2 border-white/60 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-montserrat font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all w-full sm:w-auto"
             >
               Explore Solutions
             </Button>

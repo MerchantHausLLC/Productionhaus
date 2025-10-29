@@ -43,13 +43,12 @@ const Blog = () => {
   }, []);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F8F9FA' }}>
+    <div className="min-h-screen bg-background dark:bg-neutral-dark">
       <Header />
       
       <style>{`
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
         }
         .logo-text {
              font-family: 'Ubuntu', sans-serif;
@@ -91,13 +90,13 @@ const Blog = () => {
 
       <main ref={mainRef} className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Blog Hero / Featured Article */}
-        <section id="category-compliance" className="mb-16">
-          <h2 className="text-4xl sm:text-5xl font-extrabold mb-8" style={{ fontFamily: 'Ubuntu, sans-serif', color: '#1A1A1A' }}>
-            Latest Insights <span style={{ color: '#00CEDB' }}>on the Digital Frontier</span>
+        <section className="mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-8 font-ubuntu text-foreground">
+            Latest Insights <span className="text-cyber-teal">on the Digital Frontier</span>
           </h2>
           
           <div className="card-container">
-            <div className="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 card-shadow hover-crimson-arrow">
+            <div className="bg-card dark:bg-card/80 rounded-2xl overflow-hidden shadow-xl border border-border dark:border-border/50 card-shadow hover-crimson-arrow">
               <a href="/vamp" className="block">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="h-64 lg:h-96 relative">
@@ -106,21 +105,21 @@ const Blog = () => {
                       alt="Visa VAMP Featured Image" 
                       className="w-full h-full object-cover"
                     />
-                    <span className="absolute top-4 left-4 text-white text-xs font-bold px-3 py-1 rounded-full uppercase" style={{ backgroundColor: '#DC143C' }}>
+                    <span className="absolute top-4 left-4 text-white text-xs font-bold px-3 py-1 rounded-full uppercase bg-crimson">
                       Featured
                     </span>
                   </div>
                   <div className="p-6 sm:p-10 flex flex-col justify-center">
-                    <p className="text-sm font-semibold uppercase tracking-wider mb-2" style={{ color: '#00CEDB' }}>
+                    <p className="text-sm font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
                       Compliance & Fraud
                     </p>
-                    <h3 className="text-3xl lg:text-4xl font-bold mb-4" style={{ fontFamily: 'Ubuntu, sans-serif', color: '#1A1A1A' }}>
+                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 font-ubuntu text-foreground">
                       Visa's VAMP: A New Era for Fraud and Dispute Management
                     </h3>
-                    <p className="mb-6 leading-relaxed" style={{ color: '#A9A9A9' }}>
+                    <p className="mb-6 leading-relaxed text-muted-foreground">
                       VAMP replaces legacy programs (VFMP/VDMP) with a unified metric, reshaping how merchants and acquirers manage risk. Learn what it means for your business.
                     </p>
-                    <div className="flex items-center font-semibold" style={{ color: '#1A1A1A' }}>
+                    <div className="flex items-center font-semibold text-foreground">
                       Read Article
                       <ArrowRight className="arrow-icon w-5 h-5 ml-2" />
                     </div>
@@ -133,30 +132,21 @@ const Blog = () => {
 
         {/* Category Filters */}
         <section className="mb-12">
-          <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Ubuntu, sans-serif', color: '#1A1A1A' }}>
+          <h3 className="text-xl sm:text-2xl font-bold mb-4 font-ubuntu text-foreground">
             Explore Topics
           </h3>
           <div className="flex flex-wrap gap-3">
-            <a
-              href="#category-compliance"
-              className="px-4 py-2 text-sm text-white rounded-full hover:bg-opacity-90 transition-colors flex items-center"
-              style={{ backgroundColor: '#DC143C' }}
-            >
-              <ShieldCheck className="w-4 h-4 mr-2" /> Compliance Insights
+            <a href="#" className="px-4 py-2 text-sm text-white rounded-full hover:bg-opacity-90 transition-colors flex items-center bg-crimson">
+              <ShieldCheck className="w-4 h-4 mr-2" /> Compliance (4)
             </a>
-            <a
-              href="#category-fraud-prevention"
-              className="px-4 py-2 text-sm bg-gray-200 rounded-full hover:bg-gray-300 transition-colors flex items-center"
-              style={{ color: '#1A1A1A' }}
-            >
-              <Lock className="w-4 h-4 mr-2" /> Fraud Prevention Strategies
+            <a href="#" className="px-4 py-2 text-sm bg-muted dark:bg-muted/50 rounded-full hover:bg-muted/80 dark:hover:bg-muted/70 transition-colors flex items-center text-foreground">
+              <Lock className="w-4 h-4 mr-2" /> Fraud Prevention (7)
             </a>
-            <a
-              href="#category-payments-tech"
-              className="px-4 py-2 text-sm bg-gray-200 rounded-full hover:bg-gray-300 transition-colors flex items-center"
-              style={{ color: '#1A1A1A' }}
-            >
-              <CreditCard className="w-4 h-4 mr-2" /> Payments Tech Innovations
+            <a href="#" className="px-4 py-2 text-sm bg-muted dark:bg-muted/50 rounded-full hover:bg-muted/80 dark:hover:bg-muted/70 transition-colors flex items-center text-foreground">
+              <DollarSign className="w-4 h-4 mr-2" /> FinTech News (12)
+            </a>
+            <a href="#" className="px-4 py-2 text-sm bg-muted dark:bg-muted/50 rounded-full hover:bg-muted/80 dark:hover:bg-muted/70 transition-colors flex items-center text-foreground">
+              <CreditCard className="w-4 h-4 mr-2" /> Payments Tech (5)
             </a>
           </div>
         </section>
@@ -166,8 +156,8 @@ const Blog = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             
             {/* Card 1: VAMP Article */}
-            <div className="card-container" id="category-compliance-secondary">
-              <div className="bg-white rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
+            <div className="card-container">
+              <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/vamp" className="block">
                   <img 
                     src="/blog-images/vamp_metrics.webp" 
@@ -175,16 +165,16 @@ const Blog = () => {
                     className="w-full h-40 object-cover"
                   />
                   <div className="p-6">
-                    <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#DC143C' }}>
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-crimson">
                       Compliance
                     </p>
-                    <h4 className="text-xl font-bold mb-3" style={{ color: '#1A1A1A' }}>
+                    <h4 className="text-xl font-bold mb-3 text-foreground">
                       Visa VAMP: Decoding the New Risk Ratio
                     </h4>
-                    <p className="text-sm mb-4" style={{ color: '#A9A9A9' }}>
+                    <p className="text-sm mb-4 text-muted-foreground">
                       A deep dive into the TC40 and TC15 metrics that determine your program enrollment.
                     </p>
-                    <div className="flex items-center text-sm font-medium" style={{ color: '#1A1A1A' }}>
+                    <div className="flex items-center text-sm font-medium text-foreground">
                       Read More
                       <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
                     </div>
@@ -194,8 +184,8 @@ const Blog = () => {
             </div>
 
             {/* Card 2: 3D Secure Article */}
-            <div className="card-container" id="category-fraud-prevention">
-              <div className="bg-white rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
+            <div className="card-container">
+              <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/3ds" className="block">
                   <img 
                     src="/blog-images/3ds_ai.png" 
@@ -203,16 +193,16 @@ const Blog = () => {
                     className="w-full h-40 object-cover"
                   />
                   <div className="p-6">
-                    <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#00CEDB' }}>
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
                       Fraud Prevention
                     </p>
-                    <h4 className="text-xl font-bold mb-3" style={{ color: '#1A1A1A' }}>
+                    <h4 className="text-xl font-bold mb-3 text-foreground">
                       Understanding 3D Secure: Protecting Merchants and Customers
                     </h4>
-                    <p className="text-sm mb-4" style={{ color: '#A9A9A9' }}>
+                    <p className="text-sm mb-4 text-muted-foreground">
                       How modern authentication can boost security without sacrificing conversion rates.
                     </p>
-                    <div className="flex items-center text-sm font-medium" style={{ color: '#1A1A1A' }}>
+                    <div className="flex items-center text-sm font-medium text-foreground">
                       Read More
                       <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
                     </div>
@@ -222,25 +212,25 @@ const Blog = () => {
             </div>
 
             {/* Card 3: POS Solutions */}
-            <div className="card-container" id="category-payments-tech">
-              <div className="bg-white rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
-                <a href="/services#omnichannel-payments" className="block">
+            <div className="card-container">
+              <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
+                <a href="#" className="block">
                   <img 
                     src="/blog-images/pos_terminal.png" 
                     alt="Point of Sale Solutions" 
                     className="w-full h-40 object-cover bg-gradient-to-br from-gray-100 to-gray-50"
                   />
                   <div className="p-6">
-                    <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: 'rgba(26, 26, 26, 0.6)' }}>
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">
                       Payments Tech
                     </p>
-                    <h4 className="text-xl font-bold mb-3" style={{ color: '#1A1A1A' }}>
+                    <h4 className="text-xl font-bold mb-3 text-foreground">
                       Modern POS Solutions: Beyond the Terminal
                     </h4>
-                    <p className="text-sm mb-4" style={{ color: '#A9A9A9' }}>
+                    <p className="text-sm mb-4 text-muted-foreground">
                       How next-gen point of sale systems are transforming retail experiences.
                     </p>
-                    <div className="flex items-center text-sm font-medium" style={{ color: '#1A1A1A' }}>
+                    <div className="flex items-center text-sm font-medium text-foreground">
                       Read More
                       <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
                     </div>
@@ -253,15 +243,7 @@ const Blog = () => {
           
           {/* Pagination/Load More */}
           <div className="text-center mt-12">
-            <button className="px-6 py-3 border-2 font-semibold rounded-full transition-colors" style={{ borderColor: '#DC143C', color: '#DC143C' }} 
-              onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = '#DC143C';
-                e.currentTarget.style.color = 'white';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#DC143C';
-              }}>
+            <button className="px-6 py-3 border-2 font-semibold rounded-full transition-colors border-crimson text-crimson hover:bg-crimson hover:text-white">
               Load More Articles
             </button>
           </div>
