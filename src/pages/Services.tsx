@@ -72,6 +72,7 @@ const Services = () => {
 
   const features = [
     {
+      anchorId: "omnichannel-payments",
       icon: Smartphone,
       title: "Omnichannel Payments",
       subtitle: "Accept Everywhere, Any Device",
@@ -355,7 +356,12 @@ const Services = () => {
               {features.map((feature, idx) => {
                 const Icon = feature.icon;
                 return (
-                  <TabsContent key={idx} value={idx.toString()} className="mt-0">
+                  <TabsContent
+                    key={idx}
+                    value={idx.toString()}
+                    className="mt-0"
+                    id={feature.anchorId}
+                  >
                     <Card className="border-2">
                       <CardHeader>
                         <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 shadow-lg`}>

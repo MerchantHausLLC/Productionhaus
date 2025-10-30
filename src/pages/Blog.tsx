@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ArrowRight, ShieldCheck, Lock, DollarSign, CreditCard } from "lucide-react";
+import { ArrowRight, ShieldCheck, Lock, CreditCard } from "lucide-react";
 import { useEffect, useRef } from "react";
 import shieldLogo from "@/assets/shield.webp";
 
