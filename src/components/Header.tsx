@@ -102,11 +102,11 @@ export const Header = () => {
             <span className="sr-only">Toggle theme</span>
           </Button>
           
-          <Button 
+          <Button
             asChild
             className="bg-crimson hover:opacity-90 text-white font-montserrat font-medium rounded-lg px-6 transition-all hover:shadow-lg"
           >
-            <a href="/apply">Apply Now</a>
+            <a href="/quote">Get a Quote</a>
           </Button>
         </div>
       </div>

@@ -209,7 +209,7 @@ export const Solutions = () => {
             asChild
             className="bg-crimson hover:bg-crimson/90 text-white font-semibold rounded-full px-8 py-6 text-base shadow-lg hover:shadow-xl transition-all"
           >
-            <a href="/apply">Get a Quote</a>
+            <a href="/quote">Get a Quote</a>
           </Button>
         </div>
 

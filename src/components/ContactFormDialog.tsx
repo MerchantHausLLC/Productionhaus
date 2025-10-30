@@ -82,7 +82,7 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
     try {
       // Create form data for Netlify
       const formData = new FormData();
-      formData.append("form-name", "contact");
+      formData.append("form-name", "contact-detailed");
       formData.append("name", data.name);
       formData.append("email", data.email);
       formData.append("phone", data.phone);
@@ -130,8 +130,14 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
             </DialogHeader>
 
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-4">
-                <input type="hidden" name="form-name" value="contact" />
+                <form
+                  name="contact-detailed"
+                  method="POST"
+                  data-netlify="true"
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-6 mt-4"
+                >
+                  <input type="hidden" name="form-name" value="contact-detailed" />
 
                 <FormField
                   control={form.control}

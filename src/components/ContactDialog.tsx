@@ -45,7 +45,7 @@ export function ContactDialog({ open, onOpenChange }: ContactDialogProps) {
   const onSubmit = async (data: ContactFormValues) => {
     try {
       const formData = new FormData();
-      formData.append("form-name", "contact");
+      formData.append("form-name", "contact-dialog");
       Object.entries(data).forEach(([key, value]) => {
         formData.append(key, String(value));
       });
@@ -105,7 +105,14 @@ export function ContactDialog({ open, onOpenChange }: ContactDialogProps) {
             </Button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            name="contact-dialog"
+            method="POST"
+            data-netlify="true"
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4"
+          >
+            <input type="hidden" name="form-name" value="contact-dialog" />
             <div className="space-y-2">
               <Label htmlFor="name">Name*</Label>
               <Input id="name" {...register("name")} />

@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2, Building2, User, Shield, CreditCard, Package } from "lucide-react";
 import { StarfieldBackground } from "@/components/StarfieldBackground";
+import { ThankYouDialog } from "@/components/ThankYouDialog";
 
 const applicationFormSchema = z.object({
   company_name: z.string().trim().min(1, "Company name is required").max(100),
@@ -38,6 +39,7 @@ type ApplicationFormValues = z.infer<typeof applicationFormSchema>;
 const Apply = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [showThankYou, setShowThankYou] = useState(false);
   const { toast } = useToast();
   
   const {
@@ -89,6 +91,7 @@ const Apply = () => {
 
       if (response.ok) {
         setIsSubmitted(true);
+        setShowThankYou(true);
         toast({
           title: "Application Submitted",
           description: "We'll review your application and get back to you soon.",
@@ -106,20 +109,20 @@ const Apply = () => {
     }
   };
 
-  const toggleProcessingService = (service: string) => {
+  const toggleProcessingService = (service: string, checked: boolean) => {
     const current = processingServices;
-    const updated = current.includes(service)
-      ? current.filter((s) => s !== service)
-      : [...current, service];
-    setValue("processing_services", updated);
+    const updated = checked
+      ? [...current, service]
+      : current.filter((s) => s !== service);
+    setValue("processing_services", updated, { shouldDirty: true, shouldTouch: true });
   };
 
-  const toggleValueService = (service: string) => {
+  const toggleValueService = (service: string, checked: boolean) => {
     const current = valueServices;
-    const updated = current.includes(service)
-      ? current.filter((s) => s !== service)
-      : [...current, service];
-    setValue("value_services", updated);
+    const updated = checked
+      ? [...current, service]
+      : current.filter((s) => s !== service);
+    setValue("value_services", updated, { shouldDirty: true, shouldTouch: true });
   };
 
   const steps = [
@@ -189,8 +192,16 @@ const Apply = () => {
                   </div>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                <form
+                  name="merchant-apply"
+                  method="POST"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-8"
+                >
                   <input type="hidden" name="form-name" value="merchant-apply" />
+                  <input type="hidden" name="bot-field" />
                   
                   {/* Step 1: Business Information */}
                   {currentStep === 1 && (
@@ -400,12 +411,13 @@ const Apply = () => {
                                     ? "border-crimson bg-crimson/5"
                                     : "border-border hover:border-crimson/50"
                                 }`}
-                                onClick={() => toggleProcessingService(service)}
                               >
                                 <Checkbox
                                   id={`processing-${service}`}
                                   checked={processingServices.includes(service)}
-                                  onCheckedChange={() => toggleProcessingService(service)}
+                                  onCheckedChange={(checked) =>
+                                    toggleProcessingService(service, checked === true)
+                                  }
                                 />
                                 <Label
                                   htmlFor={`processing-${service}`}
@@ -436,12 +448,13 @@ const Apply = () => {
                                     ? "border-crimson bg-crimson/5"
                                     : "border-border hover:border-crimson/50"
                                 }`}
-                                onClick={() => toggleValueService(service)}
                               >
                                 <Checkbox
                                   id={`value-${service}`}
                                   checked={valueServices.includes(service)}
-                                  onCheckedChange={() => toggleValueService(service)}
+                                  onCheckedChange={(checked) =>
+                                    toggleValueService(service, checked === true)
+                                  }
                                 />
                                 <Label htmlFor={`value-${service}`} className="cursor-pointer flex-1">
                                   {service}
@@ -462,7 +475,13 @@ const Apply = () => {
                             <Checkbox
                               id="agree_to_terms"
                               checked={watch("agree_to_terms")}
-                              onCheckedChange={(checked) => setValue("agree_to_terms", checked === true)}
+                              onCheckedChange={(checked) =>
+                                setValue("agree_to_terms", checked === true, {
+                                  shouldDirty: true,
+                                  shouldTouch: true,
+                                  shouldValidate: true,
+                                })
+                              }
                             />
                             <Label htmlFor="agree_to_terms" className="cursor-pointer leading-relaxed">
                               I agree to the{" "}
@@ -501,6 +520,23 @@ const Apply = () => {
                       </div>
                     </div>
                   )}
+
+                  {processingServices.map((service) => (
+                    <input
+                      key={`processing-hidden-${service}`}
+                      type="hidden"
+                      name="processing_services[]"
+                      value={service}
+                    />
+                  ))}
+                  {valueServices.map((service) => (
+                    <input
+                      key={`value-hidden-${service}`}
+                      type="hidden"
+                      name="value_services[]"
+                      value={service}
+                    />
+                  ))}
                 </form>
               </>
             ) : (
@@ -571,6 +607,18 @@ const Apply = () => {
       </main>
 
       <Footer />
+
+      <ThankYouDialog
+        open={showThankYou}
+        onOpenChange={(open) => {
+          if (!open) {
+            setShowThankYou(false);
+          }
+        }}
+        title="Application Received!"
+        description="Thank you for applying to MerchantHaus."
+        body="Our underwriting team will review your application and contact you within one business day."
+      />
     </div>
   );
 };

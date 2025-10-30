@@ -73,7 +73,7 @@ export function MerchantApplicationDialog({
   const onSubmit = async (data: ApplicationFormValues) => {
     try {
       const formData = new FormData();
-      formData.append("form-name", "apply");
+      formData.append("form-name", "merchant-apply-dialog");
       
       // Add hidden fields
       formData.append("country", "United States");
@@ -123,20 +123,18 @@ export function MerchantApplicationDialog({
     onOpenChange(false);
   };
 
-  const toggleProcessingService = (service: string) => {
-    const current = processingServices;
-    const updated = current.includes(service)
-      ? current.filter((s) => s !== service)
-      : [...current, service];
-    setValue("processing_services", updated);
+  const toggleProcessingService = (service: string, checked: boolean) => {
+    const updated = checked
+      ? [...processingServices, service]
+      : processingServices.filter((s) => s !== service);
+    setValue("processing_services", updated, { shouldDirty: true, shouldTouch: true });
   };
 
-  const toggleValueService = (service: string) => {
-    const current = valueServices;
-    const updated = current.includes(service)
-      ? current.filter((s) => s !== service)
-      : [...current, service];
-    setValue("value_services", updated);
+  const toggleValueService = (service: string, checked: boolean) => {
+    const updated = checked
+      ? [...valueServices, service]
+      : valueServices.filter((s) => s !== service);
+    setValue("value_services", updated, { shouldDirty: true, shouldTouch: true });
   };
 
   return (
@@ -164,7 +162,16 @@ export function MerchantApplicationDialog({
             </Button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form
+            name="merchant-apply-dialog"
+            method="POST"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-6"
+          >
+            <input type="hidden" name="form-name" value="merchant-apply-dialog" />
+            <input type="hidden" name="bot-field" />
             {/* Merchant Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold font-ubuntu text-foreground">Merchant Information</h3>
@@ -282,7 +289,9 @@ export function MerchantApplicationDialog({
                     <Checkbox
                       id={`processing-${service}`}
                       checked={processingServices.includes(service)}
-                      onCheckedChange={() => toggleProcessingService(service)}
+                      onCheckedChange={(checked) =>
+                        toggleProcessingService(service, checked === true)
+                      }
                     />
                     <Label htmlFor={`processing-${service}`} className="cursor-pointer">
                       {service}
@@ -301,7 +310,9 @@ export function MerchantApplicationDialog({
                     <Checkbox
                       id={`value-${service}`}
                       checked={valueServices.includes(service)}
-                      onCheckedChange={() => toggleValueService(service)}
+                      onCheckedChange={(checked) =>
+                        toggleValueService(service, checked === true)
+                      }
                     />
                     <Label htmlFor={`value-${service}`} className="cursor-pointer">
                       {service}
@@ -318,7 +329,13 @@ export function MerchantApplicationDialog({
                 <Checkbox
                   id="agree_to_terms"
                   checked={watch("agree_to_terms")}
-                  onCheckedChange={(checked) => setValue("agree_to_terms", checked === true)}
+                  onCheckedChange={(checked) =>
+                    setValue("agree_to_terms", checked === true, {
+                      shouldDirty: true,
+                      shouldTouch: true,
+                      shouldValidate: true,
+                    })
+                  }
                 />
                 <Label htmlFor="agree_to_terms" className="cursor-pointer leading-relaxed text-sm">
                   I agree to the{" "}
@@ -337,6 +354,23 @@ export function MerchantApplicationDialog({
                 <p className="text-sm text-destructive">{errors.agree_to_terms.message}</p>
               )}
             </div>
+
+            {processingServices.map((service) => (
+              <input
+                key={`dialog-processing-${service}`}
+                type="hidden"
+                name="processing_services[]"
+                value={service}
+              />
+            ))}
+            {valueServices.map((service) => (
+              <input
+                key={`dialog-value-${service}`}
+                type="hidden"
+                name="value_services[]"
+                value={service}
+              />
+            ))}
 
             <Button type="submit" disabled={isSubmitting} className="w-full">
               {isSubmitting ? "Submitting..." : "Submit Application"}
