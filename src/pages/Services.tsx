@@ -6,6 +6,7 @@ import { ContactDialog } from "@/components/ContactDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import ServicesShowcase from "@/components/ServicesShowcase";
+import { TypewriterReveal } from "@/components/TypewriterReveal";
 import {
   Smartphone,
   ShieldAlert,
@@ -219,12 +220,19 @@ const Services = () => {
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
             <div className="max-w-3xl space-y-6">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-ubuntu font-bold text-foreground leading-tight tracking-tight">
-                Accept Payments Anywhere
-              </h1>
-              <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed text-balance">
-                In-store, online, mobile, and unattended. Modular, omnichannel, white-label payment solutions built for partners.
-              </p>
+              <TypewriterReveal
+                as="h1"
+                text="Accept Payments Anywhere"
+                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-ubuntu font-bold text-foreground leading-tight tracking-tight"
+                speed={28}
+              />
+              <TypewriterReveal
+                as="p"
+                text="In-store, online, mobile, and unattended. Modular, omnichannel, white-label payment solutions built for partners."
+                className="text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed text-balance"
+                delay={200}
+                speed={24}
+              />
 
               {/* Trust Badges */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -272,12 +280,19 @@ const Services = () => {
         <section className="py-16 bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-ubuntu font-bold text-foreground mb-4">
-                Built For Every Business Model
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Whether you're an ISV, ISO, merchant, or referral partner—we have the right solution for you.
-              </p>
+              <TypewriterReveal
+                as="h2"
+                text="Built For Every Business Model"
+                className="text-4xl font-ubuntu font-bold text-foreground mb-4"
+                speed={26}
+              />
+              <TypewriterReveal
+                as="p"
+                text="Whether you're an ISV, ISO, merchant, or referral partner—we have the right solution for you."
+                className="text-xl text-muted-foreground max-w-3xl mx-auto"
+                delay={150}
+                speed={22}
+              />
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -305,12 +320,19 @@ const Services = () => {
         <section className="py-20 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-ubuntu font-bold text-foreground mb-4">
-                Comprehensive Payment Platform
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Every feature you need to process, manage, and optimize payments—built into one powerful platform.
-              </p>
+              <TypewriterReveal
+                as="h2"
+                text="Comprehensive Payment Platform"
+                className="text-4xl md:text-5xl font-ubuntu font-bold text-foreground mb-4"
+                speed={26}
+              />
+              <TypewriterReveal
+                as="p"
+                text="Every feature you need to process, manage, and optimize payments—built into one powerful platform."
+                className="text-xl text-muted-foreground max-w-3xl mx-auto"
+                delay={150}
+                speed={22}
+              />
             </div>
 
             <Tabs defaultValue="0" className="w-full">
@@ -371,12 +393,19 @@ const Services = () => {
         <section className="py-20 bg-muted/30">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-ubuntu font-bold text-foreground mb-4">
-                How It Works
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                From onboarding to your first transaction—we make it simple.
-              </p>
+              <TypewriterReveal
+                as="h2"
+                text="How It Works"
+                className="text-4xl font-ubuntu font-bold text-foreground mb-4"
+                speed={26}
+              />
+              <TypewriterReveal
+                as="p"
+                text="From onboarding to your first transaction—we make it simple."
+                className="text-xl text-muted-foreground"
+                delay={150}
+                speed={22}
+              />
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
@@ -385,10 +414,19 @@ const Services = () => {
                   <div className="w-12 h-12 rounded-full bg-crimson text-white flex items-center justify-center text-2xl font-bold mb-6">
                     1
                   </div>
-                  <h3 className="text-2xl font-ubuntu font-bold mb-4">Apply & Approve</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Submit your application online. Our underwriting team reviews and approves within 24-48 hours. Dedicated launch manager assigned for partner integrations.
-                  </p>
+                  <TypewriterReveal
+                    as="h3"
+                    text="Apply & Approve"
+                    className="text-2xl font-ubuntu font-bold mb-4"
+                    speed={24}
+                  />
+                  <TypewriterReveal
+                    as="p"
+                    text="Submit your application online. Our underwriting team reviews and approves within 24-48 hours. Dedicated launch manager assigned for partner integrations."
+                    className="text-muted-foreground leading-relaxed"
+                    delay={120}
+                    speed={20}
+                  />
                 </div>
               </div>
 
@@ -397,10 +435,19 @@ const Services = () => {
                   <div className="w-12 h-12 rounded-full bg-crimson text-white flex items-center justify-center text-2xl font-bold mb-6">
                     2
                   </div>
-                  <h3 className="text-2xl font-ubuntu font-bold mb-4">Integrate & Configure</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Access your sandbox environment, API documentation, and SDKs. Configure your payment flows, branding, and processor connections with expert support.
-                  </p>
+                  <TypewriterReveal
+                    as="h3"
+                    text="Integrate & Configure"
+                    className="text-2xl font-ubuntu font-bold mb-4"
+                    speed={24}
+                  />
+                  <TypewriterReveal
+                    as="p"
+                    text="Access your sandbox environment, API documentation, and SDKs. Configure your payment flows, branding, and processor connections with expert support."
+                    className="text-muted-foreground leading-relaxed"
+                    delay={120}
+                    speed={20}
+                  />
                 </div>
               </div>
 
@@ -409,10 +456,19 @@ const Services = () => {
                   <div className="w-12 h-12 rounded-full bg-crimson text-white flex items-center justify-center text-2xl font-bold mb-6">
                     3
                   </div>
-                  <h3 className="text-2xl font-ubuntu font-bold mb-4">Launch & Grow</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Go live with confidence. Real-time monitoring, 24/7 support, and continuous optimization tools help you scale seamlessly as your business grows.
-                  </p>
+                  <TypewriterReveal
+                    as="h3"
+                    text="Launch & Grow"
+                    className="text-2xl font-ubuntu font-bold mb-4"
+                    speed={24}
+                  />
+                  <TypewriterReveal
+                    as="p"
+                    text="Go live with confidence. Real-time monitoring, 24/7 support, and continuous optimization tools help you scale seamlessly as your business grows."
+                    className="text-muted-foreground leading-relaxed"
+                    delay={120}
+                    speed={20}
+                  />
                 </div>
               </div>
             </div>
@@ -423,12 +479,19 @@ const Services = () => {
         <section className="py-20 bg-background">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-ubuntu font-bold text-foreground mb-4">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                Everything you need to know about MerchantHaus payment solutions.
-              </p>
+              <TypewriterReveal
+                as="h2"
+                text="Frequently Asked Questions"
+                className="text-4xl font-ubuntu font-bold text-foreground mb-4"
+                speed={26}
+              />
+              <TypewriterReveal
+                as="p"
+                text="Everything you need to know about MerchantHaus payment solutions."
+                className="text-xl text-muted-foreground"
+                delay={150}
+                speed={22}
+              />
             </div>
 
             <div className="space-y-6">
@@ -454,12 +517,19 @@ const Services = () => {
         {/* Final CTA Section */}
         <section className="py-20 bg-gradient-to-br from-crimson via-crimson/95 to-crimson/90">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-            <h2 className="text-4xl md:text-5xl font-ubuntu font-bold mb-6">
-              Ready to Transform Your Payments?
-            </h2>
-            <p className="text-xl mb-8 text-white/90 leading-relaxed">
-              Partner-centric, modular, compliant, and proven. Join the merchants and partners who trust MerchantHaus to power their payment operations.
-            </p>
+            <TypewriterReveal
+              as="h2"
+              text="Ready to Transform Your Payments?"
+              className="text-4xl md:text-5xl font-ubuntu font-bold mb-6"
+              speed={26}
+            />
+            <TypewriterReveal
+              as="p"
+              text="Partner-centric, modular, compliant, and proven. Join the merchants and partners who trust MerchantHaus to power their payment operations."
+              className="text-xl mb-8 text-white/90 leading-relaxed"
+              delay={150}
+              speed={22}
+            />
             
             <div className="flex flex-wrap justify-center gap-4 mb-12">
               <Button 
