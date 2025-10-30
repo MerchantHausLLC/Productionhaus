@@ -18,7 +18,6 @@ import { CheckCircle2 } from "lucide-react";
 
 const applicationFormSchema = z.object({
   company_name: z.string().min(1, "Company name is required"),
-  external_id: z.string().optional(),
   address: z.string().min(1, "Address is required"),
   address2: z.string().optional(),
   city: z.string().min(1, "City is required"),
@@ -182,10 +181,6 @@ export function MerchantApplicationDialog({
                   {errors.company_name && (
                     <p className="text-sm text-destructive">{errors.company_name.message}</p>
                   )}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="external_id">External Identifier</Label>
-                  <Input id="external_id" {...register("external_id")} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="address">Address*</Label>
