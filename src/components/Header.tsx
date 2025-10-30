@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import shieldLogo from "@/assets/shield.webp";
+import shieldLogo from "@/assets/redshield.png";
 import { useState, useEffect } from "react";
 import { ContactDialog } from "./ContactDialog";
 import { Moon, Sun } from "lucide-react";
