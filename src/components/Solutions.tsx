@@ -293,12 +293,12 @@ export const Solutions = () => {
 
       {/* Fullscreen Modal with Flip Animation */}
       {selectedCard !== null && (
-        <div 
-          className="fixed inset-0 z-50 bg-neutral-dark/95 dark:bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-fade-in"
+        <div
+          className="fixed inset-0 z-50 bg-neutral-dark/95 dark:bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-fade-in overflow-y-auto"
           onClick={closeFullscreen}
         >
-          <div 
-            className="relative max-w-4xl w-full bg-background dark:bg-card rounded-3xl shadow-2xl overflow-hidden animate-scale-in"
+          <div
+            className="relative max-w-4xl w-full max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3rem)] bg-background dark:bg-card rounded-3xl shadow-2xl overflow-hidden animate-scale-in flex flex-col"
             onClick={(e) => e.stopPropagation()}
             style={{
               animation: 'flipIn 0.6s ease-out'
@@ -306,7 +306,7 @@ export const Solutions = () => {
           >
             {/* Banner Image in Modal */}
             {solutions[selectedCard].bannerImage && (
-              <div className="w-full h-64 overflow-hidden">
+              <div className="w-full h-64 overflow-hidden shrink-0">
                 <img 
                   src={solutions[selectedCard].bannerImage} 
                   alt={solutions[selectedCard].title}
@@ -323,7 +323,7 @@ export const Solutions = () => {
               <X className="w-6 h-6 text-foreground" />
             </button>
 
-            <div className="p-6 sm:p-8 md:p-12">
+            <div className="p-6 sm:p-8 md:p-12 overflow-y-auto max-h-full flex-1">
               {/* Large icon */}
               <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-6 md:mb-8 animate-scale-in">
                 {(() => {
