@@ -1,6 +1,7 @@
 import { CreditCard, Shield, Smartphone, Globe, X, Lock, ShoppingCart, BarChart2, Repeat, ShieldCheck, Shuffle, ShieldAlert } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
+import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
 import {
   Carousel,
   CarouselContent,
@@ -109,6 +110,7 @@ export const Solutions = () => {
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
   const [typewriterText, setTypewriterText] = useState("");
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isApplicationOpen, setIsApplicationOpen] = useState(false);
 
   // Scroll reveal animation with fade in/out
   useEffect(() => {
@@ -164,6 +166,11 @@ export const Solutions = () => {
 
   const closeFullscreen = () => {
     setSelectedCard(null);
+  };
+
+  const handleGetStarted = () => {
+    closeFullscreen();
+    setIsApplicationOpen(true);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
@@ -373,7 +380,10 @@ export const Solutions = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button className={`${solutions[selectedCard].buttonColor} text-white font-inter font-medium rounded-lg px-8`}>
+                <Button
+                  className={`${solutions[selectedCard].buttonColor} text-white font-inter font-medium rounded-lg px-8`}
+                  onClick={handleGetStarted}
+                >
                   Get Started
                 </Button>
                 <Button 
@@ -408,6 +418,7 @@ export const Solutions = () => {
           }
         }
       `}</style>
+      <MerchantApplicationDialog open={isApplicationOpen} onOpenChange={setIsApplicationOpen} />
     </section>
   );
 };

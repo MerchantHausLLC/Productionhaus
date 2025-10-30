@@ -31,29 +31,38 @@ export const Header = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo with Shield and Animation - Shield always on top */}
-        <a href="/" className="flex items-center gap-3 group relative">
-          <img 
-            src={shieldLogo} 
-            alt="MerchantHaus Shield" 
-            className={`transition-all duration-300 relative z-20 ${isScrolled ? 'h-7 w-7' : 'h-9 w-9'}`}
-          />
-          <div className="relative z-10">
-            <h1 className={`font-ubuntu font-bold text-foreground transition-all duration-300 ${
-              isScrolled ? 'text-xl' : 'text-2xl'
-            }`}>
-              MerchantHaus
-            </h1>
-            {showShimmer && (
-              <div 
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-crimson to-transparent opacity-40 z-0"
-                style={{
-                  animation: 'shimmer 5s linear forwards'
-                }}
-              />
-            )}
-          </div>
-        </a>
+        <div className="flex items-center gap-6">
+          {/* Logo with Shield and Animation - Shield always on top */}
+          <a href="/" className="flex items-center gap-3 group relative">
+            <img
+              src={shieldLogo}
+              alt="MerchantHaus Shield"
+              className={`transition-all duration-300 relative z-20 ${isScrolled ? 'h-7 w-7' : 'h-9 w-9'}`}
+            />
+            <div className="relative z-10">
+              <h1 className={`font-ubuntu font-bold text-foreground transition-all duration-300 ${
+                isScrolled ? 'text-xl' : 'text-2xl'
+              }`}>
+                MerchantHaus
+              </h1>
+              {showShimmer && (
+                <div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-crimson to-transparent opacity-40 z-0"
+                  style={{
+                    animation: 'shimmer 5s linear forwards'
+                  }}
+                />
+              )}
+            </div>
+          </a>
+
+          <a
+            href="https://retailmanager.merchant.haus"
+            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
+          >
+            Client Login
+          </a>
+        </div>
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-8">
@@ -81,12 +90,6 @@ export const Header = () => {
           >
             Contact
           </button>
-          <a 
-            href="https://retailmanager.merchant.haus"
-            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
-          >
-            Client Login
-          </a>
         </nav>
 
         {/* Theme Toggle and CTA */}
@@ -103,10 +106,10 @@ export const Header = () => {
           </Button>
           
           <Button
-            asChild
+            onClick={() => setIsContactOpen(true)}
             className="bg-crimson hover:opacity-90 text-white font-montserrat font-medium rounded-lg px-6 transition-all hover:shadow-lg"
           >
-            <a href="/quote">Get a Quote</a>
+            Contact Us
           </Button>
         </div>
       </div>
