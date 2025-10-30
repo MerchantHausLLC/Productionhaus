@@ -63,10 +63,10 @@ const Services = () => {
   }, []);
 
   const trustBadges = [
-    { icon: ShieldCheck, text: "PCI DSS Level 1", subtext: "Compliant" },
-    { icon: Globe2, text: "200+ Processors", subtext: "Connected" },
-    { icon: Award, text: "20+ Years", subtext: "Experience" },
-    { icon: Clock, text: "24/7 Support", subtext: "Available" },
+    { icon: ShieldCheck, text: "PCI DSS Level 1", subtext: "Platform Compliant" },
+    { icon: Globe2, text: "200+ Processors", subtext: "Technology Connected" },
+    { icon: Award, text: "25+ Years", subtext: "Collective Techpertise" },
+    { icon: Clock, text: "24/7 Support", subtext: "Platform Assurance" },
   ];
 
   const features = [
