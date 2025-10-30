@@ -6,7 +6,7 @@ const Footer = () => {
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
 
   return (
-    <footer className="bg-neutral-dark border-t-2 border-cyber-teal">
+    <footer className="relative z-20 bg-neutral-dark border-t-2 border-cyber-teal">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Logo + Contact - Wider column */}
