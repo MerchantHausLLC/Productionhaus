@@ -16,6 +16,7 @@ import Apply from "./pages/Apply";
 import Security from "./pages/Security";
 import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
+import Quote from "./pages/Quote";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/vamp" element={<Vamp />} />
             <Route path="/3ds" element={<ThreeDS />} />
             <Route path="/apply" element={<Apply />} />
+            <Route path="/quote" element={<Quote />} />
             <Route path="/security" element={<Security />} />
             <Route path="/developer-guides" element={<ComingSoon />} />
             <Route path="/terms" element={<Terms />} />

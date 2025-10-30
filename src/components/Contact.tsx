@@ -3,10 +3,12 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
+import { ThankYouDialog } from "./ThankYouDialog";
 
 export const Contact = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,6 +26,7 @@ export const Contact = () => {
           title: "Message sent!",
           description: "We'll get back to you shortly.",
         });
+        setShowThankYou(true);
         form.reset();
       })
       .catch(() => {
@@ -50,15 +53,17 @@ export const Contact = () => {
           </p>
         </div>
 
-        <form 
-          name="contact" 
-          method="POST" 
-          data-netlify="true" 
+        <form
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
           onSubmit={handleSubmit}
           className="space-y-6 animate-fade-in"
           style={{ animationDelay: '200ms' }}
         >
           <input type="hidden" name="form-name" value="contact" />
+          <input type="hidden" name="bot-field" />
           
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
@@ -115,6 +120,18 @@ export const Contact = () => {
           </Button>
         </form>
       </div>
+
+      <ThankYouDialog
+        open={showThankYou}
+        onOpenChange={(open) => {
+          if (!open) {
+            setShowThankYou(false);
+          }
+        }}
+        title="Message Received!"
+        description="Thanks for contacting MerchantHaus."
+        body="A member of our team will reach out within one business day."
+      />
     </section>
   );
 };
