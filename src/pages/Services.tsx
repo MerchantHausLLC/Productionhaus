@@ -208,29 +208,33 @@ const Services = () => {
         {/* Hero Section with Background Image */}
         <section className="relative overflow-hidden h-[600px]">
           <div className="absolute inset-0">
-            <img 
-              src="/blog-images/cardslide.webp" 
-              alt="The Future of Digital Commerce" 
-              className="w-full h-full object-cover"
+            <img
+              src="/blog-images/cardslide.webp"
+              alt="The Future of Digital Commerce"
+              className="w-full h-full object-cover brightness-[1.2] dark:brightness-[0.8] transition-[filter] duration-500"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/98 via-background/90 to-background/70"></div>
+            <div className="absolute inset-0 bg-white/15 mix-blend-screen dark:bg-black/50 dark:mix-blend-multiply pointer-events-none"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/70 dark:from-background/80 dark:via-background/65 dark:to-background/55"></div>
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-            <div className="max-w-3xl">
-              <h1 className="text-5xl md:text-7xl font-ubuntu font-bold text-foreground mb-6 leading-tight">
+            <div className="max-w-3xl space-y-6">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-ubuntu font-bold text-foreground leading-tight tracking-tight">
                 Accept Payments Anywhere
               </h1>
-              <p className="text-2xl text-muted-foreground mb-8 leading-relaxed">
+              <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed text-balance">
                 In-store, online, mobile, and unattended. Modular, omnichannel, white-label payment solutions built for partners.
               </p>
-              
+
               {/* Trust Badges */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {trustBadges.map((badge, idx) => {
                   const Icon = badge.icon;
                   return (
-                    <div key={idx} className="flex items-center gap-2 bg-card/80 backdrop-blur-sm rounded-lg p-3 border border-border">
+                    <div
+                      key={idx}
+                      className="flex items-center gap-2 bg-background/70 dark:bg-background/60 backdrop-blur-md rounded-lg p-3 border border-border/60"
+                    >
                       <Icon className="w-6 h-6 text-primary flex-shrink-0" />
                       <div className="min-w-0">
                         <div className="text-sm font-bold text-foreground truncate">{badge.text}</div>
@@ -242,8 +246,8 @@ const Services = () => {
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-4">
-                <Button 
+              <div className="flex flex-wrap gap-4 pt-4">
+                <Button
                   size="lg"
                   className="bg-crimson hover:bg-crimson/90 text-white font-bold px-8 py-6 text-lg rounded-lg shadow-lg hover:shadow-xl transition-all"
                   onClick={() => setIsContactOpen(true)}
