@@ -1,5 +1,5 @@
 import { CreditCard, Shield, Smartphone, Globe, X, Lock, ShoppingCart, BarChart2, Repeat, ShieldCheck, Shuffle, ShieldAlert } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
 import {
@@ -107,38 +107,8 @@ export const Solutions = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [visibleCards, setVisibleCards] = useState<number[]>([]);
   const [typewriterText, setTypewriterText] = useState("");
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
-
-  // Scroll reveal animation with fade in/out
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const index = cardRefs.current.indexOf(entry.target as HTMLDivElement);
-          if (index !== -1) {
-            if (entry.isIntersecting) {
-              if (!visibleCards.includes(index)) {
-                setVisibleCards((prev) => [...prev, index]);
-              }
-            } else {
-              // Remove from visible when leaving viewport for fade out effect
-              setVisibleCards((prev) => prev.filter(i => i !== index));
-            }
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    cardRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => observer.disconnect();
-  }, []);
 
   // Typewriter effect for modal title
   useEffect(() => {
@@ -233,18 +203,11 @@ export const Solutions = () => {
               {solutions.map((solution, index) => {
                 const Icon = solution.icon;
                 const isHovered = hoveredCard === index;
-                const isVisible = visibleCards.includes(index);
-                
+
                 return (
                   <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-2 pr-2">
                     <div
-                      ref={(el) => (cardRefs.current[index] = el)}
-                      className={`relative perspective-1000 transition-all duration-700 ${
-                        isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
-                      }`}
-                      style={{
-                        transitionDelay: `${index * 150}ms`,
-                      }}
+                      className="relative perspective-1000 transition-all duration-700"
                       onMouseEnter={() => setHoveredCard(index)}
                       onMouseMove={(e) => handleMouseMove(e, index)}
                       onMouseLeave={handleMouseLeave}
