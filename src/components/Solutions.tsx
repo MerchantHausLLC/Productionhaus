@@ -263,9 +263,9 @@ export const Solutions = () => {
                       </div>
 
                       <div
-                        className={`rounded-2xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer border-2 bg-gradient-to-br from-neutral-light/5 via-white to-muted/30 ${
-                          isHovered 
-                            ? `shadow-2xl ${solution.borderColor}` 
+                        className={`rounded-2xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer border-2 bg-gradient-to-br from-neutral-light/5 via-white to-neutral-light/60 dark:from-neutral-light/5 dark:via-white dark:to-neutral-light/60 ${
+                          isHovered
+                            ? `shadow-2xl ${solution.borderColor}`
                             : 'border-transparent'
                         }`}
                         style={{
