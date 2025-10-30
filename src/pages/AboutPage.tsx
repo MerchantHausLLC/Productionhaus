@@ -165,12 +165,12 @@ const AboutPage = () => {
 
         {/* CLOSING CTA */}
         <section className="max-w-5xl mx-auto text-center">
-          <div className="section-card p-12 bg-neutral-dark text-white">
-            <h2 className="text-4xl font-ubuntu font-bold mb-6">Ready to Get Started?</h2>
-            <p className="text-lg mb-8 text-neutral-light/90">
+          <div className="section-card p-12 text-neutral-dark">
+            <h2 className="text-4xl font-ubuntu font-bold mb-6 text-neutral-dark">Ready to Get Started?</h2>
+            <p className="text-lg mb-8 text-neutral-dark/80">
               Join the businesses that trust MerchantHaus to power their payments. Fast setup, enterprise-grade security, and support that actually helps.
             </p>
-            <button 
+            <button
               onClick={() => setIsContactOpen(true)}
               className="inline-block bg-crimson hover:bg-crimson/90 text-white font-bold py-4 px-10 rounded-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
             >
