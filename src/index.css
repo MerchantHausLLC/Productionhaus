@@ -104,6 +104,29 @@ All colors MUST be HSL.
     overflow-x: hidden;
   }
 
+  .typewriter-paragraph {
+    position: relative;
+    display: block;
+  }
+
+  .typewriter-caret {
+    display: inline-block;
+    width: 0.15em;
+    height: 1.1em;
+    background-color: hsl(var(--neutral-dark));
+    margin-left: 0.15em;
+    animation: caret-blink 1s steps(1, end) infinite;
+  }
+
+  @keyframes caret-blink {
+    0%, 40% {
+      opacity: 1;
+    }
+    50%, 100% {
+      opacity: 0;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Ubuntu', sans-serif;
     font-weight: 600;

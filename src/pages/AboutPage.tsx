@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 import { Shield, Zap, Users, Lock, TrendingUp, Globe } from "lucide-react";
 import { MerchantApplicationDialog } from "@/components/MerchantApplicationDialog";
+import { TypewriterParagraph } from "@/components/TypewriterParagraph";
 
 const AboutPage = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -111,18 +112,26 @@ const AboutPage = () => {
 
         {/* OUR APPROACH */}
         <section className="max-w-5xl mx-auto mb-16">
-          <div className="section-card p-8 bg-gradient-to-br from-purple-dark to-purple-light text-white">
-            <h2 className="text-3xl font-ubuntu font-bold mb-6">Our Approach</h2>
-            <div className="space-y-4 text-lg">
-              <p className="leading-relaxed">
-                <strong>Simple First.</strong> We strip away unnecessary complexity so you can focus on growing your business.
-              </p>
-              <p className="leading-relaxed">
-                <strong>Secure Always.</strong> Every transaction is protected with bank-grade encryption and compliance standards.
-              </p>
-              <p className="leading-relaxed">
-                <strong>Scale Anywhere.</strong> From startup to enterprise, our platform grows with you—no limits, no surprises.
-              </p>
+          <div className="section-card relative overflow-hidden p-8 bg-gradient-to-br from-purple-dark to-purple-light">
+            <div className="absolute inset-0 bg-white/90" aria-hidden="true" />
+            <div className="relative z-10">
+              <h2 className="text-3xl font-ubuntu font-bold mb-6 text-neutral-dark">Our Approach</h2>
+              <div className="space-y-4 text-lg">
+                <TypewriterParagraph
+                  emphasis="Simple First."
+                  text="We strip away unnecessary complexity so you can focus on growing your business."
+                />
+                <TypewriterParagraph
+                  emphasis="Secure Always."
+                  text="Every transaction is protected with bank-grade encryption and compliance standards."
+                  startDelay={1200}
+                />
+                <TypewriterParagraph
+                  emphasis="Scale Anywhere."
+                  text="From startup to enterprise, our platform grows with you—no limits, no surprises."
+                  startDelay={2400}
+                />
+              </div>
             </div>
           </div>
         </section>
