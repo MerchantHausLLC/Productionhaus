@@ -46,9 +46,9 @@ const Apply = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
     setValue,
     watch,
+    trigger,
   } = useForm<ApplicationFormValues>({
     resolver: zodResolver(applicationFormSchema),
     defaultValues: {
@@ -131,6 +131,23 @@ const Apply = () => {
     { number: 3, title: "Account Setup", icon: Shield },
     { number: 4, title: "Services", icon: Package },
   ];
+
+  const stepFieldMap: Record<number, (keyof ApplicationFormValues)[]> = {
+    1: ["company_name", "address", "city", "state", "zip", "website"],
+    2: ["first_name", "last_name", "email", "phone"],
+    3: ["username"],
+  };
+
+  const validateAndGoToStep = async (targetStep: number) => {
+    const fieldsToValidate = stepFieldMap[currentStep];
+    if (fieldsToValidate && fieldsToValidate.length > 0) {
+      const isValid = await trigger(fieldsToValidate, { shouldFocus: true });
+      if (!isValid) {
+        return;
+      }
+    }
+    setCurrentStep(targetStep);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background relative">
@@ -271,7 +288,9 @@ const Apply = () => {
                       <div className="flex justify-end pt-4">
                         <Button
                           type="button"
-                          onClick={() => setCurrentStep(2)}
+                          onClick={() => {
+                            void validateAndGoToStep(2);
+                          }}
                           className="bg-crimson hover:bg-crimson/90"
                         >
                           Continue
@@ -339,7 +358,9 @@ const Apply = () => {
                         </Button>
                         <Button
                           type="button"
-                          onClick={() => setCurrentStep(3)}
+                          onClick={() => {
+                            void validateAndGoToStep(3);
+                          }}
                           className="bg-crimson hover:bg-crimson/90"
                         >
                           Continue
@@ -379,7 +400,9 @@ const Apply = () => {
                         </Button>
                         <Button
                           type="button"
-                          onClick={() => setCurrentStep(4)}
+                          onClick={() => {
+                            void validateAndGoToStep(4);
+                          }}
                           className="bg-crimson hover:bg-crimson/90"
                         >
                           Continue
