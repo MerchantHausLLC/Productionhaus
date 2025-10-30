@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { ContactDialog } from "@/components/ContactDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import ServicesShowcase from "@/components/ServicesShowcase";
 import {
   Smartphone,
   ShieldAlert,
@@ -359,6 +360,8 @@ const Services = () => {
             </Tabs>
           </div>
         </section>
+
+        <ServicesShowcase />
 
         {/* How It Works */}
         <section className="py-20 bg-muted/30">
