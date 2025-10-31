@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ThankYouDialog } from "@/components/ThankYouDialog";
+import { formDataToQueryString } from "@/lib/netlify";
 
 const quoteFormSchema = z.object({
   first_name: z.string().trim().min(1, "First name is required").max(50),
@@ -68,6 +69,7 @@ const Quote = () => {
     try {
       const formData = new FormData();
       formData.append("form-name", "quote");
+      formData.append("bot-field", "");
 
       Object.entries(data).forEach(([key, value]) => {
         if (Array.isArray(value)) {
@@ -80,7 +82,7 @@ const Quote = () => {
       const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString(),
+        body: formDataToQueryString(formData),
       });
 
       if (response.ok) {
@@ -129,6 +131,8 @@ const Quote = () => {
               method="POST"
               data-netlify="true"
               data-netlify-honeypot="bot-field"
+              action="/"
+              acceptCharset="UTF-8"
               onSubmit={handleSubmit(onSubmit)}
               className="space-y-8 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm"
             >
@@ -138,28 +142,33 @@ const Quote = () => {
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="first_name">First Name*</Label>
-                  <Input id="first_name" {...register("first_name")} />
+                  <Input id="first_name" autoComplete="given-name" {...register("first_name")} />
                   {errors.first_name && (
                     <p className="text-sm text-destructive">{errors.first_name.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="last_name">Last Name*</Label>
-                  <Input id="last_name" {...register("last_name")} />
+                  <Input id="last_name" autoComplete="family-name" {...register("last_name")} />
                   {errors.last_name && (
                     <p className="text-sm text-destructive">{errors.last_name.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="contact_number">Contact Number*</Label>
-                  <Input id="contact_number" {...register("contact_number")} />
+                  <Input
+                    id="contact_number"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    {...register("contact_number")}
+                  />
                   {errors.contact_number && (
                     <p className="text-sm text-destructive">{errors.contact_number.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address*</Label>
-                  <Input id="email" type="email" {...register("email")} />
+                  <Input id="email" type="email" autoComplete="email" {...register("email")} />
                   {errors.email && (
                     <p className="text-sm text-destructive">{errors.email.message}</p>
                   )}

@@ -4,41 +4,51 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
 import { ThankYouDialog } from "./ThankYouDialog";
+import { formDataToQueryString } from "@/lib/netlify";
 
 export const Contact = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
     setIsSubmitting(true);
-    const form = e.currentTarget;
+
+    const form = event.currentTarget;
     const formData = new FormData(form);
 
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(formData as any).toString(),
-    })
-      .then(() => {
-        toast({
-          title: "Message sent!",
-          description: "We'll get back to you shortly.",
-        });
-        setShowThankYou(true);
-        form.reset();
-      })
-      .catch(() => {
-        toast({
-          title: "Error",
-          description: "Failed to send message. Please try again.",
-          variant: "destructive",
-        });
-      })
-      .finally(() => {
-        setIsSubmitting(false);
+    try {
+      const response = await fetch(form.action || "/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formDataToQueryString(formData),
       });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you shortly.",
+      });
+      setShowThankYou(true);
+      form.reset();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -58,6 +68,8 @@ export const Contact = () => {
           method="POST"
           data-netlify="true"
           data-netlify-honeypot="bot-field"
+          action="/"
+          acceptCharset="UTF-8"
           onSubmit={handleSubmit}
           className="space-y-6 animate-fade-in"
           style={{ animationDelay: '200ms' }}
@@ -67,47 +79,53 @@ export const Contact = () => {
           
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
-              <Input 
-                name="name" 
-                placeholder="Your Name" 
-                required 
+              <Input
+                name="name"
+                autoComplete="name"
+                placeholder="Your Name"
+                required
                 className="bg-white/10 border-white/20 text-white placeholder:text-silver-grey focus:border-cyber-teal"
               />
             </div>
             <div>
-              <Input 
-                name="email" 
-                type="email" 
-                placeholder="Your Email" 
-                required 
+              <Input
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="Your Email"
+                required
                 className="bg-white/10 border-white/20 text-white placeholder:text-silver-grey focus:border-cyber-teal"
               />
             </div>
             <div>
-              <Input 
-                name="phone" 
-                type="tel" 
-                placeholder="Your Phone" 
-                required 
+              <Input
+                name="phone"
+                type="tel"
+                autoComplete="tel"
+                inputMode="tel"
+                placeholder="Your Phone"
+                required
                 className="bg-white/10 border-white/20 text-white placeholder:text-silver-grey focus:border-cyber-teal"
               />
             </div>
             <div>
-              <Input 
-                name="company" 
-                placeholder="Company Name" 
+              <Input
+                name="company"
+                autoComplete="organization"
+                placeholder="Company Name"
                 className="bg-white/10 border-white/20 text-white placeholder:text-silver-grey focus:border-cyber-teal"
               />
             </div>
           </div>
 
           <div>
-            <Textarea 
-              name="message" 
-              placeholder="How can we help you?" 
-              required 
+            <Textarea
+              name="message"
+              placeholder="How can we help you?"
+              required
               rows={6}
               className="bg-white/10 border-white/20 text-white placeholder:text-silver-grey focus:border-cyber-teal resize-none"
+              aria-label="How can we help you?"
             />
           </div>
 

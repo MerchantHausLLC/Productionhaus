@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2 } from "lucide-react";
+import { formDataToQueryString } from "@/lib/netlify";
 
 const applicationFormSchema = z.object({
   company_name: z.string().min(1, "Company name is required"),
@@ -73,6 +74,7 @@ export function MerchantApplicationDialog({
     try {
       const formData = new FormData();
       formData.append("form-name", "merchant-apply-dialog");
+      formData.append("bot-field", "");
       
       // Add hidden fields
       formData.append("country", "United States");
@@ -81,10 +83,6 @@ export function MerchantApplicationDialog({
       
       // Add all form fields
       Object.entries(data).forEach(([key, value]) => {
-        if (key === 'agree_to_terms') {
-          // Skip the checkbox field, it's just for validation
-          return;
-        }
         if (Array.isArray(value)) {
           value.forEach((item) => formData.append(key, item));
         } else if (value !== undefined && value !== null) {
@@ -92,10 +90,12 @@ export function MerchantApplicationDialog({
         }
       });
 
+      formData.append("agree_to_terms", data.agree_to_terms ? "yes" : "no");
+
       const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString(),
+        body: formDataToQueryString(formData),
       });
 
       if (response.ok) {
@@ -166,11 +166,18 @@ export function MerchantApplicationDialog({
             method="POST"
             data-netlify="true"
             data-netlify-honeypot="bot-field"
+            action="/"
+            acceptCharset="UTF-8"
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-6"
           >
             <input type="hidden" name="form-name" value="merchant-apply-dialog" />
             <input type="hidden" name="bot-field" />
+            <input
+              type="hidden"
+              name="agree_to_terms"
+              value={watch("agree_to_terms") ? "yes" : "no"}
+            />
             {/* Merchant Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold font-ubuntu text-foreground">Merchant Information</h3>

@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2 } from "lucide-react";
+import { formDataToQueryString } from "@/lib/netlify";
 
 const contactFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -46,6 +47,7 @@ export function ContactDialog({ open, onOpenChange }: ContactDialogProps) {
     try {
       const formData = new FormData();
       formData.append("form-name", "contact-dialog");
+      formData.append("bot-field", "");
       Object.entries(data).forEach(([key, value]) => {
         formData.append(key, String(value));
       });
@@ -53,7 +55,7 @@ export function ContactDialog({ open, onOpenChange }: ContactDialogProps) {
       const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString(),
+        body: formDataToQueryString(formData),
       });
 
       if (response.ok) {
@@ -109,13 +111,17 @@ export function ContactDialog({ open, onOpenChange }: ContactDialogProps) {
             name="contact-dialog"
             method="POST"
             data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            action="/"
+            acceptCharset="UTF-8"
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-4"
           >
             <input type="hidden" name="form-name" value="contact-dialog" />
+            <input type="hidden" name="bot-field" value="" />
             <div className="space-y-2">
               <Label htmlFor="name">Name*</Label>
-              <Input id="name" {...register("name")} />
+              <Input id="name" autoComplete="name" {...register("name")} />
               {errors.name && (
                 <p className="text-sm text-destructive">{errors.name.message}</p>
               )}
@@ -123,7 +129,7 @@ export function ContactDialog({ open, onOpenChange }: ContactDialogProps) {
 
             <div className="space-y-2">
               <Label htmlFor="email">Email*</Label>
-              <Input id="email" type="email" {...register("email")} />
+              <Input id="email" type="email" autoComplete="email" {...register("email")} />
               {errors.email && (
                 <p className="text-sm text-destructive">{errors.email.message}</p>
               )}
@@ -131,7 +137,7 @@ export function ContactDialog({ open, onOpenChange }: ContactDialogProps) {
 
             <div className="space-y-2">
               <Label htmlFor="phone">Phone*</Label>
-              <Input id="phone" type="tel" {...register("phone")} />
+              <Input id="phone" type="tel" autoComplete="tel" inputMode="tel" {...register("phone")} />
               {errors.phone && (
                 <p className="text-sm text-destructive">{errors.phone.message}</p>
               )}
