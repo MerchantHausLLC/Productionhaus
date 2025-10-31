@@ -23,6 +23,7 @@ import {
 } from "./ui/form";
 import { CheckCircle2, X } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
+import { formDataToQueryString } from "@/lib/netlify";
 
 const contactFormSchema = z.object({
   name: z
@@ -83,17 +84,23 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
       // Create form data for Netlify
       const formData = new FormData();
       formData.append("form-name", "contact-detailed");
+      formData.append("bot-field", "");
       formData.append("name", data.name);
       formData.append("email", data.email);
       formData.append("phone", data.phone);
       formData.append("company", data.company || "");
       formData.append("message", data.message);
+      formData.append("agree_to_privacy", data.agree_to_privacy ? "yes" : "no");
 
-      await fetch("/", {
+      const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString(),
+        body: formDataToQueryString(formData),
       });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
 
       setIsSubmitted(true);
       form.reset();
@@ -105,7 +112,7 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
         navigate("/");
       }, 3000);
     } catch (error) {
-      console.error("Form submission error");
+      console.error("Form submission error", error);
     }
   };
 
@@ -134,10 +141,19 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                   name="contact-detailed"
                   method="POST"
                   data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                  action="/"
+                  acceptCharset="UTF-8"
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-6 mt-4"
                 >
                   <input type="hidden" name="form-name" value="contact-detailed" />
+                  <input type="hidden" name="bot-field" value="" />
+                  <input
+                    type="hidden"
+                    name="agree_to_privacy"
+                    value={form.watch("agree_to_privacy") ? "yes" : "no"}
+                  />
 
                 <FormField
                   control={form.control}
@@ -151,6 +167,7 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                         <Input
                           placeholder="Your name"
                           className="font-montserrat border-silver-grey/30 focus:border-cyber-teal"
+                          autoComplete="name"
                           {...field}
                         />
                       </FormControl>
@@ -172,6 +189,7 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                           type="email"
                           placeholder="your.email@company.com"
                           className="font-montserrat border-silver-grey/30 focus:border-cyber-teal"
+                          autoComplete="email"
                           {...field}
                         />
                       </FormControl>
@@ -187,8 +205,10 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                     <FormItem>
                       <FormLabel>Phone Number *</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="Your phone number" 
+                        <Input
+                          placeholder="Your phone number"
+                          autoComplete="tel"
+                          inputMode="tel"
                           {...field}
                           className="font-montserrat"
                         />

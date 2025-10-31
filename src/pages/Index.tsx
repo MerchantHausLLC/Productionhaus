@@ -6,6 +6,7 @@ import { Solutions } from "@/components/Solutions";
 import { Contact } from "@/components/Contact";
 import Footer from "@/components/Footer";
 import shieldLogo from "@/assets/shield.webp";
+import { CookieConsent } from "@/components/CookieConsent";
 
 const Index = () => {
   return (
@@ -35,6 +36,7 @@ const Index = () => {
         <Contact />
       </main>
       <Footer />
+      <CookieConsent />
     </div>
   );
 };

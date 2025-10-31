@@ -90,14 +90,14 @@ export default function ImprovedPaymentSlider() {
     const angle = 360 / quantity;
     const radius = 380;
     return services.map((_, idx) => {
-      let offset = (idx - currentIndex + quantity) % quantity;
+      const offset = (idx - currentIndex + quantity) % quantity;
       const rotation = offset * angle;
       return {
         transform: `rotateY(${rotation}deg) translateZ(${radius}px)`,
         offset,
       };
     });
-  }, [services.length, currentIndex]);
+  }, [services, currentIndex]);
 
   useEffect(() => {
     const timer = setInterval(() => {

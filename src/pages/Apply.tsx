@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2, Building2, User, Shield, CreditCard, Package } from "lucide-react";
 import { StarfieldBackground } from "@/components/StarfieldBackground";
 import { ThankYouDialog } from "@/components/ThankYouDialog";
+import { formDataToQueryString } from "@/lib/netlify";
 
 const applicationFormSchema = z.object({
   company_name: z.string().trim().min(1, "Company name is required").max(100),
@@ -60,33 +61,40 @@ const Apply = () => {
 
   const processingServices = watch("processing_services") || [];
   const valueServices = watch("value_services") || [];
+  const agreedToTerms = watch("agree_to_terms");
 
   const onSubmit = async (data: ApplicationFormValues) => {
     try {
       const formData = new FormData();
       formData.append("form-name", "merchant-apply");
-      
+      formData.append("bot-field", "");
+
       // Add hidden fields
       formData.append("country", "United States");
       formData.append("timezone", "(GMT-08:00) Pacific Time (US & Canada)");
       formData.append("language", "English");
-      
+
       // Add all form fields
       Object.entries(data).forEach(([key, value]) => {
-        if (key === "agree_to_terms") {
-          return;
-        }
         if (Array.isArray(value)) {
           value.forEach((item) => formData.append(key, item));
         } else if (value !== undefined && value !== null) {
-          formData.append(key, String(value));
+          if (typeof value === "boolean") {
+            formData.append(key, value ? "yes" : "no");
+          } else {
+            formData.append(key, String(value));
+          }
         }
       });
+
+      if (!formData.has("agree_to_terms")) {
+        formData.append("agree_to_terms", data.agree_to_terms ? "yes" : "no");
+      }
 
       const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString(),
+        body: formDataToQueryString(formData),
       });
 
       if (response.ok) {
@@ -214,12 +222,19 @@ const Apply = () => {
                   method="POST"
                   data-netlify="true"
                   data-netlify-honeypot="bot-field"
+                  action="/"
+                  acceptCharset="UTF-8"
                   onSubmit={handleSubmit(onSubmit)}
                   className="space-y-8"
                 >
                   <input type="hidden" name="form-name" value="merchant-apply" />
                   <input type="hidden" name="bot-field" />
-                  
+                  <input
+                    type="hidden"
+                    name="agree_to_terms"
+                    value={agreedToTerms ? "yes" : "no"}
+                  />
+
                   {/* Step 1: Business Information */}
                   {currentStep === 1 && (
                     <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
@@ -233,7 +248,11 @@ const Apply = () => {
                       <div className="grid gap-6 md:grid-cols-2">
                         <div className="space-y-2 md:col-span-2">
                           <Label htmlFor="company_name">Company Name*</Label>
-                          <Input id="company_name" {...register("company_name")} />
+                          <Input
+                            id="company_name"
+                            autoComplete="organization"
+                            {...register("company_name")}
+                          />
                           {errors.company_name && (
                             <p className="text-sm text-destructive">{errors.company_name.message}</p>
                           )}
@@ -241,7 +260,11 @@ const Apply = () => {
 
                         <div className="space-y-2 md:col-span-2">
                           <Label htmlFor="address">Street Address*</Label>
-                          <Input id="address" {...register("address")} />
+                          <Input
+                            id="address"
+                            autoComplete="street-address"
+                            {...register("address")}
+                          />
                           {errors.address && (
                             <p className="text-sm text-destructive">{errors.address.message}</p>
                           )}
@@ -249,12 +272,17 @@ const Apply = () => {
 
                         <div className="space-y-2 md:col-span-2">
                           <Label htmlFor="address2">Address Line 2 (Optional)</Label>
-                          <Input id="address2" placeholder="Suite, Unit, Building, Floor" {...register("address2")} />
+                          <Input
+                            id="address2"
+                            placeholder="Suite, Unit, Building, Floor"
+                            autoComplete="address-line2"
+                            {...register("address2")}
+                          />
                         </div>
 
                         <div className="space-y-2">
                           <Label htmlFor="city">City*</Label>
-                          <Input id="city" {...register("city")} />
+                          <Input id="city" autoComplete="address-level2" {...register("city")} />
                           {errors.city && (
                             <p className="text-sm text-destructive">{errors.city.message}</p>
                           )}
@@ -262,7 +290,12 @@ const Apply = () => {
 
                         <div className="space-y-2">
                           <Label htmlFor="state">State*</Label>
-                          <Input id="state" placeholder="CA" {...register("state")} />
+                          <Input
+                            id="state"
+                            placeholder="CA"
+                            autoComplete="address-level1"
+                            {...register("state")}
+                          />
                           {errors.state && (
                             <p className="text-sm text-destructive">{errors.state.message}</p>
                           )}
@@ -270,7 +303,7 @@ const Apply = () => {
 
                         <div className="space-y-2">
                           <Label htmlFor="zip">Zip/Postal Code*</Label>
-                          <Input id="zip" {...register("zip")} />
+                          <Input id="zip" autoComplete="postal-code" inputMode="numeric" {...register("zip")} />
                           {errors.zip && (
                             <p className="text-sm text-destructive">{errors.zip.message}</p>
                           )}
@@ -278,7 +311,13 @@ const Apply = () => {
 
                         <div className="space-y-2">
                           <Label htmlFor="website">Website (Optional)</Label>
-                          <Input id="website" type="url" placeholder="https://example.com" {...register("website")} />
+                          <Input
+                            id="website"
+                            type="url"
+                            placeholder="https://example.com"
+                            autoComplete="url"
+                            {...register("website")}
+                          />
                           {errors.website && (
                             <p className="text-sm text-destructive">{errors.website.message}</p>
                           )}
@@ -312,7 +351,7 @@ const Apply = () => {
                       <div className="grid gap-6 md:grid-cols-2">
                         <div className="space-y-2">
                           <Label htmlFor="first_name">First Name*</Label>
-                          <Input id="first_name" {...register("first_name")} />
+                          <Input id="first_name" autoComplete="given-name" {...register("first_name")} />
                           {errors.first_name && (
                             <p className="text-sm text-destructive">{errors.first_name.message}</p>
                           )}
@@ -320,7 +359,7 @@ const Apply = () => {
 
                         <div className="space-y-2">
                           <Label htmlFor="last_name">Last Name*</Label>
-                          <Input id="last_name" {...register("last_name")} />
+                          <Input id="last_name" autoComplete="family-name" {...register("last_name")} />
                           {errors.last_name && (
                             <p className="text-sm text-destructive">{errors.last_name.message}</p>
                           )}
@@ -328,7 +367,7 @@ const Apply = () => {
 
                         <div className="space-y-2">
                           <Label htmlFor="email">Email Address*</Label>
-                          <Input id="email" type="email" {...register("email")} />
+                          <Input id="email" type="email" autoComplete="email" {...register("email")} />
                           {errors.email && (
                             <p className="text-sm text-destructive">{errors.email.message}</p>
                           )}
@@ -336,7 +375,7 @@ const Apply = () => {
 
                         <div className="space-y-2">
                           <Label htmlFor="phone">Phone Number*</Label>
-                          <Input id="phone" type="tel" {...register("phone")} />
+                          <Input id="phone" type="tel" autoComplete="tel" inputMode="tel" {...register("phone")} />
                           {errors.phone && (
                             <p className="text-sm text-destructive">{errors.phone.message}</p>
                           )}
@@ -344,7 +383,7 @@ const Apply = () => {
 
                         <div className="space-y-2">
                           <Label htmlFor="fax">Fax Number (Optional)</Label>
-                          <Input id="fax" type="tel" {...register("fax")} />
+                          <Input id="fax" type="tel" inputMode="tel" {...register("fax")} />
                         </div>
                       </div>
 
@@ -381,7 +420,12 @@ const Apply = () => {
 
                       <div className="space-y-2">
                         <Label htmlFor="username">Primary Username*</Label>
-                        <Input id="username" placeholder="alphanumeric only" {...register("username")} />
+                        <Input
+                          id="username"
+                          placeholder="alphanumeric only"
+                          autoComplete="username"
+                          {...register("username")}
+                        />
                         {errors.username && (
                           <p className="text-sm text-destructive">{errors.username.message}</p>
                         )}
