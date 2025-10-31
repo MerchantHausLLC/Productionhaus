@@ -233,52 +233,41 @@ export const Solutions = () => {
           </Button>
         </div>
 
-        <div
-          className="infinite-carousel"
-          ref={carouselRef}
-          onMouseEnter={handleCarouselPause}
-          onMouseLeave={handleCarouselResume}
-          onFocusCapture={handleCarouselPause}
-          onBlurCapture={handleCarouselResume}
-          onTouchStart={handleCarouselPause}
-          onTouchEnd={handleCarouselResume}
-        >
-          <div className="infinite-carousel-track">
-            {duplicatedSolutions.map((solution, index) => {
-              const Icon = solution.icon;
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 auto-rows-fr">
+          {solutions.map((solution, index) => {
+            const Icon = solution.icon;
 
-              return (
-                <article key={`${solution.title}-${index}`} className="service-card carousel-card">
-                  {solution.bannerImage && (
-                    <div className="card-image-visual">
-                      <img src={solution.bannerImage} alt={solution.title} />
-                    </div>
-                  )}
-
-                  <div className="service-card-body">
-                    <div className="service-card-icon">
-                      <Icon className="h-6 w-6 text-[hsl(var(--crimson))]" strokeWidth={2} />
-                    </div>
-
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-bold font-ubuntu">{solution.title}</h3>
-                      <p className="text-base leading-relaxed text-neutral-600">{solution.description}</p>
-                    </div>
-
-                    <div className="service-card-footer">
-                      <button
-                        type="button"
-                        className="service-card-button"
-                        onClick={() => handleCardClick(index % solutions.length)}
-                      >
-                        Learn More
-                      </button>
-                    </div>
+            return (
+              <article key={index} className="service-card">
+                {solution.bannerImage && (
+                  <div className="card-image-visual">
+                    <img src={solution.bannerImage} alt={solution.title} />
                   </div>
-                </article>
-              );
-            })}
-          </div>
+                )}
+
+                <div className="service-card-body">
+                  <div className="service-card-icon">
+                    <Icon className="h-6 w-6 text-[hsl(var(--crimson))]" strokeWidth={2} />
+                  </div>
+
+                  <div className="space-y-3">
+                    <h3 className="text-2xl font-bold font-ubuntu">{solution.title}</h3>
+                    <p className="text-base leading-relaxed text-neutral-600">{solution.description}</p>
+                  </div>
+
+                  <div className="service-card-footer">
+                    <button
+                      type="button"
+                      className="service-card-button"
+                      onClick={() => handleCardClick(index)}
+                    >
+                      Learn More
+                    </button>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
 
