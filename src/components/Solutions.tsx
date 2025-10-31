@@ -1,14 +1,7 @@
 import { CreditCard, Shield, Smartphone, Globe, X, Lock, ShoppingCart, BarChart2, Repeat, ShieldCheck, Shuffle, ShieldAlert } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 
 const solutions = [
   {
@@ -105,10 +98,10 @@ const solutions = [
 
 export const Solutions = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [typewriterText, setTypewriterText] = useState("");
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
+  const isCarouselPaused = useRef(false);
 
   // Typewriter effect for modal title
   useEffect(() => {
@@ -130,6 +123,76 @@ export const Solutions = () => {
     }
   }, [selectedCard]);
 
+  const duplicatedSolutions = [...solutions, ...solutions];
+
+  useEffect(() => {
+    const container = carouselRef.current;
+    if (!container) return;
+
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mediaQuery.matches) {
+      return;
+    }
+
+    container.scrollLeft = 0;
+
+    let animationFrameId: number;
+    let previousTimestamp: number | null = null;
+
+    const step = (timestamp: number) => {
+      if (!container) return;
+
+      if (previousTimestamp === null) {
+        previousTimestamp = timestamp;
+      }
+
+      const elapsed = timestamp - previousTimestamp;
+      previousTimestamp = timestamp;
+
+      if (!isCarouselPaused.current) {
+        const scrollDistance = (elapsed / 1000) * 80; // 80px per second
+        container.scrollLeft += scrollDistance;
+
+        const halfScrollWidth = container.scrollWidth / 2;
+        if (container.scrollLeft >= halfScrollWidth) {
+          container.scrollLeft -= halfScrollWidth;
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(step);
+    };
+
+    const handleScroll = () => {
+      if (!container) return;
+      const halfScrollWidth = container.scrollWidth / 2;
+      if (container.scrollLeft >= halfScrollWidth) {
+        container.scrollLeft -= halfScrollWidth;
+      } else if (container.scrollLeft <= 0) {
+        container.scrollLeft += halfScrollWidth;
+      }
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    animationFrameId = requestAnimationFrame(step);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleCarouselPause = () => {
+    isCarouselPaused.current = true;
+  };
+
+  const handleCarouselResume = () => {
+    isCarouselPaused.current = false;
+  };
+
   const handleCardClick = (index: number) => {
     setSelectedCard(index);
   };
@@ -143,28 +206,8 @@ export const Solutions = () => {
     setIsApplicationOpen(true);
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    // Calculate rotation based on mouse position (-3 to 3 degrees for subtle tilt)
-    const rotateY = ((x - centerX) / centerX) * 3;
-    const rotateX = ((centerY - y) / centerY) * 3;
-    
-    setMousePosition({ x: rotateY, y: rotateX });
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredCard(null);
-    setMousePosition({ x: 0, y: 0 });
-  };
-
   return (
-    <section id="solutions" className="py-20 px-4 sm:px-6 bg-muted/50 dark:bg-neutral-dark/30 relative overflow-visible">
+    <section id="services" className="py-20 px-4 sm:px-6 bg-muted/50 dark:bg-neutral-dark/30 relative overflow-visible">
       {/* Globe Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
         <img 
@@ -190,104 +233,52 @@ export const Solutions = () => {
           </Button>
         </div>
 
-        {/* Carousel for desktop, stacked for mobile */}
-        <div className="relative">
-          <Carousel
-            opts={{
-              align: "center",
-              loop: true,
-            }}
-            className="w-full"
-          >
-            <CarouselContent className="-ml-2 py-8">
-              {solutions.map((solution, index) => {
-                const Icon = solution.icon;
-                const isHovered = hoveredCard === index;
+        <div
+          className="infinite-carousel"
+          ref={carouselRef}
+          onMouseEnter={handleCarouselPause}
+          onMouseLeave={handleCarouselResume}
+          onFocusCapture={handleCarouselPause}
+          onBlurCapture={handleCarouselResume}
+          onTouchStart={handleCarouselPause}
+          onTouchEnd={handleCarouselResume}
+        >
+          <div className="infinite-carousel-track">
+            {duplicatedSolutions.map((solution, index) => {
+              const Icon = solution.icon;
 
-                return (
-                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-2 pr-2">
-                    <div
-                      className="relative perspective-1000 transition-all duration-700"
-                      onMouseEnter={() => setHoveredCard(index)}
-                      onMouseMove={(e) => handleMouseMove(e, index)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      {/* Mirror reflection effect */}
-                      <div 
-                        className="absolute inset-0 top-full opacity-30 pointer-events-none"
-                        style={{
-                          transform: 'scaleY(-1) translateY(10px)',
-                          background: 'linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 80%)',
-                          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 60%)',
-                          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 60%)',
-                        }}
-                      >
-                        <div className="bg-white/20 rounded-2xl h-full blur-sm" />
-                      </div>
-
-                      <div
-                        className={`rounded-2xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer border-2 bg-gradient-to-br from-neutral-light/5 via-white to-neutral-light/60 dark:from-neutral-light/5 dark:via-white dark:to-neutral-light/60 ${
-                          isHovered
-                            ? `shadow-2xl ${solution.borderColor}`
-                            : 'border-transparent'
-                        }`}
-                        style={{
-                          transform: isHovered 
-                            ? `perspective(1000px) rotateY(${mousePosition.x * 0.3}deg) rotateX(${mousePosition.y * 0.3}deg)` 
-                            : 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
-                          transformStyle: 'preserve-3d',
-                          transition: 'transform 0.2s ease-out, box-shadow 0.3s ease-out',
-                        }}
-                      >
-                        {/* Banner Image */}
-                        {solution.bannerImage && (
-                          <div className="w-full h-48 overflow-hidden">
-                            <img 
-                              src={solution.bannerImage} 
-                              alt={solution.title}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        )}
-
-                        <div className="p-6 md:p-8">
-                          {/* Icon container */}
-                          <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-4 md:mb-6 transition-all duration-300">
-                            <Icon 
-                              className="w-8 h-8 md:w-10 md:h-10 text-crimson" 
-                              strokeWidth={2} 
-                            />
-                          </div>
-                        
-                          {/* Text content */}
-                          <div>
-                            <h3 className="font-ubuntu font-bold text-xl md:text-2xl text-foreground mb-3">
-                              {solution.title}
-                            </h3>
-                            <p className="font-inter text-muted-foreground leading-relaxed mb-6">
-                              {solution.description}
-                            </p>
-                            
-                            <Button
-                              onClick={() => handleCardClick(index)}
-                              className="bg-crimson hover:bg-crimson/90 text-white font-inter font-medium rounded-lg px-6 transition-all hover:shadow-lg w-full"
-                            >
-                              Learn More
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
+              return (
+                <article key={`${solution.title}-${index}`} className="service-card carousel-card">
+                  {solution.bannerImage && (
+                    <div className="card-image-visual">
+                      <img src={solution.bannerImage} alt={solution.title} />
                     </div>
-                  </CarouselItem>
-                );
-              })}
-            </CarouselContent>
-            {/* Navigation Arrows Below Carousel - Must stay inside Carousel component */}
-            <div className="flex justify-center gap-4 mt-8">
-              <CarouselPrevious className="static translate-x-0 translate-y-0 h-11 w-11" style={{ transform: 'scale(1.1)' }} />
-              <CarouselNext className="static translate-x-0 translate-y-0 h-11 w-11" style={{ transform: 'scale(1.1)' }} />
-            </div>
-          </Carousel>
+                  )}
+
+                  <div className="service-card-body">
+                    <div className="service-card-icon">
+                      <Icon className="h-6 w-6 text-[hsl(var(--crimson))]" strokeWidth={2} />
+                    </div>
+
+                    <div className="space-y-3">
+                      <h3 className="text-2xl font-bold font-ubuntu">{solution.title}</h3>
+                      <p className="text-base leading-relaxed text-neutral-600">{solution.description}</p>
+                    </div>
+
+                    <div className="service-card-footer">
+                      <button
+                        type="button"
+                        className="service-card-button"
+                        onClick={() => handleCardClick(index % solutions.length)}
+                      >
+                        Learn More
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -363,10 +354,6 @@ export const Solutions = () => {
       )}
 
       <style>{`
-        .perspective-1000 {
-          perspective: 1000px;
-        }
-        
         @keyframes flipIn {
           0% {
             transform: perspective(1000px) rotateY(-90deg) scale(0.8);
