@@ -1,5 +1,5 @@
 import { CreditCard, Shield, Smartphone, Globe, X, Lock, ShoppingCart, BarChart2, Repeat, ShieldCheck, Shuffle, ShieldAlert } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
 
@@ -100,6 +100,8 @@ export const Solutions = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [typewriterText, setTypewriterText] = useState("");
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
+  const isCarouselPaused = useRef(false);
 
   // Typewriter effect for modal title
   useEffect(() => {
@@ -120,6 +122,76 @@ export const Solutions = () => {
       return () => clearInterval(interval);
     }
   }, [selectedCard]);
+
+  const duplicatedSolutions = [...solutions, ...solutions];
+
+  useEffect(() => {
+    const container = carouselRef.current;
+    if (!container) return;
+
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mediaQuery.matches) {
+      return;
+    }
+
+    container.scrollLeft = 0;
+
+    let animationFrameId: number;
+    let previousTimestamp: number | null = null;
+
+    const step = (timestamp: number) => {
+      if (!container) return;
+
+      if (previousTimestamp === null) {
+        previousTimestamp = timestamp;
+      }
+
+      const elapsed = timestamp - previousTimestamp;
+      previousTimestamp = timestamp;
+
+      if (!isCarouselPaused.current) {
+        const scrollDistance = (elapsed / 1000) * 80; // 80px per second
+        container.scrollLeft += scrollDistance;
+
+        const halfScrollWidth = container.scrollWidth / 2;
+        if (container.scrollLeft >= halfScrollWidth) {
+          container.scrollLeft -= halfScrollWidth;
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(step);
+    };
+
+    const handleScroll = () => {
+      if (!container) return;
+      const halfScrollWidth = container.scrollWidth / 2;
+      if (container.scrollLeft >= halfScrollWidth) {
+        container.scrollLeft -= halfScrollWidth;
+      } else if (container.scrollLeft <= 0) {
+        container.scrollLeft += halfScrollWidth;
+      }
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    animationFrameId = requestAnimationFrame(step);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleCarouselPause = () => {
+    isCarouselPaused.current = true;
+  };
+
+  const handleCarouselResume = () => {
+    isCarouselPaused.current = false;
+  };
 
   const handleCardClick = (index: number) => {
     setSelectedCard(index);

@@ -159,6 +159,7 @@ All colors MUST be HSL.
     flex-direction: column;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 100%;
   }
 
   .service-card:hover {
@@ -224,5 +225,51 @@ All colors MUST be HSL.
     background: hsl(var(--crimson));
     color: #fff;
     box-shadow: 0 10px 20px rgba(220, 20, 60, 0.35);
+  }
+
+  .infinite-carousel {
+    position: relative;
+    overflow-x: scroll;
+    overflow-y: visible;
+    padding: 1rem 0 2rem;
+    margin: 0 -1rem;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  }
+
+  .infinite-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .infinite-carousel-track {
+    display: flex;
+    align-items: stretch;
+    gap: 1.5rem;
+    width: max-content;
+    padding: 0 1rem;
+  }
+
+  .carousel-card {
+    flex: 0 0 clamp(260px, 22vw, 320px);
+  }
+
+  @media (max-width: 1024px) {
+    .carousel-card {
+      flex: 0 0 clamp(260px, 32vw, 340px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .carousel-card {
+      flex: 0 0 clamp(260px, 60vw, 360px);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .carousel-card {
+      flex: 0 0 clamp(240px, 80vw, 360px);
+    }
   }
 }
