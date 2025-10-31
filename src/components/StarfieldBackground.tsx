@@ -40,6 +40,10 @@ export const StarfieldBackground = memo(function StarfieldBackground({
   }, [count]);
 
   return (
+    <div className="fixed inset-0 w-full h-full pointer-events-none overflow-hidden -z-10">
+      {/* Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-900 via-blue-800 to-gray-600" />
+      
     <div
       data-testid="starfield-container"
       className={`fixed inset-0 w-full h-full pointer-events-none overflow-hidden ${className}`}
