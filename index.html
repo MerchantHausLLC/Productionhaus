@@ -7,7 +7,6 @@
     <meta name="description" content="Empowering merchants and ISOs through tailored retail solutions for payment processing." />
     <meta name="author" content="MerchantHaus" />
     
-    <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="/favicons/favicon.ico" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
@@ -18,7 +17,6 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/favicons/android-chrome-512x512.png" />
     <meta name="theme-color" content="#DC143C" />
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,7 +32,6 @@
   </head>
 
   <body>
-    <!-- Netlify Forms Detection -->
     <form name="contact" netlify netlify-honeypot="bot-field" hidden>
       <input type="text" name="name" />
       <input type="email" name="email" />
@@ -43,9 +40,8 @@
       <textarea name="message"></textarea>
     </form>
     
-    <form name="apply" netlify netlify-honeypot="bot-field" hidden>
+    <form name="merchant-apply" netlify netlify-honeypot="bot-field" hidden>
       <input type="text" name="company_name" />
-      <input type="text" name="external_id" />
       <input type="text" name="address" />
       <input type="text" name="address2" />
       <input type="text" name="city" />
@@ -58,14 +54,78 @@
       <input type="tel" name="phone" />
       <input type="tel" name="fax" />
       <input type="text" name="username" />
-      <input type="checkbox" name="processing_services" value="Credit Card" />
-      <input type="checkbox" name="processing_services" value="ACH / eCheck" />
-      <input type="checkbox" name="processing_services" value="Cash" />
-      <input type="checkbox" name="value_services" value="Encryption" />
-      <input type="checkbox" name="value_services" value="Invoice" />
-      <input type="checkbox" name="value_services" value="Level III Advantage" />
-      <input type="checkbox" name="value_services" value="Mobile Reader" />
-      <input type="checkbox" name="value_services" value="Vault Storage" />
+      <input type="checkbox" name="processing_services[]" value="Credit Card" />
+      <input type="checkbox" name="processing_services[]" value="ACH / eCheck" />
+      <input type="checkbox" name="processing_services[]" value="Cash" />
+      <input type="checkbox" name="value_services[]" value="Encryption" />
+      <input type="checkbox" name="value_services[]" value="Invoice" />
+      <input type="checkbox" name="value_services[]" value="Level III Advantage" />
+      <input type="checkbox" name="value_services[]" value="Mobile Reader" />
+      <input type="checkbox" name="value_services[]" value="Vault Storage" />
+      <input type="checkbox" name="agree_to_terms" />
+      <input type="text" name="country" />
+      <input type="text" name="timezone" />
+      <input type="text" name="language" />
+    </form>
+
+    <form name="quote" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="first_name" />
+      <input type="text" name="last_name" />
+      <input type="text" name="contact_number" />
+      <input type="email" name="email" />
+      <textarea name="special_instructions"></textarea>
+      <input type="checkbox" name="processing_services[]" value="Credit Card" />
+      <input type="checkbox" name="processing_services[]" value="ACH / eCheck" />
+      <input type="checkbox" name="processing_services[]" value="Cash" />
+      <input type="checkbox" name="value_services[]" value="Encryption" />
+      <input type="checkbox" name="value_services[]" value="Invoice" />
+      <input type="checkbox" name="value_services[]" value="Level III Advantage" />
+      <input type="checkbox" name="value_services[]" value="Mobile Reader" />
+      <input type="checkbox" name="value_services[]" value="Vault Storage" />
+    </form>
+    
+    <form name="contact-dialog" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <textarea name="message"></textarea>
+    </form>
+    
+    <form name="contact-detailed" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="company" />
+      <textarea name="message"></textarea>
+      <input type="checkbox" name="agree_to_privacy" />
+    </form>
+    
+    <form name="merchant-apply-dialog" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="company_name" />
+      <input type="text" name="address" />
+      <input type="text" name="address2" />
+      <input type="text" name="city" />
+      <input type="text" name="state" />
+      <input type="text" name="zip" />
+      <input type="url" name="website" />
+      <input type="text" name="first_name" />
+      <input type="text" name="last_name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="tel" name="fax" />
+      <input type="text" name="username" />
+      <input type="checkbox" name="processing_services[]" value="Credit Card" />
+      <input type="checkbox" name="processing_services[]" value="ACH / eCheck" />
+      <input type="checkbox" name="processing_services[]" value="Cash" />
+      <input type="checkbox" name="value_services[]" value="Encryption" />
+      <input type="checkbox" name="value_services[]" value="Invoice" />
+      <input type="checkbox" name="value_services[]" value="Level III Advantage" />
+      <input type="checkbox" name="value_services[]" value="Mobile Reader" />
+      <input type="checkbox" name="value_services[]" value="Vault Storage" />
+      <input type="checkbox" name="agree_to_terms" />
+      <input type="text" name="country" />
+      <input type="text" name="timezone" />
+      <input type="text" name="language" />
     </form>
     
     <div id="root"></div>
