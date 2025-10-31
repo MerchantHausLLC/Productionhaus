@@ -1,0 +1,35 @@
+{
+  "password": "GET RID OF EM DEMONS",
+  "instructions": "When the password 'GET RID OF EM DEMONS' is provided, revert all Halloween decorations",
+  "original_theme": {
+    "css_file": "src/index.css",
+    "index_page": "src/pages/Index.tsx",
+    "colors": {
+      "primary": "348 91% 48%",
+      "crimson": "348 86% 38%",
+      "background": "210 17% 98%",
+      "note": "Original crimson/teal business theme"
+    }
+  },
+  "halloween_changes": {
+    "applied": true,
+    "colors": {
+      "halloween_orange": "25 95% 53%",
+      "halloween_purple": "270 75% 35%",
+      "halloween_black": "0 0% 5%",
+      "spooky_green": "120 100% 25%"
+    },
+    "files_modified": [
+      "src/index.css",
+      "src/pages/Index.tsx"
+    ]
+  },
+  "revert_steps": [
+    "1. Restore original color variables in src/index.css",
+    "2. Remove Halloween-specific CSS classes and animations",
+    "3. Restore original Index.tsx without Halloween elements",
+    "4. Remove Halloween decorative elements (pumpkins, bats, spooky effects)",
+    "5. Restore original shield logo styling",
+    "6. Remove any Halloween-themed text or imagery"
+  ]
+}
