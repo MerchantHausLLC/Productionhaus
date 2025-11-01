@@ -125,6 +125,7 @@ export const StarfieldBackground = memo(function StarfieldBackground({
         );
       })}
     </div>
+    </div>
   );
 });
 
