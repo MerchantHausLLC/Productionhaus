@@ -125,7 +125,7 @@ export const Hero = () => {
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          poster="/hero-fallback.webp"
+          poster="/hero-replacement.png"
         >
           <source src={heroVideo} type="video/webm" />
         </video>

@@ -31,6 +31,7 @@ import {
   Server,
   Code,
   Layers,
+  FileText, // Added for new use case
 } from "lucide-react";
 
 const Services = () => {
@@ -63,141 +64,65 @@ const Services = () => {
     });
   }, []);
 
+  // NEW: Merchant-facing trust badges
   const trustBadges = [
-    { icon: ShieldCheck, text: "PCI DSS Level 1", subtext: "Platform Compliant" },
-    { icon: Globe2, text: "200+ Processors", subtext: "Technology Connected" },
-    { icon: Award, text: "25+ Years", subtext: "Collective Techpertise" },
-    { icon: Clock, text: "24/7 Support", subtext: "Platform Assurance" },
+    { icon: ShieldCheck, text: "PCI DSS Level 1", subtext: "Bank-Grade Security" },
+    { icon: Zap, text: "Next-Day Funding", subtext: "Get Your Money Fast" },
+    { icon: Award, text: "Award-Winning", subtext: "U.S.-Based Support" },
+    { icon: Clock, text: "24/7 Support", subtext: "Here When You Need Us" },
   ];
 
-  const features = [
-    {
-      icon: Smartphone,
-      title: "Omnichannel Payments",
-      subtitle: "Accept Everywhere, Any Device",
-      description: "Accept payments in-store, online, in-app, and unattended. MerchantHaus connects to 200+ processors and supports all payment methods—EMV, contactless, ACH, wallets, text-to-pay, Tap to Pay on iPhone/Android, and more. One platform, every channel.",
-      benefits: [
-        "Support for retail, mobile, and e-commerce—switch channels as your business evolves",
-        "API, SDK, and white-label portals for seamless integration into your existing software",
-        "PCI DSS Level 1 compliance and advanced fraud prevention built in",
-        "Real-time reporting, device management, and merchant-level controls"
-      ],
-      color: "from-crimson to-red-600"
-    },
-    {
-      icon: ShieldAlert,
-      title: "Fraud & Risk Management",
-      subtitle: "AI-Powered Protection",
-      description: "Stay protected with our multi-layered fraud prevention system featuring AI-powered transaction monitoring, real-time risk assessment, and advanced encryption protocols. Count, MonitorX, AI rules, 3D Secure, and comprehensive chargeback management.",
-      benefits: [
-        "AI risk scoring with customizable fraud rules and velocity checks",
-        "3D Secure authentication and network tokenization for maximum security",
-        "Real-time chargeback alerts with automated evidence compilation",
-        "End-to-end encryption and PCI DSS compliance reducing your risk burden"
-      ],
-      color: "from-green-600 to-emerald-700"
-    },
-    {
-      icon: BarChart2,
-      title: "Merchant Portal & Analytics",
-      subtitle: "Complete Control & Visibility",
-      description: "Not just a portal—a comprehensive management system. Real-time transaction reports, recurring/subscription billing, device management, all branded for your partners. Export data, track KPIs, and make data-driven decisions.",
-      benefits: [
-        "White-labeled portals fully customizable with your brand",
-        "Live dashboards with instant sales, refunds, and settlement metrics",
-        "Custom reporting by product, channel, region, or merchant",
-        "Customer segmentation and loyalty analytics for retention"
-      ],
-      color: "from-blue-600 to-cyan-500"
-    },
-    {
-      icon: Code,
-      title: "White-Label & Integration",
-      subtitle: "Your Brand, Our Technology",
-      description: "Deep customization for ISVs and partners. RESTful API, ready-made SDKs for iOS/Android, white-label portals, and dedicated launch support. Integrate your way with comprehensive documentation and sandbox environments.",
-      benefits: [
-        "Full white-label capability—logos, colors, domains, and branded communications",
-        "RESTful API with SDKs for major platforms and languages",
-        "Sandbox environment with live training and technical support",
-        "Dedicated launch manager for every partner implementation"
-      ],
-      color: "from-indigo-600 to-purple-700"
-    },
-    {
-      icon: Server,
-      title: "Device & Terminal Management",
-      subtitle: "Remote Control at Scale",
-      description: "Manage all devices and terminals from one centralized portal. Assign, update firmware, troubleshoot, and support hardware remotely. Compatible with major terminal providers and emerging mobile payment solutions.",
-      benefits: [
-        "Centralized device provisioning and assignment",
-        "Remote firmware updates and troubleshooting",
-        "Real-time device status monitoring and alerts",
-        "Support for EMV, contactless, PIN pads, and mobile readers"
-      ],
-      color: "from-slate-600 to-slate-800"
-    },
-    {
-      icon: Layers,
-      title: "Payment Orchestration",
-      subtitle: "Smart Routing, Better Results",
-      description: "Connect to multiple payment processors and dynamically route every transaction for optimal outcomes—lower fees, higher approval rates, fewer declines. Built-in failover ensures always-on acceptance.",
-      benefits: [
-        "Lower transaction costs by up to 20% with intelligent routing",
-        "Automatic failover to backup processors for 99.99% uptime",
-        "Unified reporting across all channels and processors",
-        "Optimize approval rates with machine learning algorithms"
-      ],
-      color: "from-teal-600 to-cyan-800"
-    }
-  ];
+  // REMOVED: Partner-facing features constant
 
+  // NEW: Merchant-facing use cases
   const useCases = [
     {
       icon: Building2,
-      title: "For ISVs & SaaS Platforms",
-      description: "Embed payments directly into your software with white-label solutions, revenue share models, and comprehensive API support."
+      title: "Retail & In-Store",
+      description: "Power your storefront with fast, reliable POS terminals, Tap-to-Pay, and seamless inventory sync."
     },
     {
-      icon: Users,
-      title: "For ISOs & Resellers",
-      description: "Grow your merchant portfolio with competitive rates, residual programs, and tools that make onboarding fast and compliant."
+      icon: Globe2,
+      title: "E-commerce",
+      description: "Securely accept payments online with our hosted payment pages or simple integrations for any website."
     },
     {
-      icon: ShoppingCart,
-      title: "For Merchants",
-      description: "Accept payments anywhere with transparent pricing, next-day funding, and support that's always available when you need it."
+      icon: Smartphone,
+      title: "Mobile & On-the-Go",
+      description: "Take payments anywhere with our mobile app and pocket-sized card readers. Perfect for services, markets, and events."
     },
     {
-      icon: TrendingUp,
-      title: "For Referral Partners",
-      description: "Earn revenue by referring businesses to MerchantHaus. Simple signup, fast approvals, and generous commission structure."
+      icon: FileText,
+      title: "Invoicing & Subscriptions",
+      description: "Automate your billing with recurring payments and secure email invoices. Get paid faster, with less effort."
     }
   ];
 
+  // NEW: Merchant-facing FAQs
   const faqs = [
     {
-      question: "What processors are supported?",
-      answer: "MerchantHaus connects to 200+ processors globally, including all major acquirers and regional processors. We support multiple processor connections simultaneously for optimal routing."
+      question: "What does MerchantHaus do?",
+      answer: "We provide everything your business needs to accept credit cards and other payments. This includes POS terminals for stores, online checkout for websites, mobile apps for on-the-go payments, and secure invoicing, all in one simple, secure platform."
     },
     {
       question: "How fast is onboarding?",
-      answer: "For merchants: 24-48 hours for approval and setup. For partners (ISVs/ISOs): Dedicated launch manager guides you through API integration, typically completed within 2-4 weeks depending on complexity."
+      answer: "Most merchant applications are approved within 24-48 hours. Once approved, you can start accepting payments immediately."
     },
     {
-      question: "Can I keep my branding?",
-      answer: "Absolutely. Our white-label solution allows complete customization—your logo, colors, domain, and branded communications. Your customers see only your brand."
+      question: "What are the rates?",
+      answer: "We offer simple, transparent pricing tailored to your business. We believe in no hidden fees or confusing statements. Contact us for a free quote, and we'll show you how much you can save."
     },
     {
       question: "What if I need support?",
-      answer: "24/7 technical and merchant support via phone, email, and chat. Partner-specific support includes dedicated account managers, live training, and API troubleshooting."
-    },
-    {
-      question: "How do partners get paid?",
-      answer: "Partners earn revenue through flexible models: revenue share, referral fees, or wholesale pricing. Monthly payouts with transparent reporting. Contact us for specific rate cards."
+      answer: "Our U.S.-based support team is available 24/7/365 via phone, email, and chat. When you call, you get a real person who can help you right away."
     },
     {
       question: "Is this PCI compliant?",
-      answer: "Yes. MerchantHaus maintains PCI DSS Level 1 compliance, the highest security standard. Our platform reduces your PCI scope with tokenization and hosted payment forms."
+      answer: "Yes. Our platform is PCI DSS Level 1 compliant, the highest security standard in the industry. We use tokenization and end-to-end encryption to ensure your and your customers' data is always secure."
+    },
+    {
+      question: "Do I need to switch bank accounts?",
+      answer: "No. We deposit your funds directly into your existing business checking account. Most merchants receive their funding the next business day."
     }
   ];
 
@@ -226,15 +151,16 @@ const Services = () => {
                 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-ubuntu font-bold text-foreground leading-tight tracking-tight"
                 speed={28}
               />
+              {/* UPDATED: Merchant-facing sub-headline */}
               <TypewriterReveal
                 as="p"
-                text="In-store, online, mobile, and unattended. Modular, omnichannel, white-label payment solutions built for partners."
+                text="In-store, online, or on-the-go. Get everything you need to accept payments, protect revenue, and grow your business."
                 className="text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed text-balance"
                 delay={200}
                 speed={24}
               />
 
-              {/* Trust Badges */}
+              {/* Trust Badges - UPDATED */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {trustBadges.map((badge, idx) => {
                   const Icon = badge.icon;
@@ -276,19 +202,19 @@ const Services = () => {
           </div>
         </section>
 
-        {/* Use Cases Section */}
+        {/* REPLACED: Use Cases Section is now Merchant-Facing */}
         <section className="py-16 bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <TypewriterReveal
                 as="h2"
-                text="Built For Every Business Model"
+                text="All the ways that they want to Pay"
                 className="text-4xl font-ubuntu font-bold text-foreground mb-4"
                 speed={26}
               />
               <TypewriterReveal
                 as="p"
-                text="Whether you're an ISV, ISO, merchant, or referral partner—we have the right solution for you."
+                text="Stop losing sales to clunky checkouts, high fees, and poor support. We built MerchantHaus for business owners who need payments to just *work*."
                 className="text-xl text-muted-foreground max-w-3xl mx-auto"
                 delay={150}
                 speed={22}
@@ -316,77 +242,9 @@ const Services = () => {
           </div>
         </section>
 
-        {/* Features Deep Dive - Tabs */}
-        <section className="py-20 bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <TypewriterReveal
-                as="h2"
-                text="Comprehensive Payment Platform"
-                className="text-4xl md:text-5xl font-ubuntu font-bold text-foreground mb-4"
-                speed={26}
-              />
-              <TypewriterReveal
-                as="p"
-                text="Every feature you need to process, manage, and optimize payments—built into one powerful platform."
-                className="text-xl text-muted-foreground max-w-3xl mx-auto"
-                delay={150}
-                speed={22}
-              />
-            </div>
-
-            <Tabs defaultValue="0" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mb-8 h-auto gap-2">
-                {features.map((feature, idx) => {
-                  const Icon = feature.icon;
-                  return (
-                    <TabsTrigger 
-                      key={idx} 
-                      value={idx.toString()}
-                      className="flex flex-col items-center gap-2 p-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    >
-                      <Icon className="w-5 h-5" />
-                      <span className="text-xs font-semibold text-center leading-tight">{feature.title.split(' ')[0]}</span>
-                    </TabsTrigger>
-                  );
-                })}
-              </TabsList>
-
-              {features.map((feature, idx) => {
-                const Icon = feature.icon;
-                return (
-                  <TabsContent key={idx} value={idx.toString()} className="mt-0">
-                    <Card className="border-2">
-                      <CardHeader>
-                        <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 shadow-lg`}>
-                          <Icon className="w-8 h-8 text-white" />
-                        </div>
-                        <CardTitle className="text-3xl font-ubuntu">{feature.title}</CardTitle>
-                        <CardDescription className="text-lg font-semibold text-primary italic">
-                          {feature.subtitle}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-6">
-                        <p className="text-lg text-muted-foreground leading-relaxed text-justify">
-                          {feature.description}
-                        </p>
-                        <ul className="space-y-3">
-                          {feature.benefits.map((benefit, i) => (
-                            <li key={i} className="flex items-start gap-3">
-                              <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                              <span className="text-muted-foreground">{benefit}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-                );
-              })}
-            </Tabs>
-          </div>
-        </section>
-
+        {/* REMOVED: Partner-facing Features Deep Dive - Tabs section */}
+        
+        {/* This is the "cards" section the user referred to */}
         <ServicesShowcase />
 
         {/* How It Works */}
@@ -475,7 +333,7 @@ const Services = () => {
           </div>
         </section>
 
-        {/* FAQ Section */}
+        {/* UPDATED: FAQ Section is now merchant-facing */}
         <section className="py-20 bg-background">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
