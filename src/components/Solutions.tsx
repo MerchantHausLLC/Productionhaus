@@ -2,6 +2,7 @@ import { CreditCard, Shield, Smartphone, Globe, X, Lock, ShoppingCart, BarChart2
 import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
+import shieldLogo from "@/assets/shield.webp";
 
 const solutions = [
   {
@@ -257,6 +258,20 @@ export const Solutions = () => {
 
   return (
     <section id="services" className="py-20 px-4 sm:px-6 bg-muted/50 dark:bg-neutral-dark/30 relative overflow-visible">
+      {/* Shield Logo - Positioned within Solutions section */}
+      <div className="relative -mt-32 mb-12 z-20 pointer-events-none">
+        <div className="flex justify-center">
+          <div className="relative animate-fade-in">
+            <div className="absolute inset-0 bg-gradient-radial from-crimson/30 to-cyber-teal/20 blur-3xl scale-150" />
+            <img 
+              src={shieldLogo} 
+              alt="MerchantHaus Shield" 
+              className="h-48 w-48 md:h-64 md:w-64 object-contain drop-shadow-2xl relative z-10 animate-scale-in"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Globe Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
         <img 
