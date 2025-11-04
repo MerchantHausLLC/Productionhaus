@@ -139,49 +139,49 @@ export const Solutions = () => {
     container.scrollBy({ left: 340, behavior: 'smooth' });
   };
 
-  // Infinite cycling marquee animation
-  useEffect(() => {
-    const container = marqueeRef.current;
-    if (!container) return;
+  // REMOVED: Infinite cycling marquee animation
+  // useEffect(() => {
+  //   const container = marqueeRef.current;
+  //   if (!container) return;
 
-    const scrollSpeed = 1; // pixels per frame
+  //   const scrollSpeed = 1; // pixels per frame
     
-    const animate = () => {
-      if (isPausedRef.current) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-        return;
-      }
+  //   const animate = () => {
+  //     if (isPausedRef.current) {
+  //       animationFrameRef.current = requestAnimationFrame(animate);
+  //       return;
+  //     }
 
-      scrollPositionRef.current += scrollSpeed;
+  //     scrollPositionRef.current += scrollSpeed;
       
-      // Get the actual content width (one set of cards)
-      const contentWidth = 320 * solutions.length + 24 * (solutions.length - 1); // card width * count + gaps
+  //     // Get the actual content width (one set of cards)
+  //     const contentWidth = 320 * solutions.length + 24 * (solutions.length - 1); // card width * count + gaps
       
-      // Reset position when we've scrolled past one full set
-      if (scrollPositionRef.current >= contentWidth) {
-        scrollPositionRef.current = 0;
-      }
+  //     // Reset position when we've scrolled past one full set
+  //     if (scrollPositionRef.current >= contentWidth) {
+  //       scrollPositionRef.current = 0;
+  //     }
       
-      container.scrollLeft = scrollPositionRef.current;
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
+  //     container.scrollLeft = scrollPositionRef.current;
+  //     animationFrameRef.current = requestAnimationFrame(animate);
+  //   };
 
-    animationFrameRef.current = requestAnimationFrame(animate);
+  //   animationFrameRef.current = requestAnimationFrame(animate);
 
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (animationFrameRef.current) {
+  //       cancelAnimationFrame(animationFrameRef.current);
+  //     }
+  //   };
+  // }, []);
 
   // Pause on hover
   const handleMarqueeMouseEnter = () => {
-    isPausedRef.current = true;
+    // isPausedRef.current = true; // No longer needed for auto-scroll
   };
 
   const handleMarqueeMouseLeave = () => {
-    isPausedRef.current = false;
+    // isPausedRef.current = false; // No longer needed for auto-scroll
   };
 
   // Update card glow based on position relative to center
@@ -290,7 +290,7 @@ export const Solutions = () => {
             onMouseLeave={handleMarqueeMouseLeave}
           >
             <div className="marquee-content flex gap-6">
-              {/* Triple the cards for seamless infinite loop */}
+              {/* FIX: Tripled cards no longer needed for manual scroll, but keep for overflow */}
               {[...solutions, ...solutions, ...solutions].map((solution, index) => {
                 const Icon = solution.icon;
                 const originalIndex = index % solutions.length;
@@ -300,7 +300,8 @@ export const Solutions = () => {
                     key={index} 
                     ref={(el) => cardRefs.current[index] = el}
                     className="service-card marquee-card flex-shrink-0"
-                    style={{ width: '320px', aspectRatio: '9/16' }}
+                    // FIX: Changed aspect ratio from 9/16 to 3/4
+                    style={{ width: '320px', aspectRatio: '3/4' }}
                     onMouseMove={(e) => handleMouseMove(e, index)}
                     onMouseLeave={() => handleMouseLeave(index)}
                   >
