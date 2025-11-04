@@ -167,7 +167,7 @@ const ServicesShowcase = () => {
       <div className="text-center mb-16">
         <div className="flex items-center justify-center gap-4 mb-6">
           <img 
-            src="/redshield.png" 
+            src="/redshield.webp" 
             alt="MerchantHaus Security Shield" 
             className="w-16 h-16 md:w-20 md:h-20 object-contain"
           />
