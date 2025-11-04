@@ -141,13 +141,24 @@ const ServicesShowcase = () => {
     const rotateY = ((x - centerX) / centerX) * 15;
     const rotateX = -((y - centerY) / centerY) * 15;
 
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+    // Card zooms to 1.10, icon zooms to 1.65 (50% more than card zoom: 1.10 * 1.5 = 1.65)
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.10, 1.10, 1.10)`;
+    
+    const icon = card.querySelector('.service-icon') as HTMLElement;
+    if (icon) {
+      icon.style.transform = 'translateZ(40px) scale(1.5)';
+    }
   };
 
   const handleCardMouseLeave = (index: number) => {
     const card = cardRef.current[index];
     if (!card) return;
     card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    
+    const icon = card.querySelector('.service-icon') as HTMLElement;
+    if (icon) {
+      icon.style.transform = 'translateZ(40px) scale(1)';
+    }
   };
 
   return (
@@ -181,7 +192,7 @@ const ServicesShowcase = () => {
                 onMouseMove={(e) => handleCardMouseMove(e, index)}
                 onMouseLeave={() => handleCardMouseLeave(index)}
               >
-                <Icon className="w-24 h-24 text-white drop-shadow-[0_8px_6px_rgb(0,0,0,0.55)]" style={{ transform: 'translateZ(40px)' }} />
+                <Icon className="service-icon w-24 h-24 text-white drop-shadow-[0_8px_6px_rgb(0,0,0,0.55)] transition-transform duration-200 ease-out" style={{ transform: 'translateZ(40px)' }} />
               </div>
 
               {/* Text Content */}
