@@ -273,12 +273,16 @@ export const Solutions = () => {
       </div>
 
       {/* Globe Background */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-        <img 
-          src="/images/globe-background.png" 
-          alt="Global Payment Network" 
-          className="w-full max-w-4xl h-auto object-contain"
-        />
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,hsla(var(--crimson),0.14),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,hsla(var(--cyber-teal),0.16),transparent_65%)]" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <img
+            src="/images/globe-background.png"
+            alt="Global Payment Network"
+            className="relative w-full max-w-5xl h-auto object-contain opacity-25 md:opacity-35 contrast-125 saturate-125 drop-shadow-[0_0_60px_rgba(220,20,60,0.18)]"
+          />
+        </div>
       </div>
       
       <div className="max-w-7xl mx-auto overflow-visible relative z-10">
