@@ -208,7 +208,7 @@ const Services = () => {
             <div className="text-center mb-12">
               <TypewriterReveal
                 as="h2"
-                text="A Better Way to Get Paid"
+                text="All the ways that they want to Pay"
                 className="text-4xl font-ubuntu font-bold text-foreground mb-4"
                 speed={26}
               />
