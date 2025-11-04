@@ -184,7 +184,7 @@ All colors MUST be HSL.
 
   .card-image-visual {
     width: 100%;
-    height: 180px;
+    height: 200px;
     overflow: hidden;
     border-radius: 1rem 1rem 0 0;
     background: hsl(var(--neutral-dark));
@@ -242,6 +242,82 @@ All colors MUST be HSL.
     box-shadow: 0 10px 20px rgba(220, 20, 60, 0.35);
   }
 
+  .marquee-container {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 2rem 0;
+    margin: 0 -2rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .marquee-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .marquee-content {
+    width: max-content;
+    padding: 0 2rem;
+  }
+
+  .marquee-card {
+    --glow-intensity: 0;
+    position: relative;
+    transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+  }
+
+  .marquee-card::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 20px;
+    background: radial-gradient(ellipse at center, 
+      hsla(var(--crimson), calc(var(--glow-intensity) * 0.6)) 0%, 
+      hsla(var(--crimson), calc(var(--glow-intensity) * 0.3)) 40%, 
+      transparent 70%);
+    filter: blur(8px);
+    opacity: var(--glow-intensity);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .marquee-card:hover {
+    z-index: 10;
+  }
+
+  .nav-arrow-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: hsl(var(--crimson));
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+  }
+
+  .nav-arrow-button:hover {
+    background: hsl(var(--crimson) / 0.9);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(220, 20, 60, 0.4);
+  }
+
+  .nav-arrow-button:active {
+    transform: scale(0.95);
+  }
+
   .infinite-carousel {
     position: relative;
     overflow-x: scroll;
@@ -286,5 +362,23 @@ All colors MUST be HSL.
     .carousel-card {
       flex: 0 0 clamp(240px, 80vw, 360px);
     }
+  }
+
+  .mask-gradient {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+    mask-mode: alpha;
   }
 }

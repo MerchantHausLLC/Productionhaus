@@ -1,4 +1,4 @@
-import { CreditCard, Shield, Smartphone, Globe, X, Lock, ShoppingCart, BarChart2, Repeat, ShieldCheck, Shuffle, ShieldAlert } from "lucide-react";
+import { CreditCard, Shield, Smartphone, Globe, X, Lock, ShoppingCart, BarChart2, Repeat, ShieldCheck, Shuffle, ShieldAlert, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
@@ -100,8 +100,11 @@ export const Solutions = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [typewriterText, setTypewriterText] = useState("");
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
-  const carouselRef = useRef<HTMLDivElement | null>(null);
-  const isCarouselPaused = useRef(false);
+  const marqueeRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const scrollPositionRef = useRef(0);
+  const animationFrameRef = useRef<number | null>(null);
+  const isPausedRef = useRef(false);
 
   // Typewriter effect for modal title
   useEffect(() => {
@@ -123,75 +126,94 @@ export const Solutions = () => {
     }
   }, [selectedCard]);
 
-  const duplicatedSolutions = [...solutions, ...solutions];
+  // Scroll handler for arrow navigation
+  const scrollLeft = () => {
+    const container = marqueeRef.current;
+    if (!container) return;
+    container.scrollBy({ left: -340, behavior: 'smooth' });
+  };
 
+  const scrollRight = () => {
+    const container = marqueeRef.current;
+    if (!container) return;
+    container.scrollBy({ left: 340, behavior: 'smooth' });
+  };
+
+  // Infinite cycling marquee animation
   useEffect(() => {
-    const container = carouselRef.current;
+    const container = marqueeRef.current;
     if (!container) return;
 
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mediaQuery.matches) {
-      return;
-    }
-
-    container.scrollLeft = 0;
-
-    let animationFrameId: number;
-    let previousTimestamp: number | null = null;
-
-    const step = (timestamp: number) => {
-      if (!container) return;
-
-      if (previousTimestamp === null) {
-        previousTimestamp = timestamp;
+    const scrollSpeed = 1; // pixels per frame
+    
+    const animate = () => {
+      if (isPausedRef.current) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
       }
 
-      const elapsed = timestamp - previousTimestamp;
-      previousTimestamp = timestamp;
-
-      if (!isCarouselPaused.current) {
-        const scrollDistance = (elapsed / 1000) * 80; // 80px per second
-        container.scrollLeft += scrollDistance;
-
-        const halfScrollWidth = container.scrollWidth / 2;
-        if (container.scrollLeft >= halfScrollWidth) {
-          container.scrollLeft -= halfScrollWidth;
-        }
+      scrollPositionRef.current += scrollSpeed;
+      
+      // Get the actual content width (one set of cards)
+      const contentWidth = 320 * solutions.length + 24 * (solutions.length - 1); // card width * count + gaps
+      
+      // Reset position when we've scrolled past one full set
+      if (scrollPositionRef.current >= contentWidth) {
+        scrollPositionRef.current = 0;
       }
-
-      animationFrameId = requestAnimationFrame(step);
+      
+      container.scrollLeft = scrollPositionRef.current;
+      animationFrameRef.current = requestAnimationFrame(animate);
     };
 
-    const handleScroll = () => {
-      if (!container) return;
-      const halfScrollWidth = container.scrollWidth / 2;
-      if (container.scrollLeft >= halfScrollWidth) {
-        container.scrollLeft -= halfScrollWidth;
-      } else if (container.scrollLeft <= 0) {
-        container.scrollLeft += halfScrollWidth;
-      }
-    };
-
-    container.addEventListener("scroll", handleScroll);
-    animationFrameId = requestAnimationFrame(step);
+    animationFrameRef.current = requestAnimationFrame(animate);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      container.removeEventListener("scroll", handleScroll);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
   }, []);
 
-  const handleCarouselPause = () => {
-    isCarouselPaused.current = true;
+  // Pause on hover
+  const handleMarqueeMouseEnter = () => {
+    isPausedRef.current = true;
   };
 
-  const handleCarouselResume = () => {
-    isCarouselPaused.current = false;
+  const handleMarqueeMouseLeave = () => {
+    isPausedRef.current = false;
   };
+
+  // Update card glow based on position relative to center
+  useEffect(() => {
+    const container = marqueeRef.current;
+    if (!container) return;
+
+    const updateCardGlows = () => {
+      const cards = container.querySelectorAll('.marquee-card');
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+
+      cards.forEach((card) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distanceFromCenter = Math.abs(containerCenter - cardCenter);
+        const maxDistance = containerRect.width / 2;
+        const intensity = Math.max(0, 1 - distanceFromCenter / maxDistance);
+        
+        (card as HTMLElement).style.setProperty('--glow-intensity', intensity.toString());
+      });
+    };
+
+    updateCardGlows();
+    container.addEventListener('scroll', updateCardGlows);
+    window.addEventListener('resize', updateCardGlows);
+
+    return () => {
+      container.removeEventListener('scroll', updateCardGlows);
+      window.removeEventListener('resize', updateCardGlows);
+    };
+  }, []);
 
   const handleCardClick = (index: number) => {
     setSelectedCard(index);
@@ -204,6 +226,33 @@ export const Solutions = () => {
   const handleGetStarted = () => {
     closeFullscreen();
     setIsApplicationOpen(true);
+  };
+
+  // Tilt effect handler for cards based on cursor position
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>, index: number) => {
+    const card = cardRefs.current[index];
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    const cardCenterX = rect.left + rect.width / 2;
+    const cardCenterY = rect.top + rect.height / 2;
+    
+    // Calculate cursor position relative to card center (-1 to 1)
+    const deltaX = (e.clientX - cardCenterX) / (rect.width / 2);
+    const deltaY = (e.clientY - cardCenterY) / (rect.height / 2);
+    
+    // Apply tilt transform (max 15 degrees)
+    const tiltX = deltaY * -15;
+    const tiltY = deltaX * 15;
+    
+    card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-8px) scale(1.02)`;
+  };
+
+  const handleMouseLeave = (index: number) => {
+    const card = cardRefs.current[index];
+    if (!card) return;
+    
+    card.style.transform = '';
   };
 
   return (
@@ -233,41 +282,77 @@ export const Solutions = () => {
           </Button>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 auto-rows-fr">
-          {solutions.map((solution, index) => {
-            const Icon = solution.icon;
+        <div className="relative">
+          <div 
+            ref={marqueeRef}
+            className="marquee-container overflow-x-auto"
+            onMouseEnter={handleMarqueeMouseEnter}
+            onMouseLeave={handleMarqueeMouseLeave}
+          >
+            <div className="marquee-content flex gap-6">
+              {/* Triple the cards for seamless infinite loop */}
+              {[...solutions, ...solutions, ...solutions].map((solution, index) => {
+                const Icon = solution.icon;
+                const originalIndex = index % solutions.length;
 
-            return (
-              <article key={index} className="service-card">
-                {solution.bannerImage && (
-                  <div className="card-image-visual">
-                    <img src={solution.bannerImage} alt={solution.title} />
-                  </div>
-                )}
+                return (
+                  <article 
+                    key={index} 
+                    ref={(el) => cardRefs.current[index] = el}
+                    className="service-card marquee-card flex-shrink-0"
+                    style={{ width: '320px', aspectRatio: '9/16' }}
+                    onMouseMove={(e) => handleMouseMove(e, index)}
+                    onMouseLeave={() => handleMouseLeave(index)}
+                  >
+                    {solution.bannerImage && (
+                      <div className="card-image-visual">
+                        <img src={solution.bannerImage} alt={solution.title} />
+                      </div>
+                    )}
 
-                <div className="service-card-body">
-                  <div className="service-card-icon">
-                    <Icon className="h-6 w-6 text-[hsl(var(--crimson))]" strokeWidth={2} />
-                  </div>
+                    <div className="service-card-body">
+                      <div className="service-card-icon">
+                        <Icon className="h-6 w-6 text-[hsl(var(--crimson))]" strokeWidth={2} />
+                      </div>
 
-                  <div className="space-y-3">
-                    <h3 className="text-2xl font-bold font-ubuntu">{solution.title}</h3>
-                    <p className="text-base leading-relaxed text-neutral-600">{solution.description}</p>
-                  </div>
+                      <div className="space-y-3">
+                        <h3 className="text-2xl font-bold font-ubuntu">{solution.title}</h3>
+                        <p className="text-base leading-relaxed text-neutral-600">{solution.description}</p>
+                      </div>
 
-                  <div className="service-card-footer">
-                    <button
-                      type="button"
-                      className="service-card-button"
-                      onClick={() => handleCardClick(index)}
-                    >
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+                      <div className="service-card-footer">
+                        <button
+                          type="button"
+                          className="service-card-button"
+                          onClick={() => handleCardClick(originalIndex)}
+                        >
+                          Learn More
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Navigation buttons */}
+          <div className="flex justify-between items-center mt-6 px-4">
+            <button
+              onClick={scrollLeft}
+              className="nav-arrow-button"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={scrollRight}
+              className="nav-arrow-button"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
         </div>
       </div>
 
