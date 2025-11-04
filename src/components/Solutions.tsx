@@ -2,7 +2,7 @@ import { CreditCard, Shield, Smartphone, Globe, X, Lock, ShoppingCart, BarChart2
 import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
-import shieldLogo from "@/assets/shield.webp";
+import shieldLogo from "@/assets/rshield.webp";
 
 const solutions = [
   {
