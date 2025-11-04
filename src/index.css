@@ -154,12 +154,24 @@ All colors MUST be HSL.
   @media (max-width: 768px) {
     html {
       font-size: 14px;
+      -webkit-text-size-adjust: 100%;
+    }
+    
+    body {
+      min-width: 100vw;
+      overflow-x: hidden;
     }
   }
 
   @media (max-width: 640px) {
     html {
       font-size: 13px;
+      -webkit-text-size-adjust: 100%;
+    }
+    
+    body {
+      min-width: 100vw;
+      overflow-x: hidden;
     }
   }
 }
@@ -253,6 +265,19 @@ All colors MUST be HSL.
     scroll-behavior: smooth;
     mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  
+  @media (max-width: 768px) {
+    .marquee-container {
+      margin: 0 -1rem;
+      padding: 1rem 0;
+      mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+    }
+    
+    .marquee-content {
+      padding: 0 1rem;
+    }
   }
 
   .marquee-container::-webkit-scrollbar {

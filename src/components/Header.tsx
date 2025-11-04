@@ -55,13 +55,6 @@ export const Header = () => {
               )}
             </div>
           </a>
-
-          <a
-            href="https://retailmanager.merchant.haus"
-            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
-          >
-            Client Login
-          </a>
         </div>
 
         {/* Navigation */}
@@ -84,12 +77,12 @@ export const Header = () => {
           >
             Blog
           </a>
-          <button 
-            onClick={() => setIsContactOpen(true)}
-            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
+          <a 
+            href="https://retailmanager.merchant.haus"
+            className="font-montserrat font-medium text-foreground hover:text-cyber-teal transition-colors border-2 border-cyber-teal rounded-full px-4 py-1.5"
           >
-            Contact
-          </button>
+            Client Login
+          </a>
         </nav>
 
         {/* Theme Toggle and CTA */}

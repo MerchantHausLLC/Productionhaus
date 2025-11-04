@@ -165,7 +165,14 @@ const ServicesShowcase = () => {
     <section className="container mx-auto px-6 py-12 overflow-hidden">
       {/* Header */}
       <div className="text-center mb-16">
-        <h2 className="text-5xl md:text-6xl font-bold font-ubuntu tracking-tight">MerchantHaus Core Services</h2>
+        <div className="flex items-center justify-center gap-4 mb-6">
+          <img 
+            src="/redshield.png" 
+            alt="MerchantHaus Security Shield" 
+            className="w-16 h-16 md:w-20 md:h-20 object-contain"
+          />
+          <h2 className="text-5xl md:text-6xl font-bold font-ubuntu tracking-tight">MerchantHaus Core Services</h2>
+        </div>
         <p className="mt-6 text-xl text-muted-foreground max-w-3xl mx-auto">Innovative solutions designed to power modern commerce safely and efficiently across the globe.</p>
       </div>
 
