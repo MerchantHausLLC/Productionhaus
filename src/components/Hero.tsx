@@ -32,9 +32,36 @@ const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) =
 };
 
 const wordSets = {
-  line1: ["Solutions", "Technology", "Systems", "Processing", "Platforms", "Services", "Networks", "Gateways", "Innovation", "Infrastructure"],
-  line2: ["Advance", "Grow", "Secure", "Empower", "Optimize", "Simplify", "Scale", "Elevate", "Modernize", "Transform"],
-  line3: ["Business", "Enterprise", "Storefront", "Operations", "Revenue", "Brand", "Organization", "Portfolio", "Ecosystem", "Success"]
+  line1: [
+    "Agility",
+    "Innovation",
+    "Momentum",
+    "Resilience",
+    "Efficiency",
+    "Vision",
+    "Ingenuity",
+    "Velocity"
+  ],
+  line2: [
+    "Empowers",
+    "Accelerates",
+    "Ignites",
+    "Drives",
+    "Amplifies",
+    "Elevates",
+    "Advances",
+    "Catalyzes"
+  ],
+  line3: [
+    "Growth",
+    "Success",
+    "Progress",
+    "Outcomes",
+    "Impact",
+    "Performance",
+    "Prosperity",
+    "Potential"
+  ]
 };
 
 const colors = [
@@ -51,9 +78,8 @@ const colors = [
 export const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentWords, setCurrentWords] = useState({ line1: 0, line2: 0, line3: 0 });
-  const [previousWords, setPreviousWords] = useState({ line1: -1, line2: -1, line3: -1 });
   const [colorIndices, setColorIndices] = useState({ line1: 0, line2: 1, line3: 2 });
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [animatingWords, setAnimatingWords] = useState({ line1: false, line2: false, line3: false });
 
   const getRandomIndex = (max: number, previous: number) => {
     let newIndex = Math.floor(Math.random() * max);
@@ -64,56 +90,54 @@ export const Hero = () => {
   };
 
   useEffect(() => {
-    // Trigger animations on mount
-    setTimeout(() => setIsLoaded(true), 100);
+    const loadTimer = setTimeout(() => setIsLoaded(true), 100);
+    return () => clearTimeout(loadTimer);
+  }, []);
 
-    // Word cycling every 5 seconds with staggered timing
-    const interval = setInterval(() => {
-      setIsAnimating(true);
-      
-      // Line 2 (That) changes first
-      setTimeout(() => {
-        setPreviousWords(prev => ({ ...prev, line2: currentWords.line2 }));
+  useEffect(() => {
+    const timeouts = new Set<ReturnType<typeof setTimeout>>();
+
+    const scheduleTimeout = (callback: () => void, delay: number) => {
+      const timeout = setTimeout(() => {
+        timeouts.delete(timeout);
+        callback();
+      }, delay);
+      timeouts.add(timeout);
+    };
+
+    const updateWord = (line: "line1" | "line2" | "line3") => {
+      setAnimatingWords(prev => ({ ...prev, [line]: true }));
+
+      scheduleTimeout(() => {
         setCurrentWords(prev => ({
           ...prev,
-          line2: getRandomIndex(wordSets.line2.length, prev.line2)
+          [line]: getRandomIndex(wordSets[line].length, prev[line])
         }));
         setColorIndices(prev => ({
           ...prev,
-          line2: (prev.line2 + 1) % colors.length
+          [line]: (prev[line] + 1) % colors.length
         }));
-      }, 300);
+      }, 200);
 
-      // Line 1 (Payment) changes 1 second after Line 2
-      setTimeout(() => {
-        setPreviousWords(prev => ({ ...prev, line1: currentWords.line1 }));
-        setCurrentWords(prev => ({
-          ...prev,
-          line1: getRandomIndex(wordSets.line1.length, prev.line1)
-        }));
-        setColorIndices(prev => ({
-          ...prev,
-          line1: (prev.line1 + 1) % colors.length
-        }));
-      }, 1300);
+      scheduleTimeout(() => {
+        setAnimatingWords(prev => ({ ...prev, [line]: false }));
+      }, 400);
+    };
 
-      // Line 3 (Your) changes 0.5s after Line 1
-      setTimeout(() => {
-        setPreviousWords(prev => ({ ...prev, line3: currentWords.line3 }));
-        setCurrentWords(prev => ({
-          ...prev,
-          line3: getRandomIndex(wordSets.line3.length, prev.line3)
-        }));
-        setColorIndices(prev => ({
-          ...prev,
-          line3: (prev.line3 + 1) % colors.length
-        }));
-        setIsAnimating(false);
-      }, 1800);
-    }, 5000);
+    const rotateWords = () => {
+      scheduleTimeout(() => updateWord("line1"), 0);
+      scheduleTimeout(() => updateWord("line2"), 500);
+      scheduleTimeout(() => updateWord("line3"), 1000);
+    };
 
-    return () => clearInterval(interval);
-  }, [currentWords]);
+    rotateWords();
+    const interval = setInterval(rotateWords, 6000);
+
+    return () => {
+      clearInterval(interval);
+      timeouts.forEach(timeout => clearTimeout(timeout));
+    };
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -141,43 +165,36 @@ export const Hero = () => {
         <div className="text-left space-y-6 md:space-y-8 max-w-3xl md:max-w-xl">
 
         {/* Animated Headline */}
-        <div 
-          className={`font-ubuntu font-semibold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight transition-all duration-700 delay-300 drop-shadow-2xl ${
-            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        <div
+          className={`hero-text font-ubuntu font-semibold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight drop-shadow-2xl ${
+            isLoaded ? 'hero-text--visible' : ''
           }`}
           style={{ letterSpacing: '0.05em' }}
         >
-          <div className="flex flex-col">
-            {/* Payment stacked vertically with its word */}
-            <div className="overflow-hidden flex flex-col mb-2">
-              <span className="text-white">Payment</span>
-              <span 
-                className={`inline-block transition-all duration-300 ease-in-out ${
-                  isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-                } ${colors[colorIndices.line1]}`}
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+            <div className="overflow-hidden">
+              <span
+                className={`hero-word inline-block ${colors[colorIndices.line1]} ${
+                  animatingWords.line1 ? 'hero-word--hidden' : 'hero-word--visible'
+                }`}
               >
                 {wordSets.line1[currentWords.line1]}
               </span>
             </div>
-            
-            {/* That and Your inline with their words */}
-            <div className="overflow-hidden mb-2">
-              <span className="text-white">That </span>
-              <span 
-                className={`inline-block transition-all duration-300 ease-in-out ${
-                  isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-                } ${colors[colorIndices.line2]}`}
+            <div className="overflow-hidden">
+              <span
+                className={`hero-word inline-block ${colors[colorIndices.line2]} ${
+                  animatingWords.line2 ? 'hero-word--hidden' : 'hero-word--visible'
+                }`}
               >
                 {wordSets.line2[currentWords.line2]}
               </span>
             </div>
-            
             <div className="overflow-hidden">
-              <span className="text-white">Your </span>
-              <span 
-                className={`inline-block transition-all duration-300 ease-in-out ${
-                  isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-                } ${colors[colorIndices.line3]}`}
+              <span
+                className={`hero-word inline-block ${colors[colorIndices.line3]} ${
+                  animatingWords.line3 ? 'hero-word--hidden' : 'hero-word--visible'
+                }`}
               >
                 {wordSets.line3[currentWords.line3]}
               </span>

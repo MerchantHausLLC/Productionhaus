@@ -406,4 +406,38 @@ All colors MUST be HSL.
     );
     mask-mode: alpha;
   }
+
+  .hero-text {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-text--visible {
+    animation: slideFadeIn 1.2s ease-out forwards;
+    animation-delay: 0.4s;
+  }
+
+  .hero-word {
+    transition: opacity 0.4s ease;
+  }
+
+  .hero-word--visible {
+    opacity: 1;
+  }
+
+  .hero-word--hidden {
+    opacity: 0;
+  }
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
