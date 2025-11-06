@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { Smartphone, ShieldAlert, Smartphone as POS, Globe2, Lock, ShoppingCart, BarChart2, Repeat, ShieldCheck, Shuffle } from 'lucide-react';
 import { Button } from './ui/button';
@@ -166,9 +167,11 @@ const ServicesShowcase = () => {
       {/* Header */}
       <div className="text-center mb-16">
         <div className="flex items-center justify-center gap-4 mb-6">
-          <img 
-            src="/redshield.webp" 
-            alt="MerchantHaus Security Shield" 
+          <Image
+            src="/redshield.webp"
+            alt="MerchantHaus Security Shield"
+            width={80}
+            height={80}
             className="w-16 h-16 md:w-20 md:h-20 object-contain"
           />
           <h2 className="text-5xl md:text-6xl font-bold font-ubuntu tracking-tight">MerchantHaus Core Services</h2>

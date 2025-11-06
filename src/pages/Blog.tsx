@@ -1,8 +1,9 @@
+import Image from "next/image";
+import Link from "next/link";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ArrowRight, ShieldCheck, Lock, DollarSign, CreditCard } from "lucide-react";
 import { useEffect, useRef } from "react";
-import shieldLogo from "@/assets/shield.webp";
 
 const Blog = () => {
   const mainRef = useRef<HTMLElement>(null);
@@ -97,13 +98,15 @@ const Blog = () => {
           
           <div className="card-container">
             <div className="bg-card dark:bg-card/80 rounded-2xl overflow-hidden shadow-xl border border-border dark:border-border/50 card-shadow hover-crimson-arrow">
-              <a href="/vamp" className="block">
+              <Link href="/vamp" className="block">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="h-64 lg:h-96 relative">
-                    <img 
-                      src="/blog-images/vamp_header.webp" 
-                      alt="Visa VAMP Featured Image" 
-                      className="w-full h-full object-cover"
+                    <Image
+                      src="/blog-images/vamp_header.webp"
+                      alt="Visa VAMP Featured Image"
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 50vw, 100vw"
                     />
                     <span className="absolute top-4 left-4 text-white text-xs font-bold px-3 py-1 rounded-full uppercase bg-crimson">
                       Featured
@@ -125,7 +128,7 @@ const Blog = () => {
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -158,12 +161,16 @@ const Blog = () => {
             {/* Card 1: VAMP Article */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
-                <a href="/vamp" className="block">
-                  <img 
-                    src="/blog-images/vamp_metrics.webp" 
-                    alt="VAMP Metrics" 
-                    className="w-full h-40 object-cover"
-                  />
+                <Link href="/vamp" className="block">
+                  <div className="relative h-40">
+                    <Image
+                      src="/blog-images/vamp_metrics.webp"
+                      alt="VAMP Metrics"
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 33vw, 100vw"
+                    />
+                  </div>
                   <div className="p-6">
                     <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-crimson">
                       Compliance
@@ -179,19 +186,23 @@ const Blog = () => {
                       <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
                     </div>
                   </div>
-                </a>
+                </Link>
               </div>
             </div>
 
             {/* Card 2: 3D Secure Article */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
-                <a href="/3ds" className="block">
-                  <img 
-                    src="/blog-images/3ds_ai.png" 
-                    alt="3D Secure Authentication" 
-                    className="w-full h-40 object-cover"
-                  />
+                <Link href="/3ds" className="block">
+                  <div className="relative h-40">
+                    <Image
+                      src="/blog-images/3ds_ai.png"
+                      alt="3D Secure Authentication"
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 33vw, 100vw"
+                    />
+                  </div>
                   <div className="p-6">
                     <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
                       Fraud Prevention
@@ -207,7 +218,7 @@ const Blog = () => {
                       <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
                     </div>
                   </div>
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -215,11 +226,15 @@ const Blog = () => {
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="#" className="block">
-                  <img 
-                    src="/blog-images/pos_terminal.png" 
-                    alt="Point of Sale Solutions" 
-                    className="w-full h-40 object-cover bg-gradient-to-br from-gray-100 to-gray-50"
-                  />
+                  <div className="relative h-40">
+                    <Image
+                      src="/blog-images/pos_terminal.png"
+                      alt="Point of Sale Solutions"
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 33vw, 100vw"
+                    />
+                  </div>
                   <div className="p-6">
                     <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">
                       Payments Tech

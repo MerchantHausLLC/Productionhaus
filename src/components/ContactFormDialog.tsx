@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -65,7 +66,7 @@ interface ContactFormDialogProps {
 
 export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -109,7 +110,7 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
       setTimeout(() => {
         setIsSubmitted(false);
         onOpenChange(false);
-        navigate("/");
+        router.push("/");
       }, 3000);
     } catch (error) {
       console.error("Form submission error", error);
@@ -137,23 +138,23 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
             </DialogHeader>
 
             <Form {...form}>
-                <form
-                  name="contact-detailed"
-                  method="POST"
-                  data-netlify="true"
-                  data-netlify-honeypot="bot-field"
-                  action="/"
-                  acceptCharset="UTF-8"
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-6 mt-4"
-                >
-                  <input type="hidden" name="form-name" value="contact-detailed" />
-                  <input type="hidden" name="bot-field" value="" />
-                  <input
-                    type="hidden"
-                    name="agree_to_privacy"
-                    value={form.watch("agree_to_privacy") ? "yes" : "no"}
-                  />
+              <form
+                name="contact-detailed"
+                method="POST"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
+                action="/"
+                acceptCharset="UTF-8"
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6 mt-4"
+              >
+                <input type="hidden" name="form-name" value="contact-detailed" />
+                <input type="hidden" name="bot-field" value="" />
+                <input
+                  type="hidden"
+                  name="agree_to_privacy"
+                  value={form.watch("agree_to_privacy") ? "yes" : "no"}
+                />
 
                 <FormField
                   control={form.control}
@@ -203,17 +204,18 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number *</FormLabel>
+                      <FormLabel className="font-montserrat font-medium text-neutral-dark">
+                        Phone *
+                      </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Your phone number"
+                          placeholder="(555) 123-4567"
+                          className="font-montserrat border-silver-grey/30 focus:border-cyber-teal"
                           autoComplete="tel"
-                          inputMode="tel"
                           {...field}
-                          className="font-montserrat"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="font-montserrat text-sm" />
                     </FormItem>
                   )}
                 />
@@ -228,8 +230,9 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Your company name"
+                          placeholder="Company name"
                           className="font-montserrat border-silver-grey/30 focus:border-cyber-teal"
+                          autoComplete="organization"
                           {...field}
                         />
                       </FormControl>
@@ -244,13 +247,13 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-montserrat font-medium text-neutral-dark">
-                        Message *
+                        How can we help?
                       </FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="How can we help you?"
-                          rows={5}
-                          className="font-montserrat border-silver-grey/30 focus:border-cyber-teal resize-none"
+                          placeholder="Tell us about your payment goals"
+                          className="font-montserrat border-silver-grey/30 focus:border-cyber-teal"
+                          rows={4}
                           {...field}
                         />
                       </FormControl>
@@ -263,27 +266,25 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                   control={form.control}
                   name="agree_to_privacy"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormItem className="flex items-start space-x-3 space-y-0 rounded-md border border-silver-grey/40 p-4">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
-                          onCheckedChange={field.onChange}
+                          onCheckedChange={(checked) => field.onChange(checked === true)}
+                          className="border-silver-grey/50"
                         />
                       </FormControl>
                       <div className="space-y-1 leading-none">
-                        <FormLabel className="font-montserrat text-sm text-neutral-dark cursor-pointer">
-                          I agree to the{" "}
-                          <a
+                        <FormLabel className="font-montserrat text-sm text-neutral-dark">
+                          I agree to the MerchantHaus
+                          <Link
                             href="/privacy"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-cyber-teal hover:underline"
-                            onClick={(e) => e.stopPropagation()}
+                            className="ml-1 text-cyber-teal underline hover:text-cyber-teal/80"
                           >
                             Privacy Policy
-                          </a>
+                          </Link>
                         </FormLabel>
-                        <FormMessage className="font-montserrat text-sm" />
+                        <FormMessage className="font-montserrat text-xs" />
                       </div>
                     </FormItem>
                   )}
@@ -291,44 +292,27 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
 
                 <Button
                   type="submit"
-                  disabled={form.formState.isSubmitting}
-                  className="w-full bg-crimson hover:bg-crimson/90 text-white font-montserrat font-semibold text-lg py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                  className="w-full bg-crimson text-white hover:bg-crimson/90 font-montserrat"
                 >
-                  {form.formState.isSubmitting ? "Sending..." : "Send Message"}
+                  Submit
                 </Button>
               </form>
             </Form>
           </>
         ) : (
-          <div className="py-12 text-center">
-            <button
+          <div className="flex flex-col items-center justify-center space-y-4 py-12">
+            <CheckCircle2 className="h-16 w-16 text-cyber-teal" />
+            <h3 className="font-ubuntu text-2xl font-semibold text-neutral-dark">Thank you!</h3>
+            <p className="font-montserrat text-center text-silver-grey max-w-sm">
+              We have received your message and will be in touch shortly. You will be redirected to the homepage momentarily.
+            </p>
+            <Button
               onClick={handleClose}
-              className="absolute top-4 right-4 text-silver-grey hover:text-neutral-dark transition-colors"
-              aria-label="Close"
+              className="flex items-center gap-2 bg-cyber-teal text-white hover:bg-cyber-teal/90"
             >
-              <X className="w-6 h-6" />
-            </button>
-
-            <div className="flex flex-col items-center space-y-6 animate-fade-in">
-              <div className="relative">
-                <CheckCircle2 className="w-20 h-20 text-cyber-teal animate-scale-in" />
-              </div>
-              
-              <div className="space-y-3">
-                <h3 className="font-ubuntu text-3xl font-semibold text-neutral-dark">
-                  Thank You!
-                </h3>
-                <p className="font-montserrat text-lg text-silver-grey max-w-md">
-                  Your message has been sent successfully. We'll get back to you shortly.
-                </p>
-              </div>
-
-              <div className="pt-4">
-                <p className="font-montserrat text-sm text-silver-grey/80">
-                  Redirecting to home page in a moment...
-                </p>
-              </div>
-            </div>
+              <X className="h-4 w-4" />
+              Close
+            </Button>
           </div>
         )}
       </DialogContent>

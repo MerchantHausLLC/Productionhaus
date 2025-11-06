@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Construction, ArrowLeft } from "lucide-react";
@@ -23,14 +24,14 @@ const ComingSoon = () => {
           </p>
           
           <div className="flex flex-wrap justify-center gap-4">
-            <Button 
+            <Button
               asChild
               className="bg-crimson hover:bg-crimson/90 text-white rounded-full px-8 py-6 text-base font-semibold"
             >
-              <a href="/">
+              <Link href="/">
                 <ArrowLeft className="w-5 h-5 mr-2" />
                 Back to Home
-              </a>
+              </Link>
             </Button>
             
             <Button 

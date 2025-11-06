@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
-import heroVideo from "@/assets/Hero.webm";
 
 const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
   const [displayText, setDisplayText] = useState("");
@@ -151,7 +151,7 @@ export const Hero = () => {
           className="absolute inset-0 w-full h-full object-cover"
           poster="/hero-replacement.png"
         >
-          <source src={heroVideo} type="video/webm" />
+          <source src="/assets/Hero.webm" type="video/webm" />
         </video>
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-neutral-dark/60" />
@@ -226,12 +226,12 @@ export const Hero = () => {
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          <Button 
+          <Button
             asChild
             size="lg"
             className="bg-crimson hover:opacity-90 text-white font-montserrat font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all w-full sm:w-auto"
           >
-            <a href="/apply">Apply Now</a>
+            <Link href="/apply">Apply Now</Link>
           </Button>
           <a href="#solutions">
             <Button 
