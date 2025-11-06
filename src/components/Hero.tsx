@@ -67,24 +67,11 @@ export const Hero = () => {
     // Trigger animations on mount
     setTimeout(() => setIsLoaded(true), 100);
 
-    // Word cycling every 5 seconds with staggered timing
+    // Word cycling every 6 seconds with staggered timing
     const interval = setInterval(() => {
       setIsAnimating(true);
       
-      // Line 2 (That) changes first
-      setTimeout(() => {
-        setPreviousWords(prev => ({ ...prev, line2: currentWords.line2 }));
-        setCurrentWords(prev => ({
-          ...prev,
-          line2: getRandomIndex(wordSets.line2.length, prev.line2)
-        }));
-        setColorIndices(prev => ({
-          ...prev,
-          line2: (prev.line2 + 1) % colors.length
-        }));
-      }, 300);
-
-      // Line 1 (Payment) changes 1 second after Line 2
+      // Line 1 (Payment) changes first
       setTimeout(() => {
         setPreviousWords(prev => ({ ...prev, line1: currentWords.line1 }));
         setCurrentWords(prev => ({
@@ -95,9 +82,22 @@ export const Hero = () => {
           ...prev,
           line1: (prev.line1 + 1) % colors.length
         }));
-      }, 1300);
+      }, 0);
 
-      // Line 3 (Your) changes 0.5s after Line 1
+      // Line 2 (That) changes 150ms after Line 1
+      setTimeout(() => {
+        setPreviousWords(prev => ({ ...prev, line2: currentWords.line2 }));
+        setCurrentWords(prev => ({
+          ...prev,
+          line2: getRandomIndex(wordSets.line2.length, prev.line2)
+        }));
+        setColorIndices(prev => ({
+          ...prev,
+          line2: (prev.line2 + 1) % colors.length
+        }));
+      }, 150);
+
+      // Line 3 (Your) changes 150ms after Line 2 (300ms total from Line 1)
       setTimeout(() => {
         setPreviousWords(prev => ({ ...prev, line3: currentWords.line3 }));
         setCurrentWords(prev => ({
@@ -109,8 +109,8 @@ export const Hero = () => {
           line3: (prev.line3 + 1) % colors.length
         }));
         setIsAnimating(false);
-      }, 1800);
-    }, 5000);
+      }, 300);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, [currentWords]);
@@ -136,9 +136,9 @@ export const Hero = () => {
       </div>
 
       {/* Desktop: Left hemisphere layout, Mobile: Full width */}
-      <div className="relative max-w-7xl mx-auto px-6 md:px-12 py-20 md:grid md:grid-cols-2 md:gap-12 items-center">
+      <div className="relative max-w-7xl mx-auto px-6 md:px-12 py-20 md:grid md:grid-cols-1 lg:grid-cols-2 md:gap-12 items-center">
         {/* Desktop: Left hemisphere layout, Mobile: Full width */}
-        <div className="text-left space-y-6 md:space-y-8 max-w-3xl md:max-w-xl">
+        <div className="text-left space-y-6 md:space-y-8 w-full max-w-xl md:max-w-3xl lg:max-w-5xl">
 
         {/* Animated Headline */}
         <div 
@@ -150,7 +150,7 @@ export const Hero = () => {
           <div className="flex flex-col">
             {/* Payment stacked vertically with its word */}
             <div className="overflow-hidden flex flex-col mb-2">
-              <span className="text-white">Payment</span>
+              <span className="text-white" style={{ whiteSpace: 'nowrap' }}>Payment{' '}
               <span 
                 className={`inline-block transition-all duration-300 ease-in-out ${
                   isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
@@ -158,11 +158,12 @@ export const Hero = () => {
               >
                 {wordSets.line1[currentWords.line1]}
               </span>
+              </span>
             </div>
             
             {/* That and Your inline with their words */}
             <div className="overflow-hidden mb-2">
-              <span className="text-white">That </span>
+              <span className="text-white" style={{ whiteSpace: 'nowrap' }}>That{' '}
               <span 
                 className={`inline-block transition-all duration-300 ease-in-out ${
                   isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
@@ -170,16 +171,18 @@ export const Hero = () => {
               >
                 {wordSets.line2[currentWords.line2]}
               </span>
+              </span>
             </div>
             
             <div className="overflow-hidden">
-              <span className="text-white">Your </span>
+              <span className="text-white" style={{ whiteSpace: 'nowrap' }}>Your{' '}
               <span 
                 className={`inline-block transition-all duration-300 ease-in-out ${
                   isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
                 } ${colors[colorIndices.line3]}`}
               >
                 {wordSets.line3[currentWords.line3]}
+              </span>
               </span>
             </div>
           </div>
@@ -237,8 +240,8 @@ export const Hero = () => {
         </div>
         </div>
         
-        {/* Right side - empty on desktop for hemisphere effect */}
-        <div className="hidden md:block" />
+        {/* Right side - empty on large screens for hemisphere effect */}
+        <div className="hidden lg:block" />
       </div>
     </section>
   );
