@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -136,15 +134,11 @@ const Services = () => {
         {/* Hero Section with Background Image */}
         <section className="relative overflow-hidden h-[600px]">
           <div className="absolute inset-0">
-            <div className="relative h-full w-full">
-              <Image
-                src="/blog-images/cardslide.webp"
-                alt="The Future of Digital Commerce"
-                fill
-                priority
-                className="object-cover brightness-[1.2] dark:brightness-[0.8] transition-[filter] duration-500"
-              />
-            </div>
+            <img
+              src="/blog-images/cardslide.webp"
+              alt="The Future of Digital Commerce"
+              className="w-full h-full object-cover brightness-[1.2] dark:brightness-[0.8] transition-[filter] duration-500"
+            />
             <div className="absolute inset-0 bg-white/15 mix-blend-screen dark:bg-black/50 dark:mix-blend-multiply pointer-events-none"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/70 dark:from-background/80 dark:via-background/65 dark:to-background/55"></div>
           </div>
@@ -195,13 +189,13 @@ const Services = () => {
                   Book a Demo
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
-                <Button
+                <Button 
                   size="lg"
                   variant="outline"
                   className="border-2 border-foreground text-foreground hover:bg-foreground hover:text-background font-bold px-8 py-6 text-lg rounded-lg transition-all"
                   asChild
                 >
-                  <Link href="/apply">Get Started</Link>
+                  <a href="/apply">Get Started</a>
                 </Button>
               </div>
             </div>
@@ -404,16 +398,16 @@ const Services = () => {
                 <Phone className="mr-2 w-5 h-5" />
                 Schedule a Call
               </Button>
-              <Button
+              <Button 
                 size="lg"
                 variant="outline"
                 className="border-2 border-white text-white hover:bg-white hover:text-crimson font-bold px-8 py-6 text-lg rounded-lg transition-all"
                 asChild
               >
-                <Link href="/apply" className="inline-flex items-center">
+                <a href="/apply">
                   <Mail className="mr-2 w-5 h-5" />
                   Apply Now
-                </Link>
+                </a>
               </Button>
             </div>
 

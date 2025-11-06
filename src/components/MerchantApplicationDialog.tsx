@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -342,14 +341,14 @@ export function MerchantApplicationDialog({
                 />
                 <Label htmlFor="agree_to_terms" className="cursor-pointer leading-relaxed text-sm">
                   I agree to the{" "}
-                  <Link
-                    href="/terms"
-                    target="_blank"
+                  <a 
+                    href="/terms" 
+                    target="_blank" 
                     rel="noopener noreferrer"
                     className="text-primary hover:underline font-semibold"
                   >
                     Terms and Conditions
-                  </Link>
+                  </a>
                   {" "}and understand that MerchantHaus will process my application according to these terms.
                 </Label>
               </div>

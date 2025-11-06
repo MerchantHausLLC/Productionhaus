@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -89,13 +88,10 @@ export default function MarqueeServices() {
           >
             {/* Card content - icon and title */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center select-none">
-              <Image
+              <img
                 src={s.icon}
                 alt={s.title}
-                width={64}
-                height={64}
                 className="w-16 h-16 mb-4 transition-transform duration-300 ease-out group-hover:scale-[1.5]"
-                draggable={false}
               />
               <h3 className="text-white text-lg font-semibold">{s.title}</h3>
             </div>

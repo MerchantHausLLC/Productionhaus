@@ -1,9 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
+import shieldLogo from "@/assets/rshield.webp";
 import { solutions } from "./Solutions.data";
 
 export const Solutions = () => {
@@ -172,13 +171,10 @@ export const Solutions = () => {
         <div className="flex justify-center">
           <div className="relative animate-fade-in">
             <div className="absolute inset-0 bg-gradient-radial from-crimson/30 to-cyber-teal/20 blur-3xl scale-150" />
-            <Image
-              src="/assets/rshield.webp"
-              alt="MerchantHaus Shield"
-              width={256}
-              height={256}
+            <img 
+              src={shieldLogo} 
+              alt="MerchantHaus Shield" 
               className="h-48 w-48 md:h-64 md:w-64 object-contain drop-shadow-2xl relative z-10 animate-scale-in"
-              priority
             />
           </div>
         </div>
@@ -189,16 +185,11 @@ export const Solutions = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,hsla(var(--crimson),0.14),transparent_60%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,hsla(var(--cyber-teal),0.16),transparent_65%)]" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="relative w-full max-w-5xl h-[60vw] max-h-[600px]">
-            <Image
-              src="/images/globe-background.png"
-              alt="Global Payment Network"
-              fill
-              className="object-contain opacity-25 md:opacity-35 contrast-125 saturate-125 drop-shadow-[0_0_60px_rgba(220,20,60,0.18)]"
-              sizes="(min-width: 1280px) 800px, 90vw"
-              priority
-            />
-          </div>
+          <img
+            src="/images/globe-background.png"
+            alt="Global Payment Network"
+            className="relative w-full max-w-5xl h-auto object-contain opacity-25 md:opacity-35 contrast-125 saturate-125 drop-shadow-[0_0_60px_rgba(220,20,60,0.18)]"
+          />
         </div>
       </div>
       
@@ -210,11 +201,11 @@ export const Solutions = () => {
           <p className="font-inter text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
             Comprehensive payment solutions designed to help your business thrive in today's digital economy.
           </p>
-          <Button
+          <Button 
             asChild
             className="bg-crimson hover:bg-crimson/90 text-white font-semibold rounded-full px-8 py-6 text-base shadow-lg hover:shadow-xl transition-all"
           >
-            <Link href="/quote">Get a Quote</Link>
+            <a href="/quote">Get a Quote</a>
           </Button>
         </div>
 
@@ -242,13 +233,11 @@ export const Solutions = () => {
                   >
                     {(solution.bannerImage && (
                       <div className="card-image-visual relative w-full aspect-[16/9] overflow-hidden rounded-t-[1.5rem]">
-                        <Image
+                        <img
                           src={solution.bannerImage}
                           alt={solution.title}
-                          fill
-                          className="object-cover"
+                          className="absolute inset-0 h-full w-full object-cover"
                           draggable={false}
-                          sizes="(min-width: 1280px) 320px, 80vw"
                         />
                       </div>
                     )) || <div className="relative w-full aspect-[16/9] rounded-t-[1.5rem] bg-muted/40" />}
@@ -315,13 +304,11 @@ export const Solutions = () => {
             {/* Banner Image in Modal */}
             {solutions[selectedCard].bannerImage && (
               <div className="relative w-full aspect-[16/9] overflow-hidden shrink-0">
-                <Image
+                <img
                   src={solutions[selectedCard].bannerImage}
                   alt={solutions[selectedCard].title}
-                  fill
-                  className="object-cover"
+                  className="absolute inset-0 h-full w-full object-cover"
                   draggable={false}
-                  sizes="(min-width: 1280px) 800px, 100vw"
                 />
               </div>
             )}

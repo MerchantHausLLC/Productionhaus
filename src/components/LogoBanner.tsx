@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useMemo } from "react";
 
 const logos = [
@@ -56,11 +55,9 @@ const LogoBanner = () => {
               key={`${logo.name}-${index}`}
               className="flex-shrink-0 mx-8 hover:scale-105 transition-all duration-300 opacity-80 hover:opacity-100"
             >
-              <Image
+              <img
                 src={`/logos/${logo.file}`}
                 alt={logo.name}
-                width={160}
-                height={48}
                 className="h-12 w-auto object-contain transition-opacity duration-500"
               />
             </div>

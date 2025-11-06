@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useEffect } from "react";
+import shieldLogo from "@/assets/shield.webp";
 
 const Vamp = () => {
   useEffect(() => {
@@ -215,13 +215,7 @@ const Vamp = () => {
           
           {/* Header with Logo and Tagline */}
           <header className="mb-12 pt-8 border-b-4 flex items-center space-x-4" style={{ borderColor: '#DC143C' }}>
-            <Image
-              src="/assets/shield.webp"
-              alt="MerchantHaus Shield Logo"
-              width={48}
-              height={48}
-              className="h-10 w-10 sm:h-12 sm:w-12"
-            />
+            <img src={shieldLogo} alt="MerchantHaus Shield Logo" className="h-10 w-10 sm:h-12 sm:w-12" />
             <div>
               <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight logo-text" style={{ color: '#1A1A1A' }}>
                 MerchantHaus <span style={{ color: '#DC143C' }}>Blog</span>
@@ -243,13 +237,7 @@ const Vamp = () => {
           
           {/* Masked Image 1: Header Visual */}
           <div className="masked-image-container shape-1 initial-hidden" data-animate>
-            <Image
-              src="/blog-images/vamp_header.webp"
-              alt="Abstract global payment network"
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 800px, 100vw"
-            />
+            <img src="/blog-images/vamp_header.webp" alt="Abstract global payment network" />
             <div className="masked-image-overlay-text text-xl sm:text-3xl lg:text-4xl">Shaping the Future of Payments</div>
           </div>
 
@@ -290,13 +278,7 @@ const Vamp = () => {
 
           {/* Masked Image 2: Metrics Visual */}
           <div className="masked-image-container shape-2 initial-hidden" data-animate>
-            <Image
-              src="/blog-images/vamp_metrics.webp"
-              alt="Data analysis and trends"
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 800px, 100vw"
-            />
+            <img src="/blog-images/vamp_metrics.webp" alt="Data analysis and trends" />
             <div className="masked-image-overlay-text text-xl sm:text-3xl">Understanding the Metrics</div>
           </div>
 
@@ -328,13 +310,7 @@ const Vamp = () => {
 
           {/* Masked Image 3: Security Visual */}
           <div className="masked-image-container shape-3 initial-hidden" data-animate>
-            <Image
-              src="/blog-images/vamp_security.webp"
-              alt="Secure payment solutions"
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 800px, 100vw"
-            />
+            <img src="/blog-images/vamp_security.webp" alt="Secure payment solutions" />
             <div className="masked-image-overlay-text text-xl sm:text-3xl">Protecting Your Transactions</div>
           </div>
 

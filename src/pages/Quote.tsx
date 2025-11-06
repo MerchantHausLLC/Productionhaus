@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -249,13 +248,13 @@ const Quote = () => {
 
                 <p className="text-sm text-muted-foreground">
                   Need details on how we protect your data? Visit our{" "}
-                  <Link href="/security" className="text-crimson hover:underline">
+                  <a href="/security" className="text-crimson hover:underline">
                     Security &amp; Compliance
-                  </Link>{" "}
+                  </a>{" "}
                   and{" "}
-                  <Link href="/privacy" className="text-crimson hover:underline">
+                  <a href="/privacy" className="text-crimson hover:underline">
                     Privacy Policy
-                  </Link>
+                  </a>
                   .
                 </p>
               </div>
