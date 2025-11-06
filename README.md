@@ -1,81 +1,95 @@
-🏗️ NewHausNext
+# 🏗️ Merchanthaus.io
 
-Modern TypeScript React frontend built with Vite, Tailwind, and shadcn/ui — optimized for speed, scalability, and clean UI design.
+**Modern TypeScript React frontend built with Vite, Tailwind, and shadcn/ui — optimized for speed, scalability, and clean UI design.**
 
-<p align="center"> <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react&logoColor=white" alt="React"></a> <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white" alt="Vite"></a> <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white" alt="TypeScript"></a> <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?logo=tailwindcss&logoColor=white" alt="TailwindCSS"></a> <a href="https://ui.shadcn.com/"><img src="https://img.shields.io/badge/shadcn--ui-Components-111827?logo=radixui&logoColor=white" alt="shadcn-ui"></a> <a href="#"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a> </p>
-🚀 Project Overview
+<p align="center">
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react&logoColor=white" alt="React"></a>
+  <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white" alt="Vite"></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white" alt="TypeScript"></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?logo=tailwindcss&logoColor=white" alt="TailwindCSS"></a>
+  <a href="https://ui.shadcn.com/"><img src="https://img.shields.io/badge/shadcn--ui-Components-111827?logo=radixui&logoColor=white" alt="shadcn-ui"></a>
+  <a href="#"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
 
-NewHausNext is a modular, high-performance frontend built for modern web applications.
-It focuses on speed, reusability, and developer experience, using Vite for ultra-fast builds and React + TypeScript for maintainable architecture.
+---
 
-🧰 Tech Stack
+## 🚀 Project Overview
+**MerchantHaus.io**  is a modular, high-performance frontend built for modern web applications.  
+It focuses on **speed**, **reusability**, and **developer experience**, powered by **Vite**, **React**, and **TypeScript**.
 
-⚡ Vite — blazing-fast build tool
+---
 
-⚛️ React 18 with TypeScript
+## 🧰 Tech Stack
+- ⚡ **Vite** — blazing-fast build tool  
+- ⚛️ **React 18** with TypeScript  
+- 🎨 **Tailwind CSS** + **Tailwind Animate**  
+- 🧩 **shadcn/ui** — accessible components built on **Radix UI**  
+- 🧠 **@tanstack/react-query** — async state management  
+- 🌗 **next-themes** — dark/light mode control  
+- 📈 **Recharts** — data visualization  
+- ✅ **Zod** + **react-hook-form** — form validation  
 
-🎨 Tailwind CSS + Tailwind Animate
+---
 
-🧩 shadcn/ui — accessible components built on Radix UI
+## 🖋️ Editing the Project
+Set up the project locally using your preferred IDE:
 
-🧠 @tanstack/react-query — async state management
-
-🌗 next-themes — dark/light mode control
-
-📈 Recharts — data visualization
-
-✅ Zod + react-hook-form — form validation
-
-🖋️ Editing the Project
-
-You can edit this project locally in your preferred IDE.
-
+```bash
 # 1. Clone the repository
 git clone <YOUR_GIT_URL>
 
 # 2. Navigate into the directory
-cd newhausnext
+
 
 # 3. Install dependencies
 npm install
 
 # 4. Start the local dev server
 npm run dev
+```
 
+💡 The development server supports **hot reloading** and **instant preview**.
 
-💡 The development server supports hot reloading and instant preview.
+---
 
-🧑‍💻 Development Scripts
-Command	Description
-npm run dev	Start the development server
-npm run build	Build the app for production
-npm run preview	Preview the production build
-npm run lint	Run ESLint across the codebase
-🌍 Deployment
+## 🧑‍💻 Development Scripts
 
+| Command | Description |
+|----------|-------------|
+| `npm run dev` | Start the development server |
+| `npm run build` | Build the app for production |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | Run ESLint across the codebase |
+
+---
+
+## 🌍 Deployment
 Deploy seamlessly to any modern static hosting provider:
 
-Vercel
-
-Netlify
-
-Cloudflare Pages
-
-GitHub Pages
+- [Vercel](https://vercel.com)  
+- [Netlify](https://www.netlify.com)  
+- [Cloudflare Pages](https://pages.cloudflare.com)  
+- [GitHub Pages](https://pages.github.com)
 
 To create a production build:
 
+```bash
 npm run build
+```
 
+Your optimized site will be located in the `/dist` directory.
 
-Your optimized site will be located in the /dist directory.
+---
 
-🌐 Custom Domain
+## 🌐 Domain Configuration
+This project powers **https://merchanthaus.io**.  
+If deploying to a new environment, ensure your hosting configuration points your custom domain to the build output directory.  
+SSL certificates will typically be auto-generated when hosted via **Vercel** or **Netlify**.
 
-If you’re hosting on Vercel or Netlify, connect a custom domain directly from their dashboard.
-SSL certificates will be automatically configured.
+---
 
-🧱 Folder Structure
+## 🧱 Folder Structure
+```
 src/
  ├── components/     # Reusable UI components
  ├── pages/          # Page-level views (Index, About, Services, Blog, etc.)
@@ -84,28 +98,90 @@ src/
  ├── lib/            # Utility functions and configs
  ├── styles/         # Tailwind and global CSS
  └── main.tsx        # Entry point for Vite
+```
 
-💬 Social & SEO Metadata
+---
 
-This project includes Open Graph and Twitter meta tags in index.html for rich previews.
+## 💬 SEO Metadata & Social Previews
 
-Example:
+### Global SEO Setup (`index.html`)
+The project supports Open Graph and Twitter tags for rich link previews.  
+Example configuration (inside `<head>`):
 
-<meta property="og:title" content="NewHausNext — Modern React + TypeScript UI" />
-<meta property="og:description" content="Modern TypeScript React frontend built with Vite, Tailwind, and shadcn/ui — optimized for speed, scalability, and clean UI design." />
-<meta property="og:image" content="https://your-domain.com/og-image.png" />
-<meta property="og:url" content="https://your-domain.com/" />
-<meta name="twitter:card" content="summary_large_image" />
+```html
+<!-- Primary Meta -->
+<title>MerchantHaus.io — Modern React + TypeScript UI</title>
+<meta name="description" content="Modern TypeScript React frontend built with Vite, Tailwind, and shadcn/ui — optimized for speed, scalability, and clean UI design.">
 
+<!-- Open Graph / Facebook / LinkedIn -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="MerchantHaus.io — Modern React + TypeScript UI">
+<meta property="og:description" content="Modern TypeScript React frontend with Vite, Tailwind, and shadcn/ui.">
+<meta property="og:url" content="https://merchanthaus.io/">
+<meta property="og:image" content="https://merchanthaus.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 
-Place your OG image at public/og-image.png (recommended: 1200×630 px).
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MerchantHaus.io — Modern React + TypeScript UI">
+<meta name="twitter:description" content="Modern TypeScript React frontend with Vite, Tailwind, and shadcn/ui.">
+<meta name="twitter:image" content="https://merchanthaus.io/og-image.png">
+```
 
-🔮 Future Enhancements
+Recommended OG image size: **1200×630 px**
 
-Migration to Next.js for SSR and advanced SEO
+---
 
-Enhanced per-page meta tags with react-helmet-async
+### Dynamic Per-Page Metadata (`react-helmet-async`)
+For unique meta titles and descriptions per route, install:
 
-Accessibility improvements (WCAG compliance)
+```bash
+npm i react-helmet-async
+```
 
-Expanded shadcn/ui component library
+Wrap your app with the `HelmetProvider` (e.g., in `main.tsx`):
+
+```tsx
+import { HelmetProvider } from 'react-helmet-async';
+
+<HelmetProvider>
+  <App />
+</HelmetProvider>
+```
+
+Then add meta tags in each page (example for `Services.tsx`):
+
+```tsx
+import { Helmet } from 'react-helmet-async';
+
+export default function Services() {
+  return (
+    <>
+      <Helmet>
+        <title>Services — MerchantHaus</title>
+        <meta
+          name="description"
+          content="POS, e-commerce, and mobile payment solutions built for modern businesses."
+        />
+        <link rel="canonical" href="https://merchanthaus.io/services" />
+        <meta property="og:title" content="Services — MerchantHaus" />
+        <meta property="og:description" content="Fast, reliable, and flexible payment technology." />
+        <meta property="og:image" content="https://merchanthaus.io/og-services.png" />
+      </Helmet>
+
+      {/* Page content here */}
+    </>
+  );
+}
+```
+
+✅ **Tip:** Store per-page images (like `/og-services.png`, `/og-about.png`) in `/public` for better sharing previews.
+
+---
+
+## 🔮 Future Enhancements
+- Migration to **Next.js** for SSR and advanced SEO  
+- Enhanced per-page meta management  
+- Improved Lighthouse & accessibility scores  
+- Expanded **shadcn/ui** component library  
