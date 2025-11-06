@@ -108,11 +108,7 @@ const ServicesShowcase = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const index = parseInt(entry.target.getAttribute('data-index') || '0');
-            setVisibleCards((prev) => {
-              const next = new Set(prev);
-              next.add(index);
-              return next;
-            });
+            setVisibleCards((prev) => new Set([...prev, index]));
           }
         });
       },
