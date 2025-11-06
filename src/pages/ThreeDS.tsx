@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useEffect } from "react";
+import shieldLogo from "@/assets/shield.webp";
 
 const ThreeDS = () => {
   useEffect(() => {
@@ -34,13 +34,7 @@ const ThreeDS = () => {
 
         <div className="post-container mx-auto">
           <header className="mb-12 pt-8 border-b-4 border-crimson flex items-center space-x-4">
-            <Image
-              src="/assets/shield.webp"
-              alt="MerchantHaus Shield Logo"
-              width={48}
-              height={48}
-              className="h-10 w-10 sm:h-12 sm:w-12"
-            />
+            <img src={shieldLogo} alt="MerchantHaus Shield Logo" className="h-10 w-10 sm:h-12 sm:w-12" />
             <div>
               <h1 className="text-4xl sm:text-5xl font-extrabold text-neutral-dark font-ubuntu">
                 MerchantHaus <span className="text-crimson">Blog</span>
@@ -58,13 +52,7 @@ const ThreeDS = () => {
           </p>
 
           <div className="masked-image-container shape-1">
-            <Image
-              src="/blog-images/3ds_ai.png"
-              alt="Digital security with AI technology"
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 800px, 100vw"
-            />
+            <img src="/blog-images/3ds_ai.png" alt="Digital security with AI technology" />
             <div className="masked-image-overlay-text">Authentication That Builds Trust</div>
           </div>
 
@@ -79,13 +67,7 @@ const ThreeDS = () => {
           </div>
 
           <div className="masked-image-container shape-2">
-            <Image
-              src="/blog-images/3ds_handshake.png"
-              alt="Digital handshake representing secure partnership"
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 800px, 100vw"
-            />
+            <img src="/blog-images/3ds_handshake.png" alt="Digital handshake representing secure partnership" />
             <div className="masked-image-overlay-text">Smarter Data Sharing</div>
           </div>
 
@@ -108,13 +90,7 @@ const ThreeDS = () => {
           </div>
 
           <div className="masked-image-container shape-3">
-            <Image
-              src="/blog-images/3ds_developer.png"
-              alt="Developer working with secure authentication systems"
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 800px, 100vw"
-            />
+            <img src="/blog-images/3ds_developer.png" alt="Developer working with secure authentication systems" />
             <div className="masked-image-overlay-text">Seamless on Any Device</div>
           </div>
 

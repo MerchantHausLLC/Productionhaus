@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -553,14 +552,14 @@ const Apply = () => {
                             />
                             <Label htmlFor="agree_to_terms" className="cursor-pointer leading-relaxed">
                               I agree to the{" "}
-                              <Link
+                              <a
                                 href="/terms"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-crimson hover:underline font-semibold"
                               >
                                 Terms and Conditions
-                              </Link>{" "}
+                              </a>{" "}
                               and understand that MerchantHaus will process my application according to these terms.
                             </Label>
                           </div>
@@ -624,7 +623,7 @@ const Apply = () => {
                 </div>
                 <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
                   <Button asChild variant="outline">
-                    <Link href="/">Return to Home</Link>
+                    <a href="/">Return to Home</a>
                   </Button>
                   <Button asChild className="bg-crimson hover:bg-crimson/90">
                     <a href="tel:15056006042">Call 1-505-600-6042</a>
