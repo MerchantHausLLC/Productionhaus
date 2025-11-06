@@ -5,9 +5,11 @@ import { type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./button-utils";
 
+type ButtonVariantProps = VariantProps<typeof buttonVariants>;
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    ButtonVariantProps {
   asChild?: boolean;
 }
 
@@ -20,4 +22,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";
 
 export { Button };
-export type { ButtonProps };
+export type { ButtonProps, ButtonVariantProps };
