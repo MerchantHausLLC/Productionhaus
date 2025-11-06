@@ -194,7 +194,9 @@ const ServicesShowcase = () => {
             <div
               key={index}
               data-index={index}
-              ref={(el) => (cardRef.current[index] = el)}
+              ref={(el) => {
+                cardRef.current[index] = el;
+              }}
               className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center justify-center gap-12 md:gap-16 transition-all duration-700 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
