@@ -111,7 +111,7 @@ const solutions: Solution[] = [
       "Automate your billing and grow your subscription base with tools that handle the complexity for you. Create, manage, and optimize plans—while smart dunning and card updating keep your revenue steady. Features include flexible trial, renewal, and proration options, automated failed payment recovery, card updater and retry logic to reduce churn. 46% of consumers pay for at least one subscription service, making this a crucial revenue stream.",
     borderColor: "border-amber-500",
     buttonColor: "bg-amber-500 hover:bg-amber-500/90",
-    bannerImage: "/card-banners/card1.webp",
+    bannerImage: "/card-banners/subscriptions.webp",
   },
   {
     icon: ShieldCheck,
@@ -121,7 +121,7 @@ const solutions: Solution[] = [
       "Don't let disputes eat into your bottom line. Our automated system tracks, compiles, and submits evidence on your behalf, making it easier to contest chargebacks and reclaim lost revenue. Features include real-time chargeback alerts, 20% higher reversal rates with rapid response, integrated evidence templates for major card brands, and analytics to spot and stop patterns before they repeat.",
     borderColor: "border-indigo-700",
     buttonColor: "bg-indigo-700 hover:bg-indigo-700/90",
-    bannerImage: "/card-banners/card2.webp",
+    bannerImage: "/card-banners/chargebacks.webp",
   },
   {
     icon: Shuffle,
