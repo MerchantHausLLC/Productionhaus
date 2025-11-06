@@ -1,72 +1,111 @@
+🏗️ NewHausNext
 
+Modern TypeScript React frontend built with Vite, Tailwind, and shadcn/ui — optimized for speed, scalability, and clean UI design.
 
-## Project info
+<p align="center"> <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react&logoColor=white" alt="React"></a> <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white" alt="Vite"></a> <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white" alt="TypeScript"></a> <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?logo=tailwindcss&logoColor=white" alt="TailwindCSS"></a> <a href="https://ui.shadcn.com/"><img src="https://img.shields.io/badge/shadcn--ui-Components-111827?logo=radixui&logoColor=white" alt="shadcn-ui"></a> <a href="#"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a> </p>
+🚀 Project Overview
 
+NewHausNext is a modular, high-performance frontend built for modern web applications.
+It focuses on speed, reusability, and developer experience, using Vite for ultra-fast builds and React + TypeScript for maintainable architecture.
 
-## How can I edit this code?
+🧰 Tech Stack
 
-There are several ways of editing your application.
+⚡ Vite — blazing-fast build tool
 
-**Use Lovable**
+⚛️ React 18 with TypeScript
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/1426c9d1-6997-4953-bd6a-67f1fb8e52c5) and start prompting.
+🎨 Tailwind CSS + Tailwind Animate
 
-Changes made via Lovable will be committed automatically to this repo.
+🧩 shadcn/ui — accessible components built on Radix UI
 
-**Use your preferred IDE**
+🧠 @tanstack/react-query — async state management
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+🌗 next-themes — dark/light mode control
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+📈 Recharts — data visualization
 
-Follow these steps:
+✅ Zod + react-hook-form — form validation
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+🖋️ Editing the Project
+
+You can edit this project locally in your preferred IDE.
+
+# 1. Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# 2. Navigate into the directory
+cd newhausnext
 
-# Step 3: Install the necessary dependencies.
-npm i
+# 3. Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4. Start the local dev server
 npm run dev
-```
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+💡 The development server supports hot reloading and instant preview.
 
-**Use GitHub Codespaces**
+🧑‍💻 Development Scripts
+Command	Description
+npm run dev	Start the development server
+npm run build	Build the app for production
+npm run preview	Preview the production build
+npm run lint	Run ESLint across the codebase
+🌍 Deployment
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Deploy seamlessly to any modern static hosting provider:
 
-## What technologies are used for this project?
+Vercel
 
-This project is built with:
+Netlify
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Cloudflare Pages
 
-## How can I deploy this project?
+GitHub Pages
 
-Simply open [Lovable](https://lovable.dev/projects/1426c9d1-6997-4953-bd6a-67f1fb8e52c5) and click on Share -> Publish.
+To create a production build:
 
-## Can I connect a custom domain to my Lovable project?
+npm run build
 
-Yes, you can!
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Your optimized site will be located in the /dist directory.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+🌐 Custom Domain
+
+If you’re hosting on Vercel or Netlify, connect a custom domain directly from their dashboard.
+SSL certificates will be automatically configured.
+
+🧱 Folder Structure
+src/
+ ├── components/     # Reusable UI components
+ ├── pages/          # Page-level views (Index, About, Services, Blog, etc.)
+ ├── assets/         # Images and static resources
+ ├── hooks/          # Reusable React hooks
+ ├── lib/            # Utility functions and configs
+ ├── styles/         # Tailwind and global CSS
+ └── main.tsx        # Entry point for Vite
+
+💬 Social & SEO Metadata
+
+This project includes Open Graph and Twitter meta tags in index.html for rich previews.
+
+Example:
+
+<meta property="og:title" content="NewHausNext — Modern React + TypeScript UI" />
+<meta property="og:description" content="Modern TypeScript React frontend built with Vite, Tailwind, and shadcn/ui — optimized for speed, scalability, and clean UI design." />
+<meta property="og:image" content="https://your-domain.com/og-image.png" />
+<meta property="og:url" content="https://your-domain.com/" />
+<meta name="twitter:card" content="summary_large_image" />
+
+
+Place your OG image at public/og-image.png (recommended: 1200×630 px).
+
+🔮 Future Enhancements
+
+Migration to Next.js for SSR and advanced SEO
+
+Enhanced per-page meta tags with react-helmet-async
+
+Accessibility improvements (WCAG compliance)
+
+Expanded shadcn/ui component library
