@@ -1,5 +1,6 @@
+import Link from "next/link";
+import Image from "next/image";
 import { Button } from "./ui/button";
-import shieldLogo from "@/assets/redshield.png";
 import { useState, useEffect } from "react";
 import { ContactDialog } from "./ContactDialog";
 import { Moon, Sun } from "lucide-react";
@@ -16,68 +17,73 @@ export const Header = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
-    
+
     // Trigger shimmer animation on mount
     setTimeout(() => setShowShimmer(true), 600);
     setTimeout(() => setShowShimmer(false), 5600);
-    
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <header 
+    <header
       className={`sticky top-0 z-50 bg-background dark:bg-neutral-dark border-b border-border transition-all duration-300 ${
-        isScrolled ? 'shadow-md' : ''
+        isScrolled ? "shadow-md" : ""
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           {/* Logo with Shield and Animation - Shield always on top */}
-          <a href="/" className="flex items-center gap-3 group relative">
-            <img
-              src={shieldLogo}
+          <Link href="/" className="flex items-center gap-3 group relative">
+            <Image
+              src="/assets/redshield.png"
               alt="MerchantHaus Shield"
-              className={`transition-all duration-300 relative z-20 ${isScrolled ? 'h-7 w-7' : 'h-9 w-9'}`}
+              width={48}
+              height={48}
+              className={`transition-all duration-300 relative z-20 ${isScrolled ? "h-7 w-7" : "h-9 w-9"}`}
+              priority
             />
             <div className="relative z-10">
-              <h1 className={`font-ubuntu font-bold text-foreground transition-all duration-300 ${
-                isScrolled ? 'text-xl' : 'text-2xl'
-              }`}>
+              <h1
+                className={`font-ubuntu font-bold text-foreground transition-all duration-300 ${
+                  isScrolled ? "text-xl" : "text-2xl"
+                }`}
+              >
                 MerchantHaus
               </h1>
               {showShimmer && (
                 <div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-crimson to-transparent opacity-40 z-0"
                   style={{
-                    animation: 'shimmer 5s linear forwards'
+                    animation: "shimmer 5s linear forwards"
                   }}
                 />
               )}
             </div>
-          </a>
+          </Link>
         </div>
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          <a 
-            href="/about" 
+          <Link
+            href="/about"
             className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
           >
             About
-          </a>
-          <a 
-            href="/services" 
+          </Link>
+          <Link
+            href="/services"
             className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
           >
             Services
-          </a>
-          <a 
-            href="/blog" 
+          </Link>
+          <Link
+            href="/blog"
             className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
           >
             Blog
-          </a>
-          <a 
+          </Link>
+          <a
             href="https://retailmanager.merchant.haus"
             className="font-montserrat font-medium text-foreground hover:text-cyber-teal transition-colors border-2 border-cyber-teal rounded-full px-4 py-1.5"
           >
@@ -97,7 +103,7 @@ export const Header = () => {
             <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">Toggle theme</span>
           </Button>
-          
+
           <Button
             onClick={() => setIsContactOpen(true)}
             className="bg-crimson hover:opacity-90 text-white font-montserrat font-medium rounded-lg px-6 transition-all hover:shadow-lg"
@@ -106,7 +112,7 @@ export const Header = () => {
           </Button>
         </div>
       </div>
-      
+
       <style>{`
         @keyframes shimmer {
           0% { transform: translateX(-100%); }

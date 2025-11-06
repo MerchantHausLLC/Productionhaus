@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -61,9 +62,9 @@ export const CookieConsent = () => {
         <p className="mt-2 text-sm text-muted-foreground">
           We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. You can
           learn more in our {" "}
-          <a href="/privacy" className="text-crimson font-medium underline-offset-4 hover:underline">
+          <Link href="/privacy" className="text-crimson font-medium underline-offset-4 hover:underline">
             Privacy Policy
-          </a>
+          </Link>
           .
         </p>
 
