@@ -215,8 +215,8 @@ const Blog = () => {
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="#" className="block">
-                  <img 
-                    src="/blog-images/pos_terminal.png" 
+                  <img
+                    src="/blog-images/pos_terminal.png"
                     alt="Point of Sale Solutions" 
                     className="w-full h-40 object-cover bg-gradient-to-br from-gray-100 to-gray-50"
                   />
@@ -229,6 +229,34 @@ const Blog = () => {
                     </h4>
                     <p className="text-sm mb-4 text-muted-foreground">
                       How next-gen point of sale systems are transforming retail experiences.
+                    </p>
+                    <div className="flex items-center text-sm font-medium text-foreground">
+                      Read More
+                      <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            {/* Card 4: 3DS2 Deep Dive */}
+            <div className="card-container">
+              <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
+                <a href="/3ds2" className="block">
+                  <img
+                    src="/blog-images/3ds_handshake.png"
+                    alt="3D Secure 2 authentication experience"
+                    className="w-full h-40 object-cover"
+                  />
+                  <div className="p-6">
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
+                      Fraud Prevention
+                    </p>
+                    <h4 className="text-xl font-bold mb-3 text-foreground">
+                      3D Secure 2: Security Without the Speed Bumps
+                    </h4>
+                    <p className="text-sm mb-4 text-muted-foreground">
+                      Learn how 3DS2 keeps checkout fast for trusted customers while shifting fraud liability away from your business.
                     </p>
                     <div className="flex items-center text-sm font-medium text-foreground">
                       Read More
