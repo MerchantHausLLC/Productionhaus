@@ -116,7 +116,7 @@ export const Hero = () => {
   }, [currentWords]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-visible">
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full">
         <video
@@ -138,7 +138,7 @@ export const Hero = () => {
       {/* Desktop: Left hemisphere layout, Mobile: Full width */}
       <div className="relative max-w-7xl mx-auto px-6 md:px-12 py-20 md:grid md:grid-cols-1 lg:grid-cols-2 md:gap-12 items-center">
         {/* Desktop: Left hemisphere layout, Mobile: Full width */}
-        <div className="text-left space-y-6 md:space-y-8 w-full max-w-xl md:max-w-3xl lg:max-w-5xl">
+        <div className="text-left space-y-6 md:space-y-8 w-full max-w-xl md:max-w-3xl lg:max-w-6xl xl:max-w-7xl">
 
         {/* Animated Headline */}
         <div 
@@ -149,8 +149,8 @@ export const Hero = () => {
         >
           <div className="flex flex-col">
             {/* Payment stacked vertically with its word */}
-            <div className="overflow-hidden flex flex-col mb-2">
-              <span className="text-white" style={{ whiteSpace: 'nowrap' }}>Payment{' '}
+            <div className="overflow-y-hidden overflow-x-visible flex flex-col mb-2">
+              <span className="text-white">Payment{' '}
               <span 
                 className={`inline-block transition-all duration-300 ease-in-out ${
                   isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
@@ -162,8 +162,8 @@ export const Hero = () => {
             </div>
             
             {/* That and Your inline with their words */}
-            <div className="overflow-hidden mb-2">
-              <span className="text-white" style={{ whiteSpace: 'nowrap' }}>That{' '}
+            <div className="overflow-y-hidden overflow-x-visible mb-2">
+              <span className="text-white">That{' '}
               <span 
                 className={`inline-block transition-all duration-300 ease-in-out ${
                   isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
@@ -174,8 +174,8 @@ export const Hero = () => {
               </span>
             </div>
             
-            <div className="overflow-hidden">
-              <span className="text-white" style={{ whiteSpace: 'nowrap' }}>Your{' '}
+            <div className="overflow-y-hidden overflow-x-visible">
+              <span className="text-white">Your{' '}
               <span 
                 className={`inline-block transition-all duration-300 ease-in-out ${
                   isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
