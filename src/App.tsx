@@ -9,6 +9,7 @@ import Services from "./pages/Services";
 import Blog from "./pages/Blog";
 import Vamp from "./pages/Vamp";
 import ThreeDS from "./pages/ThreeDS";
+import ThreeDS2 from "./pages/ThreeDS2";
 import AboutPage from "./pages/AboutPage";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/vamp" element={<Vamp />} />
             <Route path="/3ds" element={<ThreeDS />} />
+            <Route path="/3ds2" element={<ThreeDS2 />} />
             <Route path="/apply" element={<Apply />} />
             <Route path="/quote" element={<Quote />} />
             <Route path="/security" element={<Security />} />
