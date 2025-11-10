@@ -8,6 +8,12 @@ import { useState } from "react";
  * contains sections, a toggle button reveals anchor links to those
  * sections. This component is designed for the MerchantHaus partner site.
  */
+type NavItem = {
+  title: string;
+  href?: string;
+  children?: NavItem[];
+};
+
 const NavTree = () => {
   // Track which top level sections are open
   const [open, setOpen] = useState<Record<string, boolean>>({});
@@ -24,7 +30,7 @@ const NavTree = () => {
    * contains pages, and pages may contain anchor links to their sections.
    * This structure allows the tree to expand and collapse at multiple levels.
    */
-  const navData = [
+  const navData: NavItem[] = [
     {
       title: "The Merchant Portal",
       href: "/TheMerchantPortal",
@@ -342,7 +348,7 @@ const NavTree = () => {
   // ensure uniqueness for nested items. When an item has children, clicking
   // the button toggles the open state for that key. Anchor links are used
   // directly when no children exist.
-  const renderItems = (items: any[], parentKey = "") => {
+  const renderItems = (items: NavItem[], parentKey = "") => {
     return items.map((item) => {
       const key = `${parentKey}${item.title}`;
       if (item.children && item.children.length > 0) {

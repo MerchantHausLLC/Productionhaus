@@ -80,6 +80,11 @@ const Footer = () => {
             <h4 className="font-ubuntu font-semibold text-lg text-white mb-6">Resources</h4>
             <ul className="space-y-3 font-montserrat text-base mb-8">
               <li>
+                <a href="/TheMerchantPortal" className="text-silver-grey hover:text-cyber-teal transition-colors">
+                  The Merchant Portal
+                </a>
+              </li>
+              <li>
                 <a href="/terms" className="text-silver-grey hover:text-cyber-teal transition-colors">
                   Terms & Conditions
                 </a>

@@ -2,27 +2,49 @@ import { Button } from "./ui/button";
 import shieldLogo from "@/assets/redshield.png";
 import { useState, useEffect } from "react";
 import { ContactDialog } from "./ContactDialog";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showShimmer, setShowShimmer] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  const navLinks = [
+    { href: "/about", label: "About" },
+    { href: "/services", label: "Services" },
+    { href: "/blog", label: "Blog" },
+    { href: "/TheMerchantPortal", label: "The Merchant Portal" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
-    
+
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
     // Trigger shimmer animation on mount
     setTimeout(() => setShowShimmer(true), 600);
     setTimeout(() => setShowShimmer(false), 5600);
-    
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
+
+  const handleNavClick = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <header 
@@ -59,31 +81,31 @@ export const Header = () => {
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          <a 
-            href="/about" 
-            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
-          >
-            About
-          </a>
-          <a 
-            href="/services" 
-            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
-          >
-            Services
-          </a>
-          <a 
-            href="/blog" 
-            className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
-          >
-            Blog
-          </a>
-          <a 
+          {navLinks.map(({ href, label }) => (
+            <a
+              key={href}
+              href={href}
+              className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
+            >
+              {label}
+            </a>
+          ))}
+          <a
             href="https://retailmanager.merchant.haus"
             className="font-montserrat font-medium text-foreground hover:text-cyber-teal transition-colors border-2 border-cyber-teal rounded-full px-4 py-1.5"
           >
             Client Login
           </a>
         </nav>
+
+        <button
+          className="md:hidden inline-flex items-center justify-center rounded-full border border-border p-2 text-foreground transition-colors hover:bg-muted"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMenuOpen}
+        >
+          {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
 
         {/* Theme Toggle and CTA */}
         <div className="flex items-center gap-4">
@@ -100,13 +122,46 @@ export const Header = () => {
           
           <Button
             onClick={() => setIsContactOpen(true)}
-            className="bg-crimson hover:opacity-90 text-white font-montserrat font-medium rounded-lg px-6 transition-all hover:shadow-lg"
+            className="hidden md:inline-flex bg-crimson hover:opacity-90 text-white font-montserrat font-medium rounded-lg px-6 transition-all hover:shadow-lg"
           >
             Contact Us
           </Button>
         </div>
       </div>
-      
+
+      {isMenuOpen && (
+        <div className="md:hidden border-t border-border bg-background px-6 py-4">
+          <nav className="flex flex-col gap-4">
+            {navLinks.map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors"
+                onClick={handleNavClick}
+              >
+                {label}
+              </a>
+            ))}
+            <a
+              href="https://retailmanager.merchant.haus"
+              className="font-montserrat font-medium text-foreground hover:text-cyber-teal transition-colors"
+              onClick={handleNavClick}
+            >
+              Client Login
+            </a>
+            <Button
+              onClick={() => {
+                setIsContactOpen(true);
+                setIsMenuOpen(false);
+              }}
+              className="bg-crimson hover:opacity-90 text-white font-montserrat font-medium rounded-lg"
+            >
+              Contact Us
+            </Button>
+          </nav>
+        </div>
+      )}
+
       <style>{`
         @keyframes shimmer {
           0% { transform: translateX(-100%); }
