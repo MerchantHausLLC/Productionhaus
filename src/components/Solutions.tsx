@@ -18,6 +18,7 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Button } from "./ui/button";
 import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
 import shieldLogo from "@/assets/rshield.webp";
+import { useParallax } from "@/hooks/use-parallax";
 
 type Solution = {
   icon: LucideIcon;
@@ -144,6 +145,11 @@ export const Solutions = () => {
   const scrollPositionRef = useRef(0);
   const animationFrameRef = useRef<number | null>(null);
   const isPausedRef = useRef(false);
+  const shieldGlowRef = useParallax<HTMLDivElement>({ speed: 0.12 });
+  const shieldLogoRef = useParallax<HTMLImageElement>({ speed: 0.18 });
+  const topGradientRef = useParallax<HTMLDivElement>({ speed: 0.06 });
+  const bottomGradientRef = useParallax<HTMLDivElement>({ speed: 0.09 });
+  const globeRef = useParallax<HTMLImageElement>({ speed: 0.14 });
 
   // Typewriter effect for modal title
   useEffect(() => {
@@ -299,11 +305,15 @@ export const Solutions = () => {
       {/* Shield Logo - Positioned within Solutions section */}
       <div className="relative -mt-32 mb-12 z-20 pointer-events-none">
         <div className="flex justify-center">
-          <div className="relative animate-fade-in">
-            <div className="absolute inset-0 bg-gradient-radial from-crimson/30 to-cyber-teal/20 blur-3xl scale-150" />
-            <img 
-              src={shieldLogo} 
-              alt="MerchantHaus Shield" 
+          <div className="relative flex items-center justify-center animate-fade-in">
+            <div
+              ref={shieldGlowRef}
+              className="absolute inset-0 bg-gradient-radial from-crimson/30 to-cyber-teal/20 blur-3xl scale-150"
+            />
+            <img
+              ref={shieldLogoRef}
+              src={shieldLogo}
+              alt="MerchantHaus Shield"
               className="h-48 w-48 md:h-64 md:w-64 object-contain drop-shadow-2xl relative z-10 animate-scale-in"
             />
           </div>
@@ -312,10 +322,17 @@ export const Solutions = () => {
 
       {/* Globe Background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,hsla(var(--crimson),0.14),transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,hsla(var(--cyber-teal),0.16),transparent_65%)]" />
+        <div
+          ref={topGradientRef}
+          className="absolute inset-0 bg-[radial-gradient(circle_at_top,hsla(var(--crimson),0.14),transparent_60%)]"
+        />
+        <div
+          ref={bottomGradientRef}
+          className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,hsla(var(--cyber-teal),0.16),transparent_65%)]"
+        />
         <div className="absolute inset-0 flex items-center justify-center">
           <img
+            ref={globeRef}
             src="/images/globe-background.png"
             alt="Global Payment Network"
             className="relative w-full max-w-5xl h-auto object-contain opacity-25 md:opacity-35 contrast-125 saturate-125 drop-shadow-[0_0_60px_rgba(220,20,60,0.18)]"
