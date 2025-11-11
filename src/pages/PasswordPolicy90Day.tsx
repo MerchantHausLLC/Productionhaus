@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * Merchants who do not enable two‑factor authentication must reset their
  * password every 90 days. This guide outlines how the policy works,
  * provides instructions for changing your password and explains how to
- * exempt yourself by enabling 2FA【903905329378022†L50-L79】【903905329378022†L87-L163】.
+ * exempt yourself by enabling 2FA.
  */
 const PasswordPolicy90Day = () => {
   useEffect(() => {
@@ -39,7 +39,7 @@ const PasswordPolicy90Day = () => {
                 When the 90‑day policy is active, a progress bar displays the
                 number of days remaining until your password expires. You can
                 change your password at any time, and the counter resets to
-                90 days【903905329378022†L50-L79】.
+                90 days.
               </p>
             </section>
 
@@ -51,7 +51,7 @@ const PasswordPolicy90Day = () => {
                 enabled two‑factor authentication. Each time you log in, the
                 portal will check when your password was last updated. If
                 it’s been more than 90 days, you’ll be prompted to create a
-                new password before proceeding【903905329378022†L87-L163】.
+                new password before proceeding.
               </p>
             </section>
 
@@ -65,7 +65,7 @@ const PasswordPolicy90Day = () => {
                 enter your current password along with a new one. Passwords
                 must meet the complexity requirements shown on the page. After
                 saving, you’ll be logged out and must sign in again with the
-                new password【903905329378022†L87-L163】.
+                new password.
               </p>
             </section>
 
@@ -79,7 +79,7 @@ const PasswordPolicy90Day = () => {
                 expiration requirement. Once 2FA is active, you won’t need to
                 change your password every 90 days, and you will gain access
                 to additional security features such as device recognition
-                and bypassing password prompts for a set period【903905329378022†L87-L163】.
+                and bypassing password prompts for a set period.
               </p>
             </section>
           </div>

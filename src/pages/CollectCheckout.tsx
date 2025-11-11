@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * provides a hosted checkout page that can be integrated into
  * your website or application. Because the entire checkout flow is
  * served by the gateway, no payment data ever touches your
- * environment【4979302280188†L194-L198】.
+ * environment.
  */
 const CollectCheckout = () => {
   useEffect(() => {
@@ -30,7 +30,7 @@ const CollectCheckout = () => {
               Collect Checkout offers a fully hosted checkout page that
               you can embed into most web‑based payment flows. It lives
               entirely on the gateway’s servers, which means no payment
-              data ever touches your environment【4979302280188†L194-L198】.
+              data ever touches your environment.
             </p>
 
             {/* Overview */}
@@ -77,7 +77,7 @@ const CollectCheckout = () => {
               <h2 className="text-2xl font-semibold text-foreground">Benefits</h2>
               <p className="text-muted-foreground leading-relaxed">
                 Because Collect Checkout runs entirely on the gateway, no
-                payment data flows through your infrastructure【4979302280188†L194-L198】.
+                payment data flows through your infrastructure.
                 This makes PCI compliance easier and reduces your
                 development effort. You still retain control over the
                 look and feel via configuration and can provide a

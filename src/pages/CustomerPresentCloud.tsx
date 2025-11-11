@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * This page introduces the Customer Present Cloud, a browser‑based
  * point‑of‑sale system for EMV transactions. It removes the need
  * for software installation and driver maintenance and works on any
- * operating system【4979302280188†L87-L94】.
+ * operating system.
  */
 const CustomerPresentCloud = () => {
   useEffect(() => {
@@ -30,7 +30,7 @@ const CustomerPresentCloud = () => {
               solution that eliminates the need for software
               installation and driver maintenance. It runs on any
               operating system and provides the fastest path to EMV
-              integration【4979302280188†L87-L94】.
+              integration.
             </p>
 
             {/* Overview */}

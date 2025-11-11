@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * Because funds are returned without a matching transaction, blind
  * credits carry higher risk. This guide explains what blind credits are,
  * the prerequisites for using them, the associated risks and how to
- * enable the feature if necessary【598181698523452†L55-L61】【598181698523452†L104-L135】.
+ * enable the feature if necessary.
  */
 const BlindCredits = () => {
   useEffect(() => {
@@ -40,7 +40,7 @@ const BlindCredits = () => {
                 A blind credit is a standalone refund. Unlike a standard refund
                 (which references a prior transaction), blind credits send
                 funds directly to the cardholder without an original sale in
-                the system【598181698523452†L55-L61】. Because of this, blind credits
+                the system. Because of this, blind credits
                 cannot be voided or reversed once processed.
               </p>
             </section>
@@ -53,7 +53,7 @@ const BlindCredits = () => {
                 must include the ability to create new credits. Additionally,
                 blind credits must be enabled by your service provider; the
                 option is not available when logged in as a merchant via the
-                partner portal【598181698523452†L65-L81】.
+                partner portal.
               </p>
             </section>
 
@@ -65,7 +65,7 @@ const BlindCredits = () => {
                 sale, there is little protection against issuing refunds to
                 stolen cards or fraudsters. Service providers require a risk
                 review before enabling blind credits, and many prohibit their
-                use altogether【598181698523452†L85-L99】.
+                use altogether.
               </p>
             </section>
 
@@ -81,7 +81,7 @@ const BlindCredits = () => {
               <ol className="list-decimal pl-6 space-y-2 text-muted-foreground mb-4">
                 <li>
                   In the partner portal, locate the merchant account and open
-                  its advanced features settings【598181698523452†L104-L122】.
+                  its advanced features settings.
                 </li>
                 <li>
                   Enable either “Allow blind credit card credits” or “Allow
@@ -89,13 +89,13 @@ const BlindCredits = () => {
                 </li>
                 <li>
                   Save your changes. Your service provider will contact you by
-                  phone to confirm authorisation before enabling the feature【598181698523452†L104-L122】.
+                  phone to confirm authorisation before enabling the feature.
                 </li>
               </ol>
               <p className="text-muted-foreground leading-relaxed">
                 Once enabled, certain actions—such as updating the merchant’s
                 email address or accessing security keys—may be restricted to
-                protect against fraud【598181698523452†L127-L135】.
+                protect against fraud.
               </p>
             </section>
           </div>

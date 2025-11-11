@@ -8,7 +8,7 @@ import NavTree from "@/components/NavTree";
  *
  * Subscription reports let you search and analyse recurring payment
  * schedules. This page explains the prerequisites, available search
- * filters, how to pause subscriptions and how to export your results【549718991979132†L50-L118】【549718991979132†L124-L149】.
+ * filters, how to pause subscriptions and how to export your results.
  */
 const SubscriptionReports = () => {
   useEffect(() => {
@@ -36,7 +36,7 @@ const SubscriptionReports = () => {
               <p className="text-muted-foreground leading-relaxed">
                 Subscription reports provide insight into your recurring billing
                 activity. You can search by subscription ID, order ID, customer
-                name, account number, plan, amount range and start/end dates【549718991979132†L50-L76】【549718991979132†L82-L118】.
+                name, account number, plan, amount range and start/end dates.
               </p>
             </section>
 
@@ -46,7 +46,7 @@ const SubscriptionReports = () => {
               <p className="text-muted-foreground leading-relaxed">
                 You need the “Access Recurring/Installment” permission to run
                 subscription reports. At least one active recurring plan must
-                exist on your account【549718991979132†L50-L76】.
+                exist on your account.
               </p>
             </section>
 
@@ -62,11 +62,11 @@ const SubscriptionReports = () => {
                 <li>Subscription ID, order ID or customer name</li>
                 <li>Payment account number or company name</li>
                 <li>
-                  Plan name or ID, amount and start/end date range【549718991979132†L82-L118】
+                  Plan name or ID, amount and start/end date range
                 </li>
                 <li>
                   Status (active, completed, deleted) and whether to include
-                  expired cards【549718991979132†L82-L118】
+                  expired cards
                 </li>
               </ul>
             </section>
@@ -80,7 +80,7 @@ const SubscriptionReports = () => {
                 You can pause individual schedules or all schedules at once.
                 Select a schedule in the results and click <em>Pause</em> to
                 stop further charges. Use <em>Pause All</em> to suspend all
-                recurring payments until you resume them【549718991979132†L124-L149】.
+                recurring payments until you resume them.
               </p>
             </section>
 

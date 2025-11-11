@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * Merchants can add surcharges, convenience fees and miscellaneous fees to
  * their transactions using the customer fee configuration tools. This
  * guide summarises the prerequisites for adding fees, how to create
- * new fees and the differences between the available fee types【344513904639358†L51-L74】.
+ * new fees and the differences between the available fee types.
  */
 const CustomerFeeConfiguration = () => {
   useEffect(() => {
@@ -37,7 +37,7 @@ const CustomerFeeConfiguration = () => {
               <p className="text-muted-foreground leading-relaxed">
                 The fee configuration tool allows you to apply surcharges,
                 convenience fees and miscellaneous fees to card and ACH
-                transactions processed through the virtual terminal【344513904639358†L51-L74】. Each
+                transactions processed through the virtual terminal. Each
                 fee type has unique rules and maximum amounts.
               </p>
             </section>
@@ -49,7 +49,7 @@ const CustomerFeeConfiguration = () => {
                 Your service provider must enable the customer fee feature, and
                 you need administrative permissions to configure fees. Some
                 processors or card brands restrict or prohibit surcharging,
-                so be sure to check your merchant agreement【344513904639358†L105-L142】.
+                so be sure to check your merchant agreement.
               </p>
             </section>
 
@@ -92,7 +92,7 @@ const CustomerFeeConfiguration = () => {
                   Convenience fees are charged for providing an alternative
                   payment channel, such as online payments instead of in‑person.
                   They must be a flat amount and cannot vary based on the
-                  payment type or amount【741732206429404†L274-L275】.
+                  payment type or amount.
                 </p>
               </details>
               <details className="border border-border rounded p-4">
@@ -103,7 +103,7 @@ const CustomerFeeConfiguration = () => {
                   Miscellaneous fees can be used to pass on specific costs,
                   such as return check fees or other non‑processing expenses.
                   You may set a flat amount or percentage, subject to
-                  processor approval【344513904639358†L105-L142】.
+                  processor approval.
                 </p>
               </details>
             </section>

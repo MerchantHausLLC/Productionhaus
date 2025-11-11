@@ -11,7 +11,7 @@ import NavTree from "@/components/NavTree";
  * considerations, summarises how requests are sent and highlights
  * important points to remember. Citations come from the developer
  * marketing page and independent articles about the Direct Post
- * method【4979302280188†L140-L147】【973495872450596†L97-L104】.
+ * method.
  */
 const PaymentAPI = () => {
   useEffect(() => {
@@ -30,7 +30,7 @@ const PaymentAPI = () => {
               the simplest way to post transactions directly from your
               server to the gateway. It supports both web‑based and non
               web‑based applications but places greater PCI responsibilities
-              on the integrator【4979302280188†L140-L147】.
+              on the integrator.
             </p>
 
             {/* Overview */}
@@ -58,7 +58,7 @@ const PaymentAPI = () => {
                 all data security requirements. Independent sources note
                 that the direct post method is better suited for
                 businesses with the resources to handle PCI compliance
-                themselves【973495872450596†L97-L104】. If you operate in a
+                themselves. If you operate in a
                 high‑risk environment or lack a dedicated security team,
                 consider using a tokenisation or hosted solution instead.
               </p>
@@ -67,7 +67,7 @@ const PaymentAPI = () => {
                 live credentials or real card data in test environments.
                 Always use a test merchant account and designated test keys.
                 The official documentation stresses this point and warns
-                developers not to use real API keys when testing【159203244340751†screenshot】.
+                developers not to use real API keys when testing.
               </p>
             </section>
 
@@ -93,7 +93,7 @@ const PaymentAPI = () => {
                   <li>Use HTTPS for all communication to ensure data is encrypted in transit.</li>
                   <li>Store your API credentials securely and rotate passwords regularly.</li>
                   <li>Validate all input on your server to prevent injection or tampering.</li>
-                  <li>Test against the gateway’s sandbox environment before going live. Real cards should never be used for testing【159203244340751†screenshot】.</li>
+                  <li>Test against the gateway’s sandbox environment before going live. Real cards should never be used for testing.</li>
                 </ul>
               </details>
             </section>
@@ -110,7 +110,7 @@ const PaymentAPI = () => {
                 tokenisation or hosted solutions to reduce scope. If you
                 decide to proceed with the Payment API, budget time and
                 resources for regular security audits and vulnerability
-                scans【973495872450596†L97-L104】.
+                scans.
               </p>
             </section>
           </div>

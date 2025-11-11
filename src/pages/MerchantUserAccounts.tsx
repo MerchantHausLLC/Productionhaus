@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * This component summarises how merchants manage user accounts in the
  * merchant portal. It covers prerequisites, adding new users, resetting
  * passwords and editing existing accounts. The information is adapted
- * from official support resources【777226075576522†L51-L57】【777226075576522†L74-L92】.
+ * from official support resources.
  */
 const MerchantUserAccounts = () => {
   useEffect(() => {
@@ -20,7 +20,7 @@ const MerchantUserAccounts = () => {
     <>
       <Header />
       <main className="bg-background py-16 px-6">
-        {/* Load Inter font */}        <div className="max-w-5xl mx-auto flex">
+        {/* Load Inter font */} <div className="max-w-5xl mx-auto flex">
           <NavTree />
           <div className="flex-1 docs-typography">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
@@ -41,7 +41,7 @@ const MerchantUserAccounts = () => {
               The User Accounts section allows merchants to create new
               usernames, edit permissions and notifications, delete users and
               resend welcome emails. Every account has at least one primary
-              user, and there is no limit to the number of sub‑users【777226075576522†L51-L57】.
+              user, and there is no limit to the number of sub‑users.
             </p>
           </section>
 
@@ -53,12 +53,12 @@ const MerchantUserAccounts = () => {
             <p className="text-muted-foreground leading-relaxed">
               To access the User Accounts page, a user needs the “Access
               Administrative Options” permission. Primary users have this
-              permission by default and it cannot be removed【777226075576522†L60-L65】.
+              permission by default and it cannot be removed.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Navigate to <em>Options → Settings → User Accounts</em> via the
               left‑hand menu, or from the home page go to <em>Utilities →
-              Settings → User Accounts</em>【777226075576522†L67-L70】.
+              Settings → User Accounts</em>.
             </p>
           </section>
 
@@ -73,14 +73,14 @@ const MerchantUserAccounts = () => {
               <em>User Accounts</em>. Click <strong>Add a New User</strong> and
               enter the new user’s first name, last name, email address, title
               (optional) and username. If the username is already taken, you’ll
-              need to choose another【777226075576522†L74-L92】.
+              need to choose another.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Next, select the appropriate permissions and email notifications for
               the user. When you click <em>Create User</em>, they will receive a
               welcome email with a link to set a password. This link is valid for
               24 hours. If it expires, you can resend the welcome email from the
-              user’s edit page【777226075576522†L86-L93】.
+              user’s edit page.
             </p>
           </section>
 
@@ -94,13 +94,13 @@ const MerchantUserAccounts = () => {
               password, so only do this when the user is ready to set a new one.
               Primary users can reset their own password via <em>Settings → User
               Accounts</em>; if they cannot log in, the service provider can
-              reset it on their behalf【777226075576522†L96-L116】.
+              reset it on their behalf.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Sub‑users with administrative permissions can reset their own
               passwords. Otherwise, a primary or admin user must reset it via
               their User Accounts page, or the service provider can do
-              this through the Partner Portal【777226075576522†L119-L139】.
+              this through the Partner Portal.
             </p>
           </section>
 
@@ -114,7 +114,7 @@ const MerchantUserAccounts = () => {
               username you wish to change. You can update the first name, last
               name, email, title, permissions and notifications. Usernames
               themselves cannot be changed; if you need a different username,
-              request a primary username change via support【777226075576522†L145-L151】.
+              request a primary username change via support.
             </p>
           </section>
           </div>

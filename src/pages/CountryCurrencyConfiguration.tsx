@@ -8,7 +8,7 @@ import NavTree from "@/components/NavTree";
  *
  * This page describes how to set your default country and currency for
  * virtual terminal transactions. It explains why you might want to
- * customise these defaults and how to configure them in the portal【494814910899136†L49-L89】.
+ * customise these defaults and how to configure them in the portal.
  */
 const CountryCurrencyConfiguration = () => {
   useEffect(() => {
@@ -37,7 +37,7 @@ const CountryCurrencyConfiguration = () => {
               <p className="text-muted-foreground leading-relaxed">
                 This setting controls the default country and currency shown
                 whenever you process a manual transaction. It does not affect
-                API‑based processing or your settlement currency【494814910899136†L90-L111】.
+                API‑based processing or your settlement currency.
               </p>
             </section>
 
@@ -47,7 +47,7 @@ const CountryCurrencyConfiguration = () => {
               <p className="text-muted-foreground leading-relaxed">
                 You need administrative permissions to change these settings.
                 The list of available currencies depends on your processor and
-                merchant account configuration【494814910899136†L49-L89】.
+                merchant account configuration.
               </p>
             </section>
 
@@ -72,7 +72,7 @@ const CountryCurrencyConfiguration = () => {
                 </li>
                 <li>
                   Click <em>Save</em>. If you are using risk tools, updating
-                  your currency may reset thresholds to their default values【958898769232710†L112-L124】.
+                  your currency may reset thresholds to their default values.
                 </li>
               </ol>
             </section>

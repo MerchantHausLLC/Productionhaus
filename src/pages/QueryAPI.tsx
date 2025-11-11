@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * This page describes the Query API, which lets you download
  * transaction data from the gateway for reporting and analytics. It
  * summarises the communication protocol, required parameters and
- * typical use cases【4979302280188†L210-L214】【245057009013518†L35-L50】.
+ * typical use cases.
  */
 const QueryAPI = () => {
   useEffect(() => {
@@ -29,7 +29,7 @@ const QueryAPI = () => {
               The Query API provides machine‑readable access to your
               transaction history. Use it to pull settlement statuses,
               customer vault data and other details for custom
-              reporting【4979302280188†L210-L214】.
+              reporting.
             </p>
 
             {/* Overview */}
@@ -53,23 +53,23 @@ const QueryAPI = () => {
               </h2>
               <p className="text-muted-foreground leading-relaxed">
                 According to integration resources, the Query API uses
-                HTTP over SSL to send requests to a specified endpoint【245057009013518†L53-L57】.
+                HTTP over SSL to send requests to a specified endpoint.
                 You may use either GET or POST to pass name/value
-                pairs to the API【245057009013518†L59-L67】. At a minimum
+                pairs to the API. At a minimum
                 you provide your <code>username</code> and
                 <code>password</code> credentials. Additional optional
                 parameters filter the results—for example
                 <code>transaction_id</code>, <code>order_id</code>,
-                <code>last_name</code> or date ranges【245057009013518†L72-L129】.
+                <code>last_name</code> or date ranges.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 The API also supports conditions to retrieve only
                 specific transaction states such as pending
                 authorisations, settled transactions or failed
-                payments【245057009013518†L131-L153】. To query the
+                payments. To query the
                 customer vault rather than transactions, include the
                 <code>report_type=customer_vault</code> parameter and
-                optionally specify a <code>customer_vault_id</code>【245057009013518†L200-L219】.
+                optionally specify a <code>customer_vault_id</code>.
               </p>
             </section>
 

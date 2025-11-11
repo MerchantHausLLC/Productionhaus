@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * By verifying that SPF and DKIM records are properly configured, you
  * ensure that emails sent from the portal use your own domain and avoid
  * deliverability issues. The article covers the overall process,
- * interpreting validation statuses and updating DNS【454465210956063†L49-L84】【454465210956063†L101-L140】.
+ * interpreting validation statuses and updating DNS.
  */
 const DkimSpfValidation = () => {
   useEffect(() => {
@@ -41,7 +41,7 @@ const DkimSpfValidation = () => {
                 company’s domain. To do this, your DNS must include specific
                 SPF and DKIM records. The validation tool checks these
                 records and reports whether they are present and configured
-                correctly【454465210956063†L49-L84】.
+                correctly.
               </p>
             </section>
 
@@ -56,7 +56,7 @@ const DkimSpfValidation = () => {
                 were found and are correct. “Unable to Validate” indicates
                 that the tool could not confirm the records—often because
                 propagation is still in progress. “Invalid” means the
-                required records were missing or incorrect【454465210956063†L101-L140】.
+                required records were missing or incorrect.
               </p>
             </section>
 
@@ -70,7 +70,7 @@ const DkimSpfValidation = () => {
                 the sending domain. For DKIM, create one or more CNAME
                 records pointing to your provider’s public keys. Use your
                 registrar’s DNS management tools to add these entries and
-                wait for propagation【454465210956063†L49-L84】.
+                wait for propagation.
               </p>
             </section>
 
@@ -85,7 +85,7 @@ const DkimSpfValidation = () => {
                 reflect whether the records are correct. If the tool cannot
                 validate your domain, double‑check that the records were
                 entered exactly as provided and contact your registrar if
-                needed【454465210956063†L101-L140】.
+                needed.
               </p>
             </section>
           </div>

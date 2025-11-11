@@ -29,10 +29,10 @@ export default function Secure3DS() {
             authenticates cardholders before you submit a transaction. It
             reduces e‑commerce payment fraud and increases customer
             confidence by sharing additional data between the merchant, card
-            issuer and cardholder【344687996962422†screenshot】. For most
+            issuer and cardholder. For most
             transactions this happens behind the scenes, but in some cases
             customers may be challenged (for example, by entering a one‑time
-            password)【344687996962422†screenshot】.
+            password).
           </p>
           <section id="overview" className="mb-8">
             <h2 className="text-2xl font-semibold mb-2">Overview</h2>
@@ -52,43 +52,43 @@ export default function Secure3DS() {
                 <strong>Initialise Gateway.js.</strong> Load the script and
                 call <code>Gateway.create()</code> with your public key. The
                 resulting object exposes the
-                <code>get3DSecure()</code> method【582078734460959†screenshot】.
+                <code>get3DSecure()</code> method.
               </li>
               <li>
                 <strong>Initialise payer authentication.</strong> Call
                 <code>gateway.get3DSecure()</code> to obtain the 3‑DS
-                interface【344687996962422†screenshot】.
+                interface.
               </li>
               <li>
                 <strong>Create a transaction interface.</strong> Build an
                 object containing details about the transaction, including
                 card number, expiration date, currency, amount, cardholder
-                name, email address and billing address【584822900609271†screenshot】.
+                name, email address and billing address.
                 If you are using Collect.js, replace card details with the
                 payment token; if using a saved customer, provide the
-                customer vault token and amount【584822900609271†screenshot】.
+                customer vault token and amount.
               </li>
               <li>
                 <strong>Start the authentication process.</strong> Mount the
                 interface onto your page. For single‑page applications built
                 with frameworks like React or Angular, ensure the mounted
-                DOM element isn&apos;t destroyed during re‑renders【584822900609271†screenshot】.
+                DOM element isn&apos;t destroyed during re‑renders.
               </li>
               <li>
                 <strong>Attach callbacks.</strong> Register callbacks to
                 handle different events: when the issuer requests a password,
                 when 3‑DS data is ready, when the customer fails
-                authentication, and to capture any errors【582078734460959†screenshot】.
+                authentication, and to capture any errors.
               </li>
               <li>
                 <strong>Send 3‑DS data to your backend.</strong> When the
                 authentication completes, send the 3‑DS data returned from
-                the callback to your server【582078734460959†screenshot】.
+                the callback to your server.
               </li>
               <li>
                 <strong>Submit the transaction.</strong> Post the 3‑DS data
                 to the payment API along with your private API key to
-                finalise the transaction【582078734460959†screenshot】.
+                finalise the transaction.
               </li>
             </ol>
           </section>
@@ -97,17 +97,17 @@ export default function Secure3DS() {
             <ul className="list-disc list-inside space-y-2">
               <li>
                 For frictionless flows, the customer is authenticated
-                automatically and you won&apos;t need to show any challenge screen【344687996962422†screenshot】.
+                automatically and you won&apos;t need to show any challenge screen.
               </li>
               <li>
                 When using Collect.js, call the 3‑DS
                 <code>configure()</code> method after the card details have
-                been collected to provide the tokenised payment data【344687996962422†screenshot】.
+                been collected to provide the tokenised payment data.
               </li>
               <li>
                 Customer vault integrations require only the customer vault
                 token, currency and amount. Card details are not included
-               【584822900609271†screenshot】.
+               .
               </li>
               <li>
                 Always submit the final transaction via the secure payment

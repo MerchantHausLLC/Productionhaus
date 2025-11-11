@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * referred to as QuickClick. It is a simple copy‑and‑paste checkout
  * solution for merchants who don’t have the resources to build a
  * custom integration. The solution is ideal for small merchants or
- * website builders with limited options【973495872450596†L136-L145】.
+ * website builders with limited options.
  */
 const HostedPaymentPage = () => {
   useEffect(() => {
@@ -29,7 +29,7 @@ const HostedPaymentPage = () => {
             <p className="text-muted-foreground mb-8 leading-relaxed">
               A hosted payment page provides a turnkey checkout solution.
               Also known as QuickClick, it lets you add a payment button
-              or link to your website without writing server‑side code【973495872450596†L136-L145】.
+              or link to your website without writing server‑side code.
             </p>
 
             {/* Overview */}
@@ -65,7 +65,7 @@ const HostedPaymentPage = () => {
               <p className="text-muted-foreground leading-relaxed">
                 QuickClick is ideal for small merchants, bloggers or
                 site builders who don’t have server‑side scripting
-                support【973495872450596†L136-L145】. It allows you to
+                support. It allows you to
                 start accepting payments quickly without worrying about
                 PCI compliance, since the payment page is hosted by the
                 gateway. You can also generate buttons for donations or

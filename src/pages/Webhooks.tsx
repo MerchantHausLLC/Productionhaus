@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * This page describes webhooks and how they differ from the Query API.
  * Webhooks provide near‑real‑time notifications of events happening on
  * your account. They “push” information to your application instead
- * of requiring you to poll for it【4979302280188†L202-L207】.
+ * of requiring you to poll for it.
  */
 const Webhooks = () => {
   useEffect(() => {
@@ -31,7 +31,7 @@ const Webhooks = () => {
               status changes, recurring billing updates or deposit
               events. Unlike the Query API, which requires your
               application to pull data on demand, webhooks push data to
-              your endpoint in near real time【4979302280188†L202-L207】.
+              your endpoint in near real time.
             </p>
 
             {/* Overview */}

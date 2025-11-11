@@ -8,7 +8,7 @@ import NavTree from "@/components/NavTree";
  *
  * Merchants can view their service provider’s contact information in the
  * portal. This guide explains where to find that information and how
- * partners can update the contact details displayed to merchants【482123191563672†L45-L74】【482123191563672†L79-L107】.
+ * partners can update the contact details displayed to merchants.
  */
 const MerchantServiceProviderContacts = () => {
   useEffect(() => {
@@ -37,7 +37,7 @@ const MerchantServiceProviderContacts = () => {
                 At the top of the merchant portal there is a Help icon that
                 opens a support drop‑down. The email, phone number and web
                 address displayed here come from the partner’s contact
-                configuration【482123191563672†L45-L74】.
+                configuration.
               </p>
             </section>
 
@@ -50,7 +50,7 @@ const MerchantServiceProviderContacts = () => {
                 Merchants can access support details by clicking the Help
                 icon. The portal will show the partner’s phone number, email
                 and URL if provided. If no details are configured, only a
-                generic support email appears【482123191563672†L45-L74】.
+                generic support email appears.
               </p>
             </section>
 
@@ -63,7 +63,7 @@ const MerchantServiceProviderContacts = () => {
                 Partners can update these fields in the partner portal under
                 their account settings. Add your support phone number, email
                 address and website URL. Merchants will then see the
-                updated information whenever they click Help【482123191563672†L79-L107】.
+                updated information whenever they click Help.
               </p>
             </section>
           </div>

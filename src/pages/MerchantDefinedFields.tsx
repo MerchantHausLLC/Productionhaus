@@ -8,7 +8,7 @@ import NavTree from "@/components/NavTree";
  *
  * Merchant defined fields (MDFs) let you capture additional data with each
  * transaction. This page explains what MDFs are, how to create them, the
- * available field types and where they appear in reports【716535113639864†L63-L92】【716535113639864†L125-L168】.
+ * available field types and where they appear in reports.
  */
 const MerchantDefinedFields = () => {
   useEffect(() => {
@@ -37,7 +37,7 @@ const MerchantDefinedFields = () => {
                 You can create up to 20 MDFs. Each field consists of a label,
                 an internal alias and, optionally, a set of choices. MDFs are
                 available for use in reports and can be displayed to customers
-                on your payment forms【716535113639864†L63-L92】.
+                on your payment forms.
               </p>
             </section>
 
@@ -57,7 +57,7 @@ const MerchantDefinedFields = () => {
                 <li>
                   Enter a label (what your users see) and an alias (used for
                   reporting). Aliases must be unique and cannot contain
-                  spaces or special characters【716535113639864†L90-L120】.
+                  spaces or special characters.
                 </li>
                 <li>
                   Choose a field type and, if applicable, add the list of
@@ -65,7 +65,7 @@ const MerchantDefinedFields = () => {
                 </li>
                 <li>
                   Specify where the field should display (Virtual Terminal,
-                  Customer Vault, Payment Form, API). Save your changes【716535113639864†L125-L168】.
+                  Customer Vault, Payment Form, API). Save your changes.
                 </li>
               </ol>
             </section>
@@ -85,7 +85,7 @@ const MerchantDefinedFields = () => {
                 </li>
                 <li>
                   <strong>Select:</strong> A drop‑down menu allowing one choice
-                  from a list【716535113639864†L63-L92】.
+                  from a list.
                 </li>
               </ul>
             </section>
@@ -99,7 +99,7 @@ const MerchantDefinedFields = () => {
                 Once created, MDFs can be reordered or edited. Deleting a
                 field removes it from future transactions but does not delete
                 data already stored in reports. Use caution when renaming
-                aliases, as this may break integrations【716535113639864†L125-L168】.
+                aliases, as this may break integrations.
               </p>
             </section>
           </div>

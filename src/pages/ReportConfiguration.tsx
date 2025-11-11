@@ -8,7 +8,7 @@ import NavTree from "@/components/NavTree";
  *
  * This guide describes how to customise the fields included in your
  * downloaded transaction reports. By creating templates you can choose
- * which columns appear and set a default layout for all future exports【54240457345460†L53-L83】.
+ * which columns appear and set a default layout for all future exports.
  */
 const ReportConfiguration = () => {
   useEffect(() => {
@@ -37,7 +37,7 @@ const ReportConfiguration = () => {
                 Report configuration lets you design custom column layouts for
                 CSV exports. You can drag and drop fields from a list of
                 available columns, save multiple formats and select one as
-                your default【54240457345460†L53-L83】.
+                your default.
               </p>
             </section>
 
@@ -56,11 +56,11 @@ const ReportConfiguration = () => {
                 <li>
                   Name your format and drag fields from the available list to
                   the selected area. You can reorder columns by dragging them
-                  up or down【54240457345460†L85-L106】.
+                  up or down.
                 </li>
                 <li>
                   Save the format. It will be available whenever you download
-                  a transaction report.【54240457345460†L85-L106】
+                  a transaction report.
                 </li>
               </ol>
             </section>
@@ -74,7 +74,7 @@ const ReportConfiguration = () => {
                 When running transaction reports, choose your saved format
                 from the <em>Download Format</em> drop‑down. If you set a
                 default format, it will automatically be selected for all
-                downloads. You can edit or delete formats at any time【54240457345460†L85-L106】.
+                downloads. You can edit or delete formats at any time.
               </p>
             </section>
           </div>

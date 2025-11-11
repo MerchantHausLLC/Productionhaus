@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * how the integration works, why it reduces PCI scope and what
  * benefits it offers compared to a direct post. Content is
  * derived from independent sources describing the advantages of the
- * Three Step Redirect API【973495872450596†L106-L118】.
+ * Three Step Redirect API.
  */
 const ThreeStepRedirect = () => {
   useEffect(() => {
@@ -31,7 +31,7 @@ const ThreeStepRedirect = () => {
               compliance burden by hosting the payment form on the
               gateway. It is the recommended approach for custom
               web‑based payment flows where you want a branded
-              experience without touching cardholder data directly【973495872450596†L106-L118】.
+              experience without touching cardholder data directly.
             </p>
 
             {/* Overview */}
@@ -71,12 +71,12 @@ const ThreeStepRedirect = () => {
                 Independent experts highlight two key advantages of the
                 Three Step Redirect: it significantly reduces your PCI
                 footprint and still offers a high‑end look and feel for
-                customers【973495872450596†L106-L118】. Because the
+                customers. Because the
                 gateway handles the payment form, you avoid collecting
                 cardholder data directly. This method is also required
                 when using payer authentication services such as Verified
                 by Visa or Mastercard SecureCode, making it well suited
-                for high‑risk e‑commerce【973495872450596†L106-L118】.
+                for high‑risk e‑commerce.
               </p>
             </section>
 

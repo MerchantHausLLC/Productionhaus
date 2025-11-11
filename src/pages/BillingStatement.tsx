@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * This guide explains how merchants can view their billing statements in the
  * portal when the service provider bills fees directly to the merchant. It
  * covers the prerequisites for enabling the statement, how to access and
- * understand the invoice and notes on the billing schedule【552348752727428†L49-L54】【552348752727428†L85-L98】.
+ * understand the invoice and notes on the billing schedule.
  */
 const BillingStatement = () => {
   useEffect(() => {
@@ -37,7 +37,7 @@ const BillingStatement = () => {
               <p className="text-muted-foreground leading-relaxed">
                 The billing statement page lists the current balance due for
                 your account. You can view individual invoices, download a
-                PDF copy and print statements for your records【552348752727428†L85-L98】.
+                PDF copy and print statements for your records.
               </p>
             </section>
 
@@ -49,8 +49,8 @@ const BillingStatement = () => {
                 provider has enabled the “Bill to Merchant” setting. Partners
                 must turn on the <em>Display Billing Statement</em> flag and
                 optionally choose to send email notifications when fees are
-                billed【552348752727428†L59-L70】. Users need the “Administrative Options”
-                permission to access the statement【552348752727428†L72-L79】.
+                billed. Users need the “Administrative Options”
+                permission to access the statement.
               </p>
             </section>
 
@@ -64,7 +64,7 @@ const BillingStatement = () => {
                 Statement</em>. You’ll see your current balance and a list of
                 invoices. Click an invoice to view line items and download a
                 PDF. Some providers also offer a detailed per‑transaction fee
-                breakdown via a drop‑down on each invoice【552348752727428†L101-L112】.
+                breakdown via a drop‑down on each invoice.
               </p>
             </section>
 
@@ -77,7 +77,7 @@ const BillingStatement = () => {
                 Invoices are generated on a regular schedule. Typically, fees
                 are billed every Tuesday and Friday when the balance reaches a
                 minimum amount (for example, $50). Any remaining monthly fees
-                are billed on the first business day of the following month【552348752727428†L85-L98】.
+                are billed on the first business day of the following month.
               </p>
             </section>
           </div>

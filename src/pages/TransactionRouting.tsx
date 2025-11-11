@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * Transaction routing allows you to distribute transaction volume across
  * multiple processors. By assigning percentages to each processor, you
  * can load balance your payment traffic. This guide explains how to set
- * up routing, handle overflow and provides important considerations【150541236870658†L65-L107】.
+ * up routing, handle overflow and provides important considerations.
  */
 const TransactionRouting = () => {
   useEffect(() => {
@@ -39,7 +39,7 @@ const TransactionRouting = () => {
                 transaction volume to each configured processor. The
                 percentages reset each calendar month and do not split
                 individual transactions; instead, the system counts
-                transactions and routes them according to the allocation【150541236870658†L65-L107】.
+                transactions and routes them according to the allocation.
               </p>
             </section>
 
@@ -58,12 +58,12 @@ const TransactionRouting = () => {
                 <li>
                   Enter a percentage for each processor. The total must add
                   up to 100%. A default processor receives any remaining
-                  volume not specifically allocated【150541236870658†L109-L146】.
+                  volume not specifically allocated.
                 </li>
                 <li>
                   Save the changes. The routing table resets on the first of
                   each month. Percentages do not roll over, so unused
-                  allocation is lost【150541236870658†L65-L107】.
+                  allocation is lost.
                 </li>
               </ol>
             </section>
@@ -77,7 +77,7 @@ const TransactionRouting = () => {
                 If a processor reaches its assigned percentage before the end
                 of the month, transactions will automatically flow to the
                 default processor. Routing does not cascade retries—you can’t
-                attempt a second processor if the first declines【150541236870658†L109-L146】.
+                attempt a second processor if the first declines.
               </p>
             </section>
 
@@ -92,7 +92,7 @@ const TransactionRouting = () => {
                 rates across processors and adjust percentages accordingly. If
                 a processor stops working, set its percentage to 0% and
                 allocate all volume to an alternative processor until the
-                issue is resolved【150541236870658†L65-L107】.
+                issue is resolved.
               </p>
             </section>
           </div>
