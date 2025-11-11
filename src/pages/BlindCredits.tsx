@@ -1,6 +1,7 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useEffect } from "react";
+import Head from "next/head";
 import NavTree from "@/components/NavTree";
 
 /**
@@ -20,6 +21,19 @@ const BlindCredits = () => {
     <>
       <Header />
       <main className="bg-background py-16 px-6">
+        <Head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+          />
+          <style>{`
+            h1, h2, h3, h4, h5, h6, p, li, button, a, em, strong {
+              font-family: 'Inter', sans-serif;
+            }
+          `}</style>
+        </Head>
         <div className="max-w-5xl mx-auto flex">
           <NavTree />
           <div className="flex-1">
