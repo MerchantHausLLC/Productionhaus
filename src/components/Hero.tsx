@@ -2,6 +2,7 @@ import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import heroVideo from "@/assets/Hero.webm";
+import { useParallax } from "@/hooks/use-parallax";
 
 const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
   const [displayText, setDisplayText] = useState("");
@@ -54,6 +55,9 @@ export const Hero = () => {
   const [previousWords, setPreviousWords] = useState({ line1: -1, line2: -1, line3: -1 });
   const [colorIndices, setColorIndices] = useState({ line1: 0, line2: 1, line3: 2 });
   const [isAnimating, setIsAnimating] = useState(false);
+  const videoParallaxRef = useParallax<HTMLDivElement>({ speed: 0.08 });
+  const shadowOverlayRef = useParallax<HTMLDivElement>({ speed: 0.12 });
+  const accentOverlayRef = useParallax<HTMLDivElement>({ speed: 0.16 });
 
   const getRandomIndex = (max: number, previous: number) => {
     let newIndex = Math.floor(Math.random() * max);
@@ -118,21 +122,23 @@ export const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-visible">
       {/* Video Background */}
-      <div className="absolute inset-0 w-full h-full">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          poster="/hero-replacement.png"
-        >
-          <source src={heroVideo} type="video/webm" />
-        </video>
+      <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+        <div ref={videoParallaxRef} className="absolute inset-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+            poster="/hero-replacement.png"
+          >
+            <source src={heroVideo} type="video/webm" />
+          </video>
+        </div>
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-neutral-dark/30" />
+        <div ref={shadowOverlayRef} className="absolute inset-0 bg-neutral-dark/30" />
         {/* Gradient overlay for brand effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-crimson/20 via-transparent to-cyber-teal/20" />
+        <div ref={accentOverlayRef} className="absolute inset-0 bg-gradient-to-br from-crimson/20 via-transparent to-cyber-teal/20" />
       </div>
 
       {/* Desktop: Left hemisphere layout, Mobile: Full width */}
