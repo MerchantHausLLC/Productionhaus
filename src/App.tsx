@@ -29,6 +29,7 @@ import CountryCurrencyConfiguration from "./pages/CountryCurrencyConfiguration";
 import CustomerFeeConfiguration from "./pages/CustomerFeeConfiguration";
 import DkimSpfValidation from "./pages/DkimSpfValidation";
 import EmailTemplateChanges from "./pages/EmailTemplateChanges";
+import IntegrationOverview from "./pages/IntegrationOverview";
 import InvoiceLookFeel from "./pages/InvoiceLookFeel";
 import ManagingPartnerUsers from "./pages/ManagingPartnerUsers";
 import MerchantDefinedFields from "./pages/MerchantDefinedFields";
@@ -36,10 +37,13 @@ import MerchantIPRestrictions from "./pages/MerchantIPRestrictions";
 import MerchantServiceProviderContacts from "./pages/MerchantServiceProviderContacts";
 import MerchantUserAccounts from "./pages/MerchantUserAccounts";
 import PasswordPolicy90Day from "./pages/PasswordPolicy90Day";
+import DirectConnect from "./pages/DirectConnect";
+import GatewayJs from "./pages/GatewayJs";
 import ReportConfiguration from "./pages/ReportConfiguration";
 import SecCodeConfiguration from "./pages/SecCodeConfiguration";
 import SettlementSchedule from "./pages/SettlementSchedule";
 import SpfDkimRecords from "./pages/SpfDkimRecords";
+import Secure3DS from "./pages/Secure3DS";
 import SubscriptionReports from "./pages/SubscriptionReports";
 import TestMode from "./pages/TestMode";
 import TheMerchantPortal from "./pages/TheMerchantPortal";
@@ -47,6 +51,7 @@ import TransactionReports from "./pages/TransactionReports";
 import TransactionRouting from "./pages/TransactionRouting";
 import TwoFactorAuthentication from "./pages/TwoFactorAuthentication";
 import WhatIsACH from "./pages/WhatIsACH";
+import KountFraudManagement from "./pages/KountFraudManagement";
 
 const queryClient = new QueryClient();
 
@@ -72,6 +77,11 @@ const App = () => (
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/TheMerchantPortal" element={<TheMerchantPortal />} />
+            <Route path="/IntegrationOverview" element={<IntegrationOverview />} />
+            <Route path="/DirectConnect" element={<DirectConnect />} />
+            <Route path="/GatewayJs" element={<GatewayJs />} />
+            <Route path="/Secure3DS" element={<Secure3DS />} />
+            <Route path="/KountFraudManagement" element={<KountFraudManagement />} />
             <Route path="/AccountInformation" element={<AccountInformation />} />
             <Route path="/AddressVerification" element={<AddressVerification />} />
             <Route path="/AutomaticCardUpdater" element={<AutomaticCardUpdater />} />

@@ -1,7 +1,7 @@
-import Head from "next/head";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import NavTree from "../components/NavTree";
+import { useEffect } from "react";
+import { Header } from "@/components/Header";
+import Footer from "@/components/Footer";
+import NavTree from "@/components/NavTree";
 
 /**
  * GatewayJs page
@@ -14,20 +14,16 @@ import NavTree from "../components/NavTree";
  * MerchantHaus branding.
  */
 export default function GatewayJs() {
+  useEffect(() => {
+    document.title = "Gateway.js Quick Start";
+  }, []);
+
   return (
     <>
-      <Head>
-        <title>Gateway.js Quick Start</title>
-        {/* Use Inter as the default font for consistency */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
       <Header />
       <main className="flex max-w-7xl mx-auto px-4 py-8">
         <NavTree />
-        <div className="flex-1">
+        <div className="flex-1 docs-typography">
           <h1 className="text-3xl font-bold mb-4">Gateway.js Quick Start</h1>
           <p className="mb-6">
             Gateway.js is a JavaScript library that allows you to extend your

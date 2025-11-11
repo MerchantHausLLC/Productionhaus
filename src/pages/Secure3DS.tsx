@@ -1,7 +1,7 @@
-import Head from "next/head";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import NavTree from "../components/NavTree";
+import { useEffect } from "react";
+import { Header } from "@/components/Header";
+import Footer from "@/components/Footer";
+import NavTree from "@/components/NavTree";
 
 /**
  * Secure3DS page
@@ -13,19 +13,16 @@ import NavTree from "../components/NavTree";
  * provider have been removed.
  */
 export default function Secure3DS() {
+  useEffect(() => {
+    document.title = "3‑D Secure Integration Guide";
+  }, []);
+
   return (
     <>
-      <Head>
-        <title>3‑D Secure Integration Guide</title>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
       <Header />
       <main className="flex max-w-7xl mx-auto px-4 py-8">
         <NavTree />
-        <div className="flex-1">
+        <div className="flex-1 docs-typography">
           <h1 className="text-3xl font-bold mb-4">3‑D Secure Integration Guide</h1>
           <p className="mb-6">
             Three‑Domain Secure (3‑DS) is a fraud prevention protocol that
