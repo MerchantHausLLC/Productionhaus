@@ -1,7 +1,7 @@
-import Head from "next/head";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import NavTree from "../components/NavTree";
+import { useEffect } from "react";
+import { Header } from "@/components/Header";
+import Footer from "@/components/Footer";
+import NavTree from "@/components/NavTree";
 
 /**
  * Kount Fraud Management page
@@ -14,19 +14,16 @@ import NavTree from "../components/NavTree";
  * neutral branding.
  */
 export default function KountFraudManagement() {
+  useEffect(() => {
+    document.title = "Fraud Management with Kount";
+  }, []);
+
   return (
     <>
-      <Head>
-        <title>Fraud Management with Kount</title>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
       <Header />
       <main className="flex max-w-7xl mx-auto px-4 py-8">
         <NavTree />
-        <div className="flex-1">
+        <div className="flex-1 docs-typography">
           <h1 className="text-3xl font-bold mb-4">Fraud Management</h1>
           <p className="mb-6">
             Kount Fraud Manager is an industry‑leading, AI‑driven fraud

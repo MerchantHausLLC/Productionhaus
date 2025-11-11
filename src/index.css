@@ -137,6 +137,25 @@ All colors MUST be HSL.
     animation: caret-blink 1s steps(1, end) infinite;
   }
 
+  .docs-typography {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .docs-typography h1,
+  .docs-typography h2,
+  .docs-typography h3,
+  .docs-typography h4,
+  .docs-typography h5,
+  .docs-typography h6,
+  .docs-typography p,
+  .docs-typography li,
+  .docs-typography button,
+  .docs-typography a,
+  .docs-typography em,
+  .docs-typography strong {
+    font-family: 'Inter', sans-serif;
+  }
+
   @keyframes caret-blink {
     0%, 40% {
       opacity: 1;
