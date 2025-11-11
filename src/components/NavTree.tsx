@@ -8,12 +8,6 @@ import { useState } from "react";
  * contains sections, a toggle button reveals anchor links to those
  * sections. This component is designed for the MerchantHaus partner site.
  */
-type NavItem = {
-  title: string;
-  href?: string;
-  children?: NavItem[];
-};
-
 const NavTree = () => {
   // Track which top level sections are open
   const [open, setOpen] = useState<Record<string, boolean>>({});
@@ -30,7 +24,7 @@ const NavTree = () => {
    * contains pages, and pages may contain anchor links to their sections.
    * This structure allows the tree to expand and collapse at multiple levels.
    */
-  const navData: NavItem[] = [
+  const navData = [
     {
       title: "The Merchant Portal",
       href: "/TheMerchantPortal",
@@ -342,13 +336,161 @@ const NavTree = () => {
         },
       ],
     },
+    {
+      title: "Developer Guides",
+      children: [
+        {
+          title: "Developer Portal",
+          href: "/DeveloperPortal",
+        },
+        {
+          title: "Integration Overview",
+          href: "/IntegrationOverview",
+          children: [
+            { title: "What Are APIs & SDKs?", href: "/IntegrationOverview#what-are-apis-and-sdks" },
+            { title: "Integration Options", href: "/IntegrationOverview#integration-options" },
+          ],
+        },
+        {
+          title: "Payment API",
+          href: "/PaymentAPI",
+          children: [
+            { title: "Overview", href: "/PaymentAPI#overview" },
+            { title: "Prerequisites & PCI", href: "/PaymentAPI#prerequisites-pci" },
+            { title: "Usage", href: "/PaymentAPI#usage" },
+            { title: "Considerations", href: "/PaymentAPI#considerations" },
+          ],
+        },
+        {
+          title: "Three Step Redirect",
+          href: "/ThreeStepRedirect",
+          children: [
+            { title: "Overview", href: "/ThreeStepRedirect#overview" },
+            { title: "Benefits", href: "/ThreeStepRedirect#benefits" },
+            { title: "Implementation", href: "/ThreeStepRedirect#implementation" },
+            { title: "Considerations", href: "/ThreeStepRedirect#considerations" },
+          ],
+        },
+        {
+          title: "Collect.js",
+          href: "/CollectJs",
+          children: [
+            { title: "Overview", href: "/CollectJs#overview" },
+            { title: "How It Works", href: "/CollectJs#how-it-works" },
+            { title: "Benefits", href: "/CollectJs#benefits" },
+          ],
+        },
+        {
+          title: "Collect Checkout",
+          href: "/CollectCheckout",
+          children: [
+            { title: "Overview", href: "/CollectCheckout#overview" },
+            { title: "How It Works", href: "/CollectCheckout#how-it-works" },
+            { title: "Benefits", href: "/CollectCheckout#benefits" },
+          ],
+        },
+        {
+          title: "Hosted Payment Page",
+          href: "/HostedPaymentPage",
+          children: [
+            { title: "Overview", href: "/HostedPaymentPage#overview" },
+            { title: "Implementation", href: "/HostedPaymentPage#implementation" },
+            { title: "Benefits", href: "/HostedPaymentPage#benefits" },
+          ],
+        },
+        {
+          title: "Query API",
+          href: "/QueryAPI",
+          children: [
+            { title: "Overview", href: "/QueryAPI#overview" },
+            { title: "Communication & Variables", href: "/QueryAPI#communication-variables" },
+            { title: "Usage", href: "/QueryAPI#usage" },
+            { title: "Use Cases", href: "/QueryAPI#use-cases" },
+          ],
+        },
+        {
+          title: "Webhooks",
+          href: "/Webhooks",
+          children: [
+            { title: "Overview", href: "/Webhooks#overview" },
+            { title: "How It Works", href: "/Webhooks#how-it-works" },
+            { title: "Use Cases", href: "/Webhooks#use-cases" },
+          ],
+        },
+        {
+          title: "Customer Present Cloud",
+          href: "/CustomerPresentCloud",
+          children: [
+            { title: "Overview", href: "/CustomerPresentCloud#overview" },
+            { title: "Benefits", href: "/CustomerPresentCloud#benefits" },
+          ],
+        },
+        {
+          title: "Mobile SDK (iOS/Android)",
+          href: "/MobileSDK",
+          children: [
+            { title: "Overview", href: "/MobileSDK#overview" },
+            { title: "Features", href: "/MobileSDK#features" },
+            { title: "Use Cases", href: "/MobileSDK#use-cases" },
+          ],
+        },
+        {
+          title: "Payment Device SDK (Windows/Linux)",
+          href: "/PaymentDeviceSDK",
+          children: [
+            { title: "Overview", href: "/PaymentDeviceSDK#overview" },
+            { title: "Features", href: "/PaymentDeviceSDK#features" },
+            { title: "Use Cases", href: "/PaymentDeviceSDK#use-cases" },
+          ],
+        },
+        {
+          title: "Direct Connect & Gateway Emulator",
+          href: "/DirectConnect",
+          children: [
+            { title: "Overview", href: "/DirectConnect#overview" },
+            { title: "Gateway Emulator", href: "/DirectConnect#gateway-emulator" },
+            { title: "Considerations", href: "/DirectConnect#considerations" },
+          ],
+        },
+        {
+          title: "Gateway.js",
+          href: "/GatewayJs",
+          children: [
+            { title: "Overview", href: "/GatewayJs#overview" },
+            { title: "Getting Started", href: "/GatewayJs#getting-started" },
+            { title: "Best Practices", href: "/GatewayJs#best-practices" },
+            { title: "Use Cases", href: "/GatewayJs#use-cases" },
+          ],
+        },
+        {
+          title: "3‑D Secure (Payer Auth)",
+          href: "/Secure3DS",
+          children: [
+            { title: "Overview", href: "/Secure3DS#overview" },
+            { title: "Quick Start Steps", href: "/Secure3DS#steps" },
+            { title: "Additional Notes", href: "/Secure3DS#notes" },
+          ],
+        },
+        {
+          title: "Kount Fraud Management",
+          href: "/KountFraudManagement",
+          children: [
+            { title: "Features & Benefits", href: "/KountFraudManagement#features" },
+            { title: "How It Works", href: "/KountFraudManagement#how-it-works" },
+            { title: "Supported Products", href: "/KountFraudManagement#supported-products" },
+            { title: "Enabling the Service", href: "/KountFraudManagement#enabling" },
+            { title: "Kount Score", href: "/KountFraudManagement#scores" },
+          ],
+        },
+      ],
+    },
   ];
 
   // Recursively render navigation items. The key includes the parent titles to
   // ensure uniqueness for nested items. When an item has children, clicking
   // the button toggles the open state for that key. Anchor links are used
   // directly when no children exist.
-  const renderItems = (items: NavItem[], parentKey = "") => {
+  const renderItems = (items: any[], parentKey = "") => {
     return items.map((item) => {
       const key = `${parentKey}${item.title}`;
       if (item.children && item.children.length > 0) {
@@ -385,7 +527,7 @@ const NavTree = () => {
 
   return (
     <nav
-      className="w-56 border-r border-border pr-4 mr-4 sticky top-0 max-h-screen overflow-y-auto"
+      className="w-64 border-r border-border pr-6 mr-6 sticky top-24 left-0 max-h-screen overflow-y-auto"
       aria-label="Page navigation"
     >
       <ul className="space-y-2">
