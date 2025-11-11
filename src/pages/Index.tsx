@@ -6,6 +6,8 @@ import { Solutions } from "@/components/Solutions";
 import { Contact } from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { CookieConsent } from "@/components/CookieConsent";
+import ClientResources from "@/components/ClientResources";
+import VampBlogBanner from "@/components/VampBlogBanner";
 
 const Index = () => {
   return (
@@ -21,6 +23,8 @@ const Index = () => {
         <LogoBanner />
         <ValueStats />
         <Solutions />
+        <VampBlogBanner />
+        <ClientResources />
         <Contact />
       </main>
       <Footer />

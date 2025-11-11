@@ -18,6 +18,7 @@ import Security from "./pages/Security";
 import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
 import Quote from "./pages/Quote";
+import DeveloperPortal from "./pages/DeveloperPortal";
 import AccountInformation from "./pages/AccountInformation";
 import AddressVerification from "./pages/AddressVerification";
 import AutomaticCardUpdater from "./pages/AutomaticCardUpdater";
@@ -52,6 +53,16 @@ import TransactionRouting from "./pages/TransactionRouting";
 import TwoFactorAuthentication from "./pages/TwoFactorAuthentication";
 import WhatIsACH from "./pages/WhatIsACH";
 import KountFraudManagement from "./pages/KountFraudManagement";
+import CollectCheckout from "./pages/CollectCheckout";
+import CollectJs from "./pages/CollectJs";
+import CustomerPresentCloud from "./pages/CustomerPresentCloud";
+import HostedPaymentPage from "./pages/HostedPaymentPage";
+import MobileSDK from "./pages/MobileSDK";
+import PaymentAPI from "./pages/PaymentAPI";
+import PaymentDeviceSDK from "./pages/PaymentDeviceSDK";
+import QueryAPI from "./pages/QueryAPI";
+import ThreeStepRedirect from "./pages/ThreeStepRedirect";
+import Webhooks from "./pages/Webhooks";
 
 const queryClient = new QueryClient();
 
@@ -73,7 +84,7 @@ const App = () => (
             <Route path="/apply" element={<Apply />} />
             <Route path="/quote" element={<Quote />} />
             <Route path="/security" element={<Security />} />
-            <Route path="/developer-guides" element={<ComingSoon />} />
+            <Route path="/developer-guides" element={<DeveloperPortal />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/TheMerchantPortal" element={<TheMerchantPortal />} />
@@ -110,6 +121,16 @@ const App = () => (
             <Route path="/TransactionRouting" element={<TransactionRouting />} />
             <Route path="/TwoFactorAuthentication" element={<TwoFactorAuthentication />} />
             <Route path="/WhatIsACH" element={<WhatIsACH />} />
+            <Route path="/CollectCheckout" element={<CollectCheckout />} />
+            <Route path="/CollectJs" element={<CollectJs />} />
+            <Route path="/CustomerPresentCloud" element={<CustomerPresentCloud />} />
+            <Route path="/HostedPaymentPage" element={<HostedPaymentPage />} />
+            <Route path="/MobileSDK" element={<MobileSDK />} />
+            <Route path="/PaymentAPI" element={<PaymentAPI />} />
+            <Route path="/PaymentDeviceSDK" element={<PaymentDeviceSDK />} />
+            <Route path="/QueryAPI" element={<QueryAPI />} />
+            <Route path="/ThreeStepRedirect" element={<ThreeStepRedirect />} />
+            <Route path="/Webhooks" element={<Webhooks />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
