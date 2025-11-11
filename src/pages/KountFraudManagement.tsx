@@ -30,34 +30,34 @@ export default function KountFraudManagement() {
             prevention service designed for eCommerce, mobile commerce and
             other card‑not‑present transactions. It uses a combination of
             supervised and unsupervised machine learning models to provide
-            real‑time risk analysis and fraud assessment【203599139122629†L40-L44】.
+            real‑time risk analysis and fraud assessment.
           </p>
           <section id="features" className="mb-8">
             <h2 className="text-2xl font-semibold mb-2">Features & Benefits</h2>
             <ul className="list-disc list-inside space-y-2">
               <li>
                 The service owns and controls the entire technical stack,
-                offering enterprise‑grade fraud management【203599139122629†L49-L63】.
+                offering enterprise‑grade fraud management.
               </li>
               <li>
                 It leverages a global data network, analysing more than 30
                 billion transactions annually to generate unique risk scores
-                for each merchant【203599139122629†L49-L63】.
+                for each merchant.
               </li>
               <li>
                 Proprietary machine learning models produce three metrics:
                 Omniscore, Persona and Fraud scores, delivering accurate
-                real‑time decisions【203599139122629†L54-L56】.
+                real‑time decisions.
               </li>
               <li>
                 The merchant portal displays a simple three‑way status for
                 every transaction—Approved, Declined or Needs Review—to
-                streamline decision making【203599139122629†L57-L59】.
+                streamline decision making.
               </li>
               <li>
                 Frictionless transaction flows reduce friction for genuine
                 customers, improving satisfaction and conversion rates while
-                limiting false positives【203599139122629†L59-L63】.
+                limiting false positives.
               </li>
             </ul>
           </section>
@@ -68,7 +68,7 @@ export default function KountFraudManagement() {
               additional configuration. A base risk model is applied to all
               transactions, and merchants can fine‑tune the behaviour by
               setting risk thresholds in the portal’s threshold management
-              settings【203599139122629†L69-L80】.
+              settings.
             </p>
             <p>
               Kount utilises a global database and adaptive AI to review
@@ -76,7 +76,7 @@ export default function KountFraudManagement() {
               behavioural data via a Data Collector on consumer‑facing
               payment pages. This collector should not be used on merchant
               initiated transactions such as Virtual Terminal or Batch Upload
-              to avoid mixing merchant data with customer data【203599139122629†L69-L80】.
+              to avoid mixing merchant data with customer data.
             </p>
           </section>
           <section id="supported-products" className="mb-8">
@@ -85,32 +85,32 @@ export default function KountFraudManagement() {
               Kount integrates with several gateway products. In most cases,
               the Data Collector operates automatically when using hosted
               payment features. For custom pages, you must pass a session
-              identifier to the gateway on each transaction【203599139122629†L93-L116】.
+              identifier to the gateway on each transaction.
             </p>
             <ul className="list-disc list-inside space-y-2">
               <li>
                 <strong>Checkout Pages:</strong> Collect Checkout and QuickClick
-                automatically support Kount with no additional settings【203599139122629†L93-L110】.
+                automatically support Kount with no additional settings.
               </li>
               <li>
                 <strong>Collect.js:</strong> Requires pairing with the
                 Gateway.js library. You must send a session ID for each
-                transaction so that Kount can collect device data【203599139122629†L100-L116】.
+                transaction so that Kount can collect device data.
               </li>
               <li>
                 <strong>Gateway.js:</strong> Generates the necessary session
                 information for third‑party checkout pages. Include the
-                session ID variable on every transaction【203599139122629†L112-L116】.
+                session ID variable on every transaction.
               </li>
               <li>
                 <strong>Payment API:</strong> When used on consumer‑facing
                 pages, pass a session ID variable for Kount to function
                 correctly. For merchant initiated use cases such as Virtual
-                Terminal or Batch Upload, omit the Data Collector【203599139122629†L120-L132】.
+                Terminal or Batch Upload, omit the Data Collector.
               </li>
               <li>
                 <strong>Virtual Terminal & Batch Upload:</strong> Supported
-                without the Data Collector【203599139122629†L140-L145】.
+                without the Data Collector.
               </li>
             </ul>
           </section>
@@ -120,12 +120,12 @@ export default function KountFraudManagement() {
               There is no special signup process for Kount. Merchants can
               enable it directly within their merchant portal, and partners
               can enable it for merchants through the value‑added services
-              section in the partner portal【203599139122629†L150-L156】.
+              section in the partner portal.
             </p>
             <p>
               Once enabled, the Approval Rate Requirement (ARR) option
               becomes available. ARR lets merchants set a target approval
-              percentage to maintain a desired risk level【203599139122629†L134-L137】.
+              percentage to maintain a desired risk level.
             </p>
           </section>
           <section id="scores" className="mb-8">
@@ -135,7 +135,7 @@ export default function KountFraudManagement() {
               assessment. The colour-coded display simplifies decision making:
               green indicates a low risk, yellow suggests additional
               verification may be required, and red means the transaction
-              should be declined【203599139122629†L174-L176】.
+              should be declined.
             </p>
           </section>
         </div>

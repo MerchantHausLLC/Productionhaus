@@ -49,7 +49,7 @@ export default function GatewayJs() {
             <p>
               Loading the script from the gateway means you always get the
               latest version. This is explicitly recommended in the official
-              documentation【907986870595604†screenshot】.
+              documentation.
             </p>
           </section>
           <section id="getting-started" className="mb-8">
@@ -66,7 +66,7 @@ export default function GatewayJs() {
                 authenticates using a public key with Checkout permissions. You
                 can generate this key in your merchant dashboard under
                 Settings &rarr; Security Keys. Once created, you&apos;ll use it
-                when initialising the library【907986870595604†screenshot】.
+                when initialising the library.
               </li>
               <li>
                 <strong>Initialise the library.</strong> Call
@@ -84,7 +84,7 @@ export default function GatewayJs() {
                 gateway instance to configure these services. For example,
                 <code>gateway.get3DSecure()</code> returns the object used
                 for 3‑D Secure flows and <code>gateway.getKount()</code>
-                provides fraud prevention features【907986870595604†screenshot】.
+                provides fraud prevention features.
               </li>
             </ol>
           </section>
@@ -94,7 +94,7 @@ export default function GatewayJs() {
               <li>
                 Always load the script over HTTPS from the official gateway
                 domain. Avoid serving it from your own server to ensure you
-                receive security updates【907986870595604†screenshot】.
+                receive security updates.
               </li>
               <li>
                 Restrict the scope of your public key. Create one key per

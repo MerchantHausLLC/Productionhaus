@@ -10,9 +10,9 @@ import NavTree from "@/components/NavTree";
  * Connect for terminal manufacturers and the Gateway Emulator for
  * merchants migrating from another gateway. Direct Connect lets you
  * pre‑equip devices to work with the platform but requires EMV
- * certification for each processor【4979302280188†L128-L136】. The Gateway
+ * certification for each processor. The Gateway
  * Emulator allows merchants to emulate another gateway’s API while
- * sending transactions to the platform【973495872450596†L160-L169】.
+ * sending transactions to the platform.
  */
 const DirectConnect = () => {
   useEffect(() => {
@@ -43,7 +43,7 @@ const DirectConnect = () => {
                 their hardware to communicate with our platform. The
                 integration examples and documentation provided by the
                 gateway help you embed the necessary protocols into your
-                device firmware【4979302280188†L128-L136】.
+                device firmware.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 The Gateway Emulator is designed for merchants who
@@ -51,7 +51,7 @@ const DirectConnect = () => {
                 and want to switch to our platform without rewriting
                 their software. It allows you to post transactions to a
                 proxy URL that forwards the data to the platform while
-                emulating the original gateway’s response format【973495872450596†L160-L169】.
+                emulating the original gateway’s response format.
               </p>
             </section>
 
@@ -61,14 +61,14 @@ const DirectConnect = () => {
               <p className="text-muted-foreground leading-relaxed">
                 According to independent guidance, the Gateway Emulator
                 works by changing your existing shopping cart’s
-                transaction post URL to the emulator endpoint【973495872450596†L160-L169】.
+                transaction post URL to the emulator endpoint.
                 Your cart must support Authorize.Net AIM or SIM in order
                 to make this switch. Once configured, transactions are
                 forwarded to our gateway while your current software
                 continues to operate as if it were communicating with
                 Authorize.Net. This allows merchants to keep pre‑written
                 software in place while leveraging the features of our
-                platform【973495872450596†L160-L169】.
+                platform.
               </p>
             </section>
 
@@ -78,7 +78,7 @@ const DirectConnect = () => {
               <p className="text-muted-foreground leading-relaxed">
                 Direct Connect integrations require an EMV Level 3
                 processor certification for each device and processor
-                combination you support【4979302280188†L128-L136】. This is
+                combination you support. This is
                 usually negotiated via a commercial agreement.
               </p>
               <p className="text-muted-foreground leading-relaxed">

@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * attach purchase details to every transaction. This page explains what
  * Level III data is, notes the prerequisites for using the Automatic Level
  * III template and shows how to configure static or dynamic fields
- * within the portal【871145071477711†L54-L63】【871145071477711†L69-L80】.
+ * within the portal.
  */
 const AutomaticLevelIII = () => {
   useEffect(() => {
@@ -39,7 +39,7 @@ const AutomaticLevelIII = () => {
                 When enabled, the Automatic Level III feature inserts
                 pre‑populated data into transactions. You can create a default
                 template that applies to all sales, including fields such as
-                order ID, purchase order number and tax amount【871145071477711†L100-L138】.
+                order ID, purchase order number and tax amount.
               </p>
             </section>
 
@@ -49,7 +49,7 @@ const AutomaticLevelIII = () => {
               <p className="text-muted-foreground leading-relaxed">
                 You must subscribe to the Level III Advantage service. Your
                 processor must support Level III data, and you need
-                administrative access to configure the template【871145071477711†L69-L72】.
+                administrative access to configure the template.
               </p>
             </section>
 
@@ -74,7 +74,7 @@ const AutomaticLevelIII = () => {
                 </li>
                 <li>
                   <strong>Order Description:</strong> Uses the current
-                  transaction ID or description field【871145071477711†L100-L138】.
+                  transaction ID or description field.
                 </li>
                 <li>
                   <strong>Original Order Date:</strong> Populates with the
@@ -88,7 +88,7 @@ const AutomaticLevelIII = () => {
               <p className="text-muted-foreground leading-relaxed">
                 The system will not overwrite any Level III data you submit
                 manually through the API or virtual terminal. Click <em>Save</em>
-                to activate your template【871145071477711†L100-L138】.
+                to activate your template.
               </p>
             </section>
           </div>

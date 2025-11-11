@@ -11,7 +11,7 @@ import NavTree from "@/components/NavTree";
  * payment solutions. It provides high level guidance on when to
  * choose each option. Citations are drawn from publicly
  * available sources explaining APIs, SDKs and NMI integration
- * methods【973495872450596†L65-L88】【973495872450596†L90-L96】.
+ * methods.
  */
 const IntegrationOverview = () => {
   useEffect(() => {
@@ -46,11 +46,11 @@ const IntegrationOverview = () => {
                 set of communication protocols, subroutine definitions and
                 tools that allow different software systems to
                 interoperate. APIs make it possible for your custom
-                application to talk to a payment gateway【973495872450596†L65-L88】.
+                application to talk to a payment gateway.
                 In contrast, a <strong>Software Development Kit (SDK)</strong> is
                 a more complete collection of software components. It may
                 include libraries, sample code and documentation that
-                help you build an application from the ground up【973495872450596†L65-L88】.
+                help you build an application from the ground up.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Simply put, an SDK gives you a framework and building
@@ -80,7 +80,7 @@ const IntegrationOverview = () => {
                   </a>{" "}
                   – A classic direct post integration that processes
                   transactions via HTTP requests. It’s simple but
-                  requires you to meet PCI standards【4979302280188†L140-L147】.
+                  requires you to meet PCI standards.
                 </li>
                 <li>
                   <a href="/ThreeStepRedirect" className="underline text-primary">
@@ -88,14 +88,14 @@ const IntegrationOverview = () => {
                   </a>{" "}
                   – Reduces your PCI footprint by hosting the payment
                   form on the gateway and returning a token for final
-                  authorisation【973495872450596†L106-L118】.
+                  authorisation.
                 </li>
                 <li>
                   <a href="/CollectJs" className="underline text-primary">
                     Collect.js
                   </a>{" "}
                   – A pop‑up tokenisation library that replaces raw
-                  payment data with tokens, minimising PCI exposure【4979302280188†L185-L190】.
+                  payment data with tokens, minimising PCI exposure.
                 </li>
                 <li>
                   <a href="/CollectCheckout" className="underline text-primary">
@@ -103,63 +103,63 @@ const IntegrationOverview = () => {
                   </a>{" "}
                   – A hosted checkout page that lives entirely on the
                   gateway servers, keeping your environment out of
-                  scope【4979302280188†L194-L198】.
+                  scope.
                 </li>
                 <li>
                   <a href="/HostedPaymentPage" className="underline text-primary">
                     Hosted Payment Page (QuickClick)
                   </a>{" "}
                   – A simple copy‑and‑paste checkout solution for
-                  merchants without development resources【973495872450596†L136-L145】.
+                  merchants without development resources.
                 </li>
                 <li>
                   <a href="/QueryAPI" className="underline text-primary">
                     Query API
                   </a>{" "}
                   – Download transaction data for custom reporting and
-                  analytics【4979302280188†L210-L214】.
+                  analytics.
                 </li>
                 <li>
                   <a href="/Webhooks" className="underline text-primary">
                     Webhooks
                   </a>{" "}
                   – Push real‑time notifications of events to your
-                  application【4979302280188†L202-L207】.
+                  application.
                 </li>
                 <li>
                   <a href="/CustomerPresentCloud" className="underline text-primary">
                     Customer Present Cloud
                   </a>{" "}
                   – A browser‑based point of sale system for EMV
-                  transactions with no software installation【4979302280188†L87-L94】.
+                  transactions with no software installation.
                 </li>
                 <li>
                   <a href="/MobileSDK" className="underline text-primary">
                     Mobile SDK (iOS/Android)
                   </a>{" "}
                   – Libraries for encrypted mobile card reader
-                  integrations【4979302280188†L96-L102】.
+                  integrations.
                 </li>
                 <li>
                   <a href="/PaymentDeviceSDK" className="underline text-primary">
                     Payment Device SDK (Windows/Linux)
                   </a>{" "}
                   – Tools to integrate with payment terminals and a
-                  virtual device emulator【4979302280188†L109-L116】.
+                  virtual device emulator.
                 </li>
                 <li>
                   <a href="/DirectConnect" className="underline text-primary">
                     Direct Connect & Gateway Emulator
                   </a>{" "}
                   – Pre‑equip devices for the platform and emulate
-                  Authorize.Net transactions【4979302280188†L128-L136】【973495872450596†L160-L169】.
+                  Authorize.Net transactions.
                 </li>
                 <li>
                   <a href="/Secure3DS" className="underline text-primary">
                     3D Secure Server (3DS2)
                   </a>{" "}
                   – Hosted 3DS authentication for card scheme
-                  compliance【4979302280188†L162-L170】.
+                  compliance.
                 </li>
               </ul>
             </section>

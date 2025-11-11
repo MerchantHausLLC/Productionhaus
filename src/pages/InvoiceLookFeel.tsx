@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * Merchants using the invoice service can customise the appearance of
  * their invoices by uploading a logo. This page outlines the
  * prerequisites, where to upload the logo and notes on how it is
- * applied to invoices【222464056923731†L47-L86】.
+ * applied to invoices.
  */
 const InvoiceLookFeel = () => {
   useEffect(() => {
@@ -38,7 +38,7 @@ const InvoiceLookFeel = () => {
                 The invoice look &amp; feel settings allow you to upload a
                 custom image that appears at the top of your invoices. You
                 can change the logo at any time, and new invoices will use
-                the updated image【222464056923731†L72-L86】.
+                the updated image.
               </p>
             </section>
 
@@ -48,7 +48,7 @@ const InvoiceLookFeel = () => {
               <p className="text-muted-foreground leading-relaxed">
                 You must have the electronic invoicing service enabled on
                 your account. Only users with administrative privileges can
-                change the invoice appearance【222464056923731†L47-L71】.
+                change the invoice appearance.
               </p>
             </section>
 
@@ -65,17 +65,17 @@ const InvoiceLookFeel = () => {
                 <li>
                   Click <em>Add Logo</em> and select your image file. The
                   recommended file types are JPEG or PNG, and the file should
-                  be less than 1&nbsp;MB【222464056923731†L47-L71】.
+                  be less than 1&nbsp;MB.
                 </li>
                 <li>
                   Use the cropping tool to adjust the image as needed and
                   click <em>Save</em>. The logo will appear on all future
-                  invoices【222464056923731†L72-L86】.
+                  invoices.
                 </li>
               </ol>
               <p className="text-muted-foreground leading-relaxed">
                 Note that uploading a logo only affects electronic invoices and
-                does not change the appearance of standard receipts【222464056923731†L72-L86】.
+                does not change the appearance of standard receipts.
               </p>
             </section>
           </div>

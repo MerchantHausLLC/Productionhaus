@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * This page covers the SDKs for Windows and Linux that help developers
  * integrate software with payment terminals. The SDK abstracts many
  * complexities and includes a downloadable emulator with sample code
- * and server binaries【4979302280188†L109-L116】.
+ * and server binaries.
  */
 const PaymentDeviceSDK = () => {
   useEffect(() => {
@@ -30,7 +30,7 @@ const PaymentDeviceSDK = () => {
               developers to integrate software with a variety of
               payment terminals. They abstract the complexities of
               interacting with devices and include a downloadable
-              emulator with sample code and server binaries【4979302280188†L109-L116】.
+              emulator with sample code and server binaries.
             </p>
 
             {/* Overview */}
@@ -49,9 +49,9 @@ const PaymentDeviceSDK = () => {
             <section id="features" className="space-y-4 mb-12">
               <h2 className="text-2xl font-semibold text-foreground">Features</h2>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                <li>Abstracts device communication to simplify integration【4979302280188†L109-L116】.</li>
+                <li>Abstracts device communication to simplify integration.</li>
                 <li>Supports numerous payment terminals and configurations.</li>
-                <li>Includes a payment device emulator for Windows with example client code, integration guide and server binaries【4979302280188†L109-L116】.</li>
+                <li>Includes a payment device emulator for Windows with example client code, integration guide and server binaries.</li>
                 <li>Documentation and code samples to accelerate development.</li>
               </ul>
             </section>

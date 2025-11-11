@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * Merchants and partners can request changes to the automated email
  * templates used for receipts and notifications. This page summarises
  * the template types available, describes common modifications and
- * explains how to submit a change request【61280691409487†L45-L100】.
+ * explains how to submit a change request.
  */
 const EmailTemplateChanges = () => {
   useEffect(() => {
@@ -39,7 +39,7 @@ const EmailTemplateChanges = () => {
                 There are three main templates: the merchant receipt sent to
                 you when a transaction occurs, the customer receipt sent to
                 your customer and a printable receipt page for in‑person
-                transactions【61280691409487†L45-L100】. These templates can
+                transactions. These templates can
                 include your logo, contact details and custom text.
               </p>
             </section>
@@ -77,7 +77,7 @@ const EmailTemplateChanges = () => {
                 receipt, showing merchant‑defined fields, changing the “from”
                 address or subject line, removing certain fields and adding
                 custom messaging. To add a logo or image, upload it to a
-                hosted location and provide the URL with your request【61280691409487†L45-L100】.
+                hosted location and provide the URL with your request.
               </p>
               <details className="border border-border rounded p-4">
                 <summary className="cursor-pointer font-semibold text-foreground">
@@ -109,7 +109,7 @@ const EmailTemplateChanges = () => {
                 and provide your account ID, the template you want to modify
                 and a description of the changes. Attach any images or specify
                 custom fields you want to include. Support will implement
-                approved changes and let you know when they’re live【61280691409487†L45-L100】.
+                approved changes and let you know when they’re live.
               </p>
             </section>
           </div>

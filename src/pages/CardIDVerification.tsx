@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * cardholder’s security code during a transaction. This page explains
  * what CVV is, how the verification process works, how to configure
  * settings for domestic and international transactions and what the
- * different result codes mean【152515723291701†L54-L60】【152515723291701†L96-L137】.
+ * different result codes mean.
  */
 const CardIDVerification = () => {
   useEffect(() => {
@@ -38,7 +38,7 @@ const CardIDVerification = () => {
               <p className="text-muted-foreground leading-relaxed">
                 CVV is used to confirm that the purchaser has the physical card
                 in hand. The code is not stored on the magnetic stripe or chip,
-                so it cannot be captured during a data breach【152515723291701†L54-L60】.
+                so it cannot be captured during a data breach.
               </p>
             </section>
 
@@ -49,7 +49,7 @@ const CardIDVerification = () => {
                 During payment, the cardholder enters their CVV. The processor
                 requests verification from the issuer, who returns a result
                 code. You can decide which codes should cause a decline and
-                which should be allowed【152515723291701†L70-L83】.
+                which should be allowed.
               </p>
             </section>
 
@@ -60,7 +60,7 @@ const CardIDVerification = () => {
                 On the CVV settings page you can enable the rule for each
                 processor and choose whether it applies to domestic, foreign or
                 all cards. If you have multiple processors, configure each one
-                separately【152515723291701†L118-L137】.
+                separately.
               </p>
               <details className="border border-border rounded p-4">
                 <summary className="cursor-pointer font-semibold text-foreground">
@@ -87,7 +87,7 @@ const CardIDVerification = () => {
               <h2 className="text-2xl font-semibold text-foreground">Result Codes</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 The issuer returns a code indicating whether the CVV matched.
-                Common codes include【152515723291701†L96-L114】:
+                Common codes include:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li>
@@ -117,10 +117,10 @@ const CardIDVerification = () => {
               </h2>
               <p className="text-muted-foreground leading-relaxed">
                 A history section logs all changes to your CVV rules and who
-                made them【152515723291701†L141-L150】. You can configure multiple
+                made them. You can configure multiple
                 rules per processor, and CVV is optional—if you choose not to
                 reject transactions, the code will still be checked but will
-                not block sales【152515723291701†L154-L165】.
+                not block sales.
               </p>
             </section>
           </div>

@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * fraud by checking that the billing address provided matches the card
  * issuer’s records. It summarises how AVS works, how to configure rules
  * for domestic and international transactions and explains optional
- * settings such as blocking specific response codes【764566919379929†L59-L67】【764566919379929†L94-L102】.
+ * settings such as blocking specific response codes.
  */
 const AddressVerification = () => {
   useEffect(() => {
@@ -40,7 +40,7 @@ const AddressVerification = () => {
                 When a transaction is submitted, the address verification
                 service validates the street number and postcode (or ZIP code)
                 with the card issuer. The issuer responds with a code
-                indicating whether the address matches their records【764566919379929†L59-L67】.
+                indicating whether the address matches their records.
               </p>
             </section>
 
@@ -52,7 +52,7 @@ const AddressVerification = () => {
                 (no match) and others. The gateway uses these codes to
                 determine whether to accept or reject the transaction. You can
                 configure your own rules for domestic and international cards
-                based on these codes【764566919379929†L79-L91】.
+                based on these codes.
               </p>
             </section>
 
@@ -66,7 +66,7 @@ const AddressVerification = () => {
                 the service on. You’ll see separate rule sets for domestic and
                 international transactions. Choose which response codes should
                 cause a decline. If you work with multiple processors, you can
-                create different rule sets per processor【764566919379929†L94-L102】【764566919379929†L129-L147】.
+                create different rule sets per processor.
               </p>
             </section>
 
@@ -79,7 +79,7 @@ const AddressVerification = () => {
                 Beyond the basic match/no match rules, AVS allows you to block
                 specific conditions such as partial matches or unsupported
                 services. You can also require AVS only on the first
-                transaction for recurring payments【764566919379929†L154-L171】.
+                transaction for recurring payments.
               </p>
               <details className="border border-border rounded p-4">
                 <summary className="cursor-pointer font-semibold text-foreground">

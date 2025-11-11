@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * partner portal. It covers the prerequisites for adding users, detailed
  * steps for creating and editing accounts, password resets, username changes
  * and deleting users. The information is drawn from support
- * resources【85496403689430†L51-L83】【85496403689430†L109-L149】.
+ * resources.
  */
 const ManagingPartnerUsers = () => {
   useEffect(() => {
@@ -21,7 +21,7 @@ const ManagingPartnerUsers = () => {
     <>
       <Header />
       <main className="bg-background py-16 px-6">
-        {/* Load Inter font */}        <div className="max-w-5xl mx-auto flex">
+        {/* Load Inter font */} <div className="max-w-5xl mx-auto flex">
           <NavTree />
           <div className="flex-1 docs-typography">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
@@ -42,7 +42,7 @@ const ManagingPartnerUsers = () => {
             <p className="text-muted-foreground leading-relaxed">
               Partners can add multiple users to manage access to the portal.
               Each user may have different permissions based on their
-              role, and primary users always have full administrative access【85496403689430†L51-L56】.
+              role, and primary users always have full administrative access.
             </p>
           </section>
 
@@ -54,7 +54,7 @@ const ManagingPartnerUsers = () => {
             <p className="text-muted-foreground leading-relaxed">
               Affiliate or sub‑affiliate users must have the “Administrative user”
               permission to add new affiliate users. Primary users have this
-              permission by default and it cannot be removed【85496403689430†L59-L64】.
+              permission by default and it cannot be removed.
             </p>
           </section>
 
@@ -67,12 +67,12 @@ const ManagingPartnerUsers = () => {
               To create a user, log in to the portal and go to
               <em>Settings → Users</em>. Click <strong>Add a User</strong> and
               provide the username, first name, last name, email and title. If
-              the username is unavailable, you’ll need to choose a different one【85496403689430†L68-L76】.
+              the username is unavailable, you’ll need to choose a different one.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Assign the appropriate permissions and click <em>Save Changes</em>.
               The new user will receive a welcome email with a link to set a
-              password, valid for 24 hours【85496403689430†L77-L83】.
+              password, valid for 24 hours.
             </p>
           </section>
 
@@ -85,12 +85,12 @@ const ManagingPartnerUsers = () => {
               To reset a user’s password, navigate to <em>Settings → Users</em> and
               click on the username. Click the <strong>Reset Password</strong>
               button and confirm the action. The user will receive a reset
-              email【85496403689430†L87-L96】.
+              email.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               A primary user’s password can be reset by another administrative
               user. If there are no administrative users available, contact
-              support for assistance【85496403689430†L100-L105】.
+              support for assistance.
             </p>
           </section>
 
@@ -104,7 +104,7 @@ const ManagingPartnerUsers = () => {
               and go to <em>Settings → Users</em>. Select the username you want to
               edit and update the first name, last name, email, title and
               permissions. Usernames themselves cannot be edited, and the
-              primary user’s permissions cannot be removed【85496403689430†L109-L120】.
+              primary user’s permissions cannot be removed.
             </p>
           </section>
 
@@ -117,7 +117,7 @@ const ManagingPartnerUsers = () => {
               Only primary usernames can be changed. To request a change, email
               your support team with your account ID, current username and
               desired new username. The support team will confirm the request and
-              update your account【85496403689430†L124-L137】.
+              update your account.
             </p>
           </section>
 
@@ -130,7 +130,7 @@ const ManagingPartnerUsers = () => {
               To delete a user, go to <em>Settings → Users</em>, select the
               username and click the <strong>Delete User</strong> button. You
               will be asked to confirm; once confirmed, the deletion is
-              permanent【85496403689430†L140-L149】. Primary users cannot be deleted.
+              permanent. Primary users cannot be deleted.
             </p>
           </section>
 
@@ -147,16 +147,16 @@ const ManagingPartnerUsers = () => {
               <li>
                 <strong>Manage merchant accounts:</strong> Allows the user to
                 view and edit merchant records, onboard new merchants and access
-                the List Accounts page【85496403689430†L155-L156】.
+                the List Accounts page.
               </li>
               <li>
                 <strong>Manage affiliate accounts:</strong> Enables viewing and
                 managing sub‑affiliate records and onboarding new sub‑affiliate
-                accounts【85496403689430†L156-L158】.
+                accounts.
               </li>
               <li>
                 <strong>Configure new and custom fee schedules:</strong> Lets
-                users create, edit and manage fee schedules for merchants【85496403689430†L158-L161】.
+                users create, edit and manage fee schedules for merchants.
               </li>
             </ul>
           </section>

@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * This page describes the mobile SDKs for iOS and Android. These
  * libraries include a mobile card reader library and end‑to‑end
  * encryption so you can process swiped or keyed‑in payments without
- * handling sensitive data【4979302280188†L96-L102】【973495872450596†L127-L134】.
+ * handling sensitive data.
  */
 const MobileSDK = () => {
   useEffect(() => {
@@ -30,7 +30,7 @@ const MobileSDK = () => {
               applications requiring encrypted mobile card readers. They
               include a card reader library and end‑to‑end encryption
               so that both swiped and keyed‑in payment data never touches
-              your app【4979302280188†L96-L102】【973495872450596†L127-L134】.
+              your app.
             </p>
 
             {/* Overview */}
@@ -50,9 +50,9 @@ const MobileSDK = () => {
             <section id="features" className="space-y-4 mb-12">
               <h2 className="text-2xl font-semibold text-foreground">Features</h2>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                <li>Mobile card reader library for supported hardware devices【4979302280188†L96-L102】.</li>
-                <li>End‑to‑end encryption library to send payment data securely【4979302280188†L96-L102】.</li>
-                <li>Support for both swiped and keyed‑in card entries【973495872450596†L127-L134】.</li>
+                <li>Mobile card reader library for supported hardware devices.</li>
+                <li>End‑to‑end encryption library to send payment data securely.</li>
+                <li>Support for both swiped and keyed‑in card entries.</li>
                 <li>Examples and documentation to speed up integration.</li>
               </ul>
             </section>

@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * This guide outlines how to view and edit your account details. It
  * summarises which fields can be modified in the portal and explains
  * important restrictions such as changes that require assistance from
- * your service provider【741357578669740†L51-L55】【741357578669740†L71-L104】.
+ * your service provider.
  */
 const AccountInformation = () => {
   useEffect(() => {
@@ -40,7 +40,7 @@ const AccountInformation = () => {
                 The account information page shows your business name, address,
                 phone number, email address, time zone and other settings.
                 Users with administrative permissions can update most of this
-                information directly【741357578669740†L51-L55】.
+                information directly.
               </p>
             </section>
 
@@ -50,7 +50,7 @@ const AccountInformation = () => {
               <p className="text-muted-foreground leading-relaxed">
                 To access and edit account information, you need the
                 “Administrative Options” permission. Primary users have this by
-                default【741357578669740†L60-L67】.
+                default.
               </p>
             </section>
 
@@ -65,7 +65,7 @@ const AccountInformation = () => {
                 also choose the receipt language, time zone and whether to
                 display your phone number on customer receipts. Banking details
                 can be edited if you have the proper permissions and there are
-                no pending deposits【741357578669740†L71-L104】.
+                no pending deposits.
               </p>
             </section>
 
@@ -77,7 +77,7 @@ const AccountInformation = () => {
                 can’t edit your business name or billing contact information
                 yourself; contact your service provider to update these. If
                 blind credits are enabled on your account, banking edits may be
-                locked for security reasons【741357578669740†L71-L104】.
+                locked for security reasons.
               </p>
             </section>
           </div>

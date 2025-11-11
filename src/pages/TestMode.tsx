@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * Test mode allows you to process transactions without sending them to
  * your processor. Use this feature when developing integrations or
  * training staff. This guide explains how test mode works, how to
- * enable it, how to clear test transactions and the limitations【622169487517722†L79-L118】.
+ * enable it, how to clear test transactions and the limitations.
  */
 const TestMode = () => {
   useEffect(() => {
@@ -37,7 +37,7 @@ const TestMode = () => {
               <p className="text-muted-foreground leading-relaxed">
                 When test mode is on, transactions are marked as “TEST” and
                 are never sent to your processor. They do not settle or
-                incur fees and cannot be captured or refunded【622169487517722†L79-L118】.
+                incur fees and cannot be captured or refunded.
               </p>
             </section>
 
@@ -55,7 +55,7 @@ const TestMode = () => {
                 <li>
                   The portal will display a banner indicating that you are in
                   test mode. All transactions processed while enabled will be
-                  marked accordingly【622169487517722†L79-L118】.
+                  marked accordingly.
                 </li>
               </ol>
             </section>
@@ -68,7 +68,7 @@ const TestMode = () => {
               <p className="text-muted-foreground leading-relaxed">
                 Test transactions clutter your reports. Use the <em>Flush
                 Test Transactions</em> button to clear all test entries. Only
-                test transactions are removed; live data remains intact【622169487517722†L131-L150】.
+                test transactions are removed; live data remains intact.
               </p>
             </section>
 
@@ -79,7 +79,7 @@ const TestMode = () => {
                 While in test mode, you cannot capture, refund or void
                 transactions. Test mode does not simulate declines from
                 processors or third‑party services, so successful results
-                should not be interpreted as an approval guarantee【622169487517722†L79-L118】.
+                should not be interpreted as an approval guarantee.
               </p>
             </section>
           </div>

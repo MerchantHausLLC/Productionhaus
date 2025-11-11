@@ -15,13 +15,7 @@ export const Header = () => {
   const navLinks = [
     { href: "/about", label: "About" },
     { href: "/services", label: "Services" },
-    { href: "/blog", label: "Blog" },
-    { href: "/TheMerchantPortal", label: "The Merchant Portal" },
-    { href: "/IntegrationOverview", label: "Integration Overview" },
-    { href: "/DirectConnect", label: "Direct Connect" },
-    { href: "/GatewayJs", label: "Gateway.js" },
-    { href: "/Secure3DS", label: "3-D Secure" },
-    { href: "/KountFraudManagement", label: "Fraud Management" },
+    { href: "/blog", label: "Blog" }
   ];
 
   useEffect(() => {

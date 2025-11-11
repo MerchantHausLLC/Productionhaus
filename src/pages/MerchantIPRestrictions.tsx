@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * restrictions to enhance security by allowing only trusted networks to
  * access your account. This page summarises how to add and manage
  * allowed IPs, explains device recognition and notes important
- * considerations【808226590126602†L47-L105】.
+ * considerations.
  */
 const MerchantIPRestrictions = () => {
   useEffect(() => {
@@ -40,7 +40,7 @@ const MerchantIPRestrictions = () => {
                 When IP restrictions are enabled, only addresses listed in
                 your allow list or devices you have explicitly recognised can
                 access the portal. This reduces the risk of account
-                compromise【808226590126602†L47-L105】.
+                compromise.
               </p>
             </section>
 
@@ -55,14 +55,14 @@ const MerchantIPRestrictions = () => {
               <ol className="list-decimal pl-6 space-y-2 text-muted-foreground mb-4">
                 <li>
                   Go to the IP restrictions settings page and click
-                  <em>Add IP</em>【808226590126602†L47-L105】.
+                  <em>Add IP</em>.
                 </li>
                 <li>
                   Enter the IP address in IPv4 or IPv6 format and save.
                 </li>
                 <li>
                   Repeat for each address you wish to allow. You can add
-                  multiple entries【808226590126602†L111-L136】.
+                  multiple entries.
                 </li>
               </ol>
               <p className="text-muted-foreground leading-relaxed">
@@ -81,7 +81,7 @@ const MerchantIPRestrictions = () => {
                 in by enabling device recognition. When you log in from a new
                 browser, you’ll receive a verification email. Once you
                 approve the device, future logins from that device are
-                permitted even if the IP address is not on the list【808226590126602†L111-L136】.
+                permitted even if the IP address is not on the list.
               </p>
             </section>
 
@@ -94,7 +94,7 @@ const MerchantIPRestrictions = () => {
                 IP restrictions apply to all users on the account. Make sure
                 to add addresses for any office locations or mobile VPNs. If
                 you can’t access your account due to IP restrictions, your
-                provider can temporarily disable them to restore access【808226590126602†L111-L136】.
+                provider can temporarily disable them to restore access.
               </p>
             </section>
           </div>

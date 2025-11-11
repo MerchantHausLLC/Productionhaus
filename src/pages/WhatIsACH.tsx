@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * The Automated Clearing House (ACH) network moves funds between bank
  * accounts. This page introduces ACH, explains how to set up ACH
  * processing, describes common return/error codes, outlines NACHA
- * compliance requirements and lists best practices for merchants【66003999016269†L45-L80】.
+ * compliance requirements and lists best practices for merchants.
  */
 const WhatIsACH = () => {
   useEffect(() => {
@@ -40,7 +40,7 @@ const WhatIsACH = () => {
                 recurring or large payments. Funds are typically available
                 within one to two business days. Unlike card payments, ACH
                 debits can be returned for reasons such as insufficient funds
-                or incorrect account information【66003999016269†L45-L80】.
+                or incorrect account information.
               </p>
             </section>
 
@@ -59,7 +59,7 @@ const WhatIsACH = () => {
                 <li>
                   Collect your customer’s bank routing and account number and
                   obtain authorisation. Use a signed ACH authorisation form
-                  or an online agreement【66003999016269†L62-L80】.
+                  or an online agreement.
                 </li>
               </ol>
             </section>
@@ -74,7 +74,7 @@ const WhatIsACH = () => {
                 reason. Common returns include insufficient funds (R01),
                 account closed (R02) and invalid account number (R03). You
                 can obtain the return code and description from your
-                processor’s reporting tools【66003999016269†L86-L110】.
+                processor’s reporting tools.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 If an entry is returned, do not retry without correcting the
@@ -94,7 +94,7 @@ const WhatIsACH = () => {
                 customers before debiting their account, and retain
                 documentation for two years. Certain transactions, such as
                 international or telemarketing debits, have additional
-                requirements【66003999016269†L158-L170】.
+                requirements.
               </p>
             </section>
 
@@ -118,7 +118,7 @@ const WhatIsACH = () => {
                 When submitting an ACH transaction, ensure that your
                 application sends the correct SEC code, transaction amount
                 and customer details to your processor. Monitor for returns
-                and correct any issues promptly.【66003999016269†L86-L110】
+                and correct any issues promptly.
               </p>
             </section>
 

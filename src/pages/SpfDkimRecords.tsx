@@ -11,7 +11,7 @@ import NavTree from "@/components/NavTree";
  * It summarises why domain alignment matters, provides step‑by‑step
  * instructions for creating or updating your SPF record and details how to
  * add DKIM CNAME records to your DNS. The content is based on official
- * guidance but is generalised for partner use【373579914961976†L61-L77】【373579914961976†L94-L107】.
+ * guidance but is generalised for partner use.
  */
 const SpfDkimRecords = () => {
   useEffect(() => {
@@ -21,7 +21,7 @@ const SpfDkimRecords = () => {
     <>
       <Header />
       <main className="bg-background py-16 px-6">
-        {/* Load Inter font */}        <div className="max-w-5xl mx-auto flex">
+        {/* Load Inter font */} <div className="max-w-5xl mx-auto flex">
           <NavTree />
           <div className="flex-1 docs-typography">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
@@ -43,7 +43,7 @@ const SpfDkimRecords = () => {
                 may appear spoofed and get filtered or bounced. An SPF record
                 lists the servers authorised to send email on behalf of your
                 domain, while DKIM adds a digital signature to each message so
-                receiving servers can verify its integrity【373579914961976†L82-L87】.
+                receiving servers can verify its integrity.
               </p>
             </section>
 
@@ -57,7 +57,7 @@ const SpfDkimRecords = () => {
                 SPF and DKIM records in your DNS, you show that the provider is
                 authorised to send on your behalf. This alignment greatly
                 improves deliverability and reduces the likelihood of messages
-                ending up in junk folders【373579914961976†L61-L77】.
+                ending up in junk folders.
               </p>
             </section>
 
@@ -77,7 +77,7 @@ v=spf1 include:example.com ~all
                 provider. Add the line using your domain registrar’s DNS
                 management tools. If you already have an SPF record, add the
                 provider using the <code>include:</code> directive to avoid
-                multiple SPF records【373579914961976†L94-L107】.
+                multiple SPF records.
               </p>
             </section>
 
@@ -97,7 +97,7 @@ selector._domainkey IN CNAME selector.provider.com
                 email service and <code>provider.com</code> with the DKIM host
                 they specify. After creating the CNAME records, allow up to 48
                 hours for DNS propagation. Your provider’s interface should
-                show when the keys validate【373579914961976†L120-L162】.
+                show when the keys validate.
               </p>
             </section>
 

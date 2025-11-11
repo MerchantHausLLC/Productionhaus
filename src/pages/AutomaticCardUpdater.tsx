@@ -10,7 +10,7 @@ import NavTree from "@/components/NavTree";
  * expired or reissued card details on file. This reduces declined
  * transactions and improves customer retention. This guide summarises
  * the prerequisites for using ACU, the available configuration options and
- * how to run an update immediately when necessary【106422696026495†L54-L60】.
+ * how to run an update immediately when necessary.
  */
 const AutomaticCardUpdater = () => {
   useEffect(() => {
@@ -41,7 +41,7 @@ const AutomaticCardUpdater = () => {
                 ACU periodically contacts card networks to obtain updated card
                 numbers and expiry dates. Updated data is applied to your
                 customer vault and any active recurring schedules to prevent
-                declines【106422696026495†L54-L60】.
+                declines.
               </p>
             </section>
 
@@ -65,7 +65,7 @@ const AutomaticCardUpdater = () => {
                 update. You can also decide whether to update cards in your
                 customer vault, recurring subscriptions or both. A status area
                 shows how many cards will be updated in the next run and when
-                it is scheduled【106422696026495†L90-L110】.
+                it is scheduled.
               </p>
               <details className="border border-border rounded p-4">
                 <summary className="cursor-pointer font-semibold text-foreground">
@@ -105,7 +105,7 @@ const AutomaticCardUpdater = () => {
                 can click the <em>Run Now</em> button. The system will
                 contact the networks immediately and apply any updates found.
                 Depending on network availability, updates may take several
-                hours to complete【106422696026495†L81-L86】.
+                hours to complete.
               </p>
             </section>
           </div>

@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * For terminal capture processors, merchants can choose what time of day
  * their transactions settle. This page explains the difference between
  * terminal and host capture, how to adjust your settlement time and
- * important notes about processing cycles【872817485124634†L61-L80】.
+ * important notes about processing cycles.
  */
 const SettlementSchedule = () => {
   useEffect(() => {
@@ -39,7 +39,7 @@ const SettlementSchedule = () => {
                 gateway until you settle. You can control when settlement
                 occurs by setting a cut‑off time. Host capture processors
                 settle automatically at the processor’s discretion and cannot
-                be configured【872817485124634†L61-L80】.
+                be configured.
               </p>
             </section>
 
@@ -53,7 +53,7 @@ const SettlementSchedule = () => {
                 gateway and requires you to specify when to send them for
                 settlement. <strong>Host capture</strong> routes
                 authorisations directly to the processor, which batches and
-                settles them automatically【872817485124634†L61-L80】.
+                settles them automatically.
               </p>
             </section>
 
@@ -72,12 +72,12 @@ const SettlementSchedule = () => {
                 </li>
                 <li>
                   Choose a settlement time from the drop‑down list. The
-                  available times may vary by processor【872817485124634†L90-L124】.
+                  available times may vary by processor.
                 </li>
                 <li>
                   Save your changes. The new schedule will take effect on
                   the next processing day. Changes made after the cut‑off
-                  may not apply until the following day【872817485124634†L135-L144】.
+                  may not apply until the following day.
                 </li>
               </ol>
             </section>

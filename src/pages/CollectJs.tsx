@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * This page explains how Collect.js works. Collect.js is a
  * JavaScript library that displays a hosted pop‑up form to collect
  * payment details and returns a token. Using tokens keeps sensitive
- * information off your server and reduces PCI scope【4979302280188†L185-L190】【973495872450596†L149-L156】.
+ * information off your server and reduces PCI scope.
  */
 const CollectJs = () => {
   useEffect(() => {
@@ -27,7 +27,7 @@ const CollectJs = () => {
               Collect.js is a browser‑based tokenisation library. It
               displays a pop‑up form hosted on the gateway, collects
               payment data and returns a token that you use in place of
-              card numbers【4979302280188†L185-L190】. By outsourcing data
+              card numbers. By outsourcing data
               collection to the gateway, you keep sensitive details off
               your servers and minimise PCI scope.
             </p>
@@ -41,7 +41,7 @@ const CollectJs = () => {
                 secure pop‑up hosted on the gateway. Customers enter
                 their payment details directly in this pop‑up. Once
                 submitted, the gateway returns a one‑time token which
-                represents the card or bank details【4979302280188†L185-L190】【973495872450596†L149-L156】.
+                represents the card or bank details.
               </p>
             </section>
 
@@ -77,7 +77,7 @@ const CollectJs = () => {
               <h2 className="text-2xl font-semibold text-foreground">Benefits</h2>
               <p className="text-muted-foreground leading-relaxed">
                 Collect.js replaces raw card or bank account data with
-                tokens【973495872450596†L149-L156】. Because the popup form
+                tokens. Because the popup form
                 is hosted by the gateway, no payment information flows
                 through your environment. This drastically reduces your
                 PCI compliance footprint without sacrificing control over

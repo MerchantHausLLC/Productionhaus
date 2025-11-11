@@ -9,7 +9,7 @@ import NavTree from "@/components/NavTree";
  * Standard Entry Class (SEC) codes describe the purpose of an ACH
  * transaction. This page explains why the correct SEC code is
  * important, how to set a default code in the portal and lists the
- * most common codes【867580162626699†L55-L102】.
+ * most common codes.
  */
 const SecCodeConfiguration = () => {
   useEffect(() => {
@@ -39,7 +39,7 @@ const SecCodeConfiguration = () => {
                 Standard Entry Class code. The code describes whether the
                 transaction is a consumer or corporate payment, how the
                 authorisation was obtained (online, phone, in person) and
-                whether it’s a one‑time or recurring debit【867580162626699†L55-L102】.
+                whether it’s a one‑time or recurring debit.
               </p>
             </section>
 
@@ -53,7 +53,7 @@ const SecCodeConfiguration = () => {
                 from the drop‑down list. Only codes supported by your
                 processor will appear. The default applies to the virtual
                 terminal and customer vault; API calls can specify their
-                own code【867580162626699†L103-L123】.
+                own code.
               </p>
             </section>
 
@@ -76,7 +76,7 @@ const SecCodeConfiguration = () => {
                 </li>
                 <li>
                   <strong>WEB:</strong> Online entries authorised via
-                  website【867580162626699†L55-L102】.
+                  website.
                 </li>
                 <li>
                   <strong>TEL:</strong> Telephone‑initiated debits.
