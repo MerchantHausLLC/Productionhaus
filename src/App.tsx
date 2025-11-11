@@ -18,6 +18,35 @@ import Security from "./pages/Security";
 import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
 import Quote from "./pages/Quote";
+import AccountInformation from "./pages/AccountInformation";
+import AddressVerification from "./pages/AddressVerification";
+import AutomaticCardUpdater from "./pages/AutomaticCardUpdater";
+import AutomaticLevelIII from "./pages/AutomaticLevelIII";
+import BillingStatement from "./pages/BillingStatement";
+import BlindCredits from "./pages/BlindCredits";
+import CardIDVerification from "./pages/CardIDVerification";
+import CountryCurrencyConfiguration from "./pages/CountryCurrencyConfiguration";
+import CustomerFeeConfiguration from "./pages/CustomerFeeConfiguration";
+import DkimSpfValidation from "./pages/DkimSpfValidation";
+import EmailTemplateChanges from "./pages/EmailTemplateChanges";
+import InvoiceLookFeel from "./pages/InvoiceLookFeel";
+import ManagingPartnerUsers from "./pages/ManagingPartnerUsers";
+import MerchantDefinedFields from "./pages/MerchantDefinedFields";
+import MerchantIPRestrictions from "./pages/MerchantIPRestrictions";
+import MerchantServiceProviderContacts from "./pages/MerchantServiceProviderContacts";
+import MerchantUserAccounts from "./pages/MerchantUserAccounts";
+import PasswordPolicy90Day from "./pages/PasswordPolicy90Day";
+import ReportConfiguration from "./pages/ReportConfiguration";
+import SecCodeConfiguration from "./pages/SecCodeConfiguration";
+import SettlementSchedule from "./pages/SettlementSchedule";
+import SpfDkimRecords from "./pages/SpfDkimRecords";
+import SubscriptionReports from "./pages/SubscriptionReports";
+import TestMode from "./pages/TestMode";
+import TheMerchantPortal from "./pages/TheMerchantPortal";
+import TransactionReports from "./pages/TransactionReports";
+import TransactionRouting from "./pages/TransactionRouting";
+import TwoFactorAuthentication from "./pages/TwoFactorAuthentication";
+import WhatIsACH from "./pages/WhatIsACH";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +71,35 @@ const App = () => (
             <Route path="/developer-guides" element={<ComingSoon />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/TheMerchantPortal" element={<TheMerchantPortal />} />
+            <Route path="/AccountInformation" element={<AccountInformation />} />
+            <Route path="/AddressVerification" element={<AddressVerification />} />
+            <Route path="/AutomaticCardUpdater" element={<AutomaticCardUpdater />} />
+            <Route path="/AutomaticLevelIII" element={<AutomaticLevelIII />} />
+            <Route path="/BillingStatement" element={<BillingStatement />} />
+            <Route path="/BlindCredits" element={<BlindCredits />} />
+            <Route path="/CardIDVerification" element={<CardIDVerification />} />
+            <Route path="/CountryCurrencyConfiguration" element={<CountryCurrencyConfiguration />} />
+            <Route path="/CustomerFeeConfiguration" element={<CustomerFeeConfiguration />} />
+            <Route path="/DkimSpfValidation" element={<DkimSpfValidation />} />
+            <Route path="/EmailTemplateChanges" element={<EmailTemplateChanges />} />
+            <Route path="/InvoiceLookFeel" element={<InvoiceLookFeel />} />
+            <Route path="/ManagingPartnerUsers" element={<ManagingPartnerUsers />} />
+            <Route path="/MerchantDefinedFields" element={<MerchantDefinedFields />} />
+            <Route path="/MerchantIPRestrictions" element={<MerchantIPRestrictions />} />
+            <Route path="/MerchantServiceProviderContacts" element={<MerchantServiceProviderContacts />} />
+            <Route path="/MerchantUserAccounts" element={<MerchantUserAccounts />} />
+            <Route path="/PasswordPolicy90Day" element={<PasswordPolicy90Day />} />
+            <Route path="/ReportConfiguration" element={<ReportConfiguration />} />
+            <Route path="/SecCodeConfiguration" element={<SecCodeConfiguration />} />
+            <Route path="/SettlementSchedule" element={<SettlementSchedule />} />
+            <Route path="/SpfDkimRecords" element={<SpfDkimRecords />} />
+            <Route path="/SubscriptionReports" element={<SubscriptionReports />} />
+            <Route path="/TestMode" element={<TestMode />} />
+            <Route path="/TransactionReports" element={<TransactionReports />} />
+            <Route path="/TransactionRouting" element={<TransactionRouting />} />
+            <Route path="/TwoFactorAuthentication" element={<TwoFactorAuthentication />} />
+            <Route path="/WhatIsACH" element={<WhatIsACH />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
