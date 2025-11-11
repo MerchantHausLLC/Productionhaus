@@ -1,6 +1,21 @@
-import { ShieldCheck, TrendingUp, Users, Zap, ShoppingCart } from "lucide-react";
+import { ShieldCheck, TrendingUp, Users, Zap, ShoppingCart, ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 export const ValueStats = () => {
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
+
+  const toggleCard = (index: number) => {
+    setExpandedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
   const stats = [
     {
       icon: Zap,
@@ -35,27 +50,44 @@ export const ValueStats = () => {
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 bg-gradient-to-b from-background to-muted/20 dark:from-neutral-dark dark:to-black/50">
+    <section className="hidden md:block py-20 px-4 sm:px-6 bg-gradient-to-b from-background to-muted/20 dark:from-neutral-dark dark:to-black/50">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
+            const isExpanded = expandedCards.has(index);
+            const descriptionLength = stat.description.length;
+            const shouldTruncate = descriptionLength > 100;
+            
             return (
               <div
                 key={index}
-                className="text-center space-y-4 p-5 md:p-6 rounded-xl bg-card dark:bg-card/50 border border-border dark:border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg"
+                className="text-center space-y-3 p-4 rounded-xl bg-card dark:bg-card/50 border border-border dark:border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg flex flex-col"
+                style={{ aspectRatio: "9/16" }}
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary">
-                  <Icon className="w-8 h-8" />
+                <div className="inline-flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-primary/10 text-primary">
+                  <Icon className="w-6 h-6" />
                 </div>
-                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
+                <div className="text-2xl sm:text-3xl font-bold text-foreground">
                   {stat.value}
                 </div>
-                <div className="text-xl font-semibold text-foreground">
+                <div className="text-base font-semibold text-foreground">
                   {stat.label}
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  {stat.description}
+                <div className="flex-1 flex flex-col">
+                  <div className={`text-xs text-muted-foreground transition-all duration-300 ${!isExpanded && shouldTruncate ? 'line-clamp-3' : ''}`}>
+                    {stat.description}
+                  </div>
+                  {shouldTruncate && (
+                    <button
+                      onClick={() => toggleCard(index)}
+                      className="mt-2 text-xs text-primary hover:text-primary/80 transition-colors flex items-center justify-center gap-1 font-medium"
+                      aria-label={isExpanded ? "Show less" : "Show more"}
+                    >
+                      {isExpanded ? "Less" : "More"}
+                      <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                    </button>
+                  )}
                 </div>
               </div>
             );
