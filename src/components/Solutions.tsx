@@ -332,22 +332,34 @@ export const Solutions = () => {
                     onMouseMove={(e) => handleMouseMove(e, index)}
                     onMouseLeave={() => handleMouseLeave(index)}
                   >
-                    {(solution.bannerImage && (
-                      /*
-                       * Adjust the aspect ratio of the preview card image to make it
-                       * taller. Previously this used 16/9, which resulted in a
-                       * relatively short image area. Increasing the height gives
-                       * more visual prominence to the preview card’s banner.
-                       */
-                      <div className="card-image-visual relative w-full aspect-[4/3] overflow-hidden rounded-t-[1.5rem]">
-                        <img
-                          src={solution.bannerImage}
-                          alt={solution.title}
-                          className="absolute inset-0 h-full w-full object-cover"
-                          draggable={false}
-                        />
-                      </div>
-                    )) || <div className="relative w-full aspect-[4/3] rounded-t-[1.5rem] bg-muted/40" />}
+                   {(solution.bannerImage && (
+                       /*
+                        * To ensure consistent image sizing across all service cards,
+                        * rely on a fixed aspect ratio rather than a hard-coded height.
+                        * Using the Tailwind `aspect-[4/3]` utility gives each
+                        * preview card a taller image similar to the previous
+                        * fullscreen banner. Removing the fixed `h-[280px]` class
+                        * prevents conflicting heights and ensures images scale
+                        * uniformly as the card width changes. Browsers that do
+                        * not support `aspect-ratio` will fall back to the
+                        * intrinsic dimensions of the image, which still yields
+                        * a reasonable card height.
+                        */
+                       <div
+                         className="card-image-visual relative w-full aspect-[4/3] overflow-hidden rounded-t-[1.5rem]"
+                       >
+                         <img
+                           src={solution.bannerImage}
+                           alt={solution.title}
+                           className="absolute inset-0 h-full w-full object-cover"
+                           draggable={false}
+                         />
+                       </div>
+                     )) || (
+                       <div
+                         className="relative w-full aspect-[4/3] rounded-t-[1.5rem] bg-muted/40"
+                       />
+                     )}
                     <div className="service-card-body">
                       <div className="service-card-icon">
                         <Icon className="h-6 w-6 text-[hsl(var(--crimson))]" strokeWidth={2} />
