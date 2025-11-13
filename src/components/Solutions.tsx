@@ -157,7 +157,7 @@ export const Solutions = () => {
       const fullText = solutions[selectedCard].title;
       setTypewriterText("");
       let index = 0;
-      
+
       const interval = setInterval(() => {
         if (index <= fullText.length) {
           setTypewriterText(fullText.slice(0, index));
@@ -184,49 +184,13 @@ export const Solutions = () => {
     container.scrollBy({ left: 340, behavior: 'smooth' });
   };
 
-  // REMOVED: Infinite cycling marquee animation
-  // useEffect(() => {
-  //   const container = marqueeRef.current;
-  //   if (!container) return;
-
-  //   const scrollSpeed = 1; // pixels per frame
-    
-  //   const animate = () => {
-  //     if (isPausedRef.current) {
-  //       animationFrameRef.current = requestAnimationFrame(animate);
-  //       return;
-  //     }
-
-  //     scrollPositionRef.current += scrollSpeed;
-      
-  //     // Get the actual content width (one set of cards)
-  //     const contentWidth = 320 * solutions.length + 24 * (solutions.length - 1); // card width * count + gaps
-      
-  //     // Reset position when we've scrolled past one full set
-  //     if (scrollPositionRef.current >= contentWidth) {
-  //       scrollPositionRef.current = 0;
-  //     }
-      
-  //     container.scrollLeft = scrollPositionRef.current;
-  //     animationFrameRef.current = requestAnimationFrame(animate);
-  //   };
-
-  //   animationFrameRef.current = requestAnimationFrame(animate);
-
-  //   return () => {
-  //     if (animationFrameRef.current) {
-  //       cancelAnimationFrame(animationFrameRef.current);
-  //     }
-  //   };
-  // }, []);
-
-  // Pause on hover
+  // Pause on hover handlers are left in place but currently unused
   const handleMarqueeMouseEnter = () => {
-    // isPausedRef.current = true; // No longer needed for auto-scroll
+    // intentionally blank
   };
 
   const handleMarqueeMouseLeave = () => {
-    // isPausedRef.current = false; // No longer needed for auto-scroll
+    // intentionally blank
   };
 
   // Update card glow based on position relative to center
@@ -245,7 +209,6 @@ export const Solutions = () => {
         const distanceFromCenter = Math.abs(containerCenter - cardCenter);
         const maxDistance = containerRect.width / 2;
         const intensity = Math.max(0, 1 - distanceFromCenter / maxDistance);
-        
         (card as HTMLElement).style.setProperty('--glow-intensity', intensity.toString());
       });
     };
@@ -277,26 +240,21 @@ export const Solutions = () => {
   const handleMouseMove = (e: MouseEvent<HTMLElement>, index: number) => {
     const card = cardRefs.current[index];
     if (!card) return;
-
     const rect = card.getBoundingClientRect();
     const cardCenterX = rect.left + rect.width / 2;
     const cardCenterY = rect.top + rect.height / 2;
-    
     // Calculate cursor position relative to card center (-1 to 1)
     const deltaX = (e.clientX - cardCenterX) / (rect.width / 2);
     const deltaY = (e.clientY - cardCenterY) / (rect.height / 2);
-    
     // Apply tilt transform (max 15 degrees)
     const tiltX = deltaY * -15;
     const tiltY = deltaX * 15;
-    
     card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-8px) scale(1.02)`;
   };
 
   const handleMouseLeave = (index: number) => {
     const card = cardRefs.current[index];
     if (!card) return;
-    
     card.style.transform = '';
   };
 
@@ -319,7 +277,6 @@ export const Solutions = () => {
           </div>
         </div>
       </div>
-
       {/* Globe Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div
@@ -339,7 +296,6 @@ export const Solutions = () => {
           />
         </div>
       </div>
-      
       <div className="max-w-7xl mx-auto overflow-visible relative z-10">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="font-ubuntu font-bold text-3xl sm:text-4xl md:text-5xl text-foreground mb-4">
@@ -355,7 +311,6 @@ export const Solutions = () => {
             <a href="/quote">Get a Quote</a>
           </Button>
         </div>
-
         <div className="relative">
           <div 
             ref={marqueeRef}
@@ -366,7 +321,6 @@ export const Solutions = () => {
             <div className="marquee-content flex gap-6">
               {solutions.map((solution, index) => {
                 const Icon = solution.icon;
-
                 return (
                   <article
                     key={`${solution.title}-${index}`}
@@ -379,7 +333,13 @@ export const Solutions = () => {
                     onMouseLeave={() => handleMouseLeave(index)}
                   >
                     {(solution.bannerImage && (
-                      <div className="card-image-visual relative w-full aspect-[16/9] overflow-hidden rounded-t-[1.5rem]">
+                      /*
+                       * Adjust the aspect ratio of the preview card image to make it
+                       * taller. Previously this used 16/9, which resulted in a
+                       * relatively short image area. Increasing the height gives
+                       * more visual prominence to the preview card’s banner.
+                       */
+                      <div className="card-image-visual relative w-full aspect-[4/3] overflow-hidden rounded-t-[1.5rem]">
                         <img
                           src={solution.bannerImage}
                           alt={solution.title}
@@ -387,18 +347,15 @@ export const Solutions = () => {
                           draggable={false}
                         />
                       </div>
-                    )) || <div className="relative w-full aspect-[16/9] rounded-t-[1.5rem] bg-muted/40" />}
-
+                    )) || <div className="relative w-full aspect-[4/3] rounded-t-[1.5rem] bg-muted/40" />}
                     <div className="service-card-body">
                       <div className="service-card-icon">
                         <Icon className="h-6 w-6 text-[hsl(var(--crimson))]" strokeWidth={2} />
                       </div>
-
                       <div className="space-y-3">
                         <h3 className="text-2xl font-bold font-ubuntu">{solution.title}</h3>
                         <p className="text-base leading-relaxed text-neutral-600">{solution.description}</p>
                       </div>
-
                       <div className="service-card-footer">
                         <button
                           type="button"
@@ -414,7 +371,6 @@ export const Solutions = () => {
               })}
             </div>
           </div>
-          
           {/* Navigation buttons */}
           <div className="flex justify-between items-center mt-6 px-4">
             <button
@@ -434,7 +390,6 @@ export const Solutions = () => {
           </div>
         </div>
       </div>
-
       {/* Fullscreen Modal with Flip Animation */}
       {selectedCard !== null && (
         <div
@@ -450,7 +405,13 @@ export const Solutions = () => {
           >
             {/* Banner Image in Modal */}
             {solutions[selectedCard].bannerImage && (
-              <div className="relative w-full aspect-[16/9] overflow-hidden shrink-0">
+              /*
+               * The fullscreen modal banner image should occupy less vertical
+               * space relative to its width. Changing the aspect ratio from
+               * 16/9 to 3/1 makes the banner significantly shallower,
+               * focusing attention on the modal content below.
+               */
+              <div className="relative w-full aspect-[3/1] overflow-hidden shrink-0">
                 <img
                   src={solutions[selectedCard].bannerImage}
                   alt={solutions[selectedCard].title}
@@ -459,7 +420,6 @@ export const Solutions = () => {
                 />
               </div>
             )}
-
             {/* Close button */}
             <button
               onClick={closeFullscreen}
@@ -467,7 +427,6 @@ export const Solutions = () => {
             >
               <X className="w-6 h-6 text-foreground" />
             </button>
-
             <div className="p-6 sm:p-8 md:p-12 overflow-y-auto max-h-full flex-1">
               {/* Large icon */}
               <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-6 md:mb-8 animate-scale-in">
@@ -476,7 +435,6 @@ export const Solutions = () => {
                   return <Icon className="w-10 h-10 md:w-12 md:h-12 text-crimson" strokeWidth={2} />;
                 })()}
               </div>
-
               {/* Content with typewriter effect */}
               <h2 className="font-ubuntu font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground mb-4 md:mb-6 min-h-[3rem] md:min-h-[4rem]">
                 {typewriterText}
@@ -485,7 +443,6 @@ export const Solutions = () => {
               <p className="font-inter text-base md:text-lg text-muted-foreground leading-relaxed mb-6 md:mb-8">
                 {solutions[selectedCard].fullDescription}
               </p>
-
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
@@ -506,7 +463,6 @@ export const Solutions = () => {
           </div>
         </div>
       )}
-
       <style>{`
         @keyframes flipIn {
           0% {
