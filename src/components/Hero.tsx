@@ -133,38 +133,38 @@ export const Hero = () => {
         >
           <div className="flex flex-col">
             {/* Payment stacked vertically with its word */}
-            <div className="overflow-y-hidden overflow-x-visible flex flex-col mb-2">
-              <span className="text-white">Payment{' '}
-              <span 
-                className={`inline-block min-w-[15ch] transition-all duration-300 ease-in-out ${
-                  isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-                } ${colors[colorIndices.line1]}`}
-              >
-                {wordSets.line1[currentWords.line1]}
-              </span>
+            <div className="mb-2">
+              <span className="text-white whitespace-nowrap">Payment{' '}
+                <span
+                  className={`inline-block whitespace-nowrap transition-all duration-300 ease-in-out ${
+                    isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+                  } ${colors[colorIndices.line1]}`}
+                >
+                  {wordSets.line1[currentWords.line1]}
+                </span>
               </span>
             </div>
             {/* That and Your inline with their words */}
-            <div className="overflow-y-hidden overflow-x-visible mb-2">
-              <span className="text-white">That{' '}
-              <span 
-                className={`inline-block min-w-[15ch] transition-all duration-300 ease-in-out ${
-                  isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-                } ${colors[colorIndices.line2]}`}
-              >
-                {wordSets.line2[currentWords.line2]}
-              </span>
+            <div className="mb-2">
+              <span className="text-white whitespace-nowrap">That{' '}
+                <span
+                  className={`inline-block whitespace-nowrap transition-all duration-300 ease-in-out ${
+                    isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+                  } ${colors[colorIndices.line2]}`}
+                >
+                  {wordSets.line2[currentWords.line2]}
+                </span>
               </span>
             </div>
-            <div className="overflow-y-hidden overflow-x-visible">
-              <span className="text-white">Your{' '}
-              <span 
-                className={`inline-block min-w-[15ch] transition-all duration-300 ease-in-out ${
-                  isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-                } ${colors[colorIndices.line3]}`}
-              >
-                {wordSets.line3[currentWords.line3]}
-              </span>
+            <div>
+              <span className="text-white whitespace-nowrap">Your{' '}
+                <span
+                  className={`inline-block whitespace-nowrap transition-all duration-300 ease-in-out ${
+                    isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+                  } ${colors[colorIndices.line3]}`}
+                >
+                  {wordSets.line3[currentWords.line3]}
+                </span>
               </span>
             </div>
           </div>
