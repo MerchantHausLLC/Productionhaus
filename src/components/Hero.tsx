@@ -7,15 +7,12 @@ import { useParallax } from "@/hooks/use-parallax";
 const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
   const [displayText, setDisplayText] = useState("");
   const [startTyping, setStartTyping] = useState(false);
-
   useEffect(() => {
     const startTimer = setTimeout(() => setStartTyping(true), delay);
     return () => clearTimeout(startTimer);
   }, [delay]);
-
   useEffect(() => {
     if (!startTyping) return;
-    
     let index = 0;
     const interval = setInterval(() => {
       if (index <= text.length) {
@@ -25,10 +22,8 @@ const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) =
         clearInterval(interval);
       }
     }, 50);
-
     return () => clearInterval(interval);
   }, [text, startTyping]);
-
   return <>{displayText}</>;
 };
 
@@ -39,8 +34,8 @@ const wordSets = {
 };
 
 const colors = [
-  "text-crimson", 
-  "text-cyber-teal", 
+  "text-crimson",
+  "text-cyber-teal",
   "text-orange-400",
   "text-blue-400",
   "text-purple-400",
@@ -58,7 +53,6 @@ export const Hero = () => {
   const videoParallaxRef = useParallax<HTMLDivElement>({ speed: 0.08 });
   const shadowOverlayRef = useParallax<HTMLDivElement>({ speed: 0.12 });
   const accentOverlayRef = useParallax<HTMLDivElement>({ speed: 0.16 });
-
   const getRandomIndex = (max: number, previous: number) => {
     let newIndex = Math.floor(Math.random() * max);
     while (newIndex === previous && max > 1) {
@@ -66,15 +60,12 @@ export const Hero = () => {
     }
     return newIndex;
   };
-
   useEffect(() => {
     // Trigger animations on mount
     setTimeout(() => setIsLoaded(true), 100);
-
     // Word cycling every 6 seconds with staggered timing
     const interval = setInterval(() => {
       setIsAnimating(true);
-      
       // Line 1 (Payment) changes first
       setTimeout(() => {
         setPreviousWords(prev => ({ ...prev, line1: currentWords.line1 }));
@@ -87,7 +78,6 @@ export const Hero = () => {
           line1: (prev.line1 + 1) % colors.length
         }));
       }, 0);
-
       // Line 2 (That) changes 150ms after Line 1
       setTimeout(() => {
         setPreviousWords(prev => ({ ...prev, line2: currentWords.line2 }));
@@ -100,7 +90,6 @@ export const Hero = () => {
           line2: (prev.line2 + 1) % colors.length
         }));
       }, 150);
-
       // Line 3 (Your) changes 150ms after Line 2 (300ms total from Line 1)
       setTimeout(() => {
         setPreviousWords(prev => ({ ...prev, line3: currentWords.line3 }));
@@ -115,23 +104,14 @@ export const Hero = () => {
         setIsAnimating(false);
       }, 300);
     }, 6000);
-
     return () => clearInterval(interval);
   }, [currentWords]);
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-visible">
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
         <div ref={videoParallaxRef} className="absolute inset-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover"
-            poster="/hero-replacement.png"
-          >
+          <video autoPlay loop muted playsInline className="h-full w-full object-cover" poster="/hero-replacement.png">
             <source src={heroVideo} type="video/webm" />
           </video>
         </div>
@@ -140,12 +120,10 @@ export const Hero = () => {
         {/* Gradient overlay for brand effect */}
         <div ref={accentOverlayRef} className="absolute inset-0 bg-gradient-to-br from-crimson/20 via-transparent to-cyber-teal/20" />
       </div>
-
       {/* Desktop: Left hemisphere layout, Mobile: Full width */}
       <div className="relative max-w-7xl mx-auto px-6 md:px-12 py-20 md:grid md:grid-cols-1 lg:grid-cols-2 md:gap-12 items-center">
         {/* Desktop: Left hemisphere layout, Mobile: Full width */}
         <div className="text-left space-y-6 md:space-y-8 w-full max-w-xl md:max-w-3xl lg:max-w-6xl xl:max-w-7xl">
-
         {/* Animated Headline */}
         <div 
           className={`font-ubuntu font-semibold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight transition-all duration-700 delay-300 drop-shadow-2xl ${
@@ -158,7 +136,7 @@ export const Hero = () => {
             <div className="overflow-y-hidden overflow-x-visible flex flex-col mb-2">
               <span className="text-white">Payment{' '}
               <span 
-                className={`inline-block transition-all duration-300 ease-in-out ${
+                className={`inline-block min-w-[15ch] transition-all duration-300 ease-in-out ${
                   isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
                 } ${colors[colorIndices.line1]}`}
               >
@@ -166,12 +144,11 @@ export const Hero = () => {
               </span>
               </span>
             </div>
-            
             {/* That and Your inline with their words */}
             <div className="overflow-y-hidden overflow-x-visible mb-2">
               <span className="text-white">That{' '}
               <span 
-                className={`inline-block transition-all duration-300 ease-in-out ${
+                className={`inline-block min-w-[15ch] transition-all duration-300 ease-in-out ${
                   isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
                 } ${colors[colorIndices.line2]}`}
               >
@@ -179,11 +156,10 @@ export const Hero = () => {
               </span>
               </span>
             </div>
-            
             <div className="overflow-y-hidden overflow-x-visible">
               <span className="text-white">Your{' '}
               <span 
-                className={`inline-block transition-all duration-300 ease-in-out ${
+                className={`inline-block min-w-[15ch] transition-all duration-300 ease-in-out ${
                   isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
                 } ${colors[colorIndices.line3]}`}
               >
@@ -193,7 +169,6 @@ export const Hero = () => {
             </div>
           </div>
         </div>
-
         {/* Subheadline with Typewriter Effect */}
         <p 
           className={`font-montserrat text-lg sm:text-xl md:text-2xl text-neutral-light max-w-2xl transition-all duration-700 delay-500 drop-shadow-lg ${
@@ -202,7 +177,6 @@ export const Hero = () => {
         >
           <TypewriterText text="Plug in, play and process." delay={1500} />
         </p>
-
         {/* Hero Body Text */}
         <p 
           className={`font-montserrat text-sm sm:text-base md:text-lg text-neutral-light/90 max-w-3xl md:max-w-2xl transition-all duration-700 delay-[2200ms] drop-shadow-lg ${
@@ -211,7 +185,6 @@ export const Hero = () => {
         >
           Create your business profile in minutes and start accepting cards, ACH, and secure pay links — online, in-store, or on the go. Reduce costs, onboard quickly, and safeguard every transaction with advanced fraud protection and chargeback defense.
         </p>
-
         {/* CTA Buttons */}
         <div 
           className={`pt-4 flex flex-col sm:flex-row gap-4 transition-all duration-700 delay-[2400ms] ${
@@ -235,7 +208,6 @@ export const Hero = () => {
             </Button>
           </a>
         </div>
-
         {/* Scroll Indicator */}
         <div 
           className={`md:hidden absolute bottom-12 left-1/2 -translate-x-1/2 transition-all duration-700 delay-[2600ms] ${
@@ -245,7 +217,6 @@ export const Hero = () => {
           <ChevronDown className="w-8 h-8 text-cyber-teal animate-bounce" />
         </div>
         </div>
-        
         {/* Right side - empty on large screens for hemisphere effect */}
         <div className="hidden lg:block" />
       </div>
