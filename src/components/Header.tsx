@@ -90,7 +90,7 @@ export const Header = () => {
             </a>
           ))}
           <a
-            href="https://retailmanager.merchant.haus"
+            href="https://retailmanager.merchant.haus/public/index.html"
             className="font-montserrat font-medium text-foreground hover:text-cyber-teal transition-colors border-2 border-cyber-teal rounded-full px-4 py-1.5"
           >
             Client Login
@@ -142,7 +142,7 @@ export const Header = () => {
               </a>
             ))}
             <a
-              href="https://retailmanager.merchant.haus"
+              href="https://retailmanager.merchant.haus/public/index.html"
               className="font-montserrat font-medium text-foreground hover:text-cyber-teal transition-colors"
               onClick={handleNavClick}
             >
