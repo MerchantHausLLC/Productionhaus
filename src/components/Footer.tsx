@@ -68,7 +68,10 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="https://retailmanager.merchant.haus" className="text-silver-grey hover:text-cyber-teal transition-colors">
+                <a
+                  href="https://retailmanager.merchant.haus/public/index.html"
+                  className="text-silver-grey hover:text-cyber-teal transition-colors"
+                >
                   Client Login
                 </a>
               </li>
