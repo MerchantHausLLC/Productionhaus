@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { CookieConsent } from "@/components/CookieConsent";
 import ClientResources from "@/components/ClientResources";
 import VampBlogBanner from "@/components/VampBlogBanner";
+import PaymentSlider from "@/components/PaymentSlider";
 import { useParallax } from "@/hooks/use-parallax";
 
 const Index = () => {
@@ -37,6 +38,7 @@ const Index = () => {
         <LogoBanner />
         <ValueStats />
         <Solutions />
+        <PaymentSlider />
         <VampBlogBanner />
         <ClientResources />
         <Contact />
