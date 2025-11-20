@@ -24,6 +24,7 @@ import {
 import { CheckCircle2, X } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import { formDataToQueryString } from "@/lib/netlify";
+import { RequiredIndicator } from "./ui/required-indicator";
 
 const contactFormSchema = z.object({
   name: z
@@ -160,14 +161,18 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-montserrat font-medium text-neutral-dark">
-                        Name *
+                      <FormLabel className="font-montserrat font-medium text-crimson flex items-center gap-2">
+                        Name
+                        <RequiredIndicator />
                       </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Your name"
-                          className="font-montserrat border-silver-grey/30 focus:border-cyber-teal"
+                          className="font-montserrat border-silver-grey/30"
                           autoComplete="name"
+                          required
+                          aria-required="true"
+                          aria-invalid={!!form.formState.errors.name}
                           {...field}
                         />
                       </FormControl>
@@ -181,15 +186,19 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-montserrat font-medium text-neutral-dark">
-                        Email *
+                      <FormLabel className="font-montserrat font-medium text-crimson flex items-center gap-2">
+                        Email
+                        <RequiredIndicator />
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="your.email@company.com"
-                          className="font-montserrat border-silver-grey/30 focus:border-cyber-teal"
+                          className="font-montserrat border-silver-grey/30"
                           autoComplete="email"
+                          required
+                          aria-required="true"
+                          aria-invalid={!!form.formState.errors.email}
                           {...field}
                         />
                       </FormControl>
@@ -203,7 +212,10 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number *</FormLabel>
+                      <FormLabel className="font-montserrat font-medium text-crimson flex items-center gap-2">
+                        Phone Number
+                        <RequiredIndicator />
+                      </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Your phone number"
@@ -211,6 +223,9 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                           inputMode="tel"
                           {...field}
                           className="font-montserrat"
+                          required
+                          aria-required="true"
+                          aria-invalid={!!form.formState.errors.phone}
                         />
                       </FormControl>
                       <FormMessage />
@@ -243,14 +258,18 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-montserrat font-medium text-neutral-dark">
-                        Message *
+                      <FormLabel className="font-montserrat font-medium text-crimson flex items-center gap-2">
+                        Message
+                        <RequiredIndicator />
                       </FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="How can we help you?"
                           rows={5}
-                          className="font-montserrat border-silver-grey/30 focus:border-cyber-teal resize-none"
+                          className="font-montserrat border-silver-grey/30 resize-none"
+                          required
+                          aria-required="true"
+                          aria-invalid={!!form.formState.errors.message}
                           {...field}
                         />
                       </FormControl>
@@ -268,20 +287,22 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
+                          className="data-[state=checked]:bg-[hsl(var(--ring))] data-[state=checked]:border-[hsl(var(--ring))] focus-visible:ring-[hsl(var(--ring))]"
                         />
                       </FormControl>
                       <div className="space-y-1 leading-none">
-                        <FormLabel className="font-montserrat text-sm text-neutral-dark cursor-pointer">
+                        <FormLabel className="font-montserrat text-sm text-crimson cursor-pointer">
                           I agree to the{" "}
                           <a
                             href="/privacy"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-cyber-teal hover:underline"
+                            className="text-crimson hover:underline"
                             onClick={(e) => e.stopPropagation()}
                           >
                             Privacy Policy
                           </a>
+                          <RequiredIndicator>Required</RequiredIndicator>
                         </FormLabel>
                         <FormMessage className="font-montserrat text-sm" />
                       </div>
@@ -292,7 +313,7 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                 <Button
                   type="submit"
                   disabled={form.formState.isSubmitting}
-                  className="w-full bg-crimson hover:bg-crimson/90 text-white font-montserrat font-semibold text-lg py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                  className="w-full bg-cyber-teal hover:bg-cyber-teal/90 text-white font-montserrat font-semibold text-lg py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
                 >
                   {form.formState.isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
