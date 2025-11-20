@@ -9,6 +9,7 @@ import { CookieConsent } from "@/components/CookieConsent";
 import ClientResources from "@/components/ClientResources";
 import VampBlogBanner from "@/components/VampBlogBanner";
 import { useParallax } from "@/hooks/use-parallax";
+import { Reveal } from "@/components/Reveal";
 
 const Index = () => {
   const softGradientRef = useParallax<HTMLDivElement>({ speed: 0.04 });
@@ -34,12 +35,24 @@ const Index = () => {
       <Header />
       <main className="relative z-1">
         <Hero />
-        <LogoBanner />
-        <ValueStats />
-        <Solutions />
-        <VampBlogBanner />
-        <ClientResources />
-        <Contact />
+        <Reveal direction="up">
+          <LogoBanner />
+        </Reveal>
+        <Reveal direction="right" delay={100}>
+          <ValueStats />
+        </Reveal>
+        <Reveal direction="left" delay={150}>
+          <Solutions />
+        </Reveal>
+        <Reveal direction="up" delay={200}>
+          <VampBlogBanner />
+        </Reveal>
+        <Reveal direction="right" delay={250}>
+          <ClientResources />
+        </Reveal>
+        <Reveal direction="up" delay={300}>
+          <Contact />
+        </Reveal>
       </main>
       <Footer />
       <CookieConsent />

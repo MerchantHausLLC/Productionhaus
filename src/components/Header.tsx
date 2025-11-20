@@ -89,12 +89,6 @@ export const Header = () => {
               {label}
             </a>
           ))}
-          <a
-            href="https://retailmanager.merchant.haus/public/index.html"
-            className="font-montserrat font-medium text-foreground hover:text-cyber-teal transition-colors border-2 border-cyber-teal rounded-full px-4 py-1.5"
-          >
-            Client Login
-          </a>
         </nav>
 
         <button
@@ -141,13 +135,6 @@ export const Header = () => {
                 {label}
               </a>
             ))}
-            <a
-              href="https://retailmanager.merchant.haus/public/index.html"
-              className="font-montserrat font-medium text-foreground hover:text-cyber-teal transition-colors"
-              onClick={handleNavClick}
-            >
-              Client Login
-            </a>
             <Button
               onClick={() => {
                 setIsContactOpen(true);
