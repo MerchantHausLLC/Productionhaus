@@ -22,6 +22,24 @@ const quoteFormSchema = z.object({
   special_instructions: z.string().trim().max(1000).optional(),
   processing_services: z.array(z.string()).optional(),
   value_services: z.array(z.string()).optional(),
+  hasCurrentProcessor: z.enum(["yes", "no"], {
+    required_error: "Please tell us if you have a current processor",
+  }),
+  currentProcessorName: z.string().trim().max(100).optional(),
+  agree_to_terms: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the Terms and Conditions",
+  }),
+  agree_to_security_policy: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the Security Policy",
+  }),
+}).superRefine((data, ctx) => {
+  if (data.hasCurrentProcessor === "yes" && !data.currentProcessorName?.trim()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["currentProcessorName"],
+      message: "Current processor name is required",
+    });
+  }
 });
 
 const processingOptions = ["Credit Card", "ACH / eCheck", "Cash"] as const;
@@ -45,11 +63,18 @@ const Quote = () => {
     defaultValues: {
       processing_services: [],
       value_services: [],
+      hasCurrentProcessor: undefined as unknown as "yes" | "no",
+      currentProcessorName: "",
+      agree_to_terms: false,
+      agree_to_security_policy: false,
     },
   });
 
   const processingServices = watch("processing_services") || [];
   const valueServices = watch("value_services") || [];
+  const hasCurrentProcessor = watch("hasCurrentProcessor");
+  const agreeToTerms = watch("agree_to_terms");
+  const agreeToSecurity = watch("agree_to_security_policy");
 
   const handleProcessingChange = (service: string, checked: boolean) => {
     const updated = checked
@@ -75,7 +100,11 @@ const Quote = () => {
         if (Array.isArray(value)) {
           value.forEach((item) => formData.append(`${key}[]`, item));
         } else if (value !== undefined && value !== null) {
-          formData.append(key, String(value));
+          if (typeof value === "boolean") {
+            formData.append(key, value ? "yes" : "no");
+          } else {
+            formData.append(key, String(value));
+          }
         }
       });
 
@@ -175,6 +204,53 @@ const Quote = () => {
                 </div>
               </div>
 
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Do you currently have your own payment processor?*</Label>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {[{ label: "Yes", value: "yes" }, { label: "No", value: "no" }].map((option) => (
+                      <label
+                        key={option.value}
+                        htmlFor={`quote-hasCurrentProcessor-${option.value}`}
+                        className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
+                          hasCurrentProcessor === option.value
+                            ? "border-crimson bg-crimson/5"
+                            : "border-border hover:border-crimson/50"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          id={`quote-hasCurrentProcessor-${option.value}`}
+                          value={option.value}
+                          className="sr-only"
+                          {...register("hasCurrentProcessor")}
+                        />
+                        <span className="text-sm font-medium text-foreground">{option.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                  {errors.hasCurrentProcessor && (
+                    <p className="text-sm text-destructive">{errors.hasCurrentProcessor.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="currentProcessorName">Who is your current processor?</Label>
+                  <Input
+                    id="currentProcessorName"
+                    placeholder="e.g., Stripe, Worldpay"
+                    disabled={hasCurrentProcessor !== "yes"}
+                    {...register("currentProcessorName")}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    If you do not have a processor, leave this field blank.
+                  </p>
+                  {errors.currentProcessorName && (
+                    <p className="text-sm text-destructive">{errors.currentProcessorName.message}</p>
+                  )}
+                </div>
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="special_instructions">Special Instructions</Label>
                 <Textarea
@@ -257,6 +333,66 @@ const Quote = () => {
                   </a>
                   .
                 </p>
+              </div>
+
+              <div className="pt-4 space-y-4 border-t">
+                <div className="flex items-start space-x-3 p-4 rounded-lg bg-muted/50">
+                  <Checkbox
+                    id="quote-agree_to_terms"
+                    checked={agreeToTerms}
+                    onCheckedChange={(checked) =>
+                      setValue("agree_to_terms", checked === true, {
+                        shouldDirty: true,
+                        shouldTouch: true,
+                        shouldValidate: true,
+                      })
+                    }
+                  />
+                  <Label htmlFor="quote-agree_to_terms" className="cursor-pointer leading-relaxed">
+                    I agree to the{" "}
+                    <a
+                      href="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-crimson hover:underline font-semibold"
+                    >
+                      Terms and Conditions
+                    </a>
+                    .
+                  </Label>
+                </div>
+                {errors.agree_to_terms && (
+                  <p className="text-sm text-destructive">{errors.agree_to_terms.message}</p>
+                )}
+
+                <div className="flex items-start space-x-3 p-4 rounded-lg bg-muted/50">
+                  <Checkbox
+                    id="quote-agree_to_security_policy"
+                    checked={agreeToSecurity}
+                    onCheckedChange={(checked) =>
+                      setValue("agree_to_security_policy", checked === true, {
+                        shouldDirty: true,
+                        shouldTouch: true,
+                        shouldValidate: true,
+                      })
+                    }
+                  />
+                  <Label htmlFor="quote-agree_to_security_policy" className="cursor-pointer leading-relaxed">
+                    I agree to the{" "}
+                    <a
+                      href="/security"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-crimson hover:underline font-semibold"
+                    >
+                      Security Policy
+                    </a>
+                    .
+                  </Label>
+                </div>
+                {errors.agree_to_security_policy && (
+                  <p className="text-sm text-destructive">{errors.agree_to_security_policy.message}</p>
+                )}
               </div>
 
               {processingServices.map((service) => (

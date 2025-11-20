@@ -18,27 +18,70 @@ import { CheckCircle2 } from "lucide-react";
 import { formDataToQueryString } from "@/lib/netlify";
 
 const applicationFormSchema = z.object({
-  company_name: z.string().min(1, "Company name is required"),
-  address: z.string().min(1, "Address is required"),
-  address2: z.string().optional(),
-  city: z.string().min(1, "City is required"),
-  state: z.string().min(1, "State is required"),
-  zip: z.string().min(1, "Zip code is required"),
+  company_name: z.string().trim().min(1, "Company name is required").max(100),
+  address: z.string().trim().min(1, "Address is required").max(200),
+  address2: z.string().trim().max(100).optional(),
+  city: z.string().trim().min(1, "City is required").max(100),
+  state: z.string().trim().min(1, "State is required").max(50),
+  zip: z.string().trim().min(1, "Zip code is required").max(20),
   website: z.string().url("Invalid URL").optional().or(z.literal("")),
-  first_name: z.string().min(1, "First name is required"),
-  last_name: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(1, "Phone number is required"),
-  fax: z.string().optional(),
-  username: z.string().min(1, "Username is required").regex(/^[a-zA-Z0-9]+$/, "Username must be alphanumeric"),
+  first_name: z.string().trim().min(1, "First name is required").max(50),
+  last_name: z.string().trim().min(1, "Last name is required").max(50),
+  email: z.string().trim().email("Invalid email address").max(255),
+  phone: z.string().trim().min(1, "Phone number is required").max(20),
+  fax: z.string().trim().max(20).optional(),
+  username: z
+    .string()
+    .trim()
+    .min(1, "Username is required")
+    .max(50)
+    .regex(/^[a-zA-Z0-9]+$/, "Username must be alphanumeric"),
+  hasCurrentProcessor: z.enum(["yes", "no"], {
+    required_error: "Please tell us if you have a current processor",
+  }),
+  currentProcessorName: z.string().trim().max(100).optional(),
+  bankAccountHolderName: z.string().trim().min(1, "Account holder name is required").max(100),
+  bankName: z.string().trim().min(1, "Bank name is required").max(100),
+  bankAccountType: z.enum(["checking", "savings"], {
+    required_error: "Bank account type is required",
+  }),
+  bankRoutingNumber: z
+    .string()
+    .trim()
+    .regex(/^\d{4,11}$/i, "Routing number should be 4-11 digits"),
+  bankAccountNumber: z
+    .string()
+    .trim()
+    .regex(/^\d{6,20}$/i, "Account number should be 6-20 digits"),
   processing_services: z.array(z.string()).optional(),
   value_services: z.array(z.string()).optional(),
   agree_to_terms: z.boolean().refine((val) => val === true, {
     message: "You must agree to the Terms and Conditions",
   }),
+  agree_to_security_policy: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the Security Policy",
+  }),
+}).superRefine((data, ctx) => {
+  if (data.hasCurrentProcessor === "yes" && !data.currentProcessorName?.trim()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["currentProcessorName"],
+      message: "Current processor name is required",
+    });
+  }
 });
 
 type ApplicationFormValues = z.infer<typeof applicationFormSchema>;
+
+const fileToBase64 = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(typeof reader.result === "string" ? reader.result : "");
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 
 interface MerchantApplicationDialogProps {
   open: boolean;
@@ -50,6 +93,7 @@ export function MerchantApplicationDialog({
   onOpenChange,
 }: MerchantApplicationDialogProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [bankVerificationDocument, setBankVerificationDocument] = useState<File | null>(null);
   const { toast } = useToast();
   const {
     register,
@@ -64,11 +108,13 @@ export function MerchantApplicationDialog({
       processing_services: [],
       value_services: [],
       agree_to_terms: false,
+      agree_to_security_policy: false,
     },
   });
 
   const processingServices = watch("processing_services") || [];
   const valueServices = watch("value_services") || [];
+  const hasCurrentProcessor = watch("hasCurrentProcessor");
 
   const onSubmit = async (data: ApplicationFormValues) => {
     try {
@@ -86,11 +132,19 @@ export function MerchantApplicationDialog({
         if (Array.isArray(value)) {
           value.forEach((item) => formData.append(key, item));
         } else if (value !== undefined && value !== null) {
-          formData.append(key, String(value));
+          if (typeof value === "boolean") {
+            formData.append(key, value ? "yes" : "no");
+          } else {
+            formData.append(key, String(value));
+          }
         }
       });
 
-      formData.append("agree_to_terms", data.agree_to_terms ? "yes" : "no");
+      if (bankVerificationDocument) {
+        const encodedDocument = await fileToBase64(bankVerificationDocument);
+        formData.append("bankVerificationDocument_name", bankVerificationDocument.name);
+        formData.append("bankVerificationDocument", encodedDocument);
+      }
 
       const response = await fetch("/", {
         method: "POST",
@@ -119,6 +173,7 @@ export function MerchantApplicationDialog({
   const handleClose = () => {
     reset();
     setIsSubmitted(false);
+    setBankVerificationDocument(null);
     onOpenChange(false);
   };
 
@@ -178,6 +233,11 @@ export function MerchantApplicationDialog({
               name="agree_to_terms"
               value={watch("agree_to_terms") ? "yes" : "no"}
             />
+            <input
+              type="hidden"
+              name="agree_to_security_policy"
+              value={watch("agree_to_security_policy") ? "yes" : "no"}
+            />
             {/* Merchant Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold font-ubuntu text-foreground">Merchant Information</h3>
@@ -231,6 +291,52 @@ export function MerchantApplicationDialog({
               </div>
             </div>
 
+            {/* Current Processor */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold font-ubuntu text-foreground">Current Processor</h3>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-3">
+                  <Label className="block">Do you currently have your own payment processor?*</Label>
+                  <div className="flex flex-wrap gap-4">
+                    {[
+                      { label: "Yes", value: "yes" },
+                      { label: "No", value: "no" },
+                    ].map((option) => (
+                      <label key={option.value} className="flex items-center space-x-2">
+                        <input
+                          type="radio"
+                          value={option.value}
+                          {...register("hasCurrentProcessor")}
+                          onChange={(e) => {
+                            register("hasCurrentProcessor").onChange(e);
+                            if (e.target.value === "no") {
+                              setValue("currentProcessorName", "", { shouldDirty: true, shouldTouch: true });
+                            }
+                          }}
+                        />
+                        <span>{option.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                  {errors.hasCurrentProcessor && (
+                    <p className="text-sm text-destructive">{errors.hasCurrentProcessor.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="currentProcessorName">Who is your current processor?</Label>
+                  <Input
+                    id="currentProcessorName"
+                    placeholder="e.g., Stripe, Adyen"
+                    disabled={hasCurrentProcessor !== "yes"}
+                    {...register("currentProcessorName")}
+                  />
+                  {errors.currentProcessorName && (
+                    <p className="text-sm text-destructive">{errors.currentProcessorName.message}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
             {/* Company Contact */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold font-ubuntu text-foreground">Company Contact (Primary User)</h3>
@@ -267,6 +373,69 @@ export function MerchantApplicationDialog({
                   <Label htmlFor="fax">Fax Number</Label>
                   <Input id="fax" type="tel" {...register("fax")} />
                 </div>
+              </div>
+            </div>
+
+            {/* Banking Details */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold font-ubuntu text-foreground">Banking Details</h3>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="bankAccountHolderName">Account Holder Name*</Label>
+                  <Input id="bankAccountHolderName" {...register("bankAccountHolderName")} />
+                  {errors.bankAccountHolderName && (
+                    <p className="text-sm text-destructive">{errors.bankAccountHolderName.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="bankName">Bank Name*</Label>
+                  <Input id="bankName" autoComplete="organization" {...register("bankName")} />
+                  {errors.bankName && <p className="text-sm text-destructive">{errors.bankName.message}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="bankAccountType">Account Type*</Label>
+                  <select
+                    id="bankAccountType"
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    {...register("bankAccountType")}
+                  >
+                    <option value="">Select account type</option>
+                    <option value="checking">Checking / Current</option>
+                    <option value="savings">Savings</option>
+                  </select>
+                  {errors.bankAccountType && (
+                    <p className="text-sm text-destructive">{errors.bankAccountType.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="bankRoutingNumber">Branch Code / Routing Number*</Label>
+                  <Input id="bankRoutingNumber" inputMode="numeric" {...register("bankRoutingNumber")} />
+                  {errors.bankRoutingNumber && (
+                    <p className="text-sm text-destructive">{errors.bankRoutingNumber.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="bankAccountNumber">Bank Account Number*</Label>
+                  <Input id="bankAccountNumber" inputMode="numeric" {...register("bankAccountNumber")} />
+                  {errors.bankAccountNumber && (
+                    <p className="text-sm text-destructive">{errors.bankAccountNumber.message}</p>
+                  )}
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="bankVerificationDocument">
+                  Voided cheque or bank letter (optional but recommended)
+                </Label>
+                <Input
+                  id="bankVerificationDocument"
+                  name="bankVerificationDocument"
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    setBankVerificationDocument(file ?? null);
+                  }}
+                />
               </div>
             </div>
 
@@ -354,6 +523,34 @@ export function MerchantApplicationDialog({
               </div>
               {errors.agree_to_terms && (
                 <p className="text-sm text-destructive">{errors.agree_to_terms.message}</p>
+              )}
+              <div className="flex items-start space-x-3">
+                <Checkbox
+                  id="agree_to_security_policy"
+                  checked={watch("agree_to_security_policy")}
+                  onCheckedChange={(checked) =>
+                    setValue("agree_to_security_policy", checked === true, {
+                      shouldDirty: true,
+                      shouldTouch: true,
+                      shouldValidate: true,
+                    })
+                  }
+                />
+                <Label htmlFor="agree_to_security_policy" className="cursor-pointer leading-relaxed text-sm">
+                  I have read and agree to the{" "}
+                  <a
+                    href="/security"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline font-semibold"
+                  >
+                    Security Policy
+                  </a>
+                  .
+                </Label>
+              </div>
+              {errors.agree_to_security_policy && (
+                <p className="text-sm text-destructive">{errors.agree_to_security_policy.message}</p>
               )}
             </div>
 
