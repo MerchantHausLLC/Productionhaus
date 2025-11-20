@@ -26,7 +26,7 @@ export default function ClientResources() {
             <TypewriterReveal
               as="h3"
               text="Merchant Portal"
-              className="text-3xl font-bold mb-4 text-white"
+              className="text-3xl font-bold mb-4 text-slate-900 dark:text-slate-50"
               speed={40}
               delay={400}
             />
@@ -55,7 +55,7 @@ export default function ClientResources() {
             <TypewriterReveal
               as="h3"
               text="Developer Guides"
-              className="text-3xl font-bold mb-4 text-white"
+              className="text-3xl font-bold mb-4 text-slate-900 dark:text-slate-50"
               speed={40}
               delay={600}
             />
