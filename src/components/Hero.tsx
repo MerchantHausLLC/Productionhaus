@@ -111,7 +111,7 @@ export const Hero = () => {
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
         <div ref={videoParallaxRef} className="absolute inset-0">
-          <video autoPlay loop muted playsInline className="h-full w-full object-cover" poster="/hero-replacement.png">
+          <video autoPlay loop muted playsInline className="h-full w-full object-cover" poster="/hero-replacement.webp">
             <source src={heroVideo} type="video/webm" />
           </video>
         </div>
