@@ -5,6 +5,8 @@ import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
 import { ThankYouDialog } from "./ThankYouDialog";
 import { formDataToQueryString } from "@/lib/netlify";
+import { Label } from "./ui/label";
+import { RequiredIndicator } from "./ui/required-indicator";
 
 export const Contact = () => {
   const { toast } = useToast();
@@ -79,25 +81,39 @@ export const Contact = () => {
           
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
+              <Label className="text-crimson flex items-center text-sm font-semibold">
+                Name
+                <RequiredIndicator />
+              </Label>
               <Input
                 name="name"
                 autoComplete="name"
                 placeholder="Your Name"
                 required
-                className="bg-white/10 border-white/20 text-white placeholder:text-silver-grey focus:border-cyber-teal"
+                aria-required="true"
+                className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-silver-grey"
               />
             </div>
             <div>
+              <Label className="text-crimson flex items-center text-sm font-semibold">
+                Email
+                <RequiredIndicator />
+              </Label>
               <Input
                 name="email"
                 type="email"
                 autoComplete="email"
                 placeholder="Your Email"
                 required
-                className="bg-white/10 border-white/20 text-white placeholder:text-silver-grey focus:border-cyber-teal"
+                aria-required="true"
+                className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-silver-grey"
               />
             </div>
             <div>
+              <Label className="text-crimson flex items-center text-sm font-semibold">
+                Phone
+                <RequiredIndicator />
+              </Label>
               <Input
                 name="phone"
                 type="tel"
@@ -105,26 +121,33 @@ export const Contact = () => {
                 inputMode="tel"
                 placeholder="Your Phone"
                 required
-                className="bg-white/10 border-white/20 text-white placeholder:text-silver-grey focus:border-cyber-teal"
+                aria-required="true"
+                className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-silver-grey"
               />
             </div>
             <div>
+              <Label className="text-crimson flex items-center text-sm font-semibold">Company</Label>
               <Input
                 name="company"
                 autoComplete="organization"
                 placeholder="Company Name"
-                className="bg-white/10 border-white/20 text-white placeholder:text-silver-grey focus:border-cyber-teal"
+                className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-silver-grey"
               />
             </div>
           </div>
 
           <div>
+            <Label className="text-crimson flex items-center text-sm font-semibold">
+              Message
+              <RequiredIndicator />
+            </Label>
             <Textarea
               name="message"
               placeholder="How can we help you?"
               required
+              aria-required="true"
               rows={6}
-              className="bg-white/10 border-white/20 text-white placeholder:text-silver-grey focus:border-cyber-teal resize-none"
+              className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-silver-grey resize-none"
               aria-label="How can we help you?"
             />
           </div>

@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2 } from "lucide-react";
 import { formDataToQueryString } from "@/lib/netlify";
+import { RequiredIndicator } from "./ui/required-indicator";
 
 const contactFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -86,7 +87,7 @@ export function ContactDialog({ open, onOpenChange }: ContactDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md bg-card">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-ubuntu text-foreground">
+          <DialogTitle className="text-2xl font-ubuntu text-crimson">
             {isSubmitted ? "Message Received!" : "Contact Us"}
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
@@ -98,11 +99,11 @@ export function ContactDialog({ open, onOpenChange }: ContactDialogProps) {
 
         {isSubmitted ? (
           <div className="flex flex-col items-center gap-4 py-8">
-            <CheckCircle2 className="h-16 w-16 text-primary" />
+            <CheckCircle2 className="h-16 w-16 text-[hsl(var(--ring))]" />
             <p className="text-center text-foreground">
               Your message has been sent successfully. Our team will reach out to you within 24 hours.
             </p>
-            <Button onClick={handleClose} className="mt-4 bg-crimson hover:bg-crimson/90">
+            <Button onClick={handleClose} className="mt-4 bg-cyber-teal hover:bg-cyber-teal/90">
               Close
             </Button>
           </div>
@@ -120,38 +121,81 @@ export function ContactDialog({ open, onOpenChange }: ContactDialogProps) {
             <input type="hidden" name="form-name" value="contact-dialog" />
             <input type="hidden" name="bot-field" value="" />
             <div className="space-y-2">
-              <Label htmlFor="name">Name*</Label>
-              <Input id="name" autoComplete="name" {...register("name")} />
+              <Label htmlFor="name" className="flex items-center gap-2 text-crimson">
+                Name
+                <RequiredIndicator />
+              </Label>
+              <Input
+                id="name"
+                autoComplete="name"
+                required
+                aria-required="true"
+                aria-invalid={!!errors.name}
+                {...register("name")}
+              />
               {errors.name && (
-                <p className="text-sm text-destructive">{errors.name.message}</p>
+                <p className="text-sm text-[hsl(var(--destructive))]">{errors.name.message}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email*</Label>
-              <Input id="email" type="email" autoComplete="email" {...register("email")} />
+              <Label htmlFor="email" className="flex items-center gap-2 text-crimson">
+                Email
+                <RequiredIndicator />
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                autoComplete="email"
+                required
+                aria-required="true"
+                aria-invalid={!!errors.email}
+                {...register("email")}
+              />
               {errors.email && (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
+                <p className="text-sm text-[hsl(var(--destructive))]">{errors.email.message}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone*</Label>
-              <Input id="phone" type="tel" autoComplete="tel" inputMode="tel" {...register("phone")} />
+              <Label htmlFor="phone" className="flex items-center gap-2 text-crimson">
+                Phone
+                <RequiredIndicator />
+              </Label>
+              <Input
+                id="phone"
+                type="tel"
+                autoComplete="tel"
+                inputMode="tel"
+                required
+                aria-required="true"
+                aria-invalid={!!errors.phone}
+                {...register("phone")}
+              />
               {errors.phone && (
-                <p className="text-sm text-destructive">{errors.phone.message}</p>
+                <p className="text-sm text-[hsl(var(--destructive))]">{errors.phone.message}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="message">Message*</Label>
-              <Textarea id="message" rows={4} {...register("message")} />
+              <Label htmlFor="message" className="flex items-center gap-2 text-crimson">
+                Message
+                <RequiredIndicator />
+              </Label>
+              <Textarea
+                id="message"
+                rows={4}
+                required
+                aria-required="true"
+                aria-invalid={!!errors.message}
+                {...register("message")}
+              />
               {errors.message && (
-                <p className="text-sm text-destructive">{errors.message.message}</p>
+                <p className="text-sm text-[hsl(var(--destructive))]">{errors.message.message}</p>
               )}
             </div>
 
-            <Button type="submit" disabled={isSubmitting} className="w-full bg-crimson hover:bg-crimson/90">
+            <Button type="submit" disabled={isSubmitting} className="w-full bg-cyber-teal hover:bg-cyber-teal/90">
               {isSubmitting ? "Sending..." : "Send Message"}
             </Button>
           </form>

@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2 } from "lucide-react";
 import { formDataToQueryString } from "@/lib/netlify";
+import { RequiredIndicator } from "./ui/required-indicator";
 
 const applicationFormSchema = z.object({
   company_name: z.string().min(1, "Company name is required"),
@@ -180,20 +181,38 @@ export function MerchantApplicationDialog({
             />
             {/* Merchant Information */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold font-ubuntu text-foreground">Merchant Information</h3>
+              <h3 className="text-lg font-semibold font-ubuntu text-crimson">Merchant Information</h3>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="company_name">Company Name*</Label>
-                  <Input id="company_name" {...register("company_name")} />
+                  <Label htmlFor="company_name" className="flex items-center gap-2 text-crimson">
+                    Company Name
+                    <RequiredIndicator />
+                  </Label>
+                  <Input
+                    id="company_name"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.company_name}
+                    {...register("company_name")}
+                  />
                   {errors.company_name && (
-                    <p className="text-sm text-destructive">{errors.company_name.message}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.company_name.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="address">Address*</Label>
-                  <Input id="address" {...register("address")} />
+                  <Label htmlFor="address" className="flex items-center gap-2 text-crimson">
+                    Address
+                    <RequiredIndicator />
+                  </Label>
+                  <Input
+                    id="address"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.address}
+                    {...register("address")}
+                  />
                   {errors.address && (
-                    <p className="text-sm text-destructive">{errors.address.message}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.address.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
@@ -201,31 +220,58 @@ export function MerchantApplicationDialog({
                   <Input id="address2" {...register("address2")} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="city">City*</Label>
-                  <Input id="city" {...register("city")} />
+                  <Label htmlFor="city" className="flex items-center gap-2 text-crimson">
+                    City
+                    <RequiredIndicator />
+                  </Label>
+                  <Input
+                    id="city"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.city}
+                    {...register("city")}
+                  />
                   {errors.city && (
-                    <p className="text-sm text-destructive">{errors.city.message}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.city.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="state">State*</Label>
-                  <Input id="state" {...register("state")} />
+                  <Label htmlFor="state" className="flex items-center gap-2 text-crimson">
+                    State
+                    <RequiredIndicator />
+                  </Label>
+                  <Input
+                    id="state"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.state}
+                    {...register("state")}
+                  />
                   {errors.state && (
-                    <p className="text-sm text-destructive">{errors.state.message}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.state.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="zip">Zip/Postal Code*</Label>
-                  <Input id="zip" {...register("zip")} />
+                  <Label htmlFor="zip" className="flex items-center gap-2 text-crimson">
+                    Zip/Postal Code
+                    <RequiredIndicator />
+                  </Label>
+                  <Input
+                    id="zip"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.zip}
+                    {...register("zip")}
+                  />
                   {errors.zip && (
-                    <p className="text-sm text-destructive">{errors.zip.message}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.zip.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="website">Website</Label>
                   <Input id="website" type="url" placeholder="https://example.com" {...register("website")} />
                   {errors.website && (
-                    <p className="text-sm text-destructive">{errors.website.message}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.website.message}</p>
                   )}
                 </div>
               </div>
@@ -233,34 +279,72 @@ export function MerchantApplicationDialog({
 
             {/* Company Contact */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold font-ubuntu text-foreground">Company Contact (Primary User)</h3>
+              <h3 className="text-lg font-semibold font-ubuntu text-crimson">Company Contact (Primary User)</h3>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="first_name">First Name*</Label>
-                  <Input id="first_name" {...register("first_name")} />
+                  <Label htmlFor="first_name" className="flex items-center gap-2 text-crimson">
+                    First Name
+                    <RequiredIndicator />
+                  </Label>
+                  <Input
+                    id="first_name"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.first_name}
+                    {...register("first_name")}
+                  />
                   {errors.first_name && (
-                    <p className="text-sm text-destructive">{errors.first_name.message}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.first_name.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="last_name">Last Name*</Label>
-                  <Input id="last_name" {...register("last_name")} />
+                  <Label htmlFor="last_name" className="flex items-center gap-2 text-crimson">
+                    Last Name
+                    <RequiredIndicator />
+                  </Label>
+                  <Input
+                    id="last_name"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.last_name}
+                    {...register("last_name")}
+                  />
                   {errors.last_name && (
-                    <p className="text-sm text-destructive">{errors.last_name.message}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.last_name.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email Address*</Label>
-                  <Input id="email" type="email" {...register("email")} />
+                  <Label htmlFor="email" className="flex items-center gap-2 text-crimson">
+                    Email Address
+                    <RequiredIndicator />
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.email}
+                    {...register("email")}
+                  />
                   {errors.email && (
-                    <p className="text-sm text-destructive">{errors.email.message}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.email.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number*</Label>
-                  <Input id="phone" type="tel" {...register("phone")} />
+                  <Label htmlFor="phone" className="flex items-center gap-2 text-crimson">
+                    Phone Number
+                    <RequiredIndicator />
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.phone}
+                    {...register("phone")}
+                  />
                   {errors.phone && (
-                    <p className="text-sm text-destructive">{errors.phone.message}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.phone.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
@@ -272,19 +356,28 @@ export function MerchantApplicationDialog({
 
             {/* Account Setup */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold font-ubuntu text-foreground">Account Setup</h3>
+              <h3 className="text-lg font-semibold font-ubuntu text-crimson">Account Setup</h3>
               <div className="space-y-2">
-                <Label htmlFor="username">Primary Username*</Label>
-                <Input id="username" {...register("username")} />
+                <Label htmlFor="username" className="flex items-center gap-2 text-crimson">
+                  Primary Username
+                  <RequiredIndicator />
+                </Label>
+                <Input
+                  id="username"
+                  required
+                  aria-required="true"
+                  aria-invalid={!!errors.username}
+                  {...register("username")}
+                />
                 {errors.username && (
-                  <p className="text-sm text-destructive">{errors.username.message}</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">{errors.username.message}</p>
                 )}
               </div>
             </div>
 
             {/* Processing Services */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold font-ubuntu text-foreground">Processing Services</h3>
+              <h3 className="text-lg font-semibold font-ubuntu text-crimson">Processing Services</h3>
               <div className="space-y-2">
                 {["Credit Card", "ACH / eCheck", "Cash"].map((service) => (
                   <div key={service} className="flex items-center space-x-2">
@@ -305,7 +398,7 @@ export function MerchantApplicationDialog({
 
             {/* Value-added Services */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold font-ubuntu text-foreground">Value-added Services</h3>
+              <h3 className="text-lg font-semibold font-ubuntu text-crimson">Value-added Services</h3>
               <div className="space-y-2">
                 {["Encryption", "Invoice", "Level III Advantage", "Mobile Reader", "Vault Storage"].map((service) => (
                   <div key={service} className="flex items-center space-x-2">
@@ -339,21 +432,22 @@ export function MerchantApplicationDialog({
                     })
                   }
                 />
-                <Label htmlFor="agree_to_terms" className="cursor-pointer leading-relaxed text-sm">
+                <Label htmlFor="agree_to_terms" className="cursor-pointer leading-relaxed text-sm text-crimson flex flex-wrap gap-2 items-center">
                   I agree to the{" "}
-                  <a 
-                    href="/terms" 
-                    target="_blank" 
+                  <a
+                    href="/terms"
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary hover:underline font-semibold"
+                    className="text-crimson hover:underline font-semibold"
                   >
                     Terms and Conditions
                   </a>
                   {" "}and understand that MerchantHaus will process my application according to these terms.
+                  <RequiredIndicator />
                 </Label>
               </div>
               {errors.agree_to_terms && (
-                <p className="text-sm text-destructive">{errors.agree_to_terms.message}</p>
+                <p className="text-sm text-[hsl(var(--destructive))]">{errors.agree_to_terms.message}</p>
               )}
             </div>
 
