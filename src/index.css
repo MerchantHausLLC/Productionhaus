@@ -425,4 +425,54 @@ All colors MUST be HSL.
     );
     mask-mode: alpha;
   }
+
+  .loading-shell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-direction: column;
+    color: hsl(var(--foreground));
+    text-align: center;
+  }
+
+  /* Animated loader adapted from review feedback */
+  .loader {
+    width: 5rem;
+    aspect-ratio: 1;
+    border: 10px solid #0000;
+    padding: 5px;
+    box-sizing: border-box;
+    background:
+      radial-gradient(farthest-side, #fff 98%, #0000) 0 0/1.25rem 1.25rem no-repeat,
+      conic-gradient(from 90deg at 10px 10px, #0000 90deg, #fff 0) content-box,
+      conic-gradient(from -90deg at 40px 40px, #0000 90deg, #fff 0) content-box,
+      #000;
+    filter: blur(4px) contrast(10);
+    animation: loader-orbital 2s infinite;
+  }
+
+  .loading-label {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  @keyframes loader-orbital {
+    0% {
+      background-position: 0 0;
+    }
+    25% {
+      background-position: 100% 0;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    75% {
+      background-position: 0% 100%;
+    }
+    100% {
+      background-position: 0% 0;
+    }
+  }
 }
