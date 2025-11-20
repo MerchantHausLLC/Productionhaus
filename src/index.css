@@ -437,20 +437,39 @@ All colors MUST be HSL.
     text-align: center;
   }
 
-  /* Animated loader adapted from review feedback */
-  .loader {
-    width: 5rem;
-    aspect-ratio: 1;
-    border: 10px solid #0000;
-    padding: 5px;
-    box-sizing: border-box;
-    background:
-      radial-gradient(farthest-side, #fff 98%, #0000) 0 0/1.25rem 1.25rem no-repeat,
-      conic-gradient(from 90deg at 10px 10px, #0000 90deg, #fff 0) content-box,
-      conic-gradient(from -90deg at 40px 40px, #0000 90deg, #fff 0) content-box,
-      #000;
-    filter: blur(4px) contrast(10);
-    animation: loader-orbital 2s infinite;
+  .loading-ring {
+    position: relative;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 9999px;
+    background: conic-gradient(
+      from 180deg,
+      hsla(var(--crimson), 0.95),
+      hsla(var(--cyber-teal), 0.8),
+      hsla(var(--crimson), 0.95)
+    );
+    animation: loader-spin 1.15s linear infinite;
+    filter: drop-shadow(0 10px 30px hsla(var(--crimson), 0.25));
+  }
+
+  .loading-ring::after {
+    content: "";
+    position: absolute;
+    inset: 0.5rem;
+    background: radial-gradient(circle at 30% 30%, hsla(var(--background), 0.65) 0%, hsla(var(--background), 0.95) 60%);
+    border-radius: inherit;
+  }
+
+  .loading-core {
+    position: absolute;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, hsla(var(--crimson), 0.95), hsla(var(--cyber-teal), 0.9));
+    box-shadow:
+      0 10px 30px hsla(var(--crimson), 0.25),
+      0 0 0 12px hsla(var(--background), 0.6);
+    animation: loader-pulse 1.5s ease-in-out infinite;
   }
 
   .loading-label {
@@ -458,21 +477,21 @@ All colors MUST be HSL.
     letter-spacing: 0.02em;
   }
 
-  @keyframes loader-orbital {
-    0% {
-      background-position: 0 0;
+  @keyframes loader-spin {
+    to {
+      transform: rotate(360deg);
     }
-    25% {
-      background-position: 100% 0;
+  }
+
+  @keyframes loader-pulse {
+    0%,
+    100% {
+      transform: scale(0.95);
+      opacity: 0.8;
     }
     50% {
-      background-position: 100% 100%;
-    }
-    75% {
-      background-position: 0% 100%;
-    }
-    100% {
-      background-position: 0% 0;
+      transform: scale(1.08);
+      opacity: 1;
     }
   }
 }

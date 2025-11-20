@@ -15,7 +15,8 @@ const LoadingScreen = ({ variant = "full" }: LoadingScreenProps) => (
     style={overlayStyle[variant]}
   >
     <div className="loading-shell">
-      <div className="loader" aria-hidden />
+      <div className="loading-ring" aria-hidden />
+      <div className="loading-core" aria-hidden />
       <p className="loading-label">Loading experience</p>
     </div>
   </div>
