@@ -186,27 +186,18 @@ export const Hero = () => {
           Create your business profile in minutes and start accepting cards, ACH, and secure pay links — online, in-store, or on the go. Reduce costs, onboard quickly, and safeguard every transaction with advanced fraud protection and chargeback defense.
         </p>
         {/* CTA Buttons */}
-        <div 
+        <div
           className={`pt-4 flex flex-col sm:flex-row gap-4 transition-all duration-700 delay-[2400ms] ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          <Button 
+          <Button
             asChild
             size="lg"
             className="bg-crimson hover:opacity-90 text-white font-montserrat font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all w-full sm:w-auto"
           >
             <a href="/apply">Apply Now</a>
           </Button>
-          <a href="#solutions">
-            <Button 
-              size="lg"
-              variant="outline"
-              className="border-2 border-white/60 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-montserrat font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all w-full sm:w-auto"
-            >
-              Explore Solutions
-            </Button>
-          </a>
         </div>
         {/* Scroll Indicator */}
         <div 
