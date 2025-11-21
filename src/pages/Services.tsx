@@ -137,10 +137,10 @@ const Services = () => {
             <img
               src="/blog-images/cardslide.webp"
               alt="The Future of Digital Commerce"
-              className="w-full h-full object-cover brightness-[1.2] dark:brightness-[0.8] transition-[filter] duration-500"
+              className="w-full h-full object-cover brightness-[1.1] dark:brightness-[0.85] transition-[filter] duration-500"
             />
-            <div className="absolute inset-0 bg-white/15 mix-blend-screen dark:bg-black/50 dark:mix-blend-multiply pointer-events-none"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/70 dark:from-background/80 dark:via-background/65 dark:to-background/55"></div>
+            <div className="absolute inset-0 bg-white/8 mix-blend-screen dark:bg-black/40 dark:mix-blend-multiply pointer-events-none"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/55 to-background/40 dark:from-background/65 dark:via-background/50 dark:to-background/40"></div>
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
@@ -398,10 +398,10 @@ const Services = () => {
                 <Phone className="mr-2 w-5 h-5" />
                 Schedule a Call
               </Button>
-              <Button 
+              <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-crimson font-bold px-8 py-6 text-lg rounded-lg transition-all"
+                className="border-2 border-white text-white bg-transparent hover:bg-white/15 hover:text-white font-bold px-8 py-6 text-lg rounded-lg transition-all"
                 asChild
               >
                 <a href="/apply">
