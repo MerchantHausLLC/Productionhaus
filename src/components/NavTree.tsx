@@ -1,25 +1,28 @@
 import React, { useState, useMemo, useCallback } from 'react';
 
-// --- Icon SVGs (Equivalent to lucide-react) ---
+/**
+ * Icon SVGs for Navigation Tree
+ * Lightweight inline SVG icons to avoid external dependencies
+ */
 
 // Icon for collapsible sections (closed)
 const ChevronRight = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
 );
 
 // Icon for collapsible sections (open)
 const ChevronDown = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
 );
 
 // Icon for links
 const FileText = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
 );
 
 // Icon for anchor links
 const Hash = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
 );
 
 /**
@@ -69,59 +72,72 @@ const navData = [
 ];
 
 /**
- * Recursive component to render a single Nav item (page or section)
+ * Recursive NavItem Component
+ * Renders individual navigation items with collapsible functionality
  */
 const NavItem = ({ item, parentKey, open, toggle }) => {
   const key = `${parentKey}/${item.title}`;
   const isOpen = !!open[key];
   const isCollapsible = item.children && item.children.length > 0;
-  
-  // Determine if it's an anchor link (Level 3 or deeper)
-  const isAnchor = parentKey.split('/').length > 2;
 
-  const baseClasses = "flex items-center w-full rounded-lg transition-colors duration-150 group";
-  const linkClasses = isAnchor 
-    ? "text-sm text-gray-500 hover:text-blue-600 px-3 py-1" 
-    : "text-base font-medium text-gray-700 hover:text-blue-600 px-3 py-2";
+  // Determine depth level for styling (anchor links are level 3+)
+  const depth = parentKey.split('/').filter(Boolean).length;
+  const isAnchor = depth >= 2;
+
+  // Styling based on item type and depth
+  const baseClasses = "flex items-center w-full transition-colors duration-150 group";
+  const linkClasses = isAnchor
+    ? "text-xs text-gray-600 hover:text-blue-600 py-1 px-2"
+    : depth === 0
+    ? "text-sm font-medium text-gray-700 hover:text-blue-600 py-1.5 px-2"
+    : "text-sm text-gray-700 hover:text-blue-600 py-1 px-2";
 
   const renderContent = useMemo(() => {
-    // 1. Simple Link (Anchor or top-level page without sub-sections)
+    // Simple link (no children or anchor link)
     if (!isCollapsible || isAnchor) {
       return (
-        <a href={item.href} className={`${baseClasses} ${linkClasses} hover:bg-gray-100/50`}>
-          {isAnchor ? <Hash className="mr-2 text-gray-400 group-hover:text-blue-600" /> : <FileText className="mr-2 text-gray-400 group-hover:text-blue-600" />}
-          <span className="truncate">{item.title}</span>
+        <a
+          href={item.href}
+          className={`${baseClasses} ${linkClasses} hover:bg-blue-50 rounded`}
+          title={item.title}
+        >
+          {isAnchor ? (
+            <Hash className="mr-1.5 flex-shrink-0 text-gray-400 group-hover:text-blue-600" />
+          ) : (
+            <FileText className="mr-1.5 flex-shrink-0 text-gray-400 group-hover:text-blue-600" />
+          )}
+          <span className="truncate text-left">{item.title}</span>
         </a>
       );
     }
 
-    // 2. Collapsible Parent (Category or Page with anchors)
+    // Collapsible parent with children
     return (
-      <div className="flex justify-between items-center w-full">
+      <div className="flex items-center w-full gap-1">
         {item.href ? (
-          // Page with anchors: clickable link + toggle button
-          <a 
-            href={item.href} 
-            className={`${baseClasses} ${linkClasses} flex-grow hover:bg-gray-100/50`}
-            title={`Go to ${item.title} page`}
+          // Page with sections: clickable link
+          <a
+            href={item.href}
+            className={`${baseClasses} ${linkClasses} flex-1 hover:bg-blue-50 rounded min-w-0`}
+            title={`Go to ${item.title}`}
           >
-            <FileText className="mr-2 text-gray-400 group-hover:text-blue-600" />
-            <span className="truncate">{item.title}</span>
+            <FileText className="mr-1.5 flex-shrink-0 text-gray-400 group-hover:text-blue-600" />
+            <span className="truncate text-left">{item.title}</span>
           </a>
         ) : (
-          // Category container: unclickable title + toggle button
-          <span className={`${linkClasses} flex-grow text-gray-800 cursor-default`}>
-             <span className="truncate">{item.title}</span>
+          // Category container: non-clickable title
+          <span className={`${linkClasses} flex-1 text-gray-800 font-medium min-w-0 px-2 py-1.5`}>
+            <span className="truncate text-left block">{item.title}</span>
           </span>
         )}
-        
-        {/* The Toggle Button for children visibility */}
+
+        {/* Collapse/Expand toggle button */}
         <button
           onClick={() => toggle(key)}
-          className="p-1.5 ml-2 rounded-full text-gray-500 hover:bg-gray-200 hover:text-blue-600 focus:outline-none transition-transform"
+          className="p-1 rounded hover:bg-gray-200 text-gray-500 hover:text-blue-600 transition-colors flex-shrink-0"
           aria-expanded={isOpen}
           aria-controls={`sub-menu-${key}`}
-          title={isOpen ? "Collapse section" : "Expand section"}
+          aria-label={isOpen ? `Collapse ${item.title}` : `Expand ${item.title}`}
         >
           {isOpen ? <ChevronDown /> : <ChevronRight />}
         </button>
@@ -132,22 +148,20 @@ const NavItem = ({ item, parentKey, open, toggle }) => {
   return (
     <li className="list-none">
       {renderContent}
-      
-      {/* This is the fixed part: use ml-4 for consistent left indentation 
-        and pt-1 for spacing between parent and children.
-      */}
+
+      {/* Nested children with consistent indentation */}
       {isCollapsible && isOpen && (
-        <ul 
-          id={`sub-menu-${key}`} 
-          className="space-y-1 mt-1 ml-4 pt-1 border-l border-gray-200"
+        <ul
+          id={`sub-menu-${key}`}
+          className="space-y-0.5 mt-0.5 ml-3 pl-2 border-l border-gray-200"
         >
           {item.children.map((child) => (
-            <NavItem 
-              key={`${key}/${child.title}`} 
-              item={child} 
-              parentKey={key} 
-              open={open} 
-              toggle={toggle} 
+            <NavItem
+              key={`${key}/${child.title}`}
+              item={child}
+              parentKey={key}
+              open={open}
+              toggle={toggle}
             />
           ))}
         </ul>
@@ -158,7 +172,8 @@ const NavItem = ({ item, parentKey, open, toggle }) => {
 
 
 /**
- * NavTree component (main container)
+ * NavTree Component (Main Navigation Container)
+ * Compact, responsive navigation sidebar following industry-standard patterns
  */
 const NavTree = () => {
   const [open, setOpen] = useState({});
@@ -167,9 +182,7 @@ const NavTree = () => {
     setOpen((prev) => ({ ...prev, [key]: !prev[key] }));
   }, []);
 
-  // Re-map the navData to include the full original data set
-  // This is where you would place the full data array if this component were
-  // truly standalone, but for demonstration, we use the simplified array above.
+  // Full navigation data structure
   const fullNavData = [
     { title: "The Merchant Portal", href: "/TheMerchantPortal" },
     {
@@ -568,18 +581,21 @@ const NavTree = () => {
 
   return (
     <nav
-      className="w-full lg:w-72 bg-white p-6 max-h-screen overflow-y-auto"
-      aria-label="Documentation navigation tree"
+      className="w-full lg:w-64 bg-white/95 backdrop-blur-sm border-r border-gray-200 overflow-y-auto"
+      style={{ maxHeight: 'calc(100vh - 4rem)' }}
+      aria-label="Documentation navigation"
     >
-        <h2 className="text-xl font-bold text-gray-900 mb-4 border-b pb-2">MerchantHaus Guides</h2>
-      <ul className="space-y-2">
+      <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 z-10">
+        <h2 className="text-base font-semibold text-gray-900">Documentation</h2>
+      </div>
+      <ul className="space-y-0.5 p-3">
         {fullNavData.map((item) => (
-          <NavItem 
-            key={item.title} 
-            item={item} 
-            parentKey="" 
-            open={open} 
-            toggle={toggle} 
+          <NavItem
+            key={item.title}
+            item={item}
+            parentKey=""
+            open={open}
+            toggle={toggle}
           />
         ))}
       </ul>

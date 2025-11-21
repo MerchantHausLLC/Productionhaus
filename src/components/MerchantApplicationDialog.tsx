@@ -239,6 +239,12 @@ export function MerchantApplicationDialog({
               name="agree_to_security_policy"
               value={watch("agree_to_security_policy") ? "yes" : "no"}
             />
+            {/* Hidden fields for banking details to ensure Netlify Forms captures them */}
+            <input type="hidden" name="bankAccountHolderName" value={watch("bankAccountHolderName") || ""} />
+            <input type="hidden" name="bankName" value={watch("bankName") || ""} />
+            <input type="hidden" name="bankAccountType" value={watch("bankAccountType") || ""} />
+            <input type="hidden" name="bankRoutingNumber" value={watch("bankRoutingNumber") || ""} />
+            <input type="hidden" name="bankAccountNumber" value={watch("bankAccountNumber") || ""} />
             {/* Merchant Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold font-ubuntu text-crimson">Merchant Information</h3>
