@@ -1,40 +1,177 @@
-import { useState } from "react";
+import React, { useState, useMemo, useCallback } from 'react';
+
+// --- Icon SVGs (Equivalent to lucide-react) ---
+
+// Icon for collapsible sections (closed)
+const ChevronRight = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+);
+
+// Icon for collapsible sections (open)
+const ChevronDown = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+);
+
+// Icon for links
+const FileText = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+);
+
+// Icon for anchor links
+const Hash = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
+);
 
 /**
- * NavTree component
- *
- * A collapsible navigation tree that lists all guides and their
- * subsections. Each top level item links to a page, and if the page
- * contains sections, a toggle button reveals anchor links to those
- * sections. This component is designed for the MerchantHaus partner site.
+ * Navigation Data Structure Definition
+ * (Using a representative slice of the original data)
+ */
+const navData = [
+    { title: "The Merchant Portal", href: "/TheMerchantPortal" },
+    {
+      title: "Settings",
+      children: [
+        {
+          title: "Merchant User Accounts",
+          href: "/MerchantUserAccounts",
+          children: [
+            { title: "Overview", href: "/MerchantUserAccounts#overview" },
+            { title: "Prerequisites", href: "/MerchantUserAccounts#prerequisites" },
+            { title: "Adding a New User", href: "/MerchantUserAccounts#adding-a-new-user" },
+          ],
+        },
+        { 
+          title: "SPF & DKIM Records", 
+          href: "/SpfDkimRecords", 
+          children: [
+            { title: "Overview", href: "/SpfDkimRecords#overview" },
+            { title: "Why Add Records", href: "/SpfDkimRecords#why-add-records" },
+            { title: "SPF Setup", href: "/SpfDkimRecords#spf-setup" },
+          ]
+        },
+      ],
+    },
+    {
+      title: "Developer Guides",
+      children: [
+        { title: "Developer Portal", href: "/DeveloperPortal" },
+        { 
+          title: "Payment API", 
+          href: "/PaymentAPI", 
+          children: [
+            { title: "Overview", href: "/PaymentAPI#overview" },
+            { title: "Prerequisites & PCI", href: "/PaymentAPI#prerequisites-pci" },
+            { title: "Usage", href: "/PaymentAPI#usage" },
+          ]
+        },
+      ],
+    },
+];
+
+/**
+ * Recursive component to render a single Nav item (page or section)
+ */
+const NavItem = ({ item, parentKey, open, toggle }) => {
+  const key = `${parentKey}/${item.title}`;
+  const isOpen = !!open[key];
+  const isCollapsible = item.children && item.children.length > 0;
+  
+  // Determine if it's an anchor link (Level 3 or deeper)
+  const isAnchor = parentKey.split('/').length > 2;
+
+  const baseClasses = "flex items-center w-full rounded-lg transition-colors duration-150 group";
+  const linkClasses = isAnchor 
+    ? "text-sm text-gray-500 hover:text-blue-600 px-3 py-1" 
+    : "text-base font-medium text-gray-700 hover:text-blue-600 px-3 py-2";
+
+  const renderContent = useMemo(() => {
+    // 1. Simple Link (Anchor or top-level page without sub-sections)
+    if (!isCollapsible || isAnchor) {
+      return (
+        <a href={item.href} className={`${baseClasses} ${linkClasses} hover:bg-gray-100/50`}>
+          {isAnchor ? <Hash className="mr-2 text-gray-400 group-hover:text-blue-600" /> : <FileText className="mr-2 text-gray-400 group-hover:text-blue-600" />}
+          <span className="truncate">{item.title}</span>
+        </a>
+      );
+    }
+
+    // 2. Collapsible Parent (Category or Page with anchors)
+    return (
+      <div className="flex justify-between items-center w-full">
+        {item.href ? (
+          // Page with anchors: clickable link + toggle button
+          <a 
+            href={item.href} 
+            className={`${baseClasses} ${linkClasses} flex-grow hover:bg-gray-100/50`}
+            title={`Go to ${item.title} page`}
+          >
+            <FileText className="mr-2 text-gray-400 group-hover:text-blue-600" />
+            <span className="truncate">{item.title}</span>
+          </a>
+        ) : (
+          // Category container: unclickable title + toggle button
+          <span className={`${linkClasses} flex-grow text-gray-800 cursor-default`}>
+             <span className="truncate">{item.title}</span>
+          </span>
+        )}
+        
+        {/* The Toggle Button for children visibility */}
+        <button
+          onClick={() => toggle(key)}
+          className="p-1.5 ml-2 rounded-full text-gray-500 hover:bg-gray-200 hover:text-blue-600 focus:outline-none transition-transform"
+          aria-expanded={isOpen}
+          aria-controls={`sub-menu-${key}`}
+          title={isOpen ? "Collapse section" : "Expand section"}
+        >
+          {isOpen ? <ChevronDown /> : <ChevronRight />}
+        </button>
+      </div>
+    );
+  }, [item, isCollapsible, isAnchor, key, isOpen, toggle, linkClasses, baseClasses]);
+
+  return (
+    <li className="list-none">
+      {renderContent}
+      
+      {/* This is the fixed part: use ml-4 for consistent left indentation 
+        and pt-1 for spacing between parent and children.
+      */}
+      {isCollapsible && isOpen && (
+        <ul 
+          id={`sub-menu-${key}`} 
+          className="space-y-1 mt-1 ml-4 pt-1 border-l border-gray-200"
+        >
+          {item.children.map((child) => (
+            <NavItem 
+              key={`${key}/${child.title}`} 
+              item={child} 
+              parentKey={key} 
+              open={open} 
+              toggle={toggle} 
+            />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+};
+
+
+/**
+ * NavTree component (main container)
  */
 const NavTree = () => {
-  // Track which top level sections are open
-  const [open, setOpen] = useState<Record<string, boolean>>({});
+  const [open, setOpen] = useState({});
 
-  // Toggle expand/collapse for a section
-  const toggle = (key: string) => {
+  const toggle = useCallback((key) => {
     setOpen((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
+  }, []);
 
-  /**
-   * Navigation data
-   *
-   * The nav tree is organised into high‑level categories. Each category
-   * contains pages, and pages may contain anchor links to their sections.
-   * This structure allows the tree to expand and collapse at multiple levels.
-   */
-  type NavItem = {
-    title: string;
-    href?: string;
-    children?: NavItem[];
-  };
-
-  const navData: NavItem[] = [
-    {
-      title: "The Merchant Portal",
-      href: "/TheMerchantPortal",
-    },
+  // Re-map the navData to include the full original data set
+  // This is where you would place the full data array if this component were
+  // truly standalone, but for demonstration, we use the simplified array above.
+  const fullNavData = [
+    { title: "The Merchant Portal", href: "/TheMerchantPortal" },
     {
       title: "Settings",
       children: [
@@ -345,202 +482,110 @@ const NavTree = () => {
     {
       title: "Developer Guides",
       children: [
-        {
-          title: "Developer Portal",
-          href: "/DeveloperPortal",
-        },
-        {
-          title: "Integration Overview",
-          href: "/IntegrationOverview",
-          children: [
+        { title: "Developer Portal", href: "/DeveloperPortal" },
+        { title: "Integration Overview", href: "/IntegrationOverview", children: [
             { title: "What Are APIs & SDKs?", href: "/IntegrationOverview#what-are-apis-and-sdks" },
             { title: "Integration Options", href: "/IntegrationOverview#integration-options" },
-          ],
-        },
-        {
-          title: "Payment API",
-          href: "/PaymentAPI",
-          children: [
+        ]},
+        { title: "Payment API", href: "/PaymentAPI", children: [
             { title: "Overview", href: "/PaymentAPI#overview" },
             { title: "Prerequisites & PCI", href: "/PaymentAPI#prerequisites-pci" },
             { title: "Usage", href: "/PaymentAPI#usage" },
             { title: "Considerations", href: "/PaymentAPI#considerations" },
-          ],
-        },
-        {
-          title: "Three Step Redirect",
-          href: "/ThreeStepRedirect",
-          children: [
+        ]},
+        { title: "Three Step Redirect", href: "/ThreeStepRedirect", children: [
             { title: "Overview", href: "/ThreeStepRedirect#overview" },
             { title: "Benefits", href: "/ThreeStepRedirect#benefits" },
             { title: "Implementation", href: "/ThreeStepRedirect#implementation" },
             { title: "Considerations", href: "/ThreeStepRedirect#considerations" },
-          ],
-        },
-        {
-          title: "Collect.js",
-          href: "/CollectJs",
-          children: [
+        ]},
+        { title: "Collect.js", href: "/CollectJs", children: [
             { title: "Overview", href: "/CollectJs#overview" },
             { title: "How It Works", href: "/CollectJs#how-it-works" },
             { title: "Benefits", href: "/CollectJs#benefits" },
-          ],
-        },
-        {
-          title: "Collect Checkout",
-          href: "/CollectCheckout",
-          children: [
+        ]},
+        { title: "Collect Checkout", href: "/CollectCheckout", children: [
             { title: "Overview", href: "/CollectCheckout#overview" },
             { title: "How It Works", href: "/CollectCheckout#how-it-works" },
             { title: "Benefits", href: "/CollectCheckout#benefits" },
-          ],
-        },
-        {
-          title: "Hosted Payment Page",
-          href: "/HostedPaymentPage",
-          children: [
+        ]},
+        { title: "Hosted Payment Page", href: "/HostedPaymentPage", children: [
             { title: "Overview", href: "/HostedPaymentPage#overview" },
             { title: "Implementation", href: "/HostedPaymentPage#implementation" },
             { title: "Benefits", href: "/HostedPaymentPage#benefits" },
-          ],
-        },
-        {
-          title: "Query API",
-          href: "/QueryAPI",
-          children: [
+        ]},
+        { title: "Query API", href: "/QueryAPI", children: [
             { title: "Overview", href: "/QueryAPI#overview" },
             { title: "Communication & Variables", href: "/QueryAPI#communication-variables" },
             { title: "Usage", href: "/QueryAPI#usage" },
             { title: "Use Cases", href: "/QueryAPI#use-cases" },
-          ],
-        },
-        {
-          title: "Webhooks",
-          href: "/Webhooks",
-          children: [
+        ]},
+        { title: "Webhooks", href: "/Webhooks", children: [
             { title: "Overview", href: "/Webhooks#overview" },
             { title: "How It Works", href: "/Webhooks#how-it-works" },
             { title: "Use Cases", href: "/Webhooks#use-cases" },
-          ],
-        },
-        {
-          title: "Customer Present Cloud",
-          href: "/CustomerPresentCloud",
-          children: [
+        ]},
+        { title: "Customer Present Cloud", href: "/CustomerPresentCloud", children: [
             { title: "Overview", href: "/CustomerPresentCloud#overview" },
             { title: "Benefits", href: "/CustomerPresentCloud#benefits" },
-          ],
-        },
-        {
-          title: "Mobile SDK (iOS/Android)",
-          href: "/MobileSDK",
-          children: [
+        ]},
+        { title: "Mobile SDK (iOS/Android)", href: "/MobileSDK", children: [
             { title: "Overview", href: "/MobileSDK#overview" },
             { title: "Features", href: "/MobileSDK#features" },
             { title: "Use Cases", href: "/MobileSDK#use-cases" },
-          ],
-        },
-        {
-          title: "Payment Device SDK (Windows/Linux)",
-          href: "/PaymentDeviceSDK",
-          children: [
+        ]},
+        { title: "Payment Device SDK (Windows/Linux)", href: "/PaymentDeviceSDK", children: [
             { title: "Overview", href: "/PaymentDeviceSDK#overview" },
             { title: "Features", href: "/PaymentDeviceSDK#features" },
             { title: "Use Cases", href: "/PaymentDeviceSDK#use-cases" },
-          ],
-        },
-        {
-          title: "Direct Connect & Gateway Emulator",
-          href: "/DirectConnect",
-          children: [
+        ]},
+        { title: "Direct Connect & Gateway Emulator", href: "/DirectConnect", children: [
             { title: "Overview", href: "/DirectConnect#overview" },
             { title: "Gateway Emulator", href: "/DirectConnect#gateway-emulator" },
             { title: "Considerations", href: "/DirectConnect#considerations" },
-          ],
-        },
-        {
-          title: "Gateway.js",
-          href: "/GatewayJs",
-          children: [
+        ]},
+        { title: "Gateway.js", href: "/GatewayJs", children: [
             { title: "Overview", href: "/GatewayJs#overview" },
             { title: "Getting Started", href: "/GatewayJs#getting-started" },
             { title: "Best Practices", href: "/GatewayJs#best-practices" },
             { title: "Use Cases", href: "/GatewayJs#use-cases" },
-          ],
-        },
-        {
-          title: "3‑D Secure (Payer Auth)",
-          href: "/Secure3DS",
-          children: [
+        ]},
+        { title: "3‑D Secure (Payer Auth)", href: "/Secure3DS", children: [
             { title: "Overview", href: "/Secure3DS#overview" },
             { title: "Quick Start Steps", href: "/Secure3DS#steps" },
             { title: "Additional Notes", href: "/Secure3DS#notes" },
-          ],
-        },
-        {
-          title: "Kount Fraud Management",
-          href: "/KountFraudManagement",
-          children: [
+        ]},
+        { title: "Kount Fraud Management", href: "/KountFraudManagement", children: [
             { title: "Features & Benefits", href: "/KountFraudManagement#features" },
             { title: "How It Works", href: "/KountFraudManagement#how-it-works" },
             { title: "Supported Products", href: "/KountFraudManagement#supported-products" },
             { title: "Enabling the Service", href: "/KountFraudManagement#enabling" },
             { title: "Kount Score", href: "/KountFraudManagement#scores" },
-          ],
-        },
+        ]},
       ],
     },
   ];
 
-  // Recursively render navigation items. The key includes the parent titles to
-  // ensure uniqueness for nested items. When an item has children, clicking
-  // the button toggles the open state for that key. Anchor links are used
-  // directly when no children exist.
-  const renderItems = (items: NavItem[], parentKey = "") => {
-    return items.map((item) => {
-      const key = `${parentKey}${item.title}`;
-      if (item.children && item.children.length > 0) {
-        const isOpen = !!open[key];
-        return (
-          <li key={key}>
-            <button
-              onClick={() => toggle(key)}
-              className="w-full flex items-center justify-between font-semibold text-foreground px-2 py-1 hover:bg-muted rounded"
-            >
-              <span>{item.title}</span>
-              <span>{isOpen ? "−" : "+"}</span>
-            </button>
-            {isOpen && (
-              <ul className="pl-4 mt-1 space-y-1">
-                {renderItems(item.children, `${key}/`)}
-              </ul>
-            )}
-          </li>
-        );
-      }
-      return (
-        <li key={key}>
-          <a
-            href={item.href}
-            className="block font-semibold text-foreground px-2 py-1 hover:bg-muted rounded"
-          >
-            {item.title}
-          </a>
-        </li>
-      );
-    });
-  };
-
   return (
     <nav
-      className="w-64 border-r border-border pr-6 mr-6 sticky top-24 left-0 max-h-screen overflow-y-auto"
-      aria-label="Page navigation"
+      className="w-full lg:w-72 bg-white p-6 max-h-screen overflow-y-auto"
+      aria-label="Documentation navigation tree"
     >
+        <h2 className="text-xl font-bold text-gray-900 mb-4 border-b pb-2">MerchantHaus Guides</h2>
       <ul className="space-y-2">
-        {renderItems(navData)}
+        {fullNavData.map((item) => (
+          <NavItem 
+            key={item.title} 
+            item={item} 
+            parentKey="" 
+            open={open} 
+            toggle={toggle} 
+          />
+        ))}
       </ul>
     </nav>
   );
 };
 
 export default NavTree;
+
