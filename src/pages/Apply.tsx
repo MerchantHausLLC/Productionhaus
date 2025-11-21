@@ -19,8 +19,8 @@ import {
 } from "lucide-react";
 import { StarfieldBackground } from "@/components/StarfieldBackground";
 import { ThankYouDialog } from "@/components/ThankYouDialog";
-import { formDataToQueryString } from "@/lib/netlify";
 
+// Schema validation
 const applicationFormSchema = z.object({
   company_name: z.string().trim().min(1, "Company name is required").max(100),
   address: z.string().trim().min(1, "Address is required").max(200),
@@ -34,7 +34,12 @@ const applicationFormSchema = z.object({
   email: z.string().trim().email("Invalid email address").max(255),
   phone: z.string().trim().min(1, "Phone number is required").max(20),
   fax: z.string().trim().max(20).optional(),
-  username: z.string().trim().min(1, "Username is required").max(50).regex(/^[a-zA-Z0-9]+$/, "Username must be alphanumeric"),
+  username: z
+    .string()
+    .trim()
+    .min(1, "Username is required")
+    .max(50)
+    .regex(/^[a-zA-Z0-9]+$/, "Username must be alphanumeric"),
   hasCurrentProcessor: z.enum(["yes", "no"], {
     required_error: "Please tell us if you have a current processor",
   }),
@@ -44,14 +49,8 @@ const applicationFormSchema = z.object({
   bankAccountType: z.enum(["checking", "savings"], {
     required_error: "Bank account type is required",
   }),
-  bankRoutingNumber: z
-    .string()
-    .trim()
-    .regex(/^\d{4,11}$/i, "Routing number should be 4-11 digits"),
-  bankAccountNumber: z
-    .string()
-    .trim()
-    .regex(/^\d{6,20}$/i, "Account number should be 6-20 digits"),
+  bankRoutingNumber: z.string().trim().regex(/^\d{4,11}$/i, "Routing number should be 4-11 digits"),
+  bankAccountNumber: z.string().trim().regex(/^\d{6,20}$/i, "Account number should be 6-20 digits"),
   processing_services: z.array(z.string()).optional(),
   value_services: z.array(z.string()).optional(),
   agree_to_terms: z.boolean().refine((val) => val === true, {
@@ -88,7 +87,7 @@ const Apply = () => {
   const [showThankYou, setShowThankYou] = useState(false);
   const [bankVerificationDocument, setBankVerificationDocument] = useState<File | null>(null);
   const { toast } = useToast();
-  
+
   const {
     register,
     handleSubmit,
@@ -112,50 +111,21 @@ const Apply = () => {
   const agreedToSecurity = watch("agree_to_security_policy");
   const hasCurrentProcessor = watch("hasCurrentProcessor");
 
+  // Custom submit handler to post the data to our Netlify function
   const onSubmit = async (data: ApplicationFormValues) => {
     try {
-      const formData = new FormData();
-      formData.append("form-name", "merchant-apply");
-      formData.append("bot-field", "");
-
-      // Add hidden fields
-      formData.append("country", "United States");
-      formData.append("timezone", "(GMT-08:00) Pacific Time (US & Canada)");
-      formData.append("language", "English");
-
-      // Add all form fields
-      Object.entries(data).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          value.forEach((item) => formData.append(key, item));
-        } else if (value !== undefined && value !== null) {
-          if (typeof value === "boolean") {
-            formData.append(key, value ? "yes" : "no");
-          } else {
-            formData.append(key, String(value));
-          }
-        }
-      });
-
-      if (!formData.has("agree_to_terms")) {
-        formData.append("agree_to_terms", data.agree_to_terms ? "yes" : "no");
-      }
-
-      if (!formData.has("agree_to_security_policy")) {
-        formData.append("agree_to_security_policy", data.agree_to_security_policy ? "yes" : "no");
-      }
-
+      const payload: Record<string, any> = { ...data };
+      // Append encoded document if present
       if (bankVerificationDocument) {
         const encodedDocument = await fileToBase64(bankVerificationDocument);
-        formData.append("bankVerificationDocument_name", bankVerificationDocument.name);
-        formData.append("bankVerificationDocument", encodedDocument);
+        payload.bankVerificationDocument = encodedDocument;
+        payload.bankVerificationDocument_name = bankVerificationDocument.name;
       }
-
-      const response = await fetch("/", {
+      const response = await fetch("/.netlify/functions/submit-merchant-application", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formDataToQueryString(formData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
-
       if (response.ok) {
         setIsSubmitted(true);
         setShowThankYou(true);
@@ -178,17 +148,13 @@ const Apply = () => {
 
   const toggleProcessingService = (service: string, checked: boolean) => {
     const current = processingServices;
-    const updated = checked
-      ? [...current, service]
-      : current.filter((s) => s !== service);
+    const updated = checked ? [...current, service] : current.filter((s) => s !== service);
     setValue("processing_services", updated, { shouldDirty: true, shouldTouch: true });
   };
 
   const toggleValueService = (service: string, checked: boolean) => {
     const current = valueServices;
-    const updated = checked
-      ? [...current, service]
-      : current.filter((s) => s !== service);
+    const updated = checked ? [...current, service] : current.filter((s) => s !== service);
     setValue("value_services", updated, { shouldDirty: true, shouldTouch: true });
   };
 
@@ -228,7 +194,6 @@ const Apply = () => {
     <div className="min-h-screen flex flex-col bg-background relative">
       <StarfieldBackground />
       <Header />
-      
       <main className="flex-1 relative z-10">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-sm py-16">
@@ -244,7 +209,6 @@ const Apply = () => {
             </p>
           </div>
         </section>
-
         {/* Application Form Section */}
         <section className="py-16 relative z-10">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -260,9 +224,7 @@ const Apply = () => {
                           <div className="flex flex-col items-center flex-1">
                             <div
                               className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
-                                currentStep >= step.number
-                                  ? "bg-crimson text-white"
-                                  : "bg-muted text-muted-foreground"
+                                currentStep >= step.number ? "bg-crimson text-white" : "bg-muted text-muted-foreground"
                               }`}
                             >
                               <StepIcon className="w-6 h-6" />
@@ -273,9 +235,7 @@ const Apply = () => {
                           </div>
                           {index < steps.length - 1 && (
                             <div
-                              className={`h-1 flex-1 mx-2 transition-all ${
-                                currentStep > step.number ? "bg-crimson" : "bg-muted"
-                              }`}
+                              className={`h-1 flex-1 mx-2 transition-all ${currentStep > step.number ? "bg-crimson" : "bg-muted"}`}
                             />
                           )}
                         </div>
@@ -283,30 +243,12 @@ const Apply = () => {
                     })}
                   </div>
                 </div>
-
                 <form
                   name="merchant-apply"
                   method="POST"
-                  data-netlify="true"
-                  data-netlify-honeypot="bot-field"
-                  action="/"
-                  acceptCharset="UTF-8"
                   onSubmit={handleSubmit(onSubmit)}
                   className="space-y-8"
                 >
-                  <input type="hidden" name="form-name" value="merchant-apply" />
-                  <input type="hidden" name="bot-field" />
-                  <input
-                    type="hidden"
-                    name="agree_to_terms"
-                    value={agreedToTerms ? "yes" : "no"}
-                  />
-                  <input
-                    type="hidden"
-                    name="agree_to_security_policy"
-                    value={agreedToSecurity ? "yes" : "no"}
-                  />
-
                   {/* Step 1: Business Information */}
                   {currentStep === 1 && (
                     <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
@@ -316,32 +258,17 @@ const Apply = () => {
                           Business Information
                         </h2>
                       </div>
-
                       <div className="grid gap-6 md:grid-cols-2">
                         <div className="space-y-2 md:col-span-2">
                           <Label htmlFor="company_name">Company Name*</Label>
-                          <Input
-                            id="company_name"
-                            autoComplete="organization"
-                            {...register("company_name")}
-                          />
-                          {errors.company_name && (
-                            <p className="text-sm text-destructive">{errors.company_name.message}</p>
-                          )}
+                          <Input id="company_name" autoComplete="organization" {...register("company_name")} />
+                          {errors.company_name && <p className="text-sm text-destructive">{errors.company_name.message}</p>}
                         </div>
-
                         <div className="space-y-2 md:col-span-2">
                           <Label htmlFor="address">Street Address*</Label>
-                          <Input
-                            id="address"
-                            autoComplete="street-address"
-                            {...register("address")}
-                          />
-                          {errors.address && (
-                            <p className="text-sm text-destructive">{errors.address.message}</p>
-                          )}
+                          <Input id="address" autoComplete="street-address" {...register("address")} />
+                          {errors.address && <p className="text-sm text-destructive">{errors.address.message}</p>}
                         </div>
-
                         <div className="space-y-2 md:col-span-2">
                           <Label htmlFor="address2">Address Line 2 (Optional)</Label>
                           <Input
@@ -351,15 +278,11 @@ const Apply = () => {
                             {...register("address2")}
                           />
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="city">City*</Label>
                           <Input id="city" autoComplete="address-level2" {...register("city")} />
-                          {errors.city && (
-                            <p className="text-sm text-destructive">{errors.city.message}</p>
-                          )}
+                          {errors.city && <p className="text-sm text-destructive">{errors.city.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="state">State*</Label>
                           <Input
@@ -368,19 +291,13 @@ const Apply = () => {
                             autoComplete="address-level1"
                             {...register("state")}
                           />
-                          {errors.state && (
-                            <p className="text-sm text-destructive">{errors.state.message}</p>
-                          )}
+                          {errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="zip">Zip/Postal Code*</Label>
                           <Input id="zip" autoComplete="postal-code" inputMode="numeric" {...register("zip")} />
-                          {errors.zip && (
-                            <p className="text-sm text-destructive">{errors.zip.message}</p>
-                          )}
+                          {errors.zip && <p className="text-sm text-destructive">{errors.zip.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="website">Website (Optional)</Label>
                           <Input
@@ -390,122 +307,72 @@ const Apply = () => {
                             autoComplete="url"
                             {...register("website")}
                           />
-                          {errors.website && (
-                            <p className="text-sm text-destructive">{errors.website.message}</p>
-                          )}
+                          {errors.website && <p className="text-sm text-destructive">{errors.website.message}</p>}
                         </div>
                       </div>
-
                       <div className="flex justify-end pt-4">
-                        <Button
-                          type="button"
-                          onClick={() => {
-                            void validateAndGoToStep(2);
-                          }}
-                          className="bg-crimson hover:bg-crimson/90"
-                        >
+                        <Button type="button" onClick={() => { void validateAndGoToStep(2); }} className="bg-crimson hover:bg-crimson/90">
                           Continue
                         </Button>
                       </div>
                     </div>
                   )}
-
                   {/* Step 2: Contact Information */}
                   {currentStep === 2 && (
                     <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
                       <div className="flex items-center gap-3 mb-6">
                         <User className="w-6 h-6 text-crimson" />
-                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">
-                          Primary Contact
-                        </h2>
+                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">Primary Contact</h2>
                       </div>
-
                       <div className="grid gap-6 md:grid-cols-2">
                         <div className="space-y-2">
                           <Label htmlFor="first_name">First Name*</Label>
                           <Input id="first_name" autoComplete="given-name" {...register("first_name")} />
-                          {errors.first_name && (
-                            <p className="text-sm text-destructive">{errors.first_name.message}</p>
-                          )}
+                          {errors.first_name && <p className="text-sm text-destructive">{errors.first_name.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="last_name">Last Name*</Label>
                           <Input id="last_name" autoComplete="family-name" {...register("last_name")} />
-                          {errors.last_name && (
-                            <p className="text-sm text-destructive">{errors.last_name.message}</p>
-                          )}
+                          {errors.last_name && <p className="text-sm text-destructive">{errors.last_name.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="email">Email Address*</Label>
                           <Input id="email" type="email" autoComplete="email" {...register("email")} />
-                          {errors.email && (
-                            <p className="text-sm text-destructive">{errors.email.message}</p>
-                          )}
+                          {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="phone">Phone Number*</Label>
                           <Input id="phone" type="tel" autoComplete="tel" inputMode="tel" {...register("phone")} />
-                          {errors.phone && (
-                            <p className="text-sm text-destructive">{errors.phone.message}</p>
-                          )}
+                          {errors.phone && <p className="text-sm text-destructive">{errors.phone.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="fax">Fax Number (Optional)</Label>
                           <Input id="fax" type="tel" inputMode="tel" {...register("fax")} />
                         </div>
                       </div>
-
                       <div className="flex justify-between pt-4">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => setCurrentStep(1)}
-                        >
+                        <Button type="button" variant="outline" onClick={() => setCurrentStep(1)}>
                           Back
                         </Button>
-                        <Button
-                          type="button"
-                          onClick={() => {
-                            void validateAndGoToStep(3);
-                          }}
-                          className="bg-crimson hover:bg-crimson/90"
-                        >
+                        <Button type="button" onClick={() => { void validateAndGoToStep(3); }} className="bg-crimson hover:bg-crimson/90">
                           Continue
                         </Button>
                       </div>
                     </div>
                   )}
-
                   {/* Step 3: Account Setup */}
                   {currentStep === 3 && (
                     <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
                       <div className="flex items-center gap-3 mb-6">
                         <Shield className="w-6 h-6 text-crimson" />
-                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">
-                          Account Setup
-                        </h2>
+                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">Account Setup</h2>
                       </div>
-
                       <div className="space-y-2">
                         <Label htmlFor="username">Primary Username*</Label>
-                        <Input
-                          id="username"
-                          placeholder="alphanumeric only"
-                          autoComplete="username"
-                          {...register("username")}
-                        />
-                        {errors.username && (
-                          <p className="text-sm text-destructive">{errors.username.message}</p>
-                        )}
-                        <p className="text-xs text-muted-foreground">
-                          This will be your login username. Letters and numbers only.
-                        </p>
+                        <Input id="username" placeholder="alphanumeric only" autoComplete="username" {...register("username")} />
+                        {errors.username && <p className="text-sm text-destructive">{errors.username.message}</p>}
+                        <p className="text-xs text-muted-foreground">This will be your login username. Letters and numbers only.</p>
                       </div>
-
                       <div className="space-y-4 pt-4 border-t">
                         <div className="space-y-2">
                           <Label>Do you currently have your own payment processor?*</Label>
@@ -518,9 +385,7 @@ const Apply = () => {
                                 key={option.value}
                                 htmlFor={`hasCurrentProcessor-${option.value}`}
                                 className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  hasCurrentProcessor === option.value
-                                    ? "border-crimson bg-crimson/5"
-                                    : "border-border hover:border-crimson/50"
+                                  hasCurrentProcessor === option.value ? "border-crimson bg-crimson/5" : "border-border hover:border-crimson/50"
                                 }`}
                               >
                                 <input
@@ -530,17 +395,12 @@ const Apply = () => {
                                   className="sr-only"
                                   {...register("hasCurrentProcessor")}
                                 />
-                                <span className="text-sm font-medium text-foreground">
-                                  {option.label}
-                                </span>
+                                <span className="text-sm font-medium text-foreground">{option.label}</span>
                               </label>
                             ))}
                           </div>
-                          {errors.hasCurrentProcessor && (
-                            <p className="text-sm text-destructive">{errors.hasCurrentProcessor.message}</p>
-                          )}
+                          {errors.hasCurrentProcessor && <p className="text-sm text-destructive">{errors.hasCurrentProcessor.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="currentProcessorName">Who is your current processor?</Label>
                           <Input
@@ -549,67 +409,38 @@ const Apply = () => {
                             disabled={hasCurrentProcessor !== "yes"}
                             {...register("currentProcessorName")}
                           />
-                          <p className="text-xs text-muted-foreground">
-                            If you do not have a processor, leave this field blank.
-                          </p>
-                          {errors.currentProcessorName && (
-                            <p className="text-sm text-destructive">{errors.currentProcessorName.message}</p>
-                          )}
+                          <p className="text-xs text-muted-foreground">If you do not have a processor, leave this field blank.</p>
+                          {errors.currentProcessorName && <p className="text-sm text-destructive">{errors.currentProcessorName.message}</p>}
                         </div>
                       </div>
-
                       <div className="flex justify-between pt-4">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => setCurrentStep(2)}
-                        >
+                        <Button type="button" variant="outline" onClick={() => setCurrentStep(2)}>
                           Back
                         </Button>
-                        <Button
-                          type="button"
-                          onClick={() => {
-                            void validateAndGoToStep(4);
-                          }}
-                          className="bg-crimson hover:bg-crimson/90"
-                        >
+                        <Button type="button" onClick={() => { void validateAndGoToStep(4); }} className="bg-crimson hover:bg-crimson/90">
                           Continue
                         </Button>
                       </div>
                     </div>
                   )}
-
                   {/* Step 4: Banking Details */}
                   {currentStep === 4 && (
                     <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
                       <div className="flex items-center gap-3 mb-6">
                         <Landmark className="w-6 h-6 text-crimson" />
-                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">
-                          Banking Details
-                        </h2>
+                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">Banking Details</h2>
                       </div>
-
                       <div className="grid gap-6 md:grid-cols-2">
                         <div className="space-y-2">
                           <Label htmlFor="bankAccountHolderName">Account Holder Name*</Label>
-                          <Input
-                            id="bankAccountHolderName"
-                            autoComplete="name"
-                            {...register("bankAccountHolderName")}
-                          />
-                          {errors.bankAccountHolderName && (
-                            <p className="text-sm text-destructive">{errors.bankAccountHolderName.message}</p>
-                          )}
+                          <Input id="bankAccountHolderName" autoComplete="name" {...register("bankAccountHolderName")} />
+                          {errors.bankAccountHolderName && <p className="text-sm text-destructive">{errors.bankAccountHolderName.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="bankName">Bank Name*</Label>
                           <Input id="bankName" autoComplete="organization" {...register("bankName")} />
-                          {errors.bankName && (
-                            <p className="text-sm text-destructive">{errors.bankName.message}</p>
-                          )}
+                          {errors.bankName && <p className="text-sm text-destructive">{errors.bankName.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="bankAccountType">Account Type*</Label>
                           <select
@@ -624,42 +455,21 @@ const Apply = () => {
                             <option value="checking">Checking / Current</option>
                             <option value="savings">Savings</option>
                           </select>
-                          {errors.bankAccountType && (
-                            <p className="text-sm text-destructive">{errors.bankAccountType.message}</p>
-                          )}
+                          {errors.bankAccountType && <p className="text-sm text-destructive">{errors.bankAccountType.message}</p>}
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="bankRoutingNumber">Branch Code / Routing Number*</Label>
-                          <Input
-                            id="bankRoutingNumber"
-                            inputMode="numeric"
-                            autoComplete="off"
-                            {...register("bankRoutingNumber")}
-                          />
-                          {errors.bankRoutingNumber && (
-                            <p className="text-sm text-destructive">{errors.bankRoutingNumber.message}</p>
-                          )}
+                          <Input id="bankRoutingNumber" inputMode="numeric" autoComplete="off" {...register("bankRoutingNumber")} />
+                          {errors.bankRoutingNumber && <p className="text-sm text-destructive">{errors.bankRoutingNumber.message}</p>}
                         </div>
-
                         <div className="space-y-2 md:col-span-2">
                           <Label htmlFor="bankAccountNumber">Bank Account Number*</Label>
-                          <Input
-                            id="bankAccountNumber"
-                            inputMode="numeric"
-                            autoComplete="off"
-                            {...register("bankAccountNumber")}
-                          />
-                          {errors.bankAccountNumber && (
-                            <p className="text-sm text-destructive">{errors.bankAccountNumber.message}</p>
-                          )}
+                          <Input id="bankAccountNumber" inputMode="numeric" autoComplete="off" {...register("bankAccountNumber")} />
+                          {errors.bankAccountNumber && <p className="text-sm text-destructive">{errors.bankAccountNumber.message}</p>}
                         </div>
                       </div>
-
                       <div className="space-y-2">
-                        <Label htmlFor="bankVerificationDocument">
-                          Voided cheque or bank letter (optional but recommended)
-                        </Label>
+                        <Label htmlFor="bankVerificationDocument">Voided cheque or bank letter (optional but recommended)</Label>
                         <Input
                           id="bankVerificationDocument"
                           name="bankVerificationDocument"
@@ -670,42 +480,25 @@ const Apply = () => {
                             setBankVerificationDocument(file ?? null);
                           }}
                         />
-                        <p className="text-xs text-muted-foreground">
-                          Upload a recent document to speed up account verification.
-                        </p>
+                        <p className="text-xs text-muted-foreground">Upload a recent document to speed up account verification.</p>
                       </div>
-
                       <div className="flex justify-between pt-4">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => setCurrentStep(3)}
-                        >
+                        <Button type="button" variant="outline" onClick={() => setCurrentStep(3)}>
                           Back
                         </Button>
-                        <Button
-                          type="button"
-                          onClick={() => {
-                            void validateAndGoToStep(5);
-                          }}
-                          className="bg-crimson hover:bg-crimson/90"
-                        >
+                        <Button type="button" onClick={() => { void validateAndGoToStep(5); }} className="bg-crimson hover:bg-crimson/90">
                           Continue
                         </Button>
                       </div>
                     </div>
                   )}
-
                   {/* Step 5: Services */}
                   {currentStep === 5 && (
                     <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
                       <div className="flex items-center gap-3 mb-6">
                         <CreditCard className="w-6 h-6 text-crimson" />
-                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">
-                          Select Services
-                        </h2>
+                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">Select Services</h2>
                       </div>
-
                       <div className="space-y-6">
                         {/* Processing Services */}
                         <div className="space-y-3">
@@ -715,163 +508,95 @@ const Apply = () => {
                               <div
                                 key={service}
                                 className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  processingServices.includes(service)
-                                    ? "border-crimson bg-crimson/5"
-                                    : "border-border hover:border-crimson/50"
+                                  processingServices.includes(service) ? "border-crimson bg-crimson/5" : "border-border hover:border-crimson/50"
                                 }`}
                               >
                                 <Checkbox
                                   id={`processing-${service}`}
                                   checked={processingServices.includes(service)}
-                                  onCheckedChange={(checked) =>
-                                    toggleProcessingService(service, checked === true)
-                                  }
+                                  onCheckedChange={(checked) => toggleProcessingService(service, checked === true)}
                                 />
-                                <Label
-                                  htmlFor={`processing-${service}`}
-                                  className="cursor-pointer flex-1"
-                                >
+                                <Label htmlFor={`processing-${service}`} className="cursor-pointer flex-1">
                                   {service}
                                 </Label>
                               </div>
                             ))}
                           </div>
                         </div>
-
                         {/* Value-added Services */}
                         <div className="space-y-3">
                           <h3 className="font-semibold text-foreground">Value-added Services</h3>
                           <div className="grid gap-3 sm:grid-cols-2">
-                            {[
-                              "Encryption",
-                              "Invoice",
-                              "Level III Advantage",
-                              "Mobile Reader",
-                              "Vault Storage",
-                            ].map((service) => (
+                            {["Encryption", "Invoice", "Level III Advantage", "Mobile Reader", "Vault Storage"].map((service) => (
                               <div
                                 key={service}
                                 className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  valueServices.includes(service)
-                                    ? "border-crimson bg-crimson/5"
-                                    : "border-border hover:border-crimson/50"
+                                  valueServices.includes(service) ? "border-crimson bg-crimson/5" : "border-border hover:border-crimson/50"
                                 }`}
                               >
                                 <Checkbox
                                   id={`value-${service}`}
                                   checked={valueServices.includes(service)}
-                                  onCheckedChange={(checked) =>
-                                    toggleValueService(service, checked === true)
-                                  }
+                                  onCheckedChange={(checked) => toggleValueService(service, checked === true)}
                                 />
                                 <Label htmlFor={`value-${service}`} className="cursor-pointer flex-1">
                                   {service}
-                                  {service === "Encryption" && (
-                                    <span className="text-xs text-muted-foreground block">
-                                      Encrypted Devices
-                                    </span>
-                                  )}
+                                  {service === "Encryption" && <span className="text-xs text-muted-foreground block">Encrypted Devices</span>}
                                 </Label>
                               </div>
                             ))}
                           </div>
                         </div>
-
                         {/* Terms Agreement */}
                         <div className="pt-6 border-t space-y-4">
                           <div className="flex items-start space-x-3 p-4 rounded-lg bg-muted/50">
                             <Checkbox
                               id="agree_to_terms"
                               checked={watch("agree_to_terms")}
-                              onCheckedChange={(checked) =>
-                                setValue("agree_to_terms", checked === true, {
-                                  shouldDirty: true,
-                                  shouldTouch: true,
-                                  shouldValidate: true,
-                                })
-                              }
+                              onCheckedChange={(checked) => setValue("agree_to_terms", checked === true, { shouldDirty: true, shouldTouch: true, shouldValidate: true })}
                             />
                             <Label htmlFor="agree_to_terms" className="cursor-pointer leading-relaxed">
-                              I agree to the{" "}
-                              <a
-                                href="/terms"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-crimson hover:underline font-semibold"
-                              >
+                              I agree to the {" "}
+                              <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-crimson hover:underline font-semibold">
                                 Terms and Conditions
                               </a>{" "}
                               and understand that MerchantHaus will process my application according to these terms.
                             </Label>
                           </div>
-                          {errors.agree_to_terms && (
-                            <p className="text-sm text-destructive">{errors.agree_to_terms.message}</p>
-                          )}
+                          {errors.agree_to_terms && <p className="text-sm text-destructive">{errors.agree_to_terms.message}</p>}
                           <div className="flex items-start space-x-3 p-4 rounded-lg bg-muted/50">
                             <Checkbox
                               id="agree_to_security_policy"
                               checked={watch("agree_to_security_policy")}
-                              onCheckedChange={(checked) =>
-                                setValue("agree_to_security_policy", checked === true, {
-                                  shouldDirty: true,
-                                  shouldTouch: true,
-                                  shouldValidate: true,
-                                })
-                              }
+                              onCheckedChange={(checked) => setValue("agree_to_security_policy", checked === true, { shouldDirty: true, shouldTouch: true, shouldValidate: true })}
                             />
                             <Label htmlFor="agree_to_security_policy" className="cursor-pointer leading-relaxed">
-                              I agree to the{" "}
-                              <a
-                                href="/security"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-crimson hover:underline font-semibold"
-                              >
+                              I agree to the {" "}
+                              <a href="/security" target="_blank" rel="noopener noreferrer" className="text-crimson hover:underline font-semibold">
                                 Security Policy
                               </a>
                               .
                             </Label>
                           </div>
-                          {errors.agree_to_security_policy && (
-                            <p className="text-sm text-destructive">{errors.agree_to_security_policy.message}</p>
-                          )}
+                          {errors.agree_to_security_policy && <p className="text-sm text-destructive">{errors.agree_to_security_policy.message}</p>}
                         </div>
                       </div>
-
                       <div className="flex justify-between pt-4">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => setCurrentStep(3)}
-                        >
+                        <Button type="button" variant="outline" onClick={() => setCurrentStep(3)}>
                           Back
                         </Button>
-                        <Button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="bg-crimson hover:bg-crimson/90 px-8"
-                        >
+                        <Button type="submit" disabled={isSubmitting} className="bg-crimson hover:bg-crimson/90 px-8">
                           {isSubmitting ? "Submitting..." : "Submit Application"}
                         </Button>
                       </div>
                     </div>
                   )}
-
+                  {/* Hidden inputs for arrays */}
                   {processingServices.map((service) => (
-                    <input
-                      key={`processing-hidden-${service}`}
-                      type="hidden"
-                      name="processing_services[]"
-                      value={service}
-                    />
+                    <input key={`processing-hidden-${service}`} type="hidden" name="processing_services[]" value={service} />
                   ))}
                   {valueServices.map((service) => (
-                    <input
-                      key={`value-hidden-${service}`}
-                      type="hidden"
-                      name="value_services[]"
-                      value={service}
-                    />
+                    <input key={`value-hidden-${service}`} type="hidden" name="value_services[]" value={service} />
                   ))}
                 </form>
               </>
@@ -883,9 +608,7 @@ const Apply = () => {
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <h2 className="text-3xl font-ubuntu font-bold text-foreground">
-                    Application Received!
-                  </h2>
+                  <h2 className="text-3xl font-ubuntu font-bold text-foreground">Application Received!</h2>
                   <p className="text-lg text-muted-foreground max-w-md mx-auto">
                     Thank you for applying to MerchantHaus. Our underwriting team will review your application and contact you within one business day.
                   </p>
@@ -902,48 +625,37 @@ const Apply = () => {
             )}
           </div>
         </section>
-
         {/* Info Section */}
         <section className="py-16 bg-muted/30">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-ubuntu font-bold text-foreground text-center mb-8">
-              What Happens Next?
-            </h2>
+            <h2 className="text-2xl font-ubuntu font-bold text-foreground text-center mb-8">What Happens Next?</h2>
             <div className="grid gap-6 md:grid-cols-3">
               <div className="text-center space-y-3">
                 <div className="w-12 h-12 rounded-full bg-crimson/10 flex items-center justify-center mx-auto">
                   <span className="text-xl font-bold text-crimson">1</span>
                 </div>
                 <h3 className="font-semibold text-foreground">Review</h3>
-                <p className="text-sm text-muted-foreground">
-                  Our underwriting team reviews your submission for alignment and compliance
-                </p>
+                <p className="text-sm text-muted-foreground">Our underwriting team reviews your submission for alignment and compliance</p>
               </div>
               <div className="text-center space-y-3">
                 <div className="w-12 h-12 rounded-full bg-crimson/10 flex items-center justify-center mx-auto">
                   <span className="text-xl font-bold text-crimson">2</span>
                 </div>
                 <h3 className="font-semibold text-foreground">Contact</h3>
-                <p className="text-sm text-muted-foreground">
-                  A specialist reaches out to confirm documents and answer questions
-                </p>
+                <p className="text-sm text-muted-foreground">A specialist reaches out to confirm documents and answer questions</p>
               </div>
               <div className="text-center space-y-3">
                 <div className="w-12 h-12 rounded-full bg-crimson/10 flex items-center justify-center mx-auto">
                   <span className="text-xl font-bold text-crimson">3</span>
                 </div>
                 <h3 className="font-semibold text-foreground">Activate</h3>
-                <p className="text-sm text-muted-foreground">
-                  Once approved, receive credentials and start processing payments
-                </p>
+                <p className="text-sm text-muted-foreground">Once approved, receive credentials and start processing payments</p>
               </div>
             </div>
           </div>
         </section>
       </main>
-
       <Footer />
-
       <ThankYouDialog
         open={showThankYou}
         onOpenChange={(open) => {
