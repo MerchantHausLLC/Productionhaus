@@ -28,7 +28,7 @@ const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) =
 };
 
 const wordSets = {
-  line1: ["Solutions", "Technology", "Systems", "Processing", "Platforms", "Services", "Networks", "Gateways", "Innovation", "Infrastructure"],
+  line1: ["Solutions", "Technology", "Systems", "Processing", "Platforms", "Services", "Networks", "Structures", "Innovation", "Infrastructure"],
   line2: ["Advance", "Grow", "Secure", "Empower", "Optimize", "Simplify", "Scale", "Elevate", "Modernize", "Transform"],
   line3: ["Business", "Enterprise", "Storefront", "Operations", "Revenue", "Brand", "Organization", "Portfolio", "Ecosystem", "Success"]
 };
