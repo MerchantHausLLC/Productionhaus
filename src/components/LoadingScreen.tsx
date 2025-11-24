@@ -17,7 +17,7 @@ const LoadingScreen = ({ variant = "full" }: LoadingScreenProps) => (
     <div className="loading-shell">
       <div className="loading-ring" aria-hidden />
       <div className="loading-core" aria-hidden />
-      <p className="loading-label">Loading experience</p>
+      <p className="loading-label">merchanthaus.io</p>
     </div>
   </div>
 );
