@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Smartphone, Shuffle, FileText, Repeat, Lock, BarChart2, Cpu, Landmark, ShieldAlert, Globe2 } from "lucide-react";
 import { ServiceDetailModal } from "./ServiceDetailModal";
-import shieldLogo from "@/assets/RedShield.png";
+import shieldLogo from "@/assets/Shield.webp";
 
 const services = [
   { 
