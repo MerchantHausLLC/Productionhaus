@@ -17,7 +17,7 @@ import {
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Button } from "./ui/button";
 import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
-import shieldLogo from "@/assets/rshield.webp";
+import shieldLogo from "@/assets/shield.webp";
 import { useParallax } from "@/hooks/use-parallax";
 
 type Solution = {
