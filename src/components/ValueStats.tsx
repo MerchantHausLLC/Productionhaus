@@ -89,7 +89,7 @@ export const ValueStats = () => {
   const radius = 320;
 
   return (
-    <section className="hidden md:block py-20 px-4 sm:px-6 bg-gradient-to-br from-neutral-950 via-black to-neutral-900">
+    <section className="hidden md:block py-20 px-4 sm:px-6 bg-transparent">
       <div className="max-w-5xl mx-auto mb-12 text-center">
         <div className="inline-block px-8 py-3 rounded-full border-2 border-neutral-700 bg-neutral-900">
           <h2 className="text-3xl sm:text-4xl font-ubuntu font-bold text-white">
@@ -264,6 +264,13 @@ export const ValueStats = () => {
             max-width: 13rem;
           }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+          .valuestats-slider-3d {
+            animation: none;
+            transform: rotateX(-14deg) rotateY(0deg);
+          }
+        }
       `}</style>
     </section>
   );
@@ -281,4 +288,5 @@ export default ValueStats;
  * 5. Card backgrounds and icon containers are fully opaque (no transparency).
  * 6. Each card has a subtle border, inner gradient, and light glow applied via box-shadow.
  * 7. Description text uses larger font size, increased line-height, and constrained max-width for improved readability.
+ * 8. When prefers-reduced-motion is enabled, the carousel does not auto-rotate.
  */
