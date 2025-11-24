@@ -89,10 +89,10 @@ export const ValueStats = () => {
   const radius = 320;
 
   return (
-    <section className="hidden md:block py-20 px-4 sm:px-6 bg-transparent">
+    <section className="valuestats-section hidden md:block py-20 px-4 sm:px-6 bg-transparent">
       <div className="max-w-5xl mx-auto mb-12 text-center">
-        <div className="inline-block px-8 py-3 rounded-full border-2 border-neutral-700 bg-neutral-900">
-          <h2 className="text-3xl sm:text-4xl font-ubuntu font-bold text-white">
+        <div className="valuestats-heading-chip inline-block px-8 py-3 rounded-full">
+          <h2 className="text-3xl sm:text-4xl font-ubuntu font-bold">
             Platform Value at a Glance
           </h2>
         </div>
@@ -134,6 +134,45 @@ export const ValueStats = () => {
       </div>
 
       <style>{`
+        .valuestats-section {
+          --vs-card-bg: linear-gradient(150deg, hsl(0 0% 100%), hsl(210 17% 97%));
+          --vs-card-border: hsl(var(--border));
+          --vs-card-shadow:
+            0 0 0 1px hsla(210 10% 23%, 0.08),
+            0 16px 42px rgba(0, 0, 0, 0.08),
+            0 0 28px hsla(var(--cyber-teal), 0.12);
+          --vs-icon-bg: hsl(var(--muted));
+          --vs-icon-border: hsl(var(--border));
+          --vs-foreground: hsl(var(--foreground));
+          --vs-muted: hsla(0, 0%, 30%, 0.85);
+          --vs-heading-bg: hsla(var(--cyber-teal), 0.08);
+          --vs-heading-border: hsla(var(--cyber-teal), 0.35);
+          --vs-heading-foreground: hsl(var(--foreground));
+        }
+
+        .dark .valuestats-section {
+          --vs-card-bg: linear-gradient(150deg, #020617, #020617 55%, #111827);
+          --vs-card-border: #1f2937;
+          --vs-card-shadow:
+            0 0 0 1px rgba(15, 23, 42, 0.7),
+            0 16px 42px rgba(0, 0, 0, 0.85),
+            0 0 20px rgba(59, 130, 246, 0.3);
+          --vs-icon-bg: #020617;
+          --vs-icon-border: #4b5563;
+          --vs-foreground: #f9fafb;
+          --vs-muted: rgba(229, 231, 235, 0.9);
+          --vs-heading-bg: rgba(17, 24, 39, 0.9);
+          --vs-heading-border: rgba(55, 65, 81, 0.8);
+          --vs-heading-foreground: #f9fafb;
+        }
+
+        .valuestats-heading-chip {
+          border: 2px solid var(--vs-heading-border);
+          background: var(--vs-heading-bg);
+          color: var(--vs-heading-foreground);
+          transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+        }
+
         .valuestats-banner-container {
           width: 100%;
           min-height: clamp(26rem, 64vh, 36rem);
@@ -180,14 +219,11 @@ export const ValueStats = () => {
           height: 100%;
           border-radius: 1.1rem;
           overflow: hidden;
-          border: 1px solid #1f2937; /* subtle border */
-          box-shadow:
-            0 0 0 1px rgba(15, 23, 42, 0.7), /* inner edge */
-            0 16px 42px rgba(0, 0, 0, 0.85), /* depth */
-            0 0 20px rgba(59, 130, 246, 0.3); /* light glow */
+          border: 1px solid var(--vs-card-border);
+          box-shadow: var(--vs-card-shadow);
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
-          background: linear-gradient(150deg, #020617, #020617 55%, #111827); /* inner gradient, slightly brighter */
+          background: var(--vs-card-bg);
           transition: box-shadow 0.35s ease, transform 0.35s ease;
         }
 
@@ -200,7 +236,7 @@ export const ValueStats = () => {
           align-items: center;
           justify-content: space-between;
           gap: 1rem;
-          color: #f9fafb;
+          color: var(--vs-foreground);
           text-align: center;
         }
 
@@ -211,8 +247,9 @@ export const ValueStats = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #020617;
-          border: 1px solid #4b5563;
+          background: var(--vs-icon-bg);
+          border: 1px solid var(--vs-icon-border);
+          color: var(--vs-foreground);
         }
 
         .valuestats-value {
@@ -233,6 +270,7 @@ export const ValueStats = () => {
           gap: 0.4rem;
           font-size: 0.82rem;
           max-width: 16rem;
+          color: var(--vs-muted);
         }
 
         .valuestats-description {
