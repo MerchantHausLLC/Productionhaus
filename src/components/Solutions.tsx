@@ -11,11 +11,12 @@ import {
   Smartphone,
   Shuffle,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Button } from "./ui/button";
 import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
-import { ServiceCard } from "./ServiceCard";
 import shieldLogo from "@/assets/shield.webp";
 import { useParallax } from "@/hooks/use-parallax";
 
@@ -139,6 +140,11 @@ export const Solutions = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [typewriterText, setTypewriterText] = useState("");
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
+  const marqueeRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const scrollPositionRef = useRef(0);
+  const animationFrameRef = useRef<number | null>(null);
+  const isPausedRef = useRef(false);
   const shieldGlowRef = useParallax<HTMLDivElement>({ speed: 0.12 });
   const shieldLogoRef = useParallax<HTMLImageElement>({ speed: 0.18 });
   const topGradientRef = useParallax<HTMLDivElement>({ speed: 0.06 });
@@ -165,6 +171,58 @@ export const Solutions = () => {
     }
   }, [selectedCard]);
 
+  // Scroll handler for arrow navigation
+  const scrollLeft = () => {
+    const container = marqueeRef.current;
+    if (!container) return;
+    container.scrollBy({ left: -340, behavior: 'smooth' });
+  };
+
+  const scrollRight = () => {
+    const container = marqueeRef.current;
+    if (!container) return;
+    container.scrollBy({ left: 340, behavior: 'smooth' });
+  };
+
+  // Pause on hover handlers are left in place but currently unused
+  const handleMarqueeMouseEnter = () => {
+    // intentionally blank
+  };
+
+  const handleMarqueeMouseLeave = () => {
+    // intentionally blank
+  };
+
+  // Update card glow based on position relative to center
+  useEffect(() => {
+    const container = marqueeRef.current;
+    if (!container) return;
+
+    const updateCardGlows = () => {
+      const cards = container.querySelectorAll('.marquee-card');
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+
+      cards.forEach((card) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distanceFromCenter = Math.abs(containerCenter - cardCenter);
+        const maxDistance = containerRect.width / 2;
+        const intensity = Math.max(0, 1 - distanceFromCenter / maxDistance);
+        (card as HTMLElement).style.setProperty('--glow-intensity', intensity.toString());
+      });
+    };
+
+    updateCardGlows();
+    container.addEventListener('scroll', updateCardGlows);
+    window.addEventListener('resize', updateCardGlows);
+
+    return () => {
+      container.removeEventListener('scroll', updateCardGlows);
+      window.removeEventListener('resize', updateCardGlows);
+    };
+  }, []);
+
   const handleCardClick = (index: number) => {
     setSelectedCard(index);
   };
@@ -178,11 +236,48 @@ export const Solutions = () => {
     setIsApplicationOpen(true);
   };
 
+  // Tilt effect handler for cards based on cursor position
+  const handleMouseMove = (e: MouseEvent<HTMLElement>, index: number) => {
+    const card = cardRefs.current[index];
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const cardCenterX = rect.left + rect.width / 2;
+    const cardCenterY = rect.top + rect.height / 2;
+    // Calculate cursor position relative to card center (-1 to 1)
+    const deltaX = (e.clientX - cardCenterX) / (rect.width / 2);
+    const deltaY = (e.clientY - cardCenterY) / (rect.height / 2);
+    // Apply tilt transform (max 15 degrees)
+    const tiltX = deltaY * -15;
+    const tiltY = deltaX * 15;
+    card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-8px) scale(1.02)`;
+  };
+
+  const handleMouseLeave = (index: number) => {
+    const card = cardRefs.current[index];
+    if (!card) return;
+    card.style.transform = '';
+  };
+
   return (
-    <section
-      id="services"
-      className="w-full py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-muted/50 dark:bg-neutral-dark/30"
-    >
+    <section id="services" className="py-20 px-4 sm:px-6 bg-muted/50 dark:bg-neutral-dark/30 relative overflow-visible">
+      {/* Shield Logo - Positioned within Solutions section */}
+      <div className="relative -mt-32 mb-12 z-20 pointer-events-none">
+        <div className="flex justify-center">
+          <div className="relative flex items-center justify-center animate-fade-in">
+            <div
+              ref={shieldGlowRef}
+              className="absolute inset-0 bg-gradient-radial from-crimson/30 to-cyber-teal/20 blur-3xl scale-150"
+            />
+            <img
+              ref={shieldLogoRef}
+              src={shieldLogo}
+              alt="MerchantHaus Shield"
+              className="h-48 w-48 md:h-64 md:w-64 object-contain drop-shadow-2xl relative z-10 animate-scale-in"
+            />
+          </div>
+        </div>
+      </div>
+      {/* Globe Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div
           ref={topGradientRef}
@@ -201,58 +296,109 @@ export const Solutions = () => {
           />
         </div>
       </div>
-
-      <div className="relative z-10 w-full">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-center -mt-24 sm:-mt-28">
-            <div className="relative flex items-center justify-center">
-              <div
-                ref={shieldGlowRef}
-                className="absolute inset-0 bg-gradient-radial from-crimson/30 to-cyber-teal/20 blur-3xl scale-150"
-              />
-              <img
-                ref={shieldLogoRef}
-                src={shieldLogo}
-                alt="MerchantHaus Shield"
-                className="relative h-40 w-40 sm:h-48 sm:w-48 md:h-56 md:w-56 object-contain drop-shadow-2xl"
-              />
+      <div className="max-w-7xl mx-auto overflow-visible relative z-10">
+        <div className="text-center mb-16 animate-fade-in">
+          <h2 className="font-ubuntu font-bold text-3xl sm:text-4xl md:text-5xl text-foreground mb-4">
+            CORE SERVICES
+          </h2>
+          <p className="font-inter text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
+            Comprehensive payment solutions designed to help your business thrive in today's digital economy.
+          </p>
+          <Button 
+            asChild
+            className="bg-crimson hover:bg-crimson/90 text-white font-semibold rounded-full px-8 py-6 text-base shadow-lg hover:shadow-xl transition-all"
+          >
+            <a href="/quote">Get a Quote</a>
+          </Button>
+        </div>
+        <div className="relative">
+          <div 
+            ref={marqueeRef}
+            className="marquee-container overflow-x-auto"
+            onMouseEnter={handleMarqueeMouseEnter}
+            onMouseLeave={handleMarqueeMouseLeave}
+          >
+            <div className="marquee-content flex gap-6">
+              {solutions.map((solution, index) => {
+                const Icon = solution.icon;
+                return (
+                  <article
+                    key={`${solution.title}-${index}`}
+                    ref={(el) => {
+                      cardRefs.current[index] = el;
+                    }}
+                    className="service-card marquee-card flex-shrink-0"
+                    style={{ width: "320px", aspectRatio: "3/4" }}
+                    onMouseMove={(e) => handleMouseMove(e, index)}
+                    onMouseLeave={() => handleMouseLeave(index)}
+                  >
+                   {(solution.bannerImage && (
+                       /*
+                        * To ensure consistent image sizing across all service cards,
+                        * rely on a fixed aspect ratio rather than a hard-coded height.
+                        * Using the Tailwind `aspect-[4/3]` utility gives each
+                        * preview card a taller image similar to the previous
+                        * fullscreen banner. Removing the fixed `h-[280px]` class
+                        * prevents conflicting heights and ensures images scale
+                        * uniformly as the card width changes. Browsers that do
+                        * not support `aspect-ratio` will fall back to the
+                        * intrinsic dimensions of the image, which still yields
+                        * a reasonable card height.
+                        */
+                       <div
+                         className="card-image-visual relative w-full aspect-[4/3] overflow-hidden rounded-t-[1.5rem]"
+                       >
+                         <img
+                           src={solution.bannerImage}
+                           alt={solution.title}
+                           className="absolute inset-0 h-full w-full object-cover"
+                           draggable={false}
+                         />
+                       </div>
+                     )) || (
+                       <div
+                         className="relative w-full aspect-[4/3] rounded-t-[1.5rem] bg-muted/40"
+                       />
+                     )}
+                    <div className="service-card-body">
+                      <div className="service-card-icon">
+                        <Icon className="h-6 w-6 text-[hsl(var(--crimson))]" strokeWidth={2} />
+                      </div>
+                      <div className="space-y-3">
+                        <h3 className="text-2xl font-bold font-ubuntu">{solution.title}</h3>
+                        <p className="text-base leading-relaxed text-neutral-600">{solution.description}</p>
+                      </div>
+                      <div className="service-card-footer">
+                        <button
+                          type="button"
+                          className="service-card-button"
+                          onClick={() => handleCardClick(index)}
+                        >
+                          Learn More
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
-
-          <header className="max-w-2xl mx-auto text-center space-y-4">
-            <h2 className="font-ubuntu font-bold text-3xl sm:text-4xl md:text-5xl text-foreground">
-              CORE SERVICES
-            </h2>
-            <p className="font-inter text-lg md:text-xl text-muted-foreground">
-              Comprehensive payment solutions designed to help your business thrive in today's digital economy.
-            </p>
-            <div className="flex justify-center">
-              <Button
-                asChild
-                className="bg-crimson hover:bg-crimson/90 text-white font-semibold rounded-full px-8 py-6 text-base shadow-lg hover:shadow-xl transition-all"
-              >
-                <a href="/quote">Get a Quote</a>
-              </Button>
-            </div>
-          </header>
-
-          <div
-            className="
-              grid gap-6 sm:gap-7 lg:gap-8
-              grid-cols-1
-              sm:grid-cols-2
-              lg:grid-cols-3
-            "
-          >
-            {solutions.map((solution, index) => (
-              <ServiceCard
-                key={`${solution.title}-${index}`}
-                title={solution.title}
-                description={solution.description}
-                image={solution.bannerImage || "/card-banners/card1.webp"}
-                onClick={() => handleCardClick(index)}
-              />
-            ))}
+          {/* Navigation buttons */}
+          <div className="flex justify-between items-center mt-6 px-4">
+            <button
+              onClick={scrollLeft}
+              className="nav-arrow-button"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={scrollRight}
+              className="nav-arrow-button"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
           </div>
         </div>
       </div>
