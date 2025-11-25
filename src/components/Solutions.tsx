@@ -171,6 +171,22 @@ export const Solutions = () => {
     }
   }, [selectedCard]);
 
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    const { body } = document;
+    const previousOverflow = body.style.overflow;
+
+    if (selectedCard !== null) {
+      body.style.overflow = "hidden";
+    } else {
+      body.style.overflow = previousOverflow;
+    }
+
+    return () => {
+      body.style.overflow = previousOverflow;
+    };
+  }, [selectedCard]);
+
   // Scroll handler for arrow navigation
   const scrollLeft = () => {
     const container = marqueeRef.current;
