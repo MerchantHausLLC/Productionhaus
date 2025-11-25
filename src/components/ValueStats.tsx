@@ -89,7 +89,7 @@ export const ValueStats = () => {
   const radius = 320;
 
   return (
-    <section className="valuestats-section hidden md:block py-20 px-4 sm:px-6 bg-transparent">
+    <section className="valuestats-section py-20 px-4 sm:px-6 bg-transparent">
       <div className="max-w-5xl mx-auto mb-12 text-center">
         <div className="valuestats-heading-chip inline-block px-8 py-3 rounded-full">
           <h2 className="text-3xl sm:text-4xl font-ubuntu font-bold">
