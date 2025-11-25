@@ -211,24 +211,24 @@ const Blog = () => {
               </div>
             </div>
 
-            {/* Card 3: POS Solutions */}
+            {/* Card 3: Tap-to-Mobile */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
-                <a href="#" className="block">
+                <a href="/tap-to-mobile" className="block">
                   <img
-                    src="/blog-images/pos_terminal.png"
-                    alt="Point of Sale Solutions" 
-                    className="w-full h-40 object-cover bg-gradient-to-br from-gray-100 to-gray-50"
+                    src="/blog-images/TAP1.webp"
+                    alt="Tap-to-mobile point of sale"
+                    className="w-full h-40 object-cover"
                   />
                   <div className="p-6">
                     <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">
                       Payments Tech
                     </p>
                     <h4 className="text-xl font-bold mb-3 text-foreground">
-                      Modern POS Solutions: Beyond the Terminal
+                      Tap-to-Mobile Is the New POS
                     </h4>
                     <p className="text-sm mb-4 text-muted-foreground">
-                      How next-gen point of sale systems are transforming retail experiences.
+                      Turn any NFC phone into a softPOS and start taking contactless payments with zero extra hardware.
                     </p>
                     <div className="flex items-center text-sm font-medium text-foreground">
                       Read More
