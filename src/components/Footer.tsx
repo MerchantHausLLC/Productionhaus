@@ -160,16 +160,16 @@ const Footer = () => {
             </div>
             <div className="flex flex-col items-center group">
               <img
-                src="/logos/visa.webp" 
-                alt="Visa" 
-                className="h-12 w-auto object-contain grayscale opacity-70 transition-all group-hover:grayscale-0 group-hover:opacity-100"
+                src="/logos/visa.webp"
+                alt="Visa"
+                className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
               />
             </div>
             <div className="flex flex-col items-center group">
-              <img 
-                src="/logos/mastercard.webp" 
-                alt="Mastercard" 
-                className="h-12 w-auto object-contain grayscale opacity-70 transition-all group-hover:grayscale-0 group-hover:opacity-100"
+              <img
+                src="/logos/mastercard.webp"
+                alt="Mastercard"
+                className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
               />
             </div>
           </div>
