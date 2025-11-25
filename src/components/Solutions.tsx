@@ -171,6 +171,22 @@ export const Solutions = () => {
     }
   }, [selectedCard]);
 
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    const { body } = document;
+    const previousOverflow = body.style.overflow;
+
+    if (selectedCard !== null) {
+      body.style.overflow = "hidden";
+    } else {
+      body.style.overflow = previousOverflow;
+    }
+
+    return () => {
+      body.style.overflow = previousOverflow;
+    };
+  }, [selectedCard]);
+
   // Scroll handler for arrow navigation
   const scrollLeft = () => {
     const container = marqueeRef.current;
@@ -327,8 +343,7 @@ export const Solutions = () => {
                     ref={(el) => {
                       cardRefs.current[index] = el;
                     }}
-                    className="service-card marquee-card flex-shrink-0"
-                    style={{ width: "320px", aspectRatio: "3/4" }}
+                    className="service-card marquee-card flex-shrink-0 w-[320px] md:w-[360px] aspect-[3/4] md:aspect-[4/5]"
                     onMouseMove={(e) => handleMouseMove(e, index)}
                     onMouseLeave={() => handleMouseLeave(index)}
                   >
@@ -420,10 +435,11 @@ export const Solutions = () => {
               /*
                * The fullscreen modal banner image should occupy less vertical
                * space relative to its width. Changing the aspect ratio from
-               * 16/9 to 3/1 makes the banner significantly shallower,
-               * focusing attention on the modal content below.
+               * 16/9 to 3/1 makes the banner significantly shallower on small
+               * screens while desktop-specific CSS widens it back toward a
+               * 4/3 framing to mirror the mobile composition.
                */
-              <div className="relative w-full aspect-[3/1] overflow-hidden shrink-0">
+              <div className="solutions-modal-banner relative w-full aspect-[3/1] overflow-hidden shrink-0">
                 <img
                   src={solutions[selectedCard].bannerImage}
                   alt={solutions[selectedCard].title}

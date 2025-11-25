@@ -225,6 +225,28 @@ All colors MUST be HSL.
     background: hsl(var(--neutral-dark));
   }
 
+  @media (min-width: 1024px) {
+    .card-image-visual {
+      height: auto;
+      aspect-ratio: 4 / 3;
+    }
+
+    .solutions-modal-banner {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  @media (orientation: landscape) {
+    .card-image-visual {
+      height: auto;
+      aspect-ratio: 16 / 9;
+    }
+
+    .solutions-modal-banner {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
   .card-image-visual img {
     width: 100%;
     height: 100%;
