@@ -41,19 +41,6 @@ const applicationFormSchema = z.object({
     required_error: "Please tell us if you have a current processor",
   }),
   currentProcessorName: z.string().trim().max(100).optional(),
-  bankAccountHolderName: z.string().trim().min(1, "Account holder name is required").max(100),
-  bankName: z.string().trim().min(1, "Bank name is required").max(100),
-  bankAccountType: z.enum(["checking", "savings"], {
-    required_error: "Bank account type is required",
-  }),
-  bankRoutingNumber: z
-    .string()
-    .trim()
-    .regex(/^\d{4,11}$/i, "Routing number should be 4-11 digits"),
-  bankAccountNumber: z
-    .string()
-    .trim()
-    .regex(/^\d{6,20}$/i, "Account number should be 6-20 digits"),
   processing_services: z.array(z.string()).optional(),
   value_services: z.array(z.string()).optional(),
   agree_to_terms: z.boolean().refine((val) => val === true, {
@@ -74,16 +61,6 @@ const applicationFormSchema = z.object({
 
 type ApplicationFormValues = z.infer<typeof applicationFormSchema>;
 
-const fileToBase64 = (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      resolve(typeof reader.result === "string" ? reader.result : "");
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-
 interface MerchantApplicationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -94,7 +71,6 @@ export function MerchantApplicationDialog({
   onOpenChange,
 }: MerchantApplicationDialogProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [bankVerificationDocument, setBankVerificationDocument] = useState<File | null>(null);
   const { toast } = useToast();
   const {
     register,
@@ -141,12 +117,6 @@ export function MerchantApplicationDialog({
         }
       });
 
-      if (bankVerificationDocument) {
-        const encodedDocument = await fileToBase64(bankVerificationDocument);
-        formData.append("bankVerificationDocument_name", bankVerificationDocument.name);
-        formData.append("bankVerificationDocument", encodedDocument);
-      }
-
       const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -174,7 +144,6 @@ export function MerchantApplicationDialog({
   const handleClose = () => {
     reset();
     setIsSubmitted(false);
-    setBankVerificationDocument(null);
     onOpenChange(false);
   };
 
@@ -239,12 +208,6 @@ export function MerchantApplicationDialog({
               name="agree_to_security_policy"
               value={watch("agree_to_security_policy") ? "yes" : "no"}
             />
-            {/* Hidden fields for banking details to ensure Netlify Forms captures them */}
-            <input type="hidden" name="bankAccountHolderName" value={watch("bankAccountHolderName") || ""} />
-            <input type="hidden" name="bankName" value={watch("bankName") || ""} />
-            <input type="hidden" name="bankAccountType" value={watch("bankAccountType") || ""} />
-            <input type="hidden" name="bankRoutingNumber" value={watch("bankRoutingNumber") || ""} />
-            <input type="hidden" name="bankAccountNumber" value={watch("bankAccountNumber") || ""} />
             {/* Merchant Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold font-ubuntu text-crimson">Merchant Information</h3>
@@ -463,69 +426,6 @@ export function MerchantApplicationDialog({
                   <Label htmlFor="fax">Fax Number</Label>
                   <Input id="fax" type="tel" {...register("fax")} />
                 </div>
-              </div>
-            </div>
-
-            {/* Banking Details */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold font-ubuntu text-foreground">Banking Details</h3>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="bankAccountHolderName">Account Holder Name*</Label>
-                  <Input id="bankAccountHolderName" {...register("bankAccountHolderName")} />
-                  {errors.bankAccountHolderName && (
-                    <p className="text-sm text-destructive">{errors.bankAccountHolderName.message}</p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bankName">Bank Name*</Label>
-                  <Input id="bankName" autoComplete="organization" {...register("bankName")} />
-                  {errors.bankName && <p className="text-sm text-destructive">{errors.bankName.message}</p>}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bankAccountType">Account Type*</Label>
-                  <select
-                    id="bankAccountType"
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    {...register("bankAccountType")}
-                  >
-                    <option value="">Select account type</option>
-                    <option value="checking">Checking / Current</option>
-                    <option value="savings">Savings</option>
-                  </select>
-                  {errors.bankAccountType && (
-                    <p className="text-sm text-destructive">{errors.bankAccountType.message}</p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bankRoutingNumber">Branch Code / Routing Number*</Label>
-                  <Input id="bankRoutingNumber" inputMode="numeric" {...register("bankRoutingNumber")} />
-                  {errors.bankRoutingNumber && (
-                    <p className="text-sm text-destructive">{errors.bankRoutingNumber.message}</p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bankAccountNumber">Bank Account Number*</Label>
-                  <Input id="bankAccountNumber" inputMode="numeric" {...register("bankAccountNumber")} />
-                  {errors.bankAccountNumber && (
-                    <p className="text-sm text-destructive">{errors.bankAccountNumber.message}</p>
-                  )}
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="bankVerificationDocument">
-                  Voided cheque or bank letter (optional but recommended)
-                </Label>
-                <Input
-                  id="bankVerificationDocument"
-                  name="bankVerificationDocument"
-                  type="file"
-                  accept=".pdf,.jpg,.jpeg,.png"
-                  onChange={(event) => {
-                    const file = event.target.files?.[0];
-                    setBankVerificationDocument(file ?? null);
-                  }}
-                />
               </div>
             </div>
 
