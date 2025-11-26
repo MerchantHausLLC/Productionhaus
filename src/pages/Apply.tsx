@@ -15,7 +15,6 @@ import {
   User,
   Shield,
   CreditCard,
-  Landmark,
 } from "lucide-react";
 import { StarfieldBackground } from "@/components/StarfieldBackground";
 import { ThankYouDialog } from "@/components/ThankYouDialog";
@@ -44,13 +43,6 @@ const applicationFormSchema = z.object({
     required_error: "Please tell us if you have a current processor",
   }),
   currentProcessorName: z.string().trim().max(100).optional(),
-  bankAccountHolderName: z.string().trim().min(1, "Account holder name is required").max(100),
-  bankName: z.string().trim().min(1, "Bank name is required").max(100),
-  bankAccountType: z.enum(["checking", "savings"], {
-    required_error: "Bank account type is required",
-  }),
-  bankRoutingNumber: z.string().trim().regex(/^\d{4,11}$/i, "Routing number should be 4-11 digits"),
-  bankAccountNumber: z.string().trim().regex(/^\d{6,20}$/i, "Account number should be 6-20 digits"),
   processing_services: z.array(z.string()).optional(),
   value_services: z.array(z.string()).optional(),
   agree_to_terms: z.boolean().refine((val) => val === true, {
@@ -71,21 +63,10 @@ const applicationFormSchema = z.object({
 
 type ApplicationFormValues = z.infer<typeof applicationFormSchema>;
 
-const fileToBase64 = (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      resolve(typeof reader.result === "string" ? reader.result : "");
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-
 const Apply = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [showThankYou, setShowThankYou] = useState(false);
-  const [bankVerificationDocument, setBankVerificationDocument] = useState<File | null>(null);
   const { toast } = useToast();
 
   const {
@@ -114,13 +95,7 @@ const Apply = () => {
   // Custom submit handler to post the data to our Netlify function
   const onSubmit = async (data: ApplicationFormValues) => {
     try {
-      const payload: Record<string, any> = { ...data };
-      // Append encoded document if present
-      if (bankVerificationDocument) {
-        const encodedDocument = await fileToBase64(bankVerificationDocument);
-        payload.bankVerificationDocument = encodedDocument;
-        payload.bankVerificationDocument_name = bankVerificationDocument.name;
-      }
+      const payload: ApplicationFormValues = { ...data };
       const response = await fetch("/.netlify/functions/submit-merchant-application", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -162,21 +137,13 @@ const Apply = () => {
     { number: 1, title: "Business Info", icon: Building2 },
     { number: 2, title: "Contact Details", icon: User },
     { number: 3, title: "Account Setup", icon: Shield },
-    { number: 4, title: "Banking Details", icon: Landmark },
-    { number: 5, title: "Services", icon: CreditCard },
+    { number: 4, title: "Services", icon: CreditCard },
   ];
 
   const stepFieldMap: Record<number, (keyof ApplicationFormValues)[]> = {
     1: ["company_name", "address", "city", "state", "zip", "website"],
     2: ["first_name", "last_name", "email", "phone"],
     3: ["username", "hasCurrentProcessor", "currentProcessorName"],
-    4: [
-      "bankAccountHolderName",
-      "bankName",
-      "bankAccountType",
-      "bankRoutingNumber",
-      "bankAccountNumber",
-    ],
   };
 
   const validateAndGoToStep = async (targetStep: number) => {
@@ -423,77 +390,8 @@ const Apply = () => {
                       </div>
                     </div>
                   )}
-                  {/* Step 4: Banking Details */}
+                  {/* Step 4: Services */}
                   {currentStep === 4 && (
-                    <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
-                      <div className="flex items-center gap-3 mb-6">
-                        <Landmark className="w-6 h-6 text-crimson" />
-                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">Banking Details</h2>
-                      </div>
-                      <div className="grid gap-6 md:grid-cols-2">
-                        <div className="space-y-2">
-                          <Label htmlFor="bankAccountHolderName">Account Holder Name*</Label>
-                          <Input id="bankAccountHolderName" autoComplete="name" {...register("bankAccountHolderName")} />
-                          {errors.bankAccountHolderName && <p className="text-sm text-destructive">{errors.bankAccountHolderName.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="bankName">Bank Name*</Label>
-                          <Input id="bankName" autoComplete="organization" {...register("bankName")} />
-                          {errors.bankName && <p className="text-sm text-destructive">{errors.bankName.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="bankAccountType">Account Type*</Label>
-                          <select
-                            id="bankAccountType"
-                            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                            defaultValue=""
-                            {...register("bankAccountType")}
-                          >
-                            <option value="" disabled>
-                              Select account type
-                            </option>
-                            <option value="checking">Checking / Current</option>
-                            <option value="savings">Savings</option>
-                          </select>
-                          {errors.bankAccountType && <p className="text-sm text-destructive">{errors.bankAccountType.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="bankRoutingNumber">Branch Code / Routing Number*</Label>
-                          <Input id="bankRoutingNumber" inputMode="numeric" autoComplete="off" {...register("bankRoutingNumber")} />
-                          {errors.bankRoutingNumber && <p className="text-sm text-destructive">{errors.bankRoutingNumber.message}</p>}
-                        </div>
-                        <div className="space-y-2 md:col-span-2">
-                          <Label htmlFor="bankAccountNumber">Bank Account Number*</Label>
-                          <Input id="bankAccountNumber" inputMode="numeric" autoComplete="off" {...register("bankAccountNumber")} />
-                          {errors.bankAccountNumber && <p className="text-sm text-destructive">{errors.bankAccountNumber.message}</p>}
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="bankVerificationDocument">Voided cheque or bank letter (optional but recommended)</Label>
-                        <Input
-                          id="bankVerificationDocument"
-                          name="bankVerificationDocument"
-                          type="file"
-                          accept=".pdf,.jpg,.jpeg,.png"
-                          onChange={(event) => {
-                            const file = event.target.files?.[0];
-                            setBankVerificationDocument(file ?? null);
-                          }}
-                        />
-                        <p className="text-xs text-muted-foreground">Upload a recent document to speed up account verification.</p>
-                      </div>
-                      <div className="flex justify-between pt-4">
-                        <Button type="button" variant="outline" onClick={() => setCurrentStep(3)}>
-                          Back
-                        </Button>
-                        <Button type="button" onClick={() => { void validateAndGoToStep(5); }} className="bg-crimson hover:bg-crimson/90">
-                          Continue
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                  {/* Step 5: Services */}
-                  {currentStep === 5 && (
                     <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
                       <div className="flex items-center gap-3 mb-6">
                         <CreditCard className="w-6 h-6 text-crimson" />
