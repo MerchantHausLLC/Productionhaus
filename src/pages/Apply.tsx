@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { StarfieldBackground } from "@/components/StarfieldBackground";
 import { ThankYouDialog } from "@/components/ThankYouDialog";
+import { MerchantProcessorDialog } from "@/components/MerchantProcessorDialog";
 
 // Schema validation
 const applicationFormSchema = z.object({
@@ -67,6 +68,7 @@ const Apply = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [showThankYou, setShowThankYou] = useState(false);
+  const [showProcessorDialog, setShowProcessorDialog] = useState(false);
   const { toast } = useToast();
 
   const {
@@ -91,6 +93,14 @@ const Apply = () => {
   const agreedToTerms = watch("agree_to_terms");
   const agreedToSecurity = watch("agree_to_security_policy");
   const hasCurrentProcessor = watch("hasCurrentProcessor");
+
+  useEffect(() => {
+    if (hasCurrentProcessor === "no") {
+      setShowProcessorDialog(true);
+    } else {
+      setShowProcessorDialog(false);
+    }
+  }, [hasCurrentProcessor]);
 
   // Custom submit handler to post the data to our Netlify function
   const onSubmit = async (data: ApplicationFormValues) => {
@@ -162,6 +172,7 @@ const Apply = () => {
       <StarfieldBackground />
       <Header />
       <main className="flex-1 relative z-10">
+        <MerchantProcessorDialog open={showProcessorDialog} onOpenChange={setShowProcessorDialog} />
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-sm py-16">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
