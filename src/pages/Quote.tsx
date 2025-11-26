@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ThankYouDialog } from "@/components/ThankYouDialog";
 import { formDataToQueryString } from "@/lib/netlify";
+import { MerchantProcessorDialog } from "@/components/MerchantProcessorDialog";
 
 const quoteFormSchema = z.object({
   first_name: z.string().trim().min(1, "First name is required").max(50),
@@ -50,6 +51,7 @@ type QuoteFormValues = z.infer<typeof quoteFormSchema>;
 const Quote = () => {
   const { toast } = useToast();
   const [showThankYou, setShowThankYou] = useState(false);
+  const [showProcessorDialog, setShowProcessorDialog] = useState(false);
 
   const {
     register,
@@ -75,6 +77,14 @@ const Quote = () => {
   const hasCurrentProcessor = watch("hasCurrentProcessor");
   const agreeToTerms = watch("agree_to_terms");
   const agreeToSecurity = watch("agree_to_security_policy");
+
+  useEffect(() => {
+    if (hasCurrentProcessor === "no") {
+      setShowProcessorDialog(true);
+    } else {
+      setShowProcessorDialog(false);
+    }
+  }, [hasCurrentProcessor]);
 
   const handleProcessingChange = (service: string, checked: boolean) => {
     const updated = checked
@@ -139,6 +149,7 @@ const Quote = () => {
       <Header />
 
       <main className="flex-1 relative z-10">
+        <MerchantProcessorDialog open={showProcessorDialog} onOpenChange={setShowProcessorDialog} />
         <section className="relative overflow-hidden bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-sm py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-crimson/30 bg-white px-4 py-1.5 text-sm font-medium text-crimson shadow-sm mb-6">
