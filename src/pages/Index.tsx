@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { CookieConsent } from "@/components/CookieConsent";
 import ClientResources from "@/components/ClientResources";
 import VampBlogBanner from "@/components/VampBlogBanner";
+import ProcessorFormBanner from "@/components/ProcessorFormBanner";
 import { useParallax } from "@/hooks/use-parallax";
 import { Reveal } from "@/components/Reveal";
 
@@ -46,6 +47,9 @@ const Index = () => {
         </Reveal>
         <Reveal direction="up" delay={200}>
           <VampBlogBanner />
+        </Reveal>
+        <Reveal direction="up" delay={225}>
+          <ProcessorFormBanner />
         </Reveal>
         <Reveal direction="right" delay={250}>
           <ClientResources />
