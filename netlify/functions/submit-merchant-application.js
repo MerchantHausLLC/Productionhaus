@@ -1,11 +1,14 @@
-const crypto = require("crypto");
+Here’s your function updated to ES Module syntax and compatible with `"type": "module"`:
+
+```js
+import { randomUUID } from "crypto";
 
 /**
  * Netlify Function to handle merchant application submissions.
  *
  * This function accepts a JSON payload representing the form data from the
  * Apply page, maps those values into the structure required by the NMI
- * Merchant Sign‑Up API, obtains an access token, creates a new application,
+ * Merchant Sign-Up API, obtains an access token, creates a new application,
  * and returns the resulting application ID.
  *
  * Environment variables used:
@@ -16,14 +19,14 @@ const crypto = require("crypto");
  *   NMI_CREATE_APP_URL   – optional override for the application creation endpoint
  *
  * NOTE: This function provides a skeleton implementation. You should review
- * the NMI Sign‑Up API documentation and adjust the fieldMapping object
+ * the NMI Sign-Up API documentation and adjust the fieldMapping object
  * below to align your form fields with the exact NMI field identifiers
  * required for your package. Additional steps such as uploading documents
  * (bankVerificationDocument) and submitting the application may also
  * be necessary depending on your onboarding flow.
  */
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   try {
     // Ensure we received a POST request with a body
     if (event.httpMethod !== "POST") {
@@ -35,7 +38,7 @@ exports.handler = async (event) => {
 
     const body = event.body ? JSON.parse(event.body) : {};
 
-    // Mapping from our front‑end field names to NMI API field slugs
+    // Mapping from our front-end field names to NMI API field slugs
     const fieldMapping = {
       company_name: "businessName",
       address: "physicalAddress1",
@@ -66,14 +69,18 @@ exports.handler = async (event) => {
     // Construct the fields object expected by NMI
     const fields = {};
     Object.keys(fieldMapping).forEach((key) => {
-      if (Object.prototype.hasOwnProperty.call(body, key) && body[key] !== undefined && body[key] !== null) {
+      if (
+        Object.prototype.hasOwnProperty.call(body, key) &&
+        body[key] !== undefined &&
+        body[key] !== null
+      ) {
         fields[fieldMapping[key]] = body[key];
       }
     });
 
     // If a bank verification document is provided, include it as a separate property.
     // For file uploads, the NMI API uses the upload document endpoint. Here we simply
-    // include it in the payload so you can handle it in a follow‑up step.
+    // include it in the payload so you can handle it in a follow-up step.
     let attachments = [];
     if (body.bankVerificationDocument && body.bankVerificationDocument_name) {
       attachments.push({
@@ -83,12 +90,15 @@ exports.handler = async (event) => {
     }
 
     // Obtain an access token using client credentials
-    const authUrl = process.env.NMI_AUTH_URL || "https://signup.nmi.com/v1/oauth2/token";
+    const authUrl =
+      process.env.NMI_AUTH_URL || "https://signup.nmi.com/v1/oauth2/token";
     const authHeaders = {
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization:
         "Basic " +
-        Buffer.from(`${process.env.NMI_CLIENT_ID}:${process.env.NMI_CLIENT_SECRET}`).toString("base64"),
+        Buffer.from(
+          `${process.env.NMI_CLIENT_ID}:${process.env.NMI_CLIENT_SECRET}`
+        ).toString("base64"),
     };
     const authBody = new URLSearchParams({
       grant_type: "client_credentials",
@@ -102,17 +112,20 @@ exports.handler = async (event) => {
 
     if (!authResp.ok) {
       const text = await authResp.text();
-      throw new Error(`Failed to obtain access token: ${authResp.status} ${text}`);
+      throw new Error(
+        `Failed to obtain access token: ${authResp.status} ${text}`
+      );
     }
     const authJson = await authResp.json();
     const accessToken = authJson.access_token;
 
     // Create the application
-    const createAppUrl = process.env.NMI_CREATE_APP_URL || "https://signup.nmi.com/v1/applications";
+    const createAppUrl =
+      process.env.NMI_CREATE_APP_URL || "https://signup.nmi.com/v1/applications";
     const createHeaders = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
-      "Idempotency-Key": crypto.randomUUID(),
+      "Idempotency-Key": randomUUID(),
     };
     const createPayload = {
       package_id: process.env.NMI_PACKAGE_ID,
@@ -123,9 +136,12 @@ exports.handler = async (event) => {
       headers: createHeaders,
       body: JSON.stringify(createPayload),
     });
+
     if (!createResp.ok) {
       const text = await createResp.text();
-      throw new Error(`Failed to create application: ${createResp.status} ${text}`);
+      throw new Error(
+        `Failed to create application: ${createResp.status} ${text}`
+      );
     }
     const createData = await createResp.json();
     const applicationId = createData.application_id || createData.id || null;
@@ -140,7 +156,11 @@ exports.handler = async (event) => {
     console.error(error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ success: false, error: error.message || "Unknown error" }),
+      body: JSON.stringify({
+        success: false,
+        error: error.message || "Unknown error",
+      }),
     };
   }
 };
+```
