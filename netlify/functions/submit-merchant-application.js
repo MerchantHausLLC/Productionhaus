@@ -1,7 +1,4 @@
-Here’s your function updated to ES Module syntax and compatible with `"type": "module"`:
-
-```js
-import { randomUUID } from "crypto";
+import crypto from "crypto";
 
 /**
  * Netlify Function to handle merchant application submissions.
