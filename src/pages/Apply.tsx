@@ -19,6 +19,8 @@ import {
 import { StarfieldBackground } from "@/components/StarfieldBackground";
 import { ThankYouDialog } from "@/components/ThankYouDialog";
 import { MerchantProcessorDialog } from "@/components/MerchantProcessorDialog";
+// Import the helper to format data for Netlify
+import { formDataToQueryString } from "@/lib/netlify";
 
 // Schema validation
 const applicationFormSchema = z.object({
@@ -90,8 +92,6 @@ const Apply = () => {
 
   const processingServices = watch("processing_services") || [];
   const valueServices = watch("value_services") || [];
-  const agreedToTerms = watch("agree_to_terms");
-  const agreedToSecurity = watch("agree_to_security_policy");
   const hasCurrentProcessor = watch("hasCurrentProcessor");
 
   useEffect(() => {
@@ -102,20 +102,41 @@ const Apply = () => {
     }
   }, [hasCurrentProcessor]);
 
-  // Custom submit handler to post the data to our Netlify function
+  // NEW: Submit handler for Netlify Static Forms (Option A)
   const onSubmit = async (data: ApplicationFormValues) => {
     try {
-      const payload: ApplicationFormValues = { ...data };
-      const response = await fetch("/.netlify/functions/submit-merchant-application", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+      const formData = new FormData();
+      
+      // 1. Add standard Netlify fields
+      formData.append("form-name", "merchant-apply");
+      formData.append("bot-field", "");
+
+      // 2. Append all data fields manually
+      // We do this to capture data from steps that are currently hidden from the DOM
+      Object.keys(data).forEach((key) => {
+        const value = data[key as keyof ApplicationFormValues];
+        
+        if (Array.isArray(value)) {
+          // For checkboxes (arrays), append each item individually
+          value.forEach((item) => formData.append(key, item));
+        } else if (value !== undefined && value !== null) {
+           // Convert booleans and numbers to strings
+          formData.append(key, value.toString());
+        }
       });
+
+      // 3. Submit to the root URL "/"
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formDataToQueryString(formData),
+      });
+
       if (response.ok) {
         setIsSubmitted(true);
         setShowThankYou(true);
         toast({
-          title: "Application Submitted",
+          title: "Application Received",
           description: "We'll review your application and get back to you soon.",
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -123,6 +144,7 @@ const Apply = () => {
         throw new Error("Submission failed");
       }
     } catch (error) {
+      console.error(error);
       toast({
         title: "Submission Failed",
         description: "Please try again or contact support at 1-505-600-6042.",
@@ -221,12 +243,22 @@ const Apply = () => {
                     })}
                   </div>
                 </div>
+                
+                {/* UPDATED FORM TAG:
+                  - Added data-netlify attributes
+                  - Added hidden inputs for bot-field and form-name
+                */}
                 <form
                   name="merchant-apply"
                   method="POST"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
                   onSubmit={handleSubmit(onSubmit)}
                   className="space-y-8"
                 >
+                  <input type="hidden" name="form-name" value="merchant-apply" />
+                  <input type="hidden" name="bot-field" />
+
                   {/* Step 1: Business Information */}
                   {currentStep === 1 && (
                     <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
@@ -500,13 +532,6 @@ const Apply = () => {
                       </div>
                     </div>
                   )}
-                  {/* Hidden inputs for arrays */}
-                  {processingServices.map((service) => (
-                    <input key={`processing-hidden-${service}`} type="hidden" name="processing_services[]" value={service} />
-                  ))}
-                  {valueServices.map((service) => (
-                    <input key={`value-hidden-${service}`} type="hidden" name="value_services[]" value={service} />
-                  ))}
                 </form>
               </>
             ) : (
