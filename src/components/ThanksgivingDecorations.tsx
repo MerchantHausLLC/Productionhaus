@@ -96,8 +96,8 @@ export const ThanksgivingDecorations = () => {
 
   return (
     <>
-      {/* Falling Leaves Animation Container */}
-      <div className="thanksgiving-leaves-container pointer-events-none fixed inset-0 z-50 overflow-hidden">
+      {/* Falling Leaves Animation Container - z-30 so leaves fall behind the header */}
+      <div className="thanksgiving-leaves-container pointer-events-none fixed inset-0 z-30 overflow-hidden">
         {leaves.map((leaf) => (
           <svg
             key={leaf.id}
@@ -148,9 +148,9 @@ export const ThanksgivingDecorations = () => {
         </div>
       </div>
 
-      {/* "Happy Thanksgiving" Banner */}
-      <div className="thanksgiving-banner pointer-events-none fixed left-0 right-0 top-0 z-[60] flex justify-center">
-        <div className="thanksgiving-banner-content mt-2 rounded-b-lg bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 px-6 py-2 shadow-lg">
+      {/* "Happy Thanksgiving" Banner - Positioned below the sticky header */}
+      <div className="thanksgiving-banner pointer-events-none fixed left-0 right-0 top-[72px] z-40 flex justify-center">
+        <div className="thanksgiving-banner-content rounded-b-lg bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 px-6 py-2 shadow-lg">
           <span className="font-ubuntu text-lg font-bold text-white drop-shadow-md md:text-xl">
             Happy Thanksgiving!
           </span>
