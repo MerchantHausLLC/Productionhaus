@@ -25,6 +25,7 @@ import { CheckCircle2, X } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import { formDataToQueryString } from "@/lib/netlify";
 import { RequiredIndicator } from "./ui/required-indicator";
+import { useToast } from "@/hooks/use-toast";
 
 const contactFormSchema = z.object({
   name: z
@@ -67,6 +68,7 @@ interface ContactFormDialogProps {
 export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -113,7 +115,12 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
         navigate("/");
       }, 3000);
     } catch (error) {
-      console.error("Form submission error", error);
+      // Display error toast for failed form submissions
+      toast({
+        title: "Submission Failed",
+        description: "Please try again or contact support at 1-505-600-6042.",
+        variant: "destructive",
+      });
     }
   };
 

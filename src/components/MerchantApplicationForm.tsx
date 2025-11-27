@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useToast } from "@/hooks/use-toast";
 
 export type MerchantApplicationFormProps = {
   mode?: "intake" | "full";
@@ -41,6 +42,7 @@ const valueServiceOptions = [
 export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = ({
   onSubmitted,
 }) => {
+  const { toast } = useToast();
   const {
     register,
     handleSubmit,
@@ -73,22 +75,39 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
     setValue(field, updated, { shouldDirty: true, shouldTouch: true });
   };
 
+  // Submit handler with error handling for form submission
   const onSubmit = async (values: MerchantApplicationFormValues) => {
-    const payload: MerchantApplicationFormValues = {
-      ...values,
-      currentProcessorName:
-        values.hasCurrentProcessor === "yes" ? values.currentProcessorName : undefined,
-      processing_services: values.processing_services || [],
-      value_services: values.value_services || [],
-    };
+    try {
+      const payload: MerchantApplicationFormValues = {
+        ...values,
+        currentProcessorName:
+          values.hasCurrentProcessor === "yes" ? values.currentProcessorName : undefined,
+        processing_services: values.processing_services || [],
+        value_services: values.value_services || [],
+      };
 
-    await fetch("/.netlify/functions/submit-merchant-application", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+      const response = await fetch("/.netlify/functions/submit-merchant-application", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    onSubmitted?.();
+      if (response.ok) {
+        toast({
+          title: "Application Submitted",
+          description: "We'll review your application and get back to you soon.",
+        });
+        onSubmitted?.();
+      } else {
+        throw new Error("Submission failed");
+      }
+    } catch (error) {
+      toast({
+        title: "Submission Failed",
+        description: "Please try again or contact support at 1-505-600-6042.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
