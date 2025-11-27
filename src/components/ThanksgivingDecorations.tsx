@@ -78,6 +78,12 @@ const autumnColors = [
 
 export const ThanksgivingDecorations = () => {
   const [leaves, setLeaves] = useState<Leaf[]>([]);
+  /* ----------------------------------------
+     SCROLL VISIBILITY STATE
+     Controls visibility of the Thanksgiving banner/seal
+     Banner shows only when header is at top (not scrolled)
+     ---------------------------------------- */
+  const [showBanner, setShowBanner] = useState(true);
 
   useEffect(() => {
     // Generate random falling leaves
@@ -92,6 +98,24 @@ export const ThanksgivingDecorations = () => {
       color: autumnColors[Math.floor(Math.random() * autumnColors.length)],
     }));
     setLeaves(generatedLeaves);
+  }, []);
+
+  /* ----------------------------------------
+     SCROLL DETECTION EFFECT
+     Hides banner on scroll, shows when at top
+     Threshold matches header scroll detection (20px)
+     ---------------------------------------- */
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show banner only when at top of page (header in full view)
+      setShowBanner(window.scrollY <= 20);
+    };
+
+    // Check initial scroll position
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -148,8 +172,16 @@ export const ThanksgivingDecorations = () => {
         </div>
       </div>
 
-      {/* "Happy Thanksgiving" Banner - Positioned below the sticky header */}
-      <div className="thanksgiving-banner pointer-events-none fixed left-0 right-0 top-[72px] z-40 flex justify-center">
+      {/* ----------------------------------------
+          "HAPPY THANKSGIVING" BANNER/SEAL
+          Scroll-aware: visible only when header is at top
+          Transitions smoothly with opacity and transform
+          ---------------------------------------- */}
+      <div
+        className={`thanksgiving-banner pointer-events-none fixed left-0 right-0 top-[72px] z-40 flex justify-center transition-all duration-300 ${
+          showBanner ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+        }`}
+      >
         <div className="thanksgiving-banner-content rounded-b-lg bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 px-6 py-2 shadow-lg">
           <span className="font-ubuntu text-lg font-bold text-white drop-shadow-md md:text-xl">
             Happy Thanksgiving!
