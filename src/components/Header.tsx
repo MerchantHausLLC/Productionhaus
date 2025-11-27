@@ -15,7 +15,8 @@ export const Header = () => {
   const navLinks = [
     { href: "/about", label: "About" },
     { href: "/services", label: "Services" },
-    { href: "/blog", label: "Blog" }
+    { href: "/blog", label: "Blog" },
+    { href: "/apply", label: "Get Started" }
   ];
 
   useEffect(() => {
