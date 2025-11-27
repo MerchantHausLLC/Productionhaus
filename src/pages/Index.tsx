@@ -10,6 +10,9 @@ import ClientResources from "@/components/ClientResources";
 import VampBlogBanner from "@/components/VampBlogBanner";
 import { useParallax } from "@/hooks/use-parallax";
 import { Reveal } from "@/components/Reveal";
+/* ===== THANKSGIVING DECORATION IMPORT - START ===== */
+import { ThanksgivingDecorations } from "@/components/ThanksgivingDecorations";
+/* ===== THANKSGIVING DECORATION IMPORT - END ===== */
 
 const Index = () => {
   const softGradientRef = useParallax<HTMLDivElement>({ speed: 0.04 });
@@ -18,18 +21,24 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
+      {/* ===== THANKSGIVING DECORATIONS COMPONENT - START ===== */}
+      <ThanksgivingDecorations />
+      {/* ===== THANKSGIVING DECORATIONS COMPONENT - END ===== */}
       <div className="pointer-events-none absolute inset-0 -z-10">
+        {/* ORIGINAL GRADIENT (for revert): bg-gradient-to-b from-[hsl(var(--light-bg))] via-[hsla(var(--cyber-teal),0.08)] to-[hsl(var(--background))] */}
         <div
           ref={softGradientRef}
-          className="h-full w-full bg-gradient-to-b from-[hsl(var(--light-bg))] via-[hsla(var(--cyber-teal),0.08)] to-[hsl(var(--background))]"
+          className="h-full w-full bg-gradient-to-b from-[hsl(30,50%,95%)] via-[hsla(35,80%,50%,0.08)] to-[hsl(var(--background))]"
         />
+        {/* ORIGINAL GRADIENT (for revert): bg-[radial-gradient(circle_at_15%_20%,hsla(var(--crimson),0.14)_0%,transparent_55%)] */}
         <div
           ref={crimsonGlowRef}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,hsla(var(--crimson),0.14)_0%,transparent_55%)]"
+          className="thanksgiving-autumn-glow absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,hsla(30,100%,50%,0.15)_0%,transparent_55%)]"
         />
+        {/* ORIGINAL GRADIENT (for revert): bg-[radial-gradient(circle_at_80%_70%,hsla(var(--cyber-teal),0.12)_0%,transparent_50%)] */}
         <div
           ref={tealGlowRef}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,hsla(var(--cyber-teal),0.12)_0%,transparent_50%)]"
+          className="thanksgiving-harvest-glow absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,hsla(45,100%,50%,0.12)_0%,transparent_50%)]"
         />
       </div>
       <Header />
