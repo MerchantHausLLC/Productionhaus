@@ -33,16 +33,30 @@ const wordSets = {
   line3: ["Business", "Enterprise", "Storefront", "Operations", "Revenue", "Brand", "Organization", "Portfolio", "Ecosystem", "Success"]
 };
 
+/* ===== THANKSGIVING COLOR SCHEME - START =====
+   ORIGINAL COLORS (for revert):
+   const colors = [
+     "text-crimson",
+     "text-cyber-teal",
+     "text-orange-400",
+     "text-blue-400",
+     "text-purple-400",
+     "text-pink-400",
+     "text-yellow-400",
+     "text-green-400"
+   ];
+===== */
 const colors = [
-  "text-crimson",
-  "text-cyber-teal",
-  "text-orange-400",
-  "text-blue-400",
-  "text-purple-400",
-  "text-pink-400",
-  "text-yellow-400",
-  "text-green-400"
+  "text-orange-500",      // Pumpkin orange
+  "text-amber-600",       // Golden amber
+  "text-yellow-500",      // Harvest gold
+  "text-red-600",         // Autumn red
+  "text-orange-600",      // Deep orange
+  "text-amber-500",       // Warm amber
+  "text-yellow-600",      // Mustard
+  "text-red-500"          // Cranberry
 ];
+/* ===== THANKSGIVING COLOR SCHEME - END ===== */
 
 export const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
