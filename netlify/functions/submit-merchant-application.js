@@ -1,4 +1,4 @@
-const crypto = require("crypto");
+import crypto from "crypto";
 
 /**
  * Netlify Function to handle merchant application submissions.
@@ -23,7 +23,7 @@ const crypto = require("crypto");
  * be necessary depending on your onboarding flow.
  */
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   try {
     // Ensure we received a POST request with a body
     if (event.httpMethod !== "POST") {
