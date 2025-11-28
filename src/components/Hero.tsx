@@ -79,7 +79,7 @@ export const Hero = () => {
           line1: (prev.line1 + 1) % colors.length
         }));
       }, 0);
-      // Line 2 (That) changes 150ms after Line 1
+      // Line 2 (That) changes 500ms after Line 1
       setTimeout(() => {
         setPreviousWords(prev => ({ ...prev, line2: currentWords.line2 }));
         setCurrentWords(prev => ({
@@ -90,8 +90,8 @@ export const Hero = () => {
           ...prev,
           line2: (prev.line2 + 1) % colors.length
         }));
-      }, 150);
-      // Line 3 (Your) changes 150ms after Line 2 (300ms total from Line 1)
+      }, 500);
+      // Line 3 (Your) changes 500ms after Line 2 (1s total from Line 1)
       setTimeout(() => {
         setPreviousWords(prev => ({ ...prev, line3: currentWords.line3 }));
         setCurrentWords(prev => ({
@@ -103,7 +103,7 @@ export const Hero = () => {
           line3: (prev.line3 + 1) % colors.length
         }));
         setIsAnimating(false);
-      }, 300);
+      }, 1000);
     }, 6000);
     return () => clearInterval(interval);
   }, [currentWords]);
