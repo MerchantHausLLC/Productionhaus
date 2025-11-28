@@ -37,9 +37,9 @@ const LogoBanner = () => {
           <p className="font-ubuntu text-5xl md:text-6xl font-bold tracking-tight text-foreground mb-4">
             Integrations & Partnerships
           </p>
-          <h2 className="font-ubuntu text-5xl md:text-6xl font-bold tracking-tight text-foreground">
+          <p className="font-inter text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
             Plug into the platforms your business already trusts
-          </h2>
+          </p>
         </div>
       </div>
       <div className="relative">
