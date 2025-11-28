@@ -4,65 +4,73 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 
+// Pricing tiers aligned with industry research and our fraud‑first positioning.
+// Each plan includes Network Tokens and Customer Vault by default.  Annual pricing reflects a 17% discount on the monthly rate.
 const pricingPlans = [
   {
     name: "Starter",
-    description: "Perfect for small businesses getting started",
-    monthlyPrice: 29,
-    annualPrice: 290,
+    description: "Essential fraud‑first foundation for secure businesses",
+    // $59 monthly with ~17% discount applied for annual billing (≈ $587.64 → rounded to $588)
+    monthlyPrice: 59,
+    annualPrice: 588,
     features: [
-      "Up to 1,000 transactions/month",
-      "Basic payment processing",
+      "Network Tokens (Customer Token Vault)",
+      "Customer Vault secure storage",
+      "Basic Fraud Prevention engine",
+      "Mobile Payment Gateway device",
+      "TXT2PAY billing tools",
+      "Automatic Card Updater",
+      "Standard dashboard & reporting",
       "Email support",
-      "Standard dashboard",
-      "2 team members",
     ],
+    // Features not included in this tier
     limitations: [
-      "Advanced analytics",
-      "Custom integrations",
+      "AI‑powered fraud scoring (Kount)",
+      "Level III data optimization",
+      "Shopify premium integration",
       "Priority support",
-      "White-label options",
+      "API access",
+      "Dedicated account manager",
+      "White‑label options",
     ],
     gradient: "from-cyan-500/10 to-blue-500/10",
     popular: false,
   },
   {
-    name: "Professional",
-    description: "Best for growing businesses",
+    name: "Intermediate",
+    description: "Advanced fraud protection with AI decisioning",
+    // $99 monthly with ~17% discount for annual (≈ $986.04 → rounded to $986)
     monthlyPrice: 99,
-    annualPrice: 990,
+    annualPrice: 986,
     features: [
-      "Up to 10,000 transactions/month",
-      "Advanced payment processing",
-      "Priority email & chat support",
-      "Advanced analytics dashboard",
-      "10 team members",
-      "Custom integrations",
+      "Everything in Starter",
+      "Kount AI Fraud Manager",
+      "Enhanced rule‑based risk controls",
+      "Priority support",
       "API access",
     ],
     limitations: [
-      "White-label options",
+      "Level III data optimization",
+      "Shopify premium integration",
       "Dedicated account manager",
+      "White‑label options",
     ],
     gradient: "from-orange-500/10 to-pink-500/10",
     popular: true,
   },
   {
-    name: "Enterprise",
-    description: "For large-scale operations",
-    monthlyPrice: 299,
-    annualPrice: 2990,
+    name: "Pro",
+    description: "Full fraud suite + advanced data optimization",
+    // $149 monthly with ~17% discount for annual (≈ $1,484.04 → rounded to $1484)
+    monthlyPrice: 149,
+    annualPrice: 1484,
     features: [
-      "Unlimited transactions",
-      "Enterprise payment processing",
-      "24/7 dedicated support",
+      "Everything in Intermediate",
+      "Level III Advantage (B2B optimization)",
+      "Shopify Integration",
       "Custom analytics & reporting",
-      "Unlimited team members",
-      "Custom integrations",
-      "Full API access",
-      "White-label options",
       "Dedicated account manager",
-      "SLA guarantees",
+      "White‑label options",
     ],
     limitations: [],
     gradient: "from-blue-500/10 to-purple-500/10",
@@ -78,10 +86,10 @@ export const PricingSection = () => {
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-12 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Simple, Transparent Pricing
+            Secure, Transparent Pricing
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Choose the plan that fits your business needs. All plans include our core features.
+            Every plan includes our fraud‑first foundation: Network Tokens, Customer Vault, and Basic Fraud Prevention.
           </p>
           
           <Tabs value={billingCycle} onValueChange={(v) => setBillingCycle(v as "monthly" | "annual")} className="inline-flex">
@@ -164,32 +172,9 @@ export const PricingSection = () => {
                 </tr>
               </thead>
               <tbody>
+                {/* AI Fraud Detection row */}
                 <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">Monthly Transactions</td>
-                  <td className="text-center py-4 px-4">1,000</td>
-                  <td className="text-center py-4 px-4">10,000</td>
-                  <td className="text-center py-4 px-4">Unlimited</td>
-                </tr>
-                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">Team Members</td>
-                  <td className="text-center py-4 px-4">2</td>
-                  <td className="text-center py-4 px-4">10</td>
-                  <td className="text-center py-4 px-4">Unlimited</td>
-                </tr>
-                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">Analytics Dashboard</td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-muted-foreground inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                </tr>
-                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">API Access</td>
+                  <td className="py-4 px-4">AI Fraud Detection (Kount)</td>
                   <td className="text-center py-4 px-4">
                     <X className="h-5 w-5 text-muted-foreground inline" />
                   </td>
@@ -200,20 +185,9 @@ export const PricingSection = () => {
                     <Check className="h-5 w-5 text-primary inline" />
                   </td>
                 </tr>
+                {/* Level III data optimization row */}
                 <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">Custom Integrations</td>
-                  <td className="text-center py-4 px-4">
-                    <X className="h-5 w-5 text-muted-foreground inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                </tr>
-                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">White-label Options</td>
+                  <td className="py-4 px-4">Level III Optimization</td>
                   <td className="text-center py-4 px-4">
                     <X className="h-5 w-5 text-muted-foreground inline" />
                   </td>
@@ -224,14 +198,55 @@ export const PricingSection = () => {
                     <Check className="h-5 w-5 text-primary inline" />
                   </td>
                 </tr>
+                {/* Network tokens & Customer Vault row */}
+                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
+                  <td className="py-4 px-4">Network Tokens &amp; Customer Vault</td>
+                  <td className="text-center py-4 px-4">
+                    <Check className="h-5 w-5 text-primary inline" />
+                  </td>
+                  <td className="text-center py-4 px-4">
+                    <Check className="h-5 w-5 text-primary inline" />
+                  </td>
+                  <td className="text-center py-4 px-4">
+                    <Check className="h-5 w-5 text-primary inline" />
+                  </td>
+                </tr>
+                {/* Shopify integration row */}
+                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
+                  <td className="py-4 px-4">Shopify Integration</td>
+                  <td className="text-center py-4 px-4">
+                    <X className="h-5 w-5 text-muted-foreground inline" />
+                  </td>
+                  <td className="text-center py-4 px-4">
+                    <X className="h-5 w-5 text-muted-foreground inline" />
+                  </td>
+                  <td className="text-center py-4 px-4">
+                    <Check className="h-5 w-5 text-primary inline" />
+                  </td>
+                </tr>
+                {/* Core Fraud Rules & Monitoring row */}
+                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
+                  <td className="py-4 px-4">Core Fraud Rules &amp; Monitoring</td>
+                  <td className="text-center py-4 px-4">
+                    <Check className="h-5 w-5 text-primary inline" />
+                  </td>
+                  <td className="text-center py-4 px-4">
+                    <Check className="h-5 w-5 text-primary inline" />
+                  </td>
+                  <td className="text-center py-4 px-4">
+                    <Check className="h-5 w-5 text-primary inline" />
+                  </td>
+                </tr>
+                {/* Support level row */}
                 <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
                   <td className="py-4 px-4">Support Level</td>
-                  <td className="text-center py-4 px-4">Email</td>
-                  <td className="text-center py-4 px-4">Priority</td>
-                  <td className="text-center py-4 px-4">24/7 Dedicated</td>
+                  <td className="text-center py-4 px-4">Email support</td>
+                  <td className="text-center py-4 px-4">Priority support</td>
+                  <td className="text-center py-4 px-4">Dedicated account manager</td>
                 </tr>
+                {/* White‑label options row */}
                 <tr className="hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">SLA Guarantees</td>
+                  <td className="py-4 px-4">White‑label Options</td>
                   <td className="text-center py-4 px-4">
                     <X className="h-5 w-5 text-muted-foreground inline" />
                   </td>
