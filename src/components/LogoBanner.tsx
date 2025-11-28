@@ -34,10 +34,10 @@ const LogoBanner = () => {
     <section className="py-16 overflow-hidden bg-muted/20 dark:bg-neutral-dark/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-8">
         <div className="text-center">
-          <p className="font-montserrat text-sm uppercase tracking-wider text-muted-foreground mb-3">
+          <p className="font-ubuntu text-5xl md:text-6xl font-bold tracking-tight text-foreground mb-4">
             Integrations & Partnerships
           </p>
-          <h2 className="font-montserrat font-semibold text-2xl md:text-3xl text-foreground">
+          <h2 className="font-ubuntu text-5xl md:text-6xl font-bold tracking-tight text-foreground">
             Plug into the platforms your business already trusts
           </h2>
         </div>

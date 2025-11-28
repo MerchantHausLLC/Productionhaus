@@ -10,6 +10,7 @@ import ClientResources from "@/components/ClientResources";
 import VampBlogBanner from "@/components/VampBlogBanner";
 import { useParallax } from "@/hooks/use-parallax";
 import { Reveal } from "@/components/Reveal";
+import { PricingSection } from "@/components/PricingSection";
 
 const Index = () => {
   const softGradientRef = useParallax<HTMLDivElement>({ speed: 0.04 });
@@ -46,6 +47,9 @@ const Index = () => {
         </Reveal>
         <Reveal direction="left" delay={150}>
           <Solutions />
+        </Reveal>
+        <Reveal direction="right" delay={200}>
+          <PricingSection />
         </Reveal>
         <Reveal direction="up" delay={200}>
           <VampBlogBanner />
