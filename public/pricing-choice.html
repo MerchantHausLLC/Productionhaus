@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choose Your Pricing Model | MerchantHaus</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --crimson: #c1121f;
+        --ink: #0b0b0f;
+        --muted: #f6f6f9;
+        --card: #ffffff;
+        --text: #1f1f29;
+        --accent: #111827;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        color: var(--text);
+        background: radial-gradient(circle at 20% 20%, rgba(193, 18, 31, 0.08), transparent 35%),
+          radial-gradient(circle at 80% 0%, rgba(17, 24, 39, 0.12), transparent 40%),
+          linear-gradient(135deg, #f8f9fb 0%, #f1f2f6 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 16px;
+      }
+
+      .panel {
+        width: min(960px, 100%);
+        background: var(--card);
+        border-radius: 28px;
+        padding: 40px;
+        box-shadow: 0 20px 70px rgba(12, 12, 18, 0.12), 0 10px 30px rgba(12, 12, 18, 0.08);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(17, 24, 39, 0.06);
+      }
+
+      .panel::before {
+        content: "";
+        position: absolute;
+        inset: -120px auto auto -120px;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(193, 18, 31, 0.12) 0%, transparent 70%);
+        filter: blur(2px);
+        pointer-events: none;
+      }
+
+      .panel::after {
+        content: "";
+        position: absolute;
+        inset: auto -160px -160px auto;
+        width: 320px;
+        height: 320px;
+        background: radial-gradient(circle, rgba(17, 24, 39, 0.08) 0%, transparent 70%);
+        filter: blur(2px);
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(193, 18, 31, 0.08);
+        color: var(--crimson);
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        font-size: 13px;
+      }
+
+      .eyebrow svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      h1 {
+        margin: 16px 0 12px;
+        font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+        font-size: clamp(28px, 3vw, 36px);
+        color: var(--ink);
+        letter-spacing: -0.02em;
+      }
+
+      p.description {
+        margin: 0 0 32px;
+        color: #4b5563;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+        margin-top: 12px;
+      }
+
+      .option-card {
+        position: relative;
+        padding: 22px;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border: 1px solid rgba(17, 24, 39, 0.07);
+        box-shadow: 0 16px 35px rgba(12, 12, 18, 0.08);
+        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+      }
+
+      .option-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(193, 18, 31, 0.35);
+        box-shadow: 0 22px 45px rgba(12, 12, 18, 0.12);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        background: rgba(193, 18, 31, 0.08);
+        color: var(--crimson);
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+
+      .option-title {
+        margin: 12px 0 8px;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--ink);
+        letter-spacing: -0.01em;
+      }
+
+      .option-text {
+        margin: 0 0 16px;
+        font-size: 14px;
+        color: #4b5563;
+        line-height: 1.5;
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 14px;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
+        text-decoration: none;
+      }
+
+      .cta.primary {
+        background: var(--crimson);
+        color: #fff;
+        box-shadow: 0 12px 30px rgba(193, 18, 31, 0.3);
+      }
+
+      .cta.primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 32px rgba(193, 18, 31, 0.35);
+      }
+
+      .cta.secondary {
+        background: #fff;
+        color: var(--ink);
+        border-color: rgba(17, 24, 39, 0.12);
+      }
+
+      .cta.secondary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 32px rgba(12, 12, 18, 0.12);
+        border-color: rgba(193, 18, 31, 0.25);
+      }
+
+      .footer-note {
+        margin-top: 22px;
+        text-align: center;
+        color: #6b7280;
+        font-size: 14px;
+      }
+
+      @media (max-width: 640px) {
+        .panel {
+          padding: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="panel" role="main">
+      <div class="eyebrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15V6" />
+          <path d="M18.5 8.5 21 6l2.5 2.5" />
+          <path d="M3 9l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <path d="M9 22V12h6v10" />
+        </svg>
+        MerchantHaus Pricing
+      </div>
+      <h1>Pick the pricing model that fits your business</h1>
+      <p class="description">
+        Thanks for completing your application. Choose how you want to get started—our team will activate your account with the
+        pricing that aligns to your processing needs.
+      </p>
+
+      <div class="options">
+        <div class="option-card">
+          <div class="badge">Recommended</div>
+          <div class="option-title">Flat Rate</div>
+          <p class="option-text">Simple, predictable pricing with no surprises. Ideal for fast onboarding and consistent monthly costs.</p>
+          <a class="cta primary" href="https://merchanthaus-fr.nmipays.com/form/MerchantHaus-fr">Flat Rate (Recommended)</a>
+        </div>
+
+        <div class="option-card">
+          <div class="badge" style="background: rgba(17, 24, 39, 0.08); color: var(--ink);">Transparent</div>
+          <div class="option-title">Interchange Plus</div>
+          <p class="option-text">Pass-through pricing tied directly to card network costs. Perfect for high-volume or interchange-savvy teams.</p>
+          <a class="cta secondary" href="https://merchanthaus-ic.nmipays.com/form/MerchantHaus-ic">Interchange Plus</a>
+        </div>
+      </div>
+
+      <p class="footer-note">Questions? Contact us at <a href="mailto:sales@merchanthaus.com">sales@merchanthaus.com</a>.</p>
+    </main>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { StarfieldBackground } from "@/components/StarfieldBackground";
 import { ThankYouDialog } from "@/components/ThankYouDialog";
-import { MerchantProcessorDialog } from "@/components/MerchantProcessorDialog";
 // Import the helper to format data for Netlify
 import { formDataToQueryString } from "@/lib/netlify";
 
@@ -51,7 +50,7 @@ const applicationFormSchema = z
     primaryUseCase: z.string().trim().min(1, "Select your primary use case"),
     industry: z.string().trim().min(1, "Select your industry"),
     currentlyProcessing: z.enum(["yes", "no"], {
-      required_error: "Please tell us if you are processing today",
+      required_error: "Please tell us if you have a payment processor",
     }),
     currentProcessor: z.string().trim().max(100).optional(),
     first_name: z.string().trim().min(1, "First name is required").max(50),
@@ -67,10 +66,6 @@ const applicationFormSchema = z
       .min(1, "Username is required")
       .max(50)
       .regex(/^[a-zA-Z0-9]+$/, "Username must be alphanumeric"),
-    hasCurrentProcessor: z.enum(["yes", "no"], {
-      required_error: "Please tell us if you have a current processor",
-    }),
-    currentProcessorName: z.string().trim().max(100).optional(),
     avgTicket: positiveOptionalNumber,
     maxTicket: positiveOptionalNumber,
     monthlyVolume: positiveOptionalNumber,
@@ -100,13 +95,6 @@ const applicationFormSchema = z
     }),
   })
   .superRefine((data, ctx) => {
-    if (data.hasCurrentProcessor === "yes" && !data.currentProcessorName?.trim()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["currentProcessorName"],
-        message: "Current processor name is required",
-      });
-    }
     if (data.currentlyProcessing === "yes" && !data.currentProcessor?.trim()) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -136,7 +124,6 @@ const Apply = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [showThankYou, setShowThankYou] = useState(false);
-  const [showProcessorDialog, setShowProcessorDialog] = useState(false);
   const { toast } = useToast();
 
   const {
@@ -182,18 +169,9 @@ const Apply = () => {
   const processingServices = watch("processing_services") || [];
   const valueServices = watch("value_services") || [];
   const posPlatforms = watch("posPlatform") || [];
-  const hasCurrentProcessor = watch("hasCurrentProcessor");
   const currentlyProcessing = watch("currentlyProcessing");
   const needsCardPresent = watch("needsCardPresent");
   const highRiskProducts = watch("highRiskProducts");
-
-  useEffect(() => {
-    if (hasCurrentProcessor === "no") {
-      setShowProcessorDialog(true);
-    } else {
-      setShowProcessorDialog(false);
-    }
-  }, [hasCurrentProcessor]);
 
   // NEW: Submit handler for Netlify Static Forms (Option A)
   const onSubmit = async (data: ApplicationFormValues) => {
@@ -226,12 +204,16 @@ const Apply = () => {
       });
 
       if (response.ok) {
-        setIsSubmitted(true);
-        setShowThankYou(true);
         toast({
           title: "Application Received",
           description: "We'll review your application and get back to you soon.",
         });
+        if (data.currentlyProcessing === "no") {
+          window.location.href = "/pricing-choice.html";
+          return;
+        }
+        setIsSubmitted(true);
+        setShowThankYou(true);
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         throw new Error("Submission failed");
@@ -288,7 +270,7 @@ const Apply = () => {
       "currentProcessor",
     ],
     2: ["first_name", "last_name", "email", "phone"],
-    3: ["username", "hasCurrentProcessor", "currentProcessorName", "transactionMix", "avgTicket", "maxTicket", "monthlyVolume", "highRiskProducts", "highRiskDescription", "cardOnFile"],
+    3: ["username", "transactionMix", "avgTicket", "maxTicket", "monthlyVolume", "highRiskProducts", "highRiskDescription", "cardOnFile"],
     4: ["integrationMethod", "posPlatform", "developerInvolved", "integrationTimeline", "needsCardPresent", "preferredDeviceType", "numLocations", "numDevices"],
   };
 
@@ -308,7 +290,6 @@ const Apply = () => {
       <StarfieldBackground />
       <Header />
       <main className="flex-1 relative z-10">
-        <MerchantProcessorDialog open={showProcessorDialog} onOpenChange={setShowProcessorDialog} />
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-sm py-16">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -532,7 +513,7 @@ const Apply = () => {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <Label>Are you currently processing card payments?*</Label>
+                          <Label>Do you currently have your own payment processor?*</Label>
                           <div className="grid gap-3 sm:grid-cols-2">
                             {[
                               { label: "Yes", value: "yes" },
@@ -704,47 +685,6 @@ const Apply = () => {
                         />
                         {errors.username && <p className="text-sm text-destructive">{errors.username.message}</p>}
                         <p className="text-xs text-muted-foreground">This will be your login username. Letters and numbers only.</p>
-                      </div>
-                      <div className="space-y-4 pt-4 border-t">
-                        <div className="space-y-2">
-                          <Label>Do you currently have your own payment processor?*</Label>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            {[
-                              { label: "Yes", value: "yes" },
-                              { label: "No", value: "no" },
-                            ].map((option) => (
-                              <label
-                                key={option.value}
-                                htmlFor={`hasCurrentProcessor-${option.value}`}
-                                className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  hasCurrentProcessor === option.value ? "border-crimson bg-crimson/5" : "border-border hover:border-crimson/50"
-                                }`}
-                              >
-                                <input
-                                  type="radio"
-                                  id={`hasCurrentProcessor-${option.value}`}
-                                  value={option.value}
-                                  className="sr-only"
-                                  {...register("hasCurrentProcessor")}
-                                />
-                                <span className="text-sm font-medium text-foreground">{option.label}</span>
-                              </label>
-                            ))}
-                          </div>
-                          {errors.hasCurrentProcessor && <p className="text-sm text-destructive">{errors.hasCurrentProcessor.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="currentProcessorName">Who is your current processor?</Label>
-                          <Input
-                            id="currentProcessorName"
-                            placeholder="e.g., Stripe, Worldpay"
-                            disabled={hasCurrentProcessor !== "yes"}
-                            aria-invalid={!!errors.currentProcessorName}
-                            {...register("currentProcessorName")}
-                          />
-                          <p className="text-xs text-muted-foreground">If you do not have a processor, leave this field blank.</p>
-                          {errors.currentProcessorName && <p className="text-sm text-destructive">{errors.currentProcessorName.message}</p>}
-                        </div>
                       </div>
                       <div className="space-y-4 pt-4 border-t">
                         <h3 className="font-semibold text-foreground">Processing Profile (Estimates Only)</h3>
