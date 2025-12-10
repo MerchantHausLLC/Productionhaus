@@ -1,37 +1,47 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
-import { useEffect } from "react";
-import shieldLogo from "@/assets/shield.webp";
 
 /**
  * Blog article component for Merchanthaus.io
  * This file renders an in‑depth article about why 2026 will see AI hype cool off and SaaS payments heat up.
- * To integrate this component into your Next.js site, place the hero image in the public/images directory
- * and update the src path accordingly.
  */
 
 const Prediction2026Article: React.FC = () => {
   return (
-    <>
-      <Head>
-        <title>Beyond the Hype: Why 2026 Will Reset Our Expectations for AI and Accelerate SaaS Payments</title>
-        <meta
-          name="description"
-          content="A detailed analysis of why AI investment will cool in 2026 while embedded SaaS payments and automated onboarding become the default choice for merchants."
-        />
-      </Head>
-      <article className="mx-auto max-w-3xl px-4 py-8 prose prose-lg">
-        <h1>Beyond the Hype: Why 2026 Will Reset Our Expectations for AI and Accelerate SaaS Payments</h1>
-        {/* Hero image: place the generated image at /public/images/ai-payment-hero.png */}
-        <figure>
-          <Image
-            src="/public/blog-images/prediction.webp"
+    <div className="min-h-screen bg-background dark:bg-neutral-dark">
+      <Header />
+
+      {/* Hero Section: Full-width image with overlay text on right */}
+      <section className="relative w-full h-[60vh] min-h-[400px] overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/blog-images/prediction.webp"
             alt="Professional woman working at her laptop with AI and payment icons"
-            width={1280}
-            height={720}
-            priority
+            className="w-full h-full object-cover"
           />
-        </figure>
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-neutral-dark/40 to-neutral-dark/80" />
+        </div>
+
+        {/* Hero Text Overlay - Right Side */}
+        <div className="relative h-full max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-end">
+          <div className="text-right space-y-4 max-w-lg">
+            {/* "Beyond The Hype" styled as multi-line hero text */}
+            <h1 className="font-ubuntu font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white leading-none drop-shadow-2xl">
+              <span className="block">Beyond</span>
+              <span className="block text-cyber-teal ml-4 md:ml-8">The</span>
+              <span className="block text-crimson ml-8 md:ml-16">Hype</span>
+            </h1>
+            {/* Subtitle */}
+            <p className="font-montserrat text-lg sm:text-xl md:text-2xl text-neutral-light drop-shadow-lg">
+              Why 2026 Will Reset Our Expectations for AI and Accelerate SaaS Payments
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <article className="mx-auto max-w-3xl px-4 py-8 prose prose-lg dark:prose-invert">
         <h2>Introduction</h2>
         <p>
           Artificial intelligence (AI) has dominated headlines for the last few years. Generative models like
@@ -231,7 +241,9 @@ const Prediction2026Article: React.FC = () => {
           </ol>
         </section>
       </article>
-    </>
+
+      <Footer />
+    </div>
   );
 };
 

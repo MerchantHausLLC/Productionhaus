@@ -101,8 +101,8 @@ const Blog = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="h-64 lg:h-96 relative">
                     <img
-                      src="/blog-images/cardland.webp"
-                      alt="AI predictions and payment trends"
+                      src="/blog-images/prediction.webp"
+                      alt="Beyond the Hype: AI and payment predictions for 2026"
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute top-4 left-4 flex flex-col gap-2">
@@ -165,8 +165,8 @@ const Blog = () => {
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/prediction-2026" className="block">
                   <img
-                    src="/blog-images/pos-terminal-overlay.png"
-                    alt="POS terminal overlay"
+                    src="/blog-images/prediction.webp"
+                    alt="Beyond the Hype: AI and Payment Predictions"
                     className="w-full h-40 object-cover"
                   />
                   <div className="p-6">
