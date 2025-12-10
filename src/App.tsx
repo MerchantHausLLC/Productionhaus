@@ -12,6 +12,7 @@ const Index = lazy(() => import("./pages/Index"));
 const Services = lazy(() => import("./pages/Services"));
 const Blog = lazy(() => import("./pages/Blog"));
 const Vamp = lazy(() => import("./pages/Vamp"));
+const Prediction2026Article = lazy(() => import("./pages/Prediction2026Article"));
 const ThreeDS = lazy(() => import("./pages/ThreeDS"));
 const ThreeDS2 = lazy(() => import("./pages/ThreeDS2"));
 const TapToMobile = lazy(() => import("./pages/TapToMobile"));
@@ -86,6 +87,7 @@ const App = () => (
               <Route path="/about" element={<AboutPage />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/vamp" element={<Vamp />} />
+              <Route path="/prediction-2026" element={<Prediction2026Article />} />
               <Route path="/3ds" element={<ThreeDS />} />
               <Route path="/3ds2" element={<ThreeDS2 />} />
               <Route path="/tap-to-mobile" element={<TapToMobile />} />

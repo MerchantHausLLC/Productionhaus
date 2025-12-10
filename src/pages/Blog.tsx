@@ -97,27 +97,32 @@ const Blog = () => {
           
           <div className="card-container">
             <div className="bg-card dark:bg-card/80 rounded-2xl overflow-hidden shadow-xl border border-border dark:border-border/50 card-shadow hover-crimson-arrow">
-              <a href="/vamp" className="block">
+              <a href="/prediction-2026" className="block">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="h-64 lg:h-96 relative">
-                    <img 
-                      src="/blog-images/vamp_header.webp" 
-                      alt="Visa VAMP Featured Image" 
+                    <img
+                      src="/blog-images/cardland.webp"
+                      alt="AI predictions and payment trends"
                       className="w-full h-full object-cover"
                     />
-                    <span className="absolute top-4 left-4 text-white text-xs font-bold px-3 py-1 rounded-full uppercase bg-crimson">
-                      Featured
-                    </span>
+                    <div className="absolute top-4 left-4 flex flex-col gap-2">
+                      <span className="text-white text-xs font-bold px-3 py-1 rounded-full uppercase bg-cyber-teal">
+                        Featured
+                      </span>
+                      <span className="text-white text-xs font-semibold px-3 py-1 rounded-full bg-black/50 backdrop-blur">
+                        October 28, 2024
+                      </span>
+                    </div>
                   </div>
                   <div className="p-6 sm:p-10 flex flex-col justify-center">
                     <p className="text-sm font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
-                      Compliance & Fraud
+                      Industry Insights
                     </p>
                     <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 font-ubuntu text-foreground">
-                      Visa's VAMP: A New Era for Fraud and Dispute Management
+                      Beyond the Hype: Why 2026 Will Reset AI Expectations and Accelerate SaaS Payments
                     </h3>
                     <p className="mb-6 leading-relaxed text-muted-foreground">
-                      VAMP replaces legacy programs (VFMP/VDMP) with a unified metric, reshaping how merchants and acquirers manage risk. Learn what it means for your business.
+                      Explore why the AI hype cycle will cool while embedded, automated SaaS payments become the default choice for merchants heading into 2026.
                     </p>
                     <div className="flex items-center font-semibold text-foreground">
                       Read Article
@@ -154,14 +159,43 @@ const Blog = () => {
         {/* Article Grid */}
         <section>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            
-            {/* Card 1: VAMP Article */}
+
+            {/* Card 1: Prediction 2026 */}
+            <div className="card-container">
+              <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
+                <a href="/prediction-2026" className="block">
+                  <img
+                    src="/blog-images/pos-terminal-overlay.png"
+                    alt="POS terminal overlay"
+                    className="w-full h-40 object-cover"
+                  />
+                  <div className="p-6">
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
+                      Industry Insights
+                    </p>
+                    <h4 className="text-xl font-bold mb-3 text-foreground">
+                      Beyond the Hype: Payments and AI Predictions for 2026
+                    </h4>
+                    <p className="text-xs text-muted-foreground mb-2">October 28, 2024</p>
+                    <p className="text-sm mb-4 text-muted-foreground">
+                      Why AI expectations are resetting while SaaS-based payments and automated onboarding heat up.
+                    </p>
+                    <div className="flex items-center text-sm font-medium text-foreground">
+                      Read More
+                      <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            {/* Card 2: VAMP Article */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/vamp" className="block">
-                  <img 
-                    src="/blog-images/vamp_metrics.webp" 
-                    alt="VAMP Metrics" 
+                  <img
+                    src="/blog-images/vamp_metrics.webp"
+                    alt="VAMP Metrics"
                     className="w-full h-40 object-cover"
                   />
                   <div className="p-6">
@@ -171,6 +205,7 @@ const Blog = () => {
                     <h4 className="text-xl font-bold mb-3 text-foreground">
                       Visa VAMP: Decoding the New Risk Ratio
                     </h4>
+                    <p className="text-xs text-muted-foreground mb-2">September 12, 2024</p>
                     <p className="text-sm mb-4 text-muted-foreground">
                       A deep dive into the TC40 and TC15 metrics that determine your program enrollment.
                     </p>
@@ -183,7 +218,7 @@ const Blog = () => {
               </div>
             </div>
 
-            {/* Card 2: 3D Secure Article */}
+            {/* Card 3: 3D Secure Article */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/3ds" className="block">
@@ -199,6 +234,7 @@ const Blog = () => {
                     <h4 className="text-xl font-bold mb-3 text-foreground">
                       Understanding 3D Secure: Protecting Merchants and Customers
                     </h4>
+                    <p className="text-xs text-muted-foreground mb-2">August 22, 2024</p>
                     <p className="text-sm mb-4 text-muted-foreground">
                       How modern authentication can boost security without sacrificing conversion rates.
                     </p>
@@ -211,7 +247,7 @@ const Blog = () => {
               </div>
             </div>
 
-            {/* Card 3: Tap-to-Mobile */}
+            {/* Card 4: Tap-to-Mobile */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/tap-to-mobile" className="block">
@@ -227,6 +263,7 @@ const Blog = () => {
                     <h4 className="text-xl font-bold mb-3 text-foreground">
                       Tap-to-Mobile Is the New POS
                     </h4>
+                    <p className="text-xs text-muted-foreground mb-2">October 2, 2024</p>
                     <p className="text-sm mb-4 text-muted-foreground">
                       Turn any NFC phone into a softPOS and start taking contactless payments with zero extra hardware.
                     </p>
@@ -239,7 +276,7 @@ const Blog = () => {
               </div>
             </div>
 
-            {/* Card 4: 3DS2 Deep Dive */}
+            {/* Card 5: 3DS2 Deep Dive */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/3ds2" className="block">
@@ -255,6 +292,7 @@ const Blog = () => {
                     <h4 className="text-xl font-bold mb-3 text-foreground">
                       3D Secure 2: Security Without the Speed Bumps
                     </h4>
+                    <p className="text-xs text-muted-foreground mb-2">November 3, 2024</p>
                     <p className="text-sm mb-4 text-muted-foreground">
                       Learn how 3DS2 keeps checkout fast for trusted customers while shifting fraud liability away from your business.
                     </p>
