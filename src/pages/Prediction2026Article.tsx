@@ -56,7 +56,7 @@ const Prediction2026Article: React.FC = () => {
           The message is clear: the industry will not abandon AI, but expectations are being reset.
         </p>
         <p>
-          Other studies corroborate this caution. MIT’s <em>State of AI in Business 2025</em> report finds that
+          Other studies corroborate this caution. MIT’s <em>State of AI in Business 2025</em> report finds that
           about 95&nbsp;% of enterprise AI initiatives fail to generate measurable returns; only about 5&nbsp;%
           deliver rapid revenue growth.<sup><a href="#fn2" id="ref2">[2]</a></sup> Many projects stall because they do not integrate AI into
           business processes; they stop at proofs‑of‑concept rather than deploying at scale.<sup><a href="#fn2" id="ref2b">[2]</a></sup>
@@ -193,8 +193,8 @@ const Prediction2026Article: React.FC = () => {
               <a href="#ref1" className="ml-1">↩︎</a>
             </li>
             <li id="fn2">
-              MIT’s State of AI in Business 2025 report and the Financial Brand summary noting that 95 % of
-              enterprise AI initiatives produce no measurable return and only 5 % reach production.
+              MIT’s State of AI in Business 2025 report and the Financial Brand summary noting that 95 % of
+              enterprise AI initiatives produce no measurable return and only 5 % reach production.
               <a href="#ref2" className="ml-1">↩︎</a><a href="#ref2b" className="ml-1">↩︎</a><a href="#ref2c" className="ml-1">↩︎</a>
             </li>
             <li id="fn3">
@@ -203,18 +203,18 @@ const Prediction2026Article: React.FC = () => {
               <a href="#ref3" className="ml-1">↩︎</a><a href="#ref3b" className="ml-1">↩︎</a>
             </li>
             <li id="fn4">
-              NMI analysis showing that more than 50 % of merchants obtain payment services through a software
-              vendor or ISO and that 84 % of U.S. card‑accepting merchants use a SaaS platform.
+              NMI analysis showing that more than 50 % of merchants obtain payment services through a software
+              vendor or ISO and that 84 % of U.S. card‑accepting merchants use a SaaS platform.
               <a href="#ref4" className="ml-1">↩︎</a>
             </li>
             <li id="fn5">
-              McKinsey report stating that around 50 % of small businesses use independent software vendors
+              McKinsey report stating that around 50 % of small businesses use independent software vendors
               (ISVs) for payments and that adoption is higher in certain verticals.
               <a href="#ref5" className="ml-1">↩︎</a>
             </li>
             <li id="fn6">
               EY research highlighting the adoption gap among non‑financial platforms and forecasting a
-              $6.5 trillion embedded payments market with a 23 % CAGR.
+              $6.5 trillion embedded payments market with a 23 % CAGR.
               <a href="#ref6" className="ml-1">↩︎</a>
             </li>
             <li id="fn7">
