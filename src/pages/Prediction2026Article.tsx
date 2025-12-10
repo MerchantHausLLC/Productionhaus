@@ -25,7 +25,7 @@ const Prediction2026Article: React.FC = () => {
         {/* Hero image: place the generated image at /public/images/ai-payment-hero.png */}
         <figure>
           <Image
-            src="/images/prediction.webp"
+            src="/public/blog-images/prediction.webp"
             alt="Professional woman working at her laptop with AI and payment icons"
             width={1280}
             height={720}
