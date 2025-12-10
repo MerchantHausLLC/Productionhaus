@@ -1,6 +1,7 @@
-import Image from 'next/image';
-import Head from 'next/head';
-import React from 'react';
+import { Header } from "@/components/Header";
+import Footer from "@/components/Footer";
+import { useEffect } from "react";
+import shieldLogo from "@/assets/shield.webp";
 
 /**
  * Blog article component for Merchanthaus.io
@@ -24,7 +25,7 @@ const Prediction2026Article: React.FC = () => {
         {/* Hero image: place the generated image at /public/images/ai-payment-hero.png */}
         <figure>
           <Image
-            src="/images/ai-payment-hero.png"
+            src="/images/prediction.webp"
             alt="Professional woman working at her laptop with AI and payment icons"
             width={1280}
             height={720}
