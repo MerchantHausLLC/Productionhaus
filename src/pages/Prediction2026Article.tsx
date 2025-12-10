@@ -1,6 +1,4 @@
-import Image from 'next/image';
-import Head from 'next/head';
-import React from 'react';
+import React, { useEffect } from "react";
 
 /**
  * Blog article component for Merchanthaus.io
@@ -10,27 +8,22 @@ import React from 'react';
  */
 
 const Prediction2026Article: React.FC = () => {
+  useEffect(() => {
+    document.title = "Beyond the Hype: Why 2026 Will Reset Our Expectations for AI and Accelerate SaaS Payments";
+  }, []);
+
   return (
-    <>
-      <Head>
-        <title>Beyond the Hype: Why 2026 Will Reset Our Expectations for AI and Accelerate SaaS Payments</title>
-        <meta
-          name="description"
-          content="A detailed analysis of why AI investment will cool in 2026 while embedded SaaS payments and automated onboarding become the default choice for merchants."
+    <article className="mx-auto max-w-3xl px-4 py-8 prose prose-lg">
+      <h1>Beyond the Hype: Why 2026 Will Reset Our Expectations for AI and Accelerate SaaS Payments</h1>
+      {/* Hero image */}
+      <figure>
+        <img
+          src="/blog-images/cardland.webp"
+          alt="Professional preparing payment strategy with abstract technology overlays"
+          className="w-full rounded-xl shadow-lg"
+          loading="lazy"
         />
-      </Head>
-      <article className="mx-auto max-w-3xl px-4 py-8 prose prose-lg">
-        <h1>Beyond the Hype: Why 2026 Will Reset Our Expectations for AI and Accelerate SaaS Payments</h1>
-        {/* Hero image: place the generated image at /public/images/ai-payment-hero.png */}
-        <figure>
-          <Image
-            src="/images/ai-payment-hero.png"
-            alt="Professional woman working at her laptop with AI and payment icons"
-            width={1280}
-            height={720}
-            priority
-          />
-        </figure>
+      </figure>
         <h2>Introduction</h2>
         <p>
           Artificial intelligence (AI) has dominated headlines for the last few years. Generative models like
@@ -230,7 +223,6 @@ const Prediction2026Article: React.FC = () => {
           </ol>
         </section>
       </article>
-    </>
   );
 };
 

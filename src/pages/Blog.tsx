@@ -94,34 +94,39 @@ const Blog = () => {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-8 font-ubuntu text-foreground">
             Latest Insights <span className="text-cyber-teal">on the Digital Frontier</span>
           </h2>
-          
+
           <div className="card-container">
             <div className="bg-card dark:bg-card/80 rounded-2xl overflow-hidden shadow-xl border border-border dark:border-border/50 card-shadow hover-crimson-arrow">
-              <a href="/vamp" className="block">
+              <a href="/prediction-2026" className="block">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="h-64 lg:h-96 relative">
-                    <img 
-                      src="/blog-images/vamp_header.webp" 
-                      alt="Visa VAMP Featured Image" 
+                    <img
+                      src="/blog-images/cardland.webp"
+                      alt="Technology landscape collage for 2026 outlook"
                       className="w-full h-full object-cover"
                     />
-                    <span className="absolute top-4 left-4 text-white text-xs font-bold px-3 py-1 rounded-full uppercase bg-crimson">
+                    <span className="absolute top-4 left-4 text-white text-xs font-bold px-3 py-1 rounded-full uppercase bg-cyber-teal">
                       Featured
                     </span>
                   </div>
                   <div className="p-6 sm:p-10 flex flex-col justify-center">
                     <p className="text-sm font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
-                      Compliance & Fraud
+                      Market Outlook
                     </p>
                     <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 font-ubuntu text-foreground">
-                      Visa's VAMP: A New Era for Fraud and Dispute Management
+                      Beyond the Hype: Why 2026 Will Reset Our Expectations for AI and Accelerate SaaS Payments
                     </h3>
                     <p className="mb-6 leading-relaxed text-muted-foreground">
-                      VAMP replaces legacy programs (VFMP/VDMP) with a unified metric, reshaping how merchants and acquirers manage risk. Learn what it means for your business.
+                      A forward look at how AI investment will cool while embedded, automated SaaS payments become the default playbook for merchants.
                     </p>
-                    <div className="flex items-center font-semibold text-foreground">
-                      Read Article
-                      <ArrowRight className="arrow-icon w-5 h-5 ml-2" />
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                      <span className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-cyber-teal" /> Published November 12, 2024
+                      </span>
+                      <div className="flex items-center font-semibold text-foreground">
+                        Read Article
+                        <ArrowRight className="arrow-icon w-5 h-5 ml-2" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -154,8 +159,41 @@ const Blog = () => {
         {/* Article Grid */}
         <section>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            
-            {/* Card 1: VAMP Article */}
+
+            {/* Card 1: Prediction 2026 Article */}
+            <div className="card-container">
+              <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
+                <a href="/prediction-2026" className="block">
+                  <img
+                    src="/blog-images/cardland.webp"
+                    alt="Modern card terminals and abstract payment visuals"
+                    className="w-full h-40 object-cover"
+                  />
+                  <div className="p-6">
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
+                      Market Outlook
+                    </p>
+                    <h4 className="text-xl font-bold mb-3 text-foreground">
+                      Beyond the Hype: Why 2026 Will Reset AI Expectations
+                    </h4>
+                    <p className="text-sm mb-4 text-muted-foreground">
+                      Why AI spend will cool while SaaS-driven, automated payments become the default for merchants.
+                    </p>
+                    <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
+                      <span className="flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-cyber-teal" /> Nov 12, 2024
+                      </span>
+                      <div className="flex items-center text-sm font-medium text-foreground">
+                        Read More
+                        <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            {/* Card 2: VAMP Article */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/vamp" className="block">
@@ -174,16 +212,21 @@ const Blog = () => {
                     <p className="text-sm mb-4 text-muted-foreground">
                       A deep dive into the TC40 and TC15 metrics that determine your program enrollment.
                     </p>
-                    <div className="flex items-center text-sm font-medium text-foreground">
-                      Read More
-                      <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                    <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
+                      <span className="flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-crimson" /> Oct 22, 2024
+                      </span>
+                      <div className="flex items-center text-sm font-medium text-foreground">
+                        Read More
+                        <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                      </div>
                     </div>
                   </div>
                 </a>
               </div>
             </div>
 
-            {/* Card 2: 3D Secure Article */}
+            {/* Card 3: 3D Secure Article */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/3ds" className="block">
@@ -202,16 +245,21 @@ const Blog = () => {
                     <p className="text-sm mb-4 text-muted-foreground">
                       How modern authentication can boost security without sacrificing conversion rates.
                     </p>
-                    <div className="flex items-center text-sm font-medium text-foreground">
-                      Read More
-                      <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                    <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
+                      <span className="flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-cyber-teal" /> Sep 18, 2024
+                      </span>
+                      <div className="flex items-center text-sm font-medium text-foreground">
+                        Read More
+                        <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                      </div>
                     </div>
                   </div>
                 </a>
               </div>
             </div>
 
-            {/* Card 3: Tap-to-Mobile */}
+            {/* Card 4: Tap-to-Mobile */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/tap-to-mobile" className="block">
@@ -230,16 +278,21 @@ const Blog = () => {
                     <p className="text-sm mb-4 text-muted-foreground">
                       Turn any NFC phone into a softPOS and start taking contactless payments with zero extra hardware.
                     </p>
-                    <div className="flex items-center text-sm font-medium text-foreground">
-                      Read More
-                      <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                    <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
+                      <span className="flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-muted-foreground" /> Aug 29, 2024
+                      </span>
+                      <div className="flex items-center text-sm font-medium text-foreground">
+                        Read More
+                        <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                      </div>
                     </div>
                   </div>
                 </a>
               </div>
             </div>
 
-            {/* Card 4: 3DS2 Deep Dive */}
+            {/* Card 5: 3DS2 Deep Dive */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/3ds2" className="block">
@@ -258,9 +311,14 @@ const Blog = () => {
                     <p className="text-sm mb-4 text-muted-foreground">
                       Learn how 3DS2 keeps checkout fast for trusted customers while shifting fraud liability away from your business.
                     </p>
-                    <div className="flex items-center text-sm font-medium text-foreground">
-                      Read More
-                      <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                    <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
+                      <span className="flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-cyber-teal" /> Aug 12, 2024
+                      </span>
+                      <div className="flex items-center text-sm font-medium text-foreground">
+                        Read More
+                        <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                      </div>
                     </div>
                   </div>
                 </a>
