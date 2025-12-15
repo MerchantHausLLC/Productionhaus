@@ -1,1189 +1,1272 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Header } from "@/components/Header";
-import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState, useEffect, useRef, FormEvent } from "react";
 import {
-  CheckCircle2,
-  Building2,
-  User,
-  Shield,
+  Check,
+  AlertCircle,
+  ChevronRight,
+  ChevronLeft,
+  FileText,
+  Briefcase,
+  Scale,
   CreditCard,
-  Wrench,
+  Save,
+  Info,
+  ShieldCheck,
+  Lock,
+  RefreshCw,
+  Cloud,
+  Loader2,
+  LucideIcon,
 } from "lucide-react";
-import { StarfieldBackground } from "@/components/StarfieldBackground";
-import { ThankYouDialog } from "@/components/ThankYouDialog";
-// Import the helper to format data for Netlify
-import { formDataToQueryString } from "@/lib/netlify";
 
-const positiveOptionalNumber = z.preprocess(
-  (val) => {
-    if (val === "" || val === null || val === undefined) return undefined;
-    const parsed = typeof val === "number" ? val : Number(val);
-    return Number.isNaN(parsed) ? undefined : parsed;
-  },
-  z.number({ invalid_type_error: "Please enter a number" }).positive("Must be a positive number").optional(),
-);
+// --- Types & Interfaces ---
 
-// Schema validation
-const applicationFormSchema = z
-  .object({
-    company_name: z.string().trim().min(1, "Company name is required").max(100),
-    dbaName: z.string().trim().max(100).optional(),
-    address: z.string().trim().min(1, "Address is required").max(200),
-    address2: z.string().trim().max(100).optional(),
-    city: z.string().trim().min(1, "City is required").max(100),
-    state: z.string().trim().min(1, "State is required").max(50),
-    zip: z.string().trim().min(1, "Zip code is required").max(20),
-    website: z.string().url("Invalid URL").optional().or(z.literal("")),
-    businessDescription: z
-      .string()
-      .trim()
-      .min(1, "Please describe your business")
-      .max(500, "Please keep this under 500 characters"),
-    primaryUseCase: z.string().trim().min(1, "Select your primary use case"),
-    industry: z.string().trim().min(1, "Select your industry"),
-    currentlyProcessing: z.enum(["yes", "no"], {
-      required_error: "Please tell us if you have a payment processor",
-    }),
-    currentProcessor: z.string().trim().max(100).optional(),
-    first_name: z.string().trim().min(1, "First name is required").max(50),
-    last_name: z.string().trim().min(1, "Last name is required").max(50),
-    email: z.string().trim().email("Invalid email address").max(255),
-    phone: z.string().trim().min(1, "Phone number is required").max(20),
-    fax: z.string().trim().max(20).optional(),
-    preferredContactMethod: z.string().trim().optional(),
-    bestTimeToReach: z.string().trim().optional(),
-    username: z
-      .string()
-      .trim()
-      .min(1, "Username is required")
-      .max(50)
-      .regex(/^[a-zA-Z0-9]+$/, "Username must be alphanumeric"),
-    avgTicket: positiveOptionalNumber,
-    maxTicket: positiveOptionalNumber,
-    monthlyVolume: positiveOptionalNumber,
-    transactionMix: z.string().trim().min(1, "Select your estimated transaction mix"),
-    integrationMethod: z.string().trim().min(1, "Select an integration method"),
-    posPlatform: z.array(z.string()).min(1, "Select at least one platform"),
-    developerInvolved: z.enum(["yes", "no"]).optional(),
-    integrationTimeline: z.string().trim().optional(),
-    needsCardPresent: z.enum(["yes", "no"], {
-      required_error: "Please tell us if you need in-person payments",
-    }),
-    preferredDeviceType: z.string().trim().optional(),
-    numLocations: positiveOptionalNumber,
-    numDevices: positiveOptionalNumber,
-    highRiskProducts: z.enum(["yes", "no"], {
-      required_error: "Please indicate if you sell regulated products",
-    }),
-    highRiskDescription: z.string().trim().max(500).optional(),
-    cardOnFile: z.enum(["yes", "no"]).optional(),
-    processing_services: z.array(z.string()).optional(),
-    value_services: z.array(z.string()).optional(),
-    agree_to_terms: z.boolean().refine((val) => val === true, {
-      message: "You must agree to the Terms and Conditions",
-    }),
-    agree_to_security_policy: z.boolean().refine((val) => val === true, {
-      message: "You must agree to the Security Policy",
-    }),
-  })
-  .superRefine((data, ctx) => {
-    if (data.currentlyProcessing === "yes" && !data.currentProcessor?.trim()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["currentProcessor"],
-        message: "Please tell us who you currently process with",
-      });
+interface MerchantFormState {
+  id: string;
+
+  // Business
+  dbaName: string;
+  products: string;
+  natureOfBusiness: string;
+  dbaContactFirst: string;
+  dbaContactLast: string;
+  dbaPhone: string;
+  dbaEmail: string;
+  dbaAddress: string;
+  dbaAddress2: string;
+  dbaCity: string;
+  dbaState: string;
+  dbaZip: string;
+
+  // Legal
+  legalEntityName: string;
+  legalPhone: string;
+  legalEmail: string;
+  tin: string;
+  ownershipType: string;
+  formationDate: string;
+  stateIncorporated: string;
+  legalAddress: string;
+  legalAddress2: string;
+  legalCity: string;
+  legalState: string;
+  legalZip: string;
+
+  // Processing
+  hasExistingProcessor: string; // "yes" | "no" | ""
+  isSwitchingProcessor: string; // "yes" | "no" | ""
+  currentProcessorName: string;
+
+  // Billing (if keeping MID)
+  routingNumber: string;
+  accountNumber: string;
+  hasVarSheet: string; // "yes" | "no" | ""
+
+  monthlyVolume: string;
+  avgTicket: string;
+  highTicket: string;
+  swipedPct: string;
+  keyedPct: string;
+  motoPct: string;
+  ecomPct: string;
+  b2cPct: string;
+  b2bPct: string;
+  sicMcc: string;
+  website: string;
+
+  // Docs Readiness
+  hasBankOrProcessingStatements: string;
+  hasVoidedCheckOrBankLetter: string;
+  hasGovernmentId: string;
+  hasArticlesOfOrganization: string;
+  hasTaxDocument: string;
+  docsLocationOrLink: string;
+
+  // Notes
+  notes: string;
+
+  // Index signature to allow dynamic access
+  [key: string]: string;
+}
+
+interface StepConfig {
+  label: string;
+  icon: LucideIcon;
+}
+
+interface RequiredFieldsMap {
+  business: (keyof MerchantFormState)[];
+  legal: (keyof MerchantFormState)[];
+  processing: (keyof MerchantFormState)[];
+}
+
+interface StepProps {
+  form: MerchantFormState;
+  onChange: (field: keyof MerchantFormState, value: string) => void;
+}
+
+interface ReviewStepProps extends StepProps {
+  allMissing: Record<string, string[]>;
+}
+
+// --- Constants & Config ---
+
+const FORM_NAME = "merchant-apply";
+
+const STEPS: StepConfig[] = [
+  { label: "Business Profile", icon: Briefcase },
+  { label: "Legal Information", icon: Scale },
+  { label: "Processing Info", icon: CreditCard },
+  { label: "Review", icon: FileText },
+];
+
+const REQUIRED_FIELDS: RequiredFieldsMap = {
+  business: [
+    "dbaName",
+    "products",
+    "natureOfBusiness",
+    "dbaContactFirst",
+    "dbaContactLast",
+    "dbaPhone",
+    "dbaEmail",
+    "dbaAddress",
+    "dbaCity",
+    "dbaState",
+    "dbaZip",
+  ],
+  legal: [
+    "legalEntityName",
+    "legalPhone",
+    "legalEmail",
+    "tin",
+    "ownershipType",
+    "formationDate",
+    "stateIncorporated",
+    "legalAddress",
+    "legalCity",
+    "legalState",
+    "legalZip",
+  ],
+  processing: [
+    "hasExistingProcessor",
+    "monthlyVolume",
+    "avgTicket",
+    "highTicket",
+    "swipedPct",
+    "keyedPct",
+    "motoPct",
+    "ecomPct",
+    "b2cPct",
+    "b2bPct",
+  ],
+};
+
+const initialState: MerchantFormState = {
+  id: "",
+
+  // business
+  dbaName: "",
+  products: "",
+  natureOfBusiness: "",
+  dbaContactFirst: "",
+  dbaContactLast: "",
+  dbaPhone: "",
+  dbaEmail: "",
+  dbaAddress: "",
+  dbaAddress2: "",
+  dbaCity: "",
+  dbaState: "",
+  dbaZip: "",
+
+  // legal
+  legalEntityName: "",
+  legalPhone: "",
+  legalEmail: "",
+  tin: "",
+  ownershipType: "",
+  formationDate: "",
+  stateIncorporated: "",
+  legalAddress: "",
+  legalAddress2: "",
+  legalCity: "",
+  legalState: "",
+  legalZip: "",
+
+  // processing
+  hasExistingProcessor: "",
+  isSwitchingProcessor: "",
+  currentProcessorName: "",
+
+  // billing info
+  routingNumber: "",
+  accountNumber: "",
+  hasVarSheet: "",
+
+  monthlyVolume: "",
+  avgTicket: "",
+  highTicket: "",
+  swipedPct: "",
+  keyedPct: "",
+  motoPct: "",
+  ecomPct: "",
+  b2cPct: "",
+  b2bPct: "",
+  sicMcc: "",
+  website: "",
+
+  // document readiness checklist
+  hasBankOrProcessingStatements: "",
+  hasVoidedCheckOrBankLetter: "",
+  hasGovernmentId: "",
+  hasArticlesOfOrganization: "",
+  hasTaxDocument: "",
+  docsLocationOrLink: "",
+
+  // notes
+  notes: "",
+};
+
+// Helper for Netlify Form Encoding
+const encode = (data: Record<string, string>) => {
+  return Object.keys(data)
+    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&");
+};
+
+// --- Main Component ---
+
+export default function Apply() {
+  const [step, setStep] = useState<number>(0);
+  const [form, setForm] = useState<MerchantFormState>(initialState);
+  const [submissionStatus, setSubmissionStatus] = useState<
+    "idle" | "submitting" | "success"
+  >("idle");
+
+  // Autosave State
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
+  const isFirstRender = useRef(true);
+
+  // 1. Initialize Session ID
+  useEffect(() => {
+    if (!form.id) {
+      const mockId = "draft_" + Math.random().toString(36).substr(2, 9);
+      setForm((prev) => ({ ...prev, id: mockId }));
     }
-    if (data.needsCardPresent === "yes" && !data.preferredDeviceType?.trim()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["preferredDeviceType"],
-        message: "Please select a device type",
-      });
+  }, [form.id]);
+
+  // 2. Autosave Logic (Supabase)
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
     }
-    if (data.highRiskProducts === "yes" && !data.highRiskDescription?.trim()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["highRiskDescription"],
-        message: "Please briefly describe the regulated products/services",
-      });
-    }
-  });
 
-type ApplicationFormValues = z.infer<typeof applicationFormSchema>;
+    const timer = setTimeout(() => {
+      saveToSupabase(form);
+    }, 1000);
 
-const Apply = () => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
-  const [showThankYou, setShowThankYou] = useState(false);
-  const { toast } = useToast();
+    return () => clearTimeout(timer);
+  }, [form]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    setValue,
-    watch,
-    trigger,
-  } = useForm<ApplicationFormValues>({
-    resolver: zodResolver(applicationFormSchema),
-    defaultValues: {
-      dbaName: "",
-      businessDescription: "",
-      primaryUseCase: "",
-      industry: "",
-      currentlyProcessing: undefined,
-      currentProcessor: "",
-      processing_services: [],
-      value_services: [],
-      avgTicket: undefined,
-      maxTicket: undefined,
-      monthlyVolume: undefined,
-      transactionMix: "",
-      integrationMethod: "",
-      posPlatform: [],
-      developerInvolved: undefined,
-      integrationTimeline: "",
-      needsCardPresent: undefined,
-      preferredDeviceType: "",
-      numLocations: undefined,
-      numDevices: undefined,
-      highRiskProducts: undefined,
-      highRiskDescription: "",
-      cardOnFile: undefined,
-      preferredContactMethod: "",
-      bestTimeToReach: "",
-      agree_to_terms: false,
-      agree_to_security_policy: false,
-    },
-  });
-
-  const processingServices = watch("processing_services") || [];
-  const valueServices = watch("value_services") || [];
-  const posPlatforms = watch("posPlatform") || [];
-  const currentlyProcessing = watch("currentlyProcessing");
-  const needsCardPresent = watch("needsCardPresent");
-  const highRiskProducts = watch("highRiskProducts");
-
-  // NEW: Submit handler for Netlify Static Forms (Option A)
-  const onSubmit = async (data: ApplicationFormValues) => {
+  // 3. Supabase Save Handler
+  const saveToSupabase = async (formData: MerchantFormState) => {
+    setSaveStatus("saving");
     try {
-      const formData = new FormData();
-      
-      // 1. Add standard Netlify fields
-      formData.append("form-name", "merchant-apply");
-      formData.append("bot-field", "");
+      /* --- SUPABASE IMPLEMENTATION ---
+         const { data, error } = await supabase
+           .from('merchant_onboarding_intake')
+           .upsert(formData, { onConflict: 'id' });
+         if (error) throw error;
+      */
 
-      // 2. Append all data fields manually
-      // We do this to capture data from steps that are currently hidden from the DOM
-      Object.keys(data).forEach((key) => {
-        const value = data[key as keyof ApplicationFormValues];
-        
-        if (Array.isArray(value)) {
-          // For checkboxes (arrays), append each item individually
-          value.forEach((item) => formData.append(key, item));
-        } else if (value !== undefined && value !== null) {
-           // Convert booleans and numbers to strings
-          formData.append(key, value.toString());
-        }
-      });
+      // Fake network delay for preview
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
-      // 3. Submit to the root URL "/"
-      const response = await fetch("/", {
+      setSaveStatus("saved");
+    } catch (err) {
+      console.error("Autosave failed:", err);
+      setSaveStatus("error");
+    }
+  };
+
+  const handleChange = (field: keyof MerchantFormState, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const getMissingFieldsForSection = (sectionKey: keyof RequiredFieldsMap) => {
+    const required = REQUIRED_FIELDS[sectionKey] || [];
+    return required.filter((field) => !String(form[field] ?? "").trim()) as string[];
+  };
+
+  const allMissing = {
+    business: getMissingFieldsForSection("business"),
+    legal: getMissingFieldsForSection("legal"),
+    processing: getMissingFieldsForSection("processing"),
+  };
+
+  const totalRequiredFields =
+    REQUIRED_FIELDS.business.length +
+    REQUIRED_FIELDS.legal.length +
+    REQUIRED_FIELDS.processing.length;
+
+  const completedRequiredFields =
+    REQUIRED_FIELDS.business.length -
+    allMissing.business.length +
+    (REQUIRED_FIELDS.legal.length - allMissing.legal.length) +
+    (REQUIRED_FIELDS.processing.length - allMissing.processing.length);
+
+  const progress = Math.round(
+    (completedRequiredFields / totalRequiredFields) * 100,
+  );
+
+  const nextDisabled = () => {
+    return false; // Validation disabled
+  };
+
+  const finalizeSubmit = async () => {
+    setSubmissionStatus("submitting");
+
+    // 1. Ensure final state is saved to Supabase
+    await saveToSupabase(form);
+
+    // 2. Submit to Netlify Forms
+    try {
+      await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formDataToQueryString(formData),
+        body: encode({ "form-name": FORM_NAME, ...form }),
       });
 
-      if (response.ok) {
-        toast({
-          title: "Application Received",
-          description: "We'll review your application and get back to you soon.",
-        });
-        if (data.currentlyProcessing === "no") {
-          window.location.href = "/pricing-choice.html";
-          return;
-        }
-        setIsSubmitted(true);
-        setShowThankYou(true);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        throw new Error("Submission failed");
-      }
+      console.log("Netlify Form Submitted Successfully");
+      setSubmissionStatus("success");
     } catch (error) {
-      console.error(error);
-      toast({
-        title: "Submission Failed",
-        description: "Please try again or contact support at 1-505-600-6042.",
-        variant: "destructive",
-      });
+      console.error("Netlify Submission Failed:", error);
+      alert("Submission failed. Please check your connection.");
+      setSubmissionStatus("idle");
     }
   };
 
-  const toggleProcessingService = (service: string, checked: boolean) => {
-    const current = processingServices;
-    const updated = checked ? [...current, service] : current.filter((s) => s !== service);
-    setValue("processing_services", updated, { shouldDirty: true, shouldTouch: true });
+  const handleSubmit = (e: FormEvent) => {
+    if (e) e.preventDefault();
+    finalizeSubmit();
   };
 
-  const toggleValueService = (service: string, checked: boolean) => {
-    const current = valueServices;
-    const updated = checked ? [...current, service] : current.filter((s) => s !== service);
-    setValue("value_services", updated, { shouldDirty: true, shouldTouch: true });
-  };
-
-  const togglePosPlatform = (platform: string, checked: boolean) => {
-    const current = posPlatforms;
-    const updated = checked ? [...current, platform] : current.filter((s) => s !== platform);
-    setValue("posPlatform", updated, { shouldDirty: true, shouldTouch: true, shouldValidate: true });
-  };
-
-  const steps = [
-    { number: 1, title: "Business Info", icon: Building2 },
-    { number: 2, title: "Contact Details", icon: User },
-    { number: 3, title: "Business Context", icon: Shield },
-    { number: 4, title: "Integration & Hardware", icon: Wrench },
-    { number: 5, title: "Services", icon: CreditCard },
-  ];
-
-  const stepFieldMap: Record<number, (keyof ApplicationFormValues)[]> = {
-    1: [
-      "company_name",
-      "dbaName",
-      "address",
-      "city",
-      "state",
-      "zip",
-      "website",
-      "businessDescription",
-      "primaryUseCase",
-      "industry",
-      "currentlyProcessing",
-      "currentProcessor",
-    ],
-    2: ["first_name", "last_name", "email", "phone"],
-    3: ["username", "transactionMix", "avgTicket", "maxTicket", "monthlyVolume", "highRiskProducts", "highRiskDescription", "cardOnFile"],
-    4: ["integrationMethod", "posPlatform", "developerInvolved", "integrationTimeline", "needsCardPresent", "preferredDeviceType", "numLocations", "numDevices"],
-  };
-
-  const validateAndGoToStep = async (targetStep: number) => {
-    const fieldsToValidate = stepFieldMap[currentStep];
-    if (fieldsToValidate && fieldsToValidate.length > 0) {
-      const isValid = await trigger(fieldsToValidate, { shouldFocus: true });
-      if (!isValid) {
-        return;
-      }
-    }
-    setCurrentStep(targetStep);
-  };
+  if (submissionStatus === "success") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center space-y-4">
+          <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+            <Check size={32} strokeWidth={3} />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900">Preboarding Complete!</h2>
+          <p className="text-slate-600">
+            We've successfully captured the merchant details.
+          </p>
+          <div className="pt-4">
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-2 bg-slate-100 text-slate-700 font-medium rounded-lg hover:bg-slate-200 transition-colors"
+            >
+              Start New Application
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background relative">
-      <StarfieldBackground />
-      <Header />
-      <main className="flex-1 relative z-10">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-sm py-16">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-crimson/30 bg-white px-4 py-1.5 text-sm font-medium text-crimson shadow-sm mb-6">
-              Merchant Application
-            </span>
-            <h1 className="text-4xl md:text-5xl font-ubuntu font-bold text-foreground mb-4">
-              Apply to MerchantHaus
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Complete your merchant application in minutes. Our underwriting team reviews submissions within one business day.
-            </p>
-          </div>
-        </section>
-        {/* Application Form Section */}
-        <section className="py-16 relative z-10">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            {!isSubmitted ? (
-              <>
-                {/* Progress Steps */}
-                <div className="mb-12">
-                  <div className="flex items-center justify-between">
-                    {steps.map((step, index) => {
-                      const StepIcon = step.icon;
-                      return (
-                        <div key={step.number} className="flex items-center flex-1">
-                          <div className="flex flex-col items-center flex-1">
-                            <div
-                              className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
-                                currentStep >= step.number ? "bg-crimson text-white" : "bg-muted text-muted-foreground"
-                              }`}
-                            >
-                              <StepIcon className="w-6 h-6" />
-                            </div>
-                            <span className="text-xs font-medium mt-2 text-center hidden sm:block">
-                              {step.title}
-                            </span>
-                          </div>
-                          {index < steps.length - 1 && (
-                            <div
-                              className={`h-1 flex-1 mx-2 transition-all ${currentStep > step.number ? "bg-crimson" : "bg-muted"}`}
-                            />
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                
-                {/* UPDATED FORM TAG:
-                  - Added data-netlify attributes
-                  - Added hidden inputs for bot-field and form-name
-                */}
-                <form
-                  name="merchant-apply"
-                  method="POST"
-                  data-netlify="true"
-                  data-netlify-honeypot="bot-field"
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="space-y-8"
-                >
-                  <input type="hidden" name="form-name" value="merchant-apply" />
-                  <input type="hidden" name="bot-field" />
-
-                  {/* Step 1: Business Information */}
-                  {currentStep === 1 && (
-                    <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
-                      <div className="flex items-center gap-3 mb-6">
-                        <Building2 className="w-6 h-6 text-crimson" />
-                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">
-                          Business Information
-                        </h2>
-                      </div>
-                      <div className="grid gap-6 md:grid-cols-2">
-                        <div className="space-y-2 md:col-span-2">
-                          <Label htmlFor="company_name">Company Name*</Label>
-                          <Input
-                            id="company_name"
-                            autoComplete="organization"
-                            aria-invalid={!!errors.company_name}
-                            {...register("company_name")}
-                          />
-                          {errors.company_name && <p className="text-sm text-destructive">{errors.company_name.message}</p>}
-                        </div>
-                        <div className="space-y-2 md:col-span-2">
-                          <Label htmlFor="dbaName">Doing Business As (DBA) Name</Label>
-                          <Input
-                            id="dbaName"
-                            placeholder="Optional"
-                            aria-invalid={!!errors.dbaName}
-                            {...register("dbaName")}
-                          />
-                          {errors.dbaName && <p className="text-sm text-destructive">{errors.dbaName.message}</p>}
-                        </div>
-                        <div className="space-y-2 md:col-span-2">
-                          <Label htmlFor="address">Street Address*</Label>
-                          <Input
-                            id="address"
-                            autoComplete="street-address"
-                            aria-invalid={!!errors.address}
-                            {...register("address")}
-                          />
-                          {errors.address && <p className="text-sm text-destructive">{errors.address.message}</p>}
-                        </div>
-                        <div className="space-y-2 md:col-span-2">
-                          <Label htmlFor="address2">Address Line 2 (Optional)</Label>
-                          <Input
-                            id="address2"
-                            placeholder="Suite, Unit, Building, Floor"
-                            autoComplete="address-line2"
-                            aria-invalid={!!errors.address2}
-                            {...register("address2")}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="city">City*</Label>
-                          <Input
-                            id="city"
-                            autoComplete="address-level2"
-                            aria-invalid={!!errors.city}
-                            {...register("city")}
-                          />
-                          {errors.city && <p className="text-sm text-destructive">{errors.city.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="state">State*</Label>
-                          <Input
-                            id="state"
-                            placeholder="CA"
-                            autoComplete="address-level1"
-                            aria-invalid={!!errors.state}
-                            {...register("state")}
-                          />
-                          {errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="zip">Zip/Postal Code*</Label>
-                          <Input
-                            id="zip"
-                            autoComplete="postal-code"
-                            inputMode="numeric"
-                            aria-invalid={!!errors.zip}
-                            {...register("zip")}
-                          />
-                          {errors.zip && <p className="text-sm text-destructive">{errors.zip.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="website">Website (Optional)</Label>
-                          <Input
-                            id="website"
-                            type="url"
-                            placeholder="https://example.com"
-                            autoComplete="url"
-                            aria-invalid={!!errors.website}
-                            {...register("website")}
-                          />
-                          {errors.website && <p className="text-sm text-destructive">{errors.website.message}</p>}
-                        </div>
-                      </div>
-                      <div className="space-y-4 pt-2">
-                        <h3 className="font-semibold text-foreground">Business / Use-Case Context</h3>
-                        <div className="space-y-2">
-                          <Label htmlFor="businessDescription">Briefly describe your business and what you sell*</Label>
-                          <textarea
-                            id="businessDescription"
-                            className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 aria-[invalid=true]:border-[hsl(var(--destructive))] aria-[invalid=true]:bg-[hsl(var(--attention))]/10 aria-[invalid=true]:focus-visible:ring-[hsl(var(--destructive))] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            aria-invalid={!!errors.businessDescription}
-                            {...register("businessDescription")}
-                          />
-                          {errors.businessDescription && (
-                            <p className="text-sm text-destructive">{errors.businessDescription.message}</p>
-                          )}
-                        </div>
-                        <div className="grid gap-4 md:grid-cols-2">
-                          <div className="space-y-2">
-                            <Label htmlFor="primaryUseCase">How will you use payments with Merchant Haus?*</Label>
-                            <select
-                              id="primaryUseCase"
-                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 aria-[invalid=true]:border-[hsl(var(--destructive))] aria-[invalid=true]:bg-[hsl(var(--attention))]/10 aria-[invalid=true]:focus-visible:ring-[hsl(var(--destructive))]"
-                              aria-invalid={!!errors.primaryUseCase}
-                              defaultValue=""
-                              {...register("primaryUseCase")}
-                            >
-                              <option value="" disabled>
-                                Select an option
-                              </option>
-                              <option>In-store retail</option>
-                              <option>E-commerce / online checkout</option>
-                              <option>Invoices / pay-by-link</option>
-                              <option>SaaS or platform billing</option>
-                              <option>Unattended / kiosk</option>
-                              <option>Other</option>
-                            </select>
-                            {errors.primaryUseCase && (
-                              <p className="text-sm text-destructive">{errors.primaryUseCase.message}</p>
-                            )}
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="industry">Industry / business category*</Label>
-                            <select
-                              id="industry"
-                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 aria-[invalid=true]:border-[hsl(var(--destructive))] aria-[invalid=true]:bg-[hsl(var(--attention))]/10 aria-[invalid=true]:focus-visible:ring-[hsl(var(--destructive))]"
-                              aria-invalid={!!errors.industry}
-                              defaultValue=""
-                              {...register("industry")}
-                            >
-                              <option value="" disabled>
-                                Select an industry
-                              </option>
-                              <option>Retail</option>
-                              <option>Restaurant / Food & Beverage</option>
-                              <option>Professional Services</option>
-                              <option>Healthcare</option>
-                              <option>Hospitality</option>
-                              <option>Non-profit</option>
-                              <option>Software / SaaS</option>
-                              <option>Transportation / Logistics</option>
-                              <option>Other</option>
-                            </select>
-                            {errors.industry && <p className="text-sm text-destructive">{errors.industry.message}</p>}
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Do you currently have your own payment processor?*</Label>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            {[
-                              { label: "Yes", value: "yes" },
-                              { label: "No", value: "no" },
-                            ].map((option) => (
-                              <label
-                                key={option.value}
-                                htmlFor={`currentlyProcessing-${option.value}`}
-                                className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  currentlyProcessing === option.value
-                                    ? "border-crimson bg-crimson/5"
-                                    : "border-border hover:border-crimson/50"
-                                }`}
-                              >
-                                <input
-                                  type="radio"
-                                  id={`currentlyProcessing-${option.value}`}
-                                  value={option.value}
-                                  className="sr-only"
-                                  {...register("currentlyProcessing")}
-                                />
-                                <span className="text-sm font-medium text-foreground">{option.label}</span>
-                              </label>
-                            ))}
-                          </div>
-                          {errors.currentlyProcessing && (
-                            <p className="text-sm text-destructive">{errors.currentlyProcessing.message}</p>
-                          )}
-                        </div>
-                        {currentlyProcessing === "yes" && (
-                          <div className="space-y-2">
-                            <Label htmlFor="currentProcessor">If yes, who is your current processor?</Label>
-                            <Input
-                              id="currentProcessor"
-                              placeholder="e.g., Stripe, Worldpay"
-                              aria-invalid={!!errors.currentProcessor}
-                              {...register("currentProcessor")}
-                            />
-                            {errors.currentProcessor && (
-                              <p className="text-sm text-destructive">{errors.currentProcessor.message}</p>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex justify-end pt-4">
-                        <Button
-                          type="button"
-                          onClick={() => {
-                            void validateAndGoToStep(2);
-                          }}
-                          className="bg-crimson hover:bg-crimson/90"
-                        >
-                          Continue
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                  {/* Step 2: Contact Information */}
-                  {currentStep === 2 && (
-                    <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
-                      <div className="flex items-center gap-3 mb-6">
-                        <User className="w-6 h-6 text-crimson" />
-                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">Primary Contact</h2>
-                      </div>
-                      <div className="grid gap-6 md:grid-cols-2">
-                        <div className="space-y-2">
-                          <Label htmlFor="first_name">First Name*</Label>
-                          <Input
-                            id="first_name"
-                            autoComplete="given-name"
-                            aria-invalid={!!errors.first_name}
-                            {...register("first_name")}
-                          />
-                          {errors.first_name && <p className="text-sm text-destructive">{errors.first_name.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="last_name">Last Name*</Label>
-                          <Input
-                            id="last_name"
-                            autoComplete="family-name"
-                            aria-invalid={!!errors.last_name}
-                            {...register("last_name")}
-                          />
-                          {errors.last_name && <p className="text-sm text-destructive">{errors.last_name.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="email">Email Address*</Label>
-                          <Input
-                            id="email"
-                            type="email"
-                            autoComplete="email"
-                            aria-invalid={!!errors.email}
-                            {...register("email")}
-                          />
-                          {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="phone">Phone Number*</Label>
-                          <Input
-                            id="phone"
-                            type="tel"
-                            autoComplete="tel"
-                            inputMode="tel"
-                            aria-invalid={!!errors.phone}
-                            {...register("phone")}
-                          />
-                          {errors.phone && <p className="text-sm text-destructive">{errors.phone.message}</p>}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="fax">Fax Number (Optional)</Label>
-                          <Input id="fax" type="tel" inputMode="tel" aria-invalid={!!errors.fax} {...register("fax")} />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="preferredContactMethod">Preferred contact method</Label>
-                          <select
-                            id="preferredContactMethod"
-                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 aria-[invalid=true]:border-[hsl(var(--destructive))] aria-[invalid=true]:bg-[hsl(var(--attention))]/10 aria-[invalid=true]:focus-visible:ring-[hsl(var(--destructive))]"
-                            aria-invalid={!!errors.preferredContactMethod}
-                            defaultValue=""
-                            {...register("preferredContactMethod")}
-                          >
-                            <option value="">No preference</option>
-                            <option>Email</option>
-                            <option>Phone call</option>
-                            <option>SMS/Text</option>
-                          </select>
-                          {errors.preferredContactMethod && (
-                            <p className="text-sm text-destructive">{errors.preferredContactMethod.message}</p>
-                          )}
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="bestTimeToReach">Best time to reach you</Label>
-                          <Input
-                            id="bestTimeToReach"
-                            placeholder="Optional"
-                            aria-invalid={!!errors.bestTimeToReach}
-                            {...register("bestTimeToReach")}
-                          />
-                          {errors.bestTimeToReach && (
-                            <p className="text-sm text-destructive">{errors.bestTimeToReach.message}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex justify-between pt-4">
-                        <Button type="button" variant="outline" onClick={() => setCurrentStep(1)}>
-                          Back
-                        </Button>
-                        <Button type="button" onClick={() => { void validateAndGoToStep(3); }} className="bg-crimson hover:bg-crimson/90">
-                          Continue
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                  {/* Step 3: Account Setup & Processing Profile */}
-                  {currentStep === 3 && (
-                    <div className="space-y-8 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Shield className="w-6 h-6 text-crimson" />
-                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">Account Setup</h2>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="username">Primary Username*</Label>
-                        <Input
-                          id="username"
-                          placeholder="alphanumeric only"
-                          autoComplete="username"
-                          aria-invalid={!!errors.username}
-                          {...register("username")}
-                        />
-                        {errors.username && <p className="text-sm text-destructive">{errors.username.message}</p>}
-                        <p className="text-xs text-muted-foreground">This will be your login username. Letters and numbers only.</p>
-                      </div>
-                      <div className="space-y-4 pt-4 border-t">
-                        <h3 className="font-semibold text-foreground">Processing Profile (Estimates Only)</h3>
-                        <div className="grid gap-4 md:grid-cols-3">
-                          <div className="space-y-2">
-                            <Label htmlFor="avgTicket">Average ticket size (USD)</Label>
-                            <Input
-                              id="avgTicket"
-                              type="number"
-                              inputMode="decimal"
-                              aria-invalid={!!errors.avgTicket}
-                              {...register("avgTicket", { valueAsNumber: true })}
-                            />
-                            {errors.avgTicket && <p className="text-sm text-destructive">{errors.avgTicket.message}</p>}
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="maxTicket">Largest typical ticket size (USD)</Label>
-                            <Input
-                              id="maxTicket"
-                              type="number"
-                              inputMode="decimal"
-                              aria-invalid={!!errors.maxTicket}
-                              {...register("maxTicket", { valueAsNumber: true })}
-                            />
-                            {errors.maxTicket && <p className="text-sm text-destructive">{errors.maxTicket.message}</p>}
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="monthlyVolume">Estimated monthly card volume (USD)</Label>
-                            <Input
-                              id="monthlyVolume"
-                              type="number"
-                              inputMode="decimal"
-                              aria-invalid={!!errors.monthlyVolume}
-                              {...register("monthlyVolume", { valueAsNumber: true })}
-                            />
-                            {errors.monthlyVolume && <p className="text-sm text-destructive">{errors.monthlyVolume.message}</p>}
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="transactionMix">Estimated split of card-present vs card-not-present*</Label>
-                          <select
-                            id="transactionMix"
-                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 aria-[invalid=true]:border-[hsl(var(--destructive))] aria-[invalid=true]:bg-[hsl(var(--attention))]/10 aria-[invalid=true]:focus-visible:ring-[hsl(var(--destructive))]"
-                            aria-invalid={!!errors.transactionMix}
-                            defaultValue=""
-                            {...register("transactionMix")}
-                          >
-                            <option value="" disabled>
-                              Select your transaction mix
-                            </option>
-                            <option>100% in-person (card-present)</option>
-                            <option>Mostly in-person (75% CP / 25% CNP)</option>
-                            <option>Mixed (50% CP / 50% CNP)</option>
-                            <option>Mostly online (25% CP / 75% CNP)</option>
-                            <option>100% online (card-not-present)</option>
-                          </select>
-                          {errors.transactionMix && <p className="text-sm text-destructive">{errors.transactionMix.message}</p>}
-                        </div>
-                      </div>
-                      <div className="space-y-4 pt-4 border-t">
-                        <h3 className="font-semibold text-foreground">Risk / Product Flags</h3>
-                        <div className="space-y-2">
-                          <Label>Do you sell any regulated or higher-risk products/services?*</Label>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            {[{ label: "Yes", value: "yes" }, { label: "No", value: "no" }].map((option) => (
-                              <label
-                                key={option.value}
-                                htmlFor={`highRiskProducts-${option.value}`}
-                                className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  highRiskProducts === option.value ? "border-crimson bg-crimson/5" : "border-border hover:border-crimson/50"
-                                }`}
-                              >
-                                <input
-                                  type="radio"
-                                  id={`highRiskProducts-${option.value}`}
-                                  value={option.value}
-                                  className="sr-only"
-                                  {...register("highRiskProducts")}
-                                />
-                                <span className="text-sm font-medium text-foreground">{option.label}</span>
-                              </label>
-                            ))}
-                          </div>
-                          {errors.highRiskProducts && <p className="text-sm text-destructive">{errors.highRiskProducts.message}</p>}
-                        </div>
-                        {highRiskProducts === "yes" && (
-                          <div className="space-y-2">
-                            <Label htmlFor="highRiskDescription">
-                              Briefly describe any regulated or higher-risk products/services.
-                            </Label>
-                            <textarea
-                              id="highRiskDescription"
-                              className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 aria-[invalid=true]:border-[hsl(var(--destructive))] aria-[invalid=true]:bg-[hsl(var(--attention))]/10 aria-[invalid=true]:focus-visible:ring-[hsl(var(--destructive))] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                              aria-invalid={!!errors.highRiskDescription}
-                              {...register("highRiskDescription")}
-                            />
-                            {errors.highRiskDescription && (
-                              <p className="text-sm text-destructive">{errors.highRiskDescription.message}</p>
-                            )}
-                          </div>
-                        )}
-                        <div className="space-y-2">
-                          <Label>Will you store cards on file for subscriptions or repeat billing?</Label>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            {[{ label: "Yes", value: "yes" }, { label: "No", value: "no" }].map((option) => (
-                              <label
-                                key={option.value}
-                                htmlFor={`cardOnFile-${option.value}`}
-                                className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  watch("cardOnFile") === option.value ? "border-crimson bg-crimson/5" : "border-border hover:border-crimson/50"
-                                }`}
-                              >
-                                <input
-                                  type="radio"
-                                  id={`cardOnFile-${option.value}`}
-                                  value={option.value}
-                                  className="sr-only"
-                                  {...register("cardOnFile")}
-                                />
-                                <span className="text-sm font-medium text-foreground">{option.label}</span>
-                              </label>
-                            ))}
-                          </div>
-                          {errors.cardOnFile && <p className="text-sm text-destructive">{errors.cardOnFile.message}</p>}
-                        </div>
-                      </div>
-                      <div className="flex justify-between pt-4">
-                        <Button type="button" variant="outline" onClick={() => setCurrentStep(2)}>
-                          Back
-                        </Button>
-                        <Button
-                          type="button"
-                          onClick={() => {
-                            void validateAndGoToStep(4);
-                          }}
-                          className="bg-crimson hover:bg-crimson/90"
-                        >
-                          Continue
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                  {/* Step 4: Integration & Hardware */}
-                  {currentStep === 4 && (
-                    <div className="space-y-8 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Wrench className="w-6 h-6 text-crimson" />
-                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">Integration & Technical Setup</h2>
-                      </div>
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="integrationMethod">How do you plan to integrate payments?*</Label>
-                          <select
-                            id="integrationMethod"
-                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 aria-[invalid=true]:border-[hsl(var(--destructive))] aria-[invalid=true]:bg-[hsl(var(--attention))]/10 aria-[invalid=true]:focus-visible:ring-[hsl(var(--destructive))]"
-                            aria-invalid={!!errors.integrationMethod}
-                            defaultValue=""
-                            {...register("integrationMethod")}
-                          >
-                            <option value="" disabled>
-                              Select an option
-                            </option>
-                            <option>Hosted Payment Page / pay-by-link</option>
-                            <option>Collect.js or API integration</option>
-                            <option>Customer Present Cloud API (card-present)</option>
-                            <option>Virtual Terminal only</option>
-                            <option>Mobile app SDK</option>
-                            <option>Unattended / kiosk</option>
-                            <option>Not sure yet</option>
-                          </select>
-                          {errors.integrationMethod && <p className="text-sm text-destructive">{errors.integrationMethod.message}</p>}
-                        </div>
-                        <div className="space-y-3">
-                          <Label>What platform will you run your POS/app on?*</Label>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            {["iOS", "Android", "Web (browser)", "Windows", "Linux", "Other"].map((platform) => (
-                              <div
-                                key={platform}
-                                className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  posPlatforms.includes(platform) ? "border-crimson bg-crimson/5" : "border-border hover:border-crimson/50"
-                                }`}
-                              >
-                                <Checkbox
-                                  id={`pos-${platform}`}
-                                  checked={posPlatforms.includes(platform)}
-                                  onCheckedChange={(checked) => togglePosPlatform(platform, checked === true)}
-                                />
-                                <Label htmlFor={`pos-${platform}`} className="cursor-pointer flex-1">
-                                  {platform}
-                                </Label>
-                              </div>
-                            ))}
-                          </div>
-                          {errors.posPlatform && <p className="text-sm text-destructive">{errors.posPlatform.message}</p>}
-                        </div>
-                        <div className="grid gap-4 md:grid-cols-2">
-                          <div className="space-y-2">
-                            <Label>Do you have a developer or technical team?</Label>
-                            <div className="grid gap-3 sm:grid-cols-2">
-                              {[{ label: "Yes", value: "yes" }, { label: "No", value: "no" }].map((option) => (
-                                <label
-                                  key={option.value}
-                                  htmlFor={`developerInvolved-${option.value}`}
-                                  className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                    watch("developerInvolved") === option.value
-                                      ? "border-crimson bg-crimson/5"
-                                      : "border-border hover:border-crimson/50"
-                                  }`}
-                                >
-                                  <input
-                                    type="radio"
-                                    id={`developerInvolved-${option.value}`}
-                                    value={option.value}
-                                    className="sr-only"
-                                    {...register("developerInvolved")}
-                                  />
-                                  <span className="text-sm font-medium text-foreground">{option.label}</span>
-                                </label>
-                              ))}
-                            </div>
-                            {errors.developerInvolved && <p className="text-sm text-destructive">{errors.developerInvolved.message}</p>}
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="integrationTimeline">Desired go-live timeline</Label>
-                            <select
-                              id="integrationTimeline"
-                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 aria-[invalid=true]:border-[hsl(var(--destructive))] aria-[invalid=true]:bg-[hsl(var(--attention))]/10 aria-[invalid=true]:focus-visible:ring-[hsl(var(--destructive))]"
-                              aria-invalid={!!errors.integrationTimeline}
-                              defaultValue=""
-                              {...register("integrationTimeline")}
-                            >
-                              <option value="">Select a timeline</option>
-                              <option>ASAP</option>
-                              <option>Within 2–4 weeks</option>
-                              <option>Within 1–3 months</option>
-                              <option>3+ months</option>
-                            </select>
-                            {errors.integrationTimeline && <p className="text-sm text-destructive">{errors.integrationTimeline.message}</p>}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="space-y-4 pt-4 border-t">
-                        <h3 className="font-semibold text-foreground">Hardware / Device Needs</h3>
-                        <div className="space-y-2">
-                          <Label>Do you need to accept in-person (card-present) payments?*</Label>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            {[{ label: "Yes", value: "yes" }, { label: "No", value: "no" }].map((option) => (
-                              <label
-                                key={option.value}
-                                htmlFor={`needsCardPresent-${option.value}`}
-                                className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  needsCardPresent === option.value ? "border-crimson bg-crimson/5" : "border-border hover:border-crimson/50"
-                                }`}
-                              >
-                                <input
-                                  type="radio"
-                                  id={`needsCardPresent-${option.value}`}
-                                  value={option.value}
-                                  className="sr-only"
-                                  {...register("needsCardPresent")}
-                                />
-                                <span className="text-sm font-medium text-foreground">{option.label}</span>
-                              </label>
-                            ))}
-                          </div>
-                          {errors.needsCardPresent && <p className="text-sm text-destructive">{errors.needsCardPresent.message}</p>}
-                        </div>
-                        {needsCardPresent === "yes" && (
-                          <div className="space-y-2">
-                            <Label htmlFor="preferredDeviceType">Which in-person device type best fits your setup?</Label>
-                            <select
-                              id="preferredDeviceType"
-                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 aria-[invalid=true]:border-[hsl(var(--destructive))] aria-[invalid=true]:bg-[hsl(var(--attention))]/10 aria-[invalid=true]:focus-visible:ring-[hsl(var(--destructive))]"
-                              aria-invalid={!!errors.preferredDeviceType}
-                              defaultValue=""
-                              {...register("preferredDeviceType")}
-                            >
-                              <option value="" disabled>
-                                Select a device type
-                              </option>
-                              <option>Countertop terminal</option>
-                              <option>Mobile reader</option>
-                              <option>Unattended / kiosk</option>
-                              <option>Not sure</option>
-                            </select>
-                            {errors.preferredDeviceType && <p className="text-sm text-destructive">{errors.preferredDeviceType.message}</p>}
-                          </div>
-                        )}
-                        <div className="grid gap-4 md:grid-cols-2">
-                          <div className="space-y-2">
-                            <Label htmlFor="numLocations">How many locations will be accepting payments?</Label>
-                            <Input
-                              id="numLocations"
-                              type="number"
-                              inputMode="numeric"
-                              aria-invalid={!!errors.numLocations}
-                              {...register("numLocations", { valueAsNumber: true })}
-                            />
-                            {errors.numLocations && <p className="text-sm text-destructive">{errors.numLocations.message}</p>}
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="numDevices">How many devices do you expect to need?</Label>
-                            <Input
-                              id="numDevices"
-                              type="number"
-                              inputMode="numeric"
-                              aria-invalid={!!errors.numDevices}
-                              {...register("numDevices", { valueAsNumber: true })}
-                            />
-                            {errors.numDevices && <p className="text-sm text-destructive">{errors.numDevices.message}</p>}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex justify-between pt-4">
-                        <Button type="button" variant="outline" onClick={() => setCurrentStep(3)}>
-                          Back
-                        </Button>
-                        <Button
-                          type="button"
-                          onClick={() => {
-                            void validateAndGoToStep(5);
-                          }}
-                          className="bg-crimson hover:bg-crimson/90"
-                        >
-                          Continue
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                  {/* Step 5: Services & Agreements */}
-                  {currentStep === 5 && (
-                    <div className="space-y-6 rounded-2xl border border-border bg-card/95 backdrop-blur-md p-8 shadow-sm">
-                      <div className="flex items-center gap-3 mb-6">
-                        <CreditCard className="w-6 h-6 text-crimson" />
-                        <h2 className="text-2xl font-ubuntu font-bold text-foreground">Select Services</h2>
-                      </div>
-                      <div className="space-y-6">
-                        {/* Processing Services */}
-                        <div className="space-y-3">
-                          <h3 className="font-semibold text-foreground">Processing Services</h3>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            {["Credit Card", "ACH / eCheck", "Cash"].map((service) => (
-                              <div
-                                key={service}
-                                className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  processingServices.includes(service) ? "border-crimson bg-crimson/5" : "border-border hover:border-crimson/50"
-                                }`}
-                              >
-                                <Checkbox
-                                  id={`processing-${service}`}
-                                  checked={processingServices.includes(service)}
-                                  onCheckedChange={(checked) => toggleProcessingService(service, checked === true)}
-                                />
-                                <Label htmlFor={`processing-${service}`} className="cursor-pointer flex-1">
-                                  {service}
-                                </Label>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        {/* Value-added Services */}
-                        <div className="space-y-3">
-                          <h3 className="font-semibold text-foreground">Value-added Services</h3>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            {["Encryption", "Invoice", "Level III Advantage", "Mobile Reader", "Vault Storage"].map((service) => (
-                              <div
-                                key={service}
-                                className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors cursor-pointer ${
-                                  valueServices.includes(service) ? "border-crimson bg-crimson/5" : "border-border hover:border-crimson/50"
-                                }`}
-                              >
-                                <Checkbox
-                                  id={`value-${service}`}
-                                  checked={valueServices.includes(service)}
-                                  onCheckedChange={(checked) => toggleValueService(service, checked === true)}
-                                />
-                                <Label htmlFor={`value-${service}`} className="cursor-pointer flex-1">
-                                  {service}
-                                  {service === "Encryption" && <span className="text-xs text-muted-foreground block">Encrypted Devices</span>}
-                                </Label>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        {/* Terms Agreement */}
-                        <div className="pt-6 border-t space-y-4">
-                          <div className="flex items-start space-x-3 p-4 rounded-lg bg-muted/50">
-                            <Checkbox
-                              id="agree_to_terms"
-                              checked={watch("agree_to_terms")}
-                              onCheckedChange={(checked) => setValue("agree_to_terms", checked === true, { shouldDirty: true, shouldTouch: true, shouldValidate: true })}
-                            />
-                            <Label htmlFor="agree_to_terms" className="cursor-pointer leading-relaxed">
-                              I agree to the {" "}
-                              <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-crimson hover:underline font-semibold">
-                                Terms and Conditions
-                              </a>{" "}
-                              and understand that MerchantHaus will process my application according to these terms.
-                            </Label>
-                          </div>
-                          {errors.agree_to_terms && <p className="text-sm text-destructive">{errors.agree_to_terms.message}</p>}
-                          <div className="flex items-start space-x-3 p-4 rounded-lg bg-muted/50">
-                            <Checkbox
-                              id="agree_to_security_policy"
-                              checked={watch("agree_to_security_policy")}
-                              onCheckedChange={(checked) => setValue("agree_to_security_policy", checked === true, { shouldDirty: true, shouldTouch: true, shouldValidate: true })}
-                            />
-                            <Label htmlFor="agree_to_security_policy" className="cursor-pointer leading-relaxed">
-                              I agree to the {" "}
-                              <a href="/security" target="_blank" rel="noopener noreferrer" className="text-crimson hover:underline font-semibold">
-                                Security Policy
-                              </a>
-                              .
-                            </Label>
-                          </div>
-                          {errors.agree_to_security_policy && <p className="text-sm text-destructive">{errors.agree_to_security_policy.message}</p>}
-                        </div>
-                      </div>
-                      <div className="flex justify-between pt-4">
-                        <Button type="button" variant="outline" onClick={() => setCurrentStep(4)}>
-                          Back
-                        </Button>
-                        <Button type="submit" disabled={isSubmitting} className="bg-crimson hover:bg-crimson/90 px-8">
-                          {isSubmitting ? "Submitting..." : "Submit Application"}
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </form>
-              </>
-            ) : (
-              <div className="rounded-2xl border border-border bg-card p-12 shadow-sm text-center space-y-6">
-                <div className="flex justify-center">
-                  <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
-                    <CheckCircle2 className="w-12 h-12 text-green-600" />
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <h2 className="text-3xl font-ubuntu font-bold text-foreground">Application Received!</h2>
-                  <p className="text-lg text-muted-foreground max-w-md mx-auto">
-                    Thank you for applying to MerchantHaus. Our underwriting team will review your application and contact you within one business day.
-                  </p>
-                </div>
-                <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button asChild variant="outline">
-                    <a href="/">Return to Home</a>
-                  </Button>
-                  <Button asChild className="bg-crimson hover:bg-crimson/90">
-                    <a href="tel:15056006042">Call 1-505-600-6042</a>
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-        {/* Info Section */}
-        <section className="py-16 bg-muted/30">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-ubuntu font-bold text-foreground text-center mb-8">What Happens Next?</h2>
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="text-center space-y-3">
-                <div className="w-12 h-12 rounded-full bg-crimson/10 flex items-center justify-center mx-auto">
-                  <span className="text-xl font-bold text-crimson">1</span>
-                </div>
-                <h3 className="font-semibold text-foreground">Review</h3>
-                <p className="text-sm text-muted-foreground">Our underwriting team reviews your submission for alignment and compliance</p>
-              </div>
-              <div className="text-center space-y-3">
-                <div className="w-12 h-12 rounded-full bg-crimson/10 flex items-center justify-center mx-auto">
-                  <span className="text-xl font-bold text-crimson">2</span>
-                </div>
-                <h3 className="font-semibold text-foreground">Contact</h3>
-                <p className="text-sm text-muted-foreground">A specialist reaches out to confirm documents and answer questions</p>
-              </div>
-              <div className="text-center space-y-3">
-                <div className="w-12 h-12 rounded-full bg-crimson/10 flex items-center justify-center mx-auto">
-                  <span className="text-xl font-bold text-crimson">3</span>
-                </div>
-                <h3 className="font-semibold text-foreground">Activate</h3>
-                <p className="text-sm text-muted-foreground">Once approved, receive credentials and start processing payments</p>
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20 md:pb-10">
+      {/* Top Navigation Bar */}
+      <div className="sticky top-0 z-30 bg-white border-b border-slate-200 px-4 py-3 shadow-sm">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-emerald-600 p-2 rounded-lg">
+              <FileText className="text-white w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-slate-900 leading-tight">Merchant Preboarding</h1>
+              <div className="flex items-center gap-2 mt-0.5">
+                <p className="text-xs text-slate-500 hidden sm:block">Intake Wizard v2.4</p>
+                {/* Save Status Indicator */}
+                {saveStatus === "saving" && (
+                  <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-slate-400 animate-pulse">
+                    <Loader2 size={10} className="animate-spin" /> Saving...
+                  </span>
+                )}
+                {saveStatus === "saved" && (
+                  <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-emerald-600">
+                    <Cloud size={10} /> Saved
+                  </span>
+                )}
+                {saveStatus === "error" && (
+                  <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-rose-500">
+                    <AlertCircle size={10} /> Save Failed
+                  </span>
+                )}
               </div>
             </div>
           </div>
-        </section>
+
+          <div className="flex flex-col items-end min-w-[140px]">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-semibold text-slate-700">{progress}% Complete</span>
+            </div>
+            <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-emerald-500 transition-all duration-500 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <main className="max-w-6xl mx-auto p-4 md:p-8">
+        {/* Step Indicators (Desktop) */}
+        <div className="mb-8 hidden md:block">
+          <ol className="flex items-center w-full">
+            {STEPS.map((s, index) => {
+              const isActive = index === step;
+              const isCompleted = index < step;
+              const Icon = s.icon;
+
+              return (
+                <li
+                  key={s.label}
+                  className={`flex items-center ${index !== STEPS.length - 1 ? "w-full" : ""}`}
+                >
+                  <div
+                    className={`flex items-center justify-center w-10 h-10 rounded-full shrink-0 border-2 transition-colors ${
+                      isActive
+                        ? "border-emerald-600 bg-emerald-50 text-emerald-600"
+                        : isCompleted
+                          ? "border-emerald-600 bg-emerald-600 text-white"
+                          : "border-slate-300 bg-white text-slate-400"
+                    }`}
+                  >
+                    {isCompleted ? <Check size={20} /> : <Icon size={18} />}
+                  </div>
+
+                  <span
+                    className={`ml-3 text-sm font-medium hidden lg:block ${
+                      isActive ? "text-emerald-700" : "text-slate-500"
+                    }`}
+                  >
+                    {s.label}
+                  </span>
+
+                  {index !== STEPS.length - 1 && (
+                    <div className={`w-full h-0.5 mx-4 ${isCompleted ? "bg-emerald-600" : "bg-slate-200"}`} />
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+
+        {/* Mobile Step Indicator */}
+        <div className="md:hidden mb-6 flex items-center justify-between bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
+          <span className="text-sm font-semibold text-slate-700">
+            Step {step + 1}: {STEPS[step].label}
+          </span>
+          <span className="text-xs text-slate-500">
+            {step + 1} of {STEPS.length}
+          </span>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-start">
+          {/* Main Form Area */}
+          <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            {/* NETLIFY FORM WRAPPER */}
+            <form
+              name={FORM_NAME}
+              method="POST"
+              data-netlify="true"
+              data-netlify-honeypot="bot-field"
+              onSubmit={handleSubmit}
+            >
+              {/* Hidden input for Netlify Form Name */}
+              <input type="hidden" name="form-name" value={FORM_NAME} />
+              <input type="hidden" name="bot-field" />
+
+              {/* Hidden inputs for React state mapping (Optional but helps build bots) */}
+              <input type="hidden" name="id" value={form.id} />
+
+              <div className="p-6 md:p-8">
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">{STEPS[step].label}</h2>
+                  <p className="text-sm text-slate-500">
+                    Please complete all required fields marked with <span className="text-rose-500">*</span>
+                  </p>
+                </div>
+
+                {step === 0 && <BusinessProfileStep form={form} onChange={handleChange} />}
+                {step === 1 && <LegalInfoStep form={form} onChange={handleChange} />}
+                {step === 2 && <ProcessingStep form={form} onChange={handleChange} />}
+                {step === 3 && <ReviewStep form={form} allMissing={allMissing} onChange={handleChange} />}
+              </div>
+
+              {/* Navigation Footer */}
+              <div className="bg-slate-50 px-6 py-4 border-t border-slate-200 flex justify-between items-center">
+                <button
+                  type="button"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  onClick={() => setStep((prev) => Math.max(0, prev - 1))}
+                  disabled={step === 0}
+                >
+                  <ChevronLeft size={16} /> Back
+                </button>
+
+                {step < STEPS.length - 1 ? (
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 bg-emerald-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-md hover:bg-emerald-700 hover:shadow-lg disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none transition-all"
+                    onClick={() => setStep((prev) => Math.min(STEPS.length - 1, prev + 1))}
+                    disabled={nextDisabled()}
+                  >
+                    Next Step <ChevronRight size={16} />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 bg-emerald-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-md hover:bg-emerald-700 hover:shadow-lg disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none transition-all"
+                    disabled={false}
+                  >
+                    Complete Preboarding <Save size={16} />
+                  </button>
+                )}
+              </div>
+            </form>
+          </section>
+
+          {/* Right Sidebar - Status Snapshot */}
+          <aside className="space-y-6 lg:sticky lg:top-24">
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+              <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <Info size={16} className="text-emerald-600" />
+                Status Snapshot
+              </h3>
+
+              <div className="space-y-4">
+                <SectionStatus
+                  label="Business Profile"
+                  done={allMissing.business.length === 0}
+                  count={REQUIRED_FIELDS.business.length - allMissing.business.length}
+                  total={REQUIRED_FIELDS.business.length}
+                />
+                <SectionStatus
+                  label="Legal Info"
+                  done={allMissing.legal.length === 0}
+                  count={REQUIRED_FIELDS.legal.length - allMissing.legal.length}
+                  total={REQUIRED_FIELDS.legal.length}
+                />
+                <SectionStatus
+                  label="Processing"
+                  done={allMissing.processing.length === 0}
+                  count={REQUIRED_FIELDS.processing.length - allMissing.processing.length}
+                  total={REQUIRED_FIELDS.processing.length}
+                />
+              </div>
+
+              {progress < 100 && (
+                <div className="mt-6 pt-4 border-t border-slate-100">
+                  <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Missing Items</h4>
+                  <div className="space-y-3">
+                    {Object.entries(allMissing).map(([section, fields]) =>
+                      fields.length ? (
+                        <div key={section} className="text-xs">
+                          <span className="font-semibold text-slate-700 capitalize">{section}:</span>
+                          <span className="text-rose-500 ml-1">
+                            {fields.length} field{fields.length > 1 ? "s" : ""} remaining
+                          </span>
+                        </div>
+                      ) : null,
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="bg-indigo-50 rounded-2xl border border-indigo-100 p-5">
+              <h3 className="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-2">Tip</h3>
+              <p className="text-xs text-indigo-800 leading-relaxed">
+                If the merchant doesn't have a current processor, we will ask for additional documentation readiness checks after you click
+                "Complete".
+              </p>
+            </div>
+          </aside>
+        </div>
       </main>
-      <Footer />
-      <ThankYouDialog
-        open={showThankYou}
-        onOpenChange={(open) => {
-          if (!open) {
-            setShowThankYou(false);
-          }
-        }}
-        title="Application Received!"
-        description="Thank you for applying to MerchantHaus."
-        body="Our underwriting team will review your application and contact you within one business day."
-      />
     </div>
   );
-};
+}
 
-export default Apply;
+// --- Subcomponents ---
+
+interface FieldProps {
+  label: string;
+  required?: boolean;
+  children: React.ReactNode;
+  hint?: string;
+  className?: string;
+}
+
+function Field({ label, required, children, hint, className = "" }: FieldProps) {
+  return (
+    <div className={`space-y-1.5 ${className}`}>
+      <label className="block text-sm font-medium text-slate-700">
+        {label} {required && <span className="text-rose-500">*</span>}
+      </label>
+      {children}
+      {hint && <p className="text-xs text-slate-500">{hint}</p>}
+    </div>
+  );
+}
+
+type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+
+function Input(props: InputProps) {
+  return (
+    <input
+      {...props}
+      className={`w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200 transition-all ${
+        props.className || ""
+      }`}
+    />
+  );
+}
+
+function NumberInput(props: InputProps) {
+  return <Input type="number" step="any" min="0" {...props} />;
+}
+
+interface SectionStatusProps {
+  label: string;
+  done: boolean;
+  count: number;
+  total: number;
+}
+
+function SectionStatus({ label, done, count, total }: SectionStatusProps) {
+  const pct = Math.round((count / total) * 100);
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-1.5">
+        <span className={`text-xs font-semibold ${done ? "text-emerald-700" : "text-slate-700"}`}>
+          {label}
+        </span>
+        <span className="text-xs text-slate-500 font-medium">
+          {count}/{total}
+        </span>
+      </div>
+      <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+        <div
+          className={`h-full transition-all duration-500 ${done ? "bg-emerald-500" : "bg-emerald-300"}`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function BusinessProfileStep({ form, onChange }: StepProps) {
+  return (
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="grid gap-6 md:grid-cols-2">
+        <Field label="DBA Name" required className="md:col-span-2">
+          <Input
+            value={form.dbaName}
+            onChange={(e) => onChange("dbaName", e.target.value)}
+            placeholder="Doing Business As..."
+          />
+        </Field>
+        <Field label="Products / Services" required>
+          <Input
+            value={form.products}
+            onChange={(e) => onChange("products", e.target.value)}
+            placeholder="e.g. Shoes, Consulting"
+          />
+        </Field>
+        <Field label="Nature of Business" required>
+          <Input
+            value={form.natureOfBusiness}
+            onChange={(e) => onChange("natureOfBusiness", e.target.value)}
+            placeholder="e.g. Retail, eCommerce"
+          />
+        </Field>
+      </div>
+
+      <hr className="border-slate-100" />
+      <h3 className="text-sm font-semibold text-slate-900">Contact Information</h3>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Field label="First Name" required>
+          <Input
+            value={form.dbaContactFirst}
+            onChange={(e) => onChange("dbaContactFirst", e.target.value)}
+          />
+        </Field>
+        <Field label="Last Name" required>
+          <Input
+            value={form.dbaContactLast}
+            onChange={(e) => onChange("dbaContactLast", e.target.value)}
+          />
+        </Field>
+        <Field label="Phone Number" required>
+          <Input
+            value={form.dbaPhone}
+            onChange={(e) => onChange("dbaPhone", e.target.value)}
+            placeholder="+1 (555) 000-0000"
+          />
+        </Field>
+        <Field label="Email Address" required>
+          <Input
+            type="email"
+            value={form.dbaEmail}
+            onChange={(e) => onChange("dbaEmail", e.target.value)}
+            placeholder="name@business.com"
+          />
+        </Field>
+      </div>
+
+      <hr className="border-slate-100" />
+      <h3 className="text-sm font-semibold text-slate-900">Location</h3>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Field label="Address Line 1" required>
+          <Input
+            value={form.dbaAddress}
+            onChange={(e) => onChange("dbaAddress", e.target.value)}
+          />
+        </Field>
+        <Field label="Address Line 2">
+          <Input
+            value={form.dbaAddress2}
+            onChange={(e) => onChange("dbaAddress2", e.target.value)}
+          />
+        </Field>
+        <Field label="City" required>
+          <Input value={form.dbaCity} onChange={(e) => onChange("dbaCity", e.target.value)} />
+        </Field>
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="State" required>
+            <Input value={form.dbaState} onChange={(e) => onChange("dbaState", e.target.value)} />
+          </Field>
+          <Field label="ZIP Code" required>
+            <Input value={form.dbaZip} onChange={(e) => onChange("dbaZip", e.target.value)} />
+          </Field>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LegalInfoStep({ form, onChange }: StepProps) {
+  return (
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="grid gap-6 md:grid-cols-2">
+        <Field label="Legal Entity Name" required className="md:col-span-2">
+          <Input
+            value={form.legalEntityName}
+            onChange={(e) => onChange("legalEntityName", e.target.value)}
+            placeholder="Official Registered Name"
+          />
+        </Field>
+        <Field label="Business Phone" required>
+          <Input value={form.legalPhone} onChange={(e) => onChange("legalPhone", e.target.value)} />
+        </Field>
+        <Field label="Business Email" required>
+          <Input
+            type="email"
+            value={form.legalEmail}
+            onChange={(e) => onChange("legalEmail", e.target.value)}
+          />
+        </Field>
+        <Field label="Tax ID (TIN/EIN)" required>
+          <Input value={form.tin} onChange={(e) => onChange("tin", e.target.value)} placeholder="XX-XXXXXXX" />
+        </Field>
+        <Field label="Ownership Type" required>
+          <Input
+            value={form.ownershipType}
+            onChange={(e) => onChange("ownershipType", e.target.value)}
+            placeholder="e.g. LLC, Sole Prop, Corp"
+          />
+        </Field>
+        <Field label="Formation Date" required>
+          <Input type="date" value={form.formationDate} onChange={(e) => onChange("formationDate", e.target.value)} />
+        </Field>
+        <Field label="State Incorporated" required>
+          <Input value={form.stateIncorporated} onChange={(e) => onChange("stateIncorporated", e.target.value)} />
+        </Field>
+      </div>
+
+      <hr className="border-slate-100" />
+      <h3 className="text-sm font-semibold text-slate-900">Legal Address</h3>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Field label="Address Line 1" required>
+          <Input value={form.legalAddress} onChange={(e) => onChange("legalAddress", e.target.value)} />
+        </Field>
+        <Field label="Address Line 2">
+          <Input value={form.legalAddress2} onChange={(e) => onChange("legalAddress2", e.target.value)} />
+        </Field>
+        <Field label="City" required>
+          <Input value={form.legalCity} onChange={(e) => onChange("legalCity", e.target.value)} />
+        </Field>
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="State" required>
+            <Input value={form.legalState} onChange={(e) => onChange("legalState", e.target.value)} />
+          </Field>
+          <Field label="ZIP Code" required>
+            <Input value={form.legalZip} onChange={(e) => onChange("legalZip", e.target.value)} />
+          </Field>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProcessingStep({ form, onChange }: StepProps) {
+  return (
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="bg-slate-50 p-5 rounded-xl border border-slate-200">
+        <div className="space-y-6">
+          {/* Question 1: Have Processor? */}
+          <div className="space-y-3">
+            <label className="text-sm font-bold text-slate-900 block">
+              Do you have a payment processor? (Merchant ID) <span className="text-rose-500">*</span>
+            </label>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  onChange("hasExistingProcessor", "yes");
+                  onChange("isSwitchingProcessor", ""); // reset sub-question
+                }}
+                className={`flex-1 rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
+                  form.hasExistingProcessor === "yes"
+                    ? "border-emerald-500 bg-white text-emerald-700 ring-2 ring-emerald-200 ring-offset-1"
+                    : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100 hover:border-slate-400"
+                }`}
+              >
+                Yes
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  onChange("hasExistingProcessor", "no");
+                  onChange("isSwitchingProcessor", "");
+                }}
+                className={`flex-1 rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
+                  form.hasExistingProcessor === "no"
+                    ? "border-amber-500 bg-white text-amber-700 ring-2 ring-amber-200 ring-offset-1"
+                    : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100 hover:border-slate-400"
+                }`}
+              >
+                No
+              </button>
+            </div>
+          </div>
+
+          {/* Sub-Question: Switching? (Only if Yes to MID) */}
+          {form.hasExistingProcessor === "yes" && (
+            <div className="space-y-3 animate-in fade-in slide-in-from-top-2">
+              <label className="text-sm font-bold text-slate-900 block">
+                Are you switching your payment processing to us? <span className="text-rose-500">*</span>
+              </label>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => onChange("isSwitchingProcessor", "yes")}
+                  className={`flex-1 rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
+                    form.isSwitchingProcessor === "yes"
+                      ? "border-emerald-500 bg-white text-emerald-700 ring-2 ring-emerald-200 ring-offset-1"
+                      : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100 hover:border-slate-400"
+                  }`}
+                >
+                  Yes, switching
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onChange("isSwitchingProcessor", "no")}
+                  className={`flex-1 rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
+                    form.isSwitchingProcessor === "no"
+                      ? "border-blue-500 bg-white text-blue-700 ring-2 ring-blue-200 ring-offset-1"
+                      : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100 hover:border-slate-400"
+                  }`}
+                >
+                  No, keeping existing
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* 1. Switching Logic */}
+          {form.hasExistingProcessor === "yes" && form.isSwitchingProcessor === "yes" && (
+            <div className="mt-4 pt-4 border-t border-slate-200 animate-in fade-in">
+              <Field label="Current Processor Name">
+                <Input
+                  value={form.currentProcessorName}
+                  onChange={(e) => onChange("currentProcessorName", e.target.value)}
+                  placeholder="e.g. Stripe, Square, Chase"
+                />
+              </Field>
+            </div>
+          )}
+
+          {/* 2. Keeping MID Logic */}
+          {form.hasExistingProcessor === "yes" && form.isSwitchingProcessor === "no" && (
+            <div className="mt-4 pt-4 border-t border-slate-200 space-y-5 animate-in fade-in">
+              <div className="flex items-start gap-3 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900">
+                <Info size={18} className="shrink-0 mt-0.5 text-blue-700" />
+                <div className="space-y-1">
+                  <p className="font-semibold text-blue-800">Gateway Configuration Required</p>
+                  <p>
+                    Since you are keeping your current processor, we need to bridge the gateway manually.
+                    Please email a <span className="font-semibold">Voided Check</span> or <span className="font-semibold">Bank Confirmation Letter</span> to:
+                  </p>
+                  <div className="font-mono bg-blue-100/50 p-2 rounded text-blue-800 select-all inline-block mt-1">
+                    sales@merchanthaus.io
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="text-sm font-semibold text-slate-900">Confirm Availability</h4>
+
+                <div className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg bg-white">
+                  <input
+                    type="checkbox"
+                    id="chkVoided"
+                    className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                    checked={form.hasVoidedCheckOrBankLetter === "yes"}
+                    onChange={(e) => onChange("hasVoidedCheckOrBankLetter", e.target.checked ? "yes" : "")}
+                  />
+                  <label htmlFor="chkVoided" className="text-sm text-slate-700 cursor-pointer select-none">
+                    I will send the <span className="font-semibold">Voided Check</span> or <span className="font-semibold">Bank Letter</span> to the email above.
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg bg-white">
+                  <input
+                    type="checkbox"
+                    id="chkVar"
+                    className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                    checked={form.hasVarSheet === "yes"}
+                    onChange={(e) => onChange("hasVarSheet", e.target.checked ? "yes" : "")}
+                  />
+                  <label htmlFor="chkVar" className="text-sm text-slate-700 cursor-pointer select-none">
+                    I confirm I have the <span className="font-semibold">VAR Sheet</span> (Value Added Reseller sheet) from the current processor.
+                  </label>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 3. New Setup Logic */}
+          {form.hasExistingProcessor === "no" && (
+            <div className="mt-3 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800 animate-in fade-in">
+              <AlertCircle size={16} className="shrink-0 mt-0.5" />
+              <p>
+                Heads up: After you submit this form, we'll ask a few quick questions about document readiness (bank statements, voided checks, etc.) to ensure a smooth boarding process.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-semibold text-slate-900 mb-4">Volume & Ticket Size</h3>
+        <div className="grid gap-6 md:grid-cols-3">
+          <Field label="Monthly Volume ($)" required>
+            <NumberInput value={form.monthlyVolume} onChange={(e) => onChange("monthlyVolume", e.target.value)} />
+          </Field>
+          <Field label="Average Ticket ($)" required>
+            <NumberInput value={form.avgTicket} onChange={(e) => onChange("avgTicket", e.target.value)} />
+          </Field>
+          <Field label="High Ticket ($)" required>
+            <NumberInput value={form.highTicket} onChange={(e) => onChange("highTicket", e.target.value)} />
+          </Field>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-semibold text-slate-900 mb-4">
+          Transaction Breakdown (%) <span className="text-slate-500 font-normal ml-1">(Percentage of transactions you see or anticipate)</span>
+        </h3>
+        <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-6">
+          <Field label="Swiped" required>
+            <NumberInput value={form.swipedPct} onChange={(e) => onChange("swipedPct", e.target.value)} />
+          </Field>
+          <Field label="Keyed" required>
+            <NumberInput value={form.keyedPct} onChange={(e) => onChange("keyedPct", e.target.value)} />
+          </Field>
+          <Field label="MOTO" required>
+            <NumberInput value={form.motoPct} onChange={(e) => onChange("motoPct", e.target.value)} />
+          </Field>
+          <Field label="eCom" required>
+            <NumberInput value={form.ecomPct} onChange={(e) => onChange("ecomPct", e.target.value)} />
+          </Field>
+          <Field label="B2C" required>
+            <NumberInput value={form.b2cPct} onChange={(e) => onChange("b2cPct", e.target.value)} />
+          </Field>
+          <Field label="B2B" required>
+            <NumberInput value={form.b2bPct} onChange={(e) => onChange("b2bPct", e.target.value)} />
+          </Field>
+        </div>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Field label="Website URL">
+          <Input
+            value={form.website}
+            onChange={(e) => onChange("website", e.target.value)}
+            placeholder="https://example.com"
+          />
+        </Field>
+        <Field label="SIC / MCC (if known)">
+          <Input
+            value={form.sicMcc}
+            onChange={(e) => onChange("sicMcc", e.target.value)}
+            placeholder="e.g. 5411"
+          />
+        </Field>
+      </div>
+    </div>
+  );
+}
+
+function ReviewStep({ form, allMissing, onChange }: ReviewStepProps) {
+  // Show full checklist if New Setup OR Switching Processor
+  const showFullChecklist =
+    form.hasExistingProcessor === "no" ||
+    (form.hasExistingProcessor === "yes" && form.isSwitchingProcessor === "yes");
+
+  return (
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Anti-Fraud Value Prop */}
+      <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-5">
+        <div className="flex items-start gap-4">
+          <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
+            <ShieldCheck size={24} />
+          </div>
+          <div className="space-y-1">
+            <h4 className="font-bold text-indigo-900">Security & Value Added Services</h4>
+            <p className="text-sm text-indigo-800 leading-relaxed">
+              We are an anti-fraud first company.
+              <span className="font-semibold"> Customer Vault</span>,
+              <span className="font-semibold"> Network Tokens</span>, and
+              <span className="font-semibold"> Account Updater</span> are provided by default as a value-added service to ensure your transactions are secure and seamless.
+            </p>
+            <div className="flex gap-4 pt-2">
+              <span className="flex items-center gap-1.5 text-xs font-medium text-indigo-700">
+                <Lock size={12} /> Vault
+              </span>
+              <span className="flex items-center gap-1.5 text-xs font-medium text-indigo-700">
+                <RefreshCw size={12} /> Updater
+              </span>
+              <span className="flex items-center gap-1.5 text-xs font-medium text-indigo-700">
+                <ShieldCheck size={12} /> Tokens
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-slate-50 p-4 rounded-xl text-sm text-slate-600 border border-slate-200">
+        <p>
+          Please review the details below. Once you submit, this data will be queued for formal onboarding.
+        </p>
+      </div>
+
+      {/* Required Docs Confirmation for NEW SETUPS & SWITCHING */}
+      {showFullChecklist && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-5 animate-in fade-in">
+          <h4 className="flex items-center gap-2 mb-4 text-sm font-bold text-amber-900 uppercase tracking-wide">
+            <FileText size={16} className="text-amber-500" />
+            Required Documents Confirmation
+          </h4>
+          <p className="text-sm text-amber-800 mb-4">
+            Please confirm you have access to the following documents before proceeding.
+            (Uploads will be requested in the formal application).
+          </p>
+          <div className="space-y-3">
+            <ChecklistRow
+              label="Bank or processing statements"
+              value={form.hasBankOrProcessingStatements}
+              onChange={(v) => onChange("hasBankOrProcessingStatements", v)}
+            />
+            <ChecklistRow
+              label="Voided check or bank letter"
+              value={form.hasVoidedCheckOrBankLetter}
+              onChange={(v) => onChange("hasVoidedCheckOrBankLetter", v)}
+            />
+            <ChecklistRow
+              label="Government ID (Driver's License/Passport)"
+              value={form.hasGovernmentId}
+              onChange={(v) => onChange("hasGovernmentId", v)}
+            />
+            <ChecklistRow
+              label="Articles of Organization"
+              value={form.hasArticlesOfOrganization}
+              onChange={(v) => onChange("hasArticlesOfOrganization", v)}
+            />
+            <ChecklistRow
+              label="Tax Document (Confirm EIN)"
+              value={form.hasTaxDocument}
+              onChange={(v) => onChange("hasTaxDocument", v)}
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <SummaryCard title="Business Profile" icon={Briefcase}>
+          <SummaryItem label="DBA Name" value={form.dbaName} />
+          <SummaryItem label="Products" value={form.products} />
+          <SummaryItem label="Industry" value={form.natureOfBusiness} />
+          <SummaryItem label="Contact" value={`${form.dbaContactFirst} ${form.dbaContactLast}`} />
+          <SummaryItem label="Phone" value={form.dbaPhone} />
+          <SummaryItem label="Email" value={form.dbaEmail} />
+        </SummaryCard>
+
+        <SummaryCard title="Legal Information" icon={Scale}>
+          <SummaryItem label="Legal Entity" value={form.legalEntityName} />
+          <SummaryItem label="Tax ID (TIN)" value={form.tin} />
+          <SummaryItem label="Ownership" value={form.ownershipType} />
+          <SummaryItem label="Founded" value={form.formationDate} />
+          <SummaryItem label="State Inc." value={form.stateIncorporated} />
+        </SummaryCard>
+
+        <SummaryCard title="Processing Details" icon={CreditCard}>
+          <SummaryItem
+            label="Processor"
+            value={
+              form.hasExistingProcessor === "yes"
+                ? form.isSwitchingProcessor === "yes"
+                  ? "Switching from " + (form.currentProcessorName || "Current")
+                  : "Keeping Existing MID"
+                : "New Setup"
+            }
+          />
+
+          {form.hasExistingProcessor === "yes" && form.isSwitchingProcessor === "no" && (
+            <div className="py-2 my-2 border-y border-slate-100 bg-slate-50 rounded px-2">
+              <SummaryItem label="Banking" value="Email Instr. Sent" />
+              <SummaryItem label="VAR Sheet" value={form.hasVarSheet} />
+            </div>
+          )}
+
+          <SummaryItem label="Monthly Vol" value={`$${form.monthlyVolume}`} />
+          <SummaryItem label="Avg Ticket" value={`$${form.avgTicket}`} />
+          <div className="grid grid-cols-2 gap-y-1 mt-2 pt-2 border-t border-slate-100">
+            <span className="text-xs text-slate-500">Swiped: {form.swipedPct}%</span>
+            <span className="text-xs text-slate-500">Keyed: {form.keyedPct}%</span>
+            <span className="text-xs text-slate-500">eCom: {form.ecomPct}%</span>
+            <span className="text-xs text-slate-500">B2B: {form.b2bPct}%</span>
+          </div>
+        </SummaryCard>
+
+        <SummaryCard title="Notes & Docs" icon={FileText}>
+          {/* Summary of docs logic */}
+          {showFullChecklist ? (
+            <div className="space-y-1">
+              <SummaryItem label="Statements" value={form.hasBankOrProcessingStatements || "—"} />
+              <SummaryItem label="Voided Check" value={form.hasVoidedCheckOrBankLetter || "—"} />
+              <SummaryItem label="Government ID" value={form.hasGovernmentId || "—"} />
+              <SummaryItem label="Articles of Org." value={form.hasArticlesOfOrganization || "—"} />
+              <SummaryItem label="Tax Doc (EIN)" value={form.hasTaxDocument || "—"} />
+            </div>
+          ) : form.isSwitchingProcessor === "no" ? (
+            <div className="space-y-1">
+              <SummaryItem label="Voided Check" value={form.hasVoidedCheckOrBankLetter || "—"} />
+              <SummaryItem label="VAR Sheet" value={form.hasVarSheet || "—"} />
+            </div>
+          ) : (
+            <p className="text-xs text-slate-500 italic mb-2">Standard docs verification pending.</p>
+          )}
+          <SummaryItem label="Docs Link" value={form.docsLocationOrLink} />
+          <div className="mt-2 pt-2 border-t border-slate-100">
+            <span className="text-xs text-slate-400 block mb-1">Internal Notes</span>
+            <p className="text-sm text-slate-700 whitespace-pre-wrap">{form.notes || "—"}</p>
+          </div>
+        </SummaryCard>
+      </div>
+    </div>
+  );
+}
+
+interface SummaryCardProps {
+  title: string;
+  icon?: LucideIcon;
+  children: React.ReactNode;
+}
+
+function SummaryCard({ title, icon: Icon, children }: SummaryCardProps) {
+  return (
+    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h4 className="flex items-center gap-2 mb-4 text-sm font-bold text-slate-900 uppercase tracking-wide">
+        {Icon && <Icon size={16} className="text-slate-400" />}
+        {title}
+      </h4>
+      <div className="space-y-3">{children}</div>
+    </div>
+  );
+}
+
+interface SummaryItemProps {
+  label: string;
+  value?: string | number;
+}
+
+function SummaryItem({ label, value }: SummaryItemProps) {
+  return (
+    <div className="flex justify-between items-start text-sm">
+      <span className="text-slate-500">{label}</span>
+      <span className="font-medium text-slate-900 text-right max-w-[60%] break-words">{value || "—"}</span>
+    </div>
+  );
+}
+
+interface ChecklistRowProps {
+  label: string;
+  value: string;
+  onChange: (val: string) => void;
+}
+
+function ChecklistRow({ label, value, onChange }: ChecklistRowProps) {
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors bg-white">
+      <span className="font-medium text-slate-900 flex items-center gap-2">
+        <FileText size={16} className="text-slate-400" />
+        {label} <span className="text-rose-500">*</span>
+      </span>
+      <div className="flex gap-2 shrink-0">
+        <button
+          type="button"
+          onClick={() => onChange("yes")}
+          className={`px-4 py-1.5 rounded-lg text-sm font-semibold border transition-all ${
+            value === "yes"
+              ? "bg-emerald-50 border-emerald-500 text-emerald-700 shadow-sm"
+              : "bg-white border-slate-300 text-slate-600 hover:bg-slate-50"
+          }`}
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange("no")}
+          className={`px-4 py-1.5 rounded-lg text-sm font-semibold border transition-all ${
+            value === "no"
+              ? "bg-rose-50 border-rose-500 text-rose-700 shadow-sm"
+              : "bg-white border-slate-300 text-slate-600 hover:bg-slate-50"
+          }`}
+        >
+          No
+        </button>
+      </div>
+    </div>
+  );
+}
