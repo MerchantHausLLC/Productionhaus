@@ -160,6 +160,29 @@ const Blog = () => {
         <section>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
+            {/* Card: Payments Survey 2025 */}
+            <div className="card-container">
+              <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
+                <a href="/payments-survey-2025" className="block">
+                  <div className="h-40 bg-gradient-to-br from-purple-700 to-indigo-600 text-white p-6 flex flex-col justify-between">
+                    <div className="text-xs font-semibold uppercase tracking-wider">Industry Insights</div>
+                    <h4 className="text-xl font-bold">Payments Survey 2025: How Customers Really Pay</h4>
+                    <p className="text-xs text-white/80">December 2025</p>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">Payments Strategy</p>
+                    <p className="text-sm mb-4 text-muted-foreground">
+                      Cards still dominate, but wallets and BNPL are now essential levers for margin and AOV.
+                    </p>
+                    <div className="flex items-center text-sm font-medium text-foreground">
+                      Read More
+                      <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
             {/* Card 1: Prediction 2026 */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
