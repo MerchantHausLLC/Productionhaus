@@ -15,6 +15,7 @@ const Vamp = lazy(() => import("./pages/Vamp"));
 const Prediction2026Article = lazy(() => import("./pages/Prediction2026Article"));
 const ThreeDS = lazy(() => import("./pages/ThreeDS"));
 const ThreeDS2 = lazy(() => import("./pages/ThreeDS2"));
+const PaymentsSurvey2025 = lazy(() => import("./pages/PaymentsSurvey2025"));
 const TapToMobile = lazy(() => import("./pages/TapToMobile"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -88,6 +89,7 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/vamp" element={<Vamp />} />
               <Route path="/prediction-2026" element={<Prediction2026Article />} />
+              <Route path="/payments-survey-2025" element={<PaymentsSurvey2025 />} />
               <Route path="/3ds" element={<ThreeDS />} />
               <Route path="/3ds2" element={<ThreeDS2 />} />
               <Route path="/tap-to-mobile" element={<TapToMobile />} />
