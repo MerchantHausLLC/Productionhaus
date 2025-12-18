@@ -106,6 +106,8 @@ interface StepProps {
 
 interface ReviewStepProps extends StepProps {
   allMissing: Record<string, string[]>;
+  isChecklistRequired: boolean;
+  isChecklistComplete: boolean;
 }
 
 // --- Constants & Config ---
@@ -159,6 +161,14 @@ const REQUIRED_FIELDS: RequiredFieldsMap = {
     "b2bPct",
   ],
 };
+
+const DOCS_CHECKLIST_FIELDS: (keyof MerchantFormState)[] = [
+  "hasBankOrProcessingStatements",
+  "hasVoidedCheckOrBankLetter",
+  "hasGovernmentId",
+  "hasArticlesOfOrganization",
+  "hasTaxDocument",
+];
 
 const initialState: MerchantFormState = {
   id: "",
@@ -246,6 +256,14 @@ export default function Apply() {
     "idle" | "saving" | "saved" | "error"
   >("idle");
   const isFirstRender = useRef(true);
+  const [showChecklistWarning, setShowChecklistWarning] = useState(false);
+
+  const isChecklistRequired =
+    form.hasExistingProcessor === "no" ||
+    (form.hasExistingProcessor === "yes" && form.isSwitchingProcessor === "yes");
+
+  const isChecklistComplete =
+    !isChecklistRequired || DOCS_CHECKLIST_FIELDS.every((field) => form[field]);
 
   // 1. Initialize Session ID
   useEffect(() => {
@@ -268,6 +286,12 @@ export default function Apply() {
 
     return () => clearTimeout(timer);
   }, [form]);
+
+  useEffect(() => {
+    if (isChecklistComplete) {
+      setShowChecklistWarning(false);
+    }
+  }, [isChecklistComplete]);
 
   // 3. Supabase Save Handler
   const saveToSupabase = async (formData: MerchantFormState) => {
@@ -349,6 +373,13 @@ export default function Apply() {
 
   const handleSubmit = (e: FormEvent) => {
     if (e) e.preventDefault();
+
+    if (isChecklistRequired && !isChecklistComplete) {
+      setStep(3);
+      setShowChecklistWarning(true);
+      return;
+    }
+
     finalizeSubmit();
   };
 
@@ -505,7 +536,15 @@ export default function Apply() {
                 {step === 0 && <BusinessProfileStep form={form} onChange={handleChange} />}
                 {step === 1 && <LegalInfoStep form={form} onChange={handleChange} />}
                 {step === 2 && <ProcessingStep form={form} onChange={handleChange} />}
-                {step === 3 && <ReviewStep form={form} allMissing={allMissing} onChange={handleChange} />}
+                {step === 3 && (
+                  <ReviewStep
+                    form={form}
+                    allMissing={allMissing}
+                    onChange={handleChange}
+                    isChecklistRequired={isChecklistRequired}
+                    isChecklistComplete={isChecklistComplete}
+                  />
+                )}
               </div>
 
               {/* Navigation Footer */}
@@ -532,10 +571,20 @@ export default function Apply() {
                   <button
                     type="submit"
                     className="flex items-center gap-2 bg-emerald-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-md hover:bg-emerald-700 hover:shadow-lg disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none transition-all"
-                    disabled={false}
+                    disabled={isChecklistRequired && !isChecklistComplete}
                   >
                     Complete Preboarding <Save size={16} />
                   </button>
+                )}
+
+                {step === STEPS.length - 1 &&
+                  isChecklistRequired &&
+                  !isChecklistComplete &&
+                  showChecklistWarning && (
+                  <div className="flex items-center gap-2 text-xs text-amber-700 font-medium mt-3" role="alert">
+                    <AlertCircle size={14} />
+                    <span>Complete the documents readiness checklist before submitting.</span>
+                  </div>
                 )}
               </div>
             </form>
@@ -1038,7 +1087,13 @@ function ProcessingStep({ form, onChange }: StepProps) {
   );
 }
 
-function ReviewStep({ form, allMissing, onChange }: ReviewStepProps) {
+function ReviewStep({
+  form,
+  allMissing,
+  onChange,
+  isChecklistRequired,
+  isChecklistComplete,
+}: ReviewStepProps) {
   // Show full checklist if New Setup OR Switching Processor
   const showFullChecklist =
     form.hasExistingProcessor === "no" ||
@@ -1092,6 +1147,19 @@ function ReviewStep({ form, allMissing, onChange }: ReviewStepProps) {
             Please confirm you have access to the following documents before proceeding.
             (Uploads will be requested in the formal application).
           </p>
+          <div
+            className={`flex items-center gap-2 text-xs font-semibold mb-3 ${
+              isChecklistComplete ? "text-emerald-700" : "text-amber-700"
+            }`}
+            role="status"
+          >
+            {isChecklistComplete ? <Check size={14} /> : <AlertCircle size={14} />}
+            <span>
+              {isChecklistComplete
+                ? "Documents readiness checklist completed."
+                : "Please answer each checklist item to enable submission."}
+            </span>
+          </div>
           <div className="space-y-3">
             <ChecklistRow
               label="Bank or processing statements"
