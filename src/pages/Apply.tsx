@@ -766,14 +766,16 @@ function Field({ label, required, children, hint, className = "" }: FieldProps) 
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-/* Input component - white background with black text for readability */
+/* Input component - white background with black text for readability
+   Shows green border when field has a value to provide visual acknowledgment */
 function Input(props: InputProps) {
+  const hasValue = props.value !== undefined && props.value !== null && String(props.value).trim() !== "";
   return (
     <input
       {...props}
-      className={`w-full rounded-lg border border-slate-300 bg-white text-slate-900 px-3 py-2.5 text-sm shadow-sm placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200 transition-all ${
-        props.className || ""
-      }`}
+      className={`w-full rounded-lg border bg-white text-slate-900 px-3 py-2.5 text-sm shadow-sm placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200 transition-all ${
+        hasValue ? "border-emerald-400" : "border-slate-300"
+      } ${props.className || ""}`}
     />
   );
 }
@@ -1132,27 +1134,28 @@ function ProcessingStep({ form, onChange }: StepProps) {
         </div>
       </div>
 
+      {/* Transaction Breakdown - shows percentage split across different transaction types */}
       <div>
         <h3 className="text-sm font-semibold text-slate-900 mb-4">
           Transaction Breakdown (%) <span className="text-slate-500 font-normal ml-1">(Percentage of transactions you see or anticipate)</span>
         </h3>
         <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-6">
-          <Field label="Swiped" required>
+          <Field label="Swiped" required hint="Card physically swiped at terminal">
             <NumberInput value={form.swipedPct} onChange={(e) => onChange("swipedPct", e.target.value)} />
           </Field>
-          <Field label="Keyed" required>
+          <Field label="Keyed" required hint="Card number manually entered">
             <NumberInput value={form.keyedPct} onChange={(e) => onChange("keyedPct", e.target.value)} />
           </Field>
-          <Field label="MOTO" required>
+          <Field label="MOTO" required hint="Mail Order / Telephone Order transactions">
             <NumberInput value={form.motoPct} onChange={(e) => onChange("motoPct", e.target.value)} />
           </Field>
-          <Field label="eCom" required>
+          <Field label="eCom" required hint="eCommerce / online transactions">
             <NumberInput value={form.ecomPct} onChange={(e) => onChange("ecomPct", e.target.value)} />
           </Field>
-          <Field label="B2C" required>
+          <Field label="B2C" required hint="Business-to-Consumer sales">
             <NumberInput value={form.b2cPct} onChange={(e) => onChange("b2cPct", e.target.value)} />
           </Field>
-          <Field label="B2B" required>
+          <Field label="B2B" required hint="Business-to-Business sales">
             <NumberInput value={form.b2bPct} onChange={(e) => onChange("b2bPct", e.target.value)} />
           </Field>
         </div>
@@ -1166,7 +1169,7 @@ function ProcessingStep({ form, onChange }: StepProps) {
             placeholder="https://example.com"
           />
         </Field>
-        <Field label="SIC / MCC (if known)">
+        <Field label="SIC / MCC (if known)" hint="Standard Industry / Merchant Category Code">
           <Input
             value={form.sicMcc}
             onChange={(e) => onChange("sicMcc", e.target.value)}
