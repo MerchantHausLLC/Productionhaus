@@ -99,9 +99,10 @@ const Blog = () => {
             <div className="bg-card dark:bg-card/80 rounded-2xl overflow-hidden shadow-xl border border-border dark:border-border/50 card-shadow hover-crimson-arrow">
               <a href="/prediction-2026" className="block">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
+                  {/* Featured article image - matches the actual blog post hero image */}
                   <div className="h-64 lg:h-96 relative">
                     <img
-                      src="/blog-images/cardland.webp"
+                      src="/blog-images/prediction.webp"
                       alt="AI predictions and payment trends"
                       className="w-full h-full object-cover"
                     />
