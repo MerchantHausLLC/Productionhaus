@@ -81,6 +81,9 @@ interface MerchantFormState {
   hasTaxDocument: string;
   docsLocationOrLink: string;
 
+  // Gateway-only review confirmation
+  gatewayOnlyReviewConfirmed: string; // "yes" | ""
+
   // Notes
   notes: string;
 
@@ -108,6 +111,7 @@ interface ReviewStepProps extends StepProps {
   allMissing: Record<string, string[]>;
   isChecklistRequired: boolean;
   isChecklistComplete: boolean;
+  isGatewayOnly: boolean;
 }
 
 // --- Constants & Config ---
@@ -231,6 +235,9 @@ const initialState: MerchantFormState = {
   hasTaxDocument: "",
   docsLocationOrLink: "",
 
+  // gateway-only review confirmation
+  gatewayOnlyReviewConfirmed: "",
+
   // notes
   notes: "",
 };
@@ -262,8 +269,16 @@ export default function Apply() {
     form.hasExistingProcessor === "no" ||
     (form.hasExistingProcessor === "yes" && form.isSwitchingProcessor === "yes");
 
+  // Gateway-only: has existing processor AND keeping it (not switching)
+  const isGatewayOnly =
+    form.hasExistingProcessor === "yes" && form.isSwitchingProcessor === "no";
+
   const isChecklistComplete =
     !isChecklistRequired || DOCS_CHECKLIST_FIELDS.every((field) => form[field]);
+
+  // Gateway-only clients must confirm review before submission
+  const isGatewayOnlyConfirmed =
+    !isGatewayOnly || form.gatewayOnlyReviewConfirmed === "yes";
 
   // 1. Initialize Session ID
   useEffect(() => {
@@ -374,7 +389,15 @@ export default function Apply() {
   const handleSubmit = (e: FormEvent) => {
     if (e) e.preventDefault();
 
+    // Block submission if document checklist is required but not complete
     if (isChecklistRequired && !isChecklistComplete) {
+      setStep(3);
+      setShowChecklistWarning(true);
+      return;
+    }
+
+    // Block submission if gateway-only client hasn't confirmed review
+    if (isGatewayOnly && !isGatewayOnlyConfirmed) {
       setStep(3);
       setShowChecklistWarning(true);
       return;
@@ -522,8 +545,70 @@ export default function Apply() {
               <input type="hidden" name="form-name" value={FORM_NAME} />
               <input type="hidden" name="bot-field" />
 
-              {/* Hidden inputs for React state mapping (Optional but helps build bots) */}
+              {/* Hidden inputs for all form fields - Netlify Forms requires these to detect fields at build time */}
+              {/* Session ID */}
               <input type="hidden" name="id" value={form.id} />
+
+              {/* Business Profile Fields */}
+              <input type="hidden" name="dbaName" value={form.dbaName} />
+              <input type="hidden" name="products" value={form.products} />
+              <input type="hidden" name="natureOfBusiness" value={form.natureOfBusiness} />
+              <input type="hidden" name="dbaContactFirst" value={form.dbaContactFirst} />
+              <input type="hidden" name="dbaContactLast" value={form.dbaContactLast} />
+              <input type="hidden" name="dbaPhone" value={form.dbaPhone} />
+              <input type="hidden" name="dbaEmail" value={form.dbaEmail} />
+              <input type="hidden" name="dbaAddress" value={form.dbaAddress} />
+              <input type="hidden" name="dbaAddress2" value={form.dbaAddress2} />
+              <input type="hidden" name="dbaCity" value={form.dbaCity} />
+              <input type="hidden" name="dbaState" value={form.dbaState} />
+              <input type="hidden" name="dbaZip" value={form.dbaZip} />
+
+              {/* Legal Information Fields */}
+              <input type="hidden" name="legalEntityName" value={form.legalEntityName} />
+              <input type="hidden" name="legalPhone" value={form.legalPhone} />
+              <input type="hidden" name="legalEmail" value={form.legalEmail} />
+              <input type="hidden" name="tin" value={form.tin} />
+              <input type="hidden" name="ownershipType" value={form.ownershipType} />
+              <input type="hidden" name="formationDate" value={form.formationDate} />
+              <input type="hidden" name="stateIncorporated" value={form.stateIncorporated} />
+              <input type="hidden" name="legalAddress" value={form.legalAddress} />
+              <input type="hidden" name="legalAddress2" value={form.legalAddress2} />
+              <input type="hidden" name="legalCity" value={form.legalCity} />
+              <input type="hidden" name="legalState" value={form.legalState} />
+              <input type="hidden" name="legalZip" value={form.legalZip} />
+
+              {/* Processing Information Fields */}
+              <input type="hidden" name="hasExistingProcessor" value={form.hasExistingProcessor} />
+              <input type="hidden" name="isSwitchingProcessor" value={form.isSwitchingProcessor} />
+              <input type="hidden" name="currentProcessorName" value={form.currentProcessorName} />
+              <input type="hidden" name="routingNumber" value={form.routingNumber} />
+              <input type="hidden" name="accountNumber" value={form.accountNumber} />
+              <input type="hidden" name="hasVarSheet" value={form.hasVarSheet} />
+              <input type="hidden" name="monthlyVolume" value={form.monthlyVolume} />
+              <input type="hidden" name="avgTicket" value={form.avgTicket} />
+              <input type="hidden" name="highTicket" value={form.highTicket} />
+              <input type="hidden" name="swipedPct" value={form.swipedPct} />
+              <input type="hidden" name="keyedPct" value={form.keyedPct} />
+              <input type="hidden" name="motoPct" value={form.motoPct} />
+              <input type="hidden" name="ecomPct" value={form.ecomPct} />
+              <input type="hidden" name="b2cPct" value={form.b2cPct} />
+              <input type="hidden" name="b2bPct" value={form.b2bPct} />
+              <input type="hidden" name="sicMcc" value={form.sicMcc} />
+              <input type="hidden" name="website" value={form.website} />
+
+              {/* Document Readiness Fields */}
+              <input type="hidden" name="hasBankOrProcessingStatements" value={form.hasBankOrProcessingStatements} />
+              <input type="hidden" name="hasVoidedCheckOrBankLetter" value={form.hasVoidedCheckOrBankLetter} />
+              <input type="hidden" name="hasGovernmentId" value={form.hasGovernmentId} />
+              <input type="hidden" name="hasArticlesOfOrganization" value={form.hasArticlesOfOrganization} />
+              <input type="hidden" name="hasTaxDocument" value={form.hasTaxDocument} />
+              <input type="hidden" name="docsLocationOrLink" value={form.docsLocationOrLink} />
+
+              {/* Notes Field */}
+              <input type="hidden" name="notes" value={form.notes} />
+
+              {/* Gateway-only Review Confirmation Field */}
+              <input type="hidden" name="gatewayOnlyReviewConfirmed" value={form.gatewayOnlyReviewConfirmed} />
 
               <div className="p-6 md:p-8">
                 <div className="mb-6">
@@ -543,6 +628,7 @@ export default function Apply() {
                     onChange={handleChange}
                     isChecklistRequired={isChecklistRequired}
                     isChecklistComplete={isChecklistComplete}
+                    isGatewayOnly={isGatewayOnly}
                   />
                 )}
               </div>
@@ -571,19 +657,23 @@ export default function Apply() {
                   <button
                     type="submit"
                     className="flex items-center gap-2 bg-emerald-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-md hover:bg-emerald-700 hover:shadow-lg disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none transition-all"
-                    disabled={isChecklistRequired && !isChecklistComplete}
+                    disabled={(isChecklistRequired && !isChecklistComplete) || (isGatewayOnly && !isGatewayOnlyConfirmed)}
                   >
                     Complete Preboarding <Save size={16} />
                   </button>
                 )}
 
                 {step === STEPS.length - 1 &&
-                  isChecklistRequired &&
-                  !isChecklistComplete &&
-                  showChecklistWarning && (
+                  showChecklistWarning &&
+                  ((isChecklistRequired && !isChecklistComplete) ||
+                   (isGatewayOnly && !isGatewayOnlyConfirmed)) && (
                   <div className="flex items-center gap-2 text-xs text-amber-700 font-medium mt-3" role="alert">
                     <AlertCircle size={14} />
-                    <span>Complete the documents readiness checklist before submitting.</span>
+                    <span>
+                      {isChecklistRequired && !isChecklistComplete
+                        ? "Complete the documents readiness checklist before submitting."
+                        : "Please confirm you have reviewed the application details before submitting."}
+                    </span>
                   </div>
                 )}
               </div>
@@ -676,11 +766,12 @@ function Field({ label, required, children, hint, className = "" }: FieldProps) 
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
+/* Input component - white background with black text for readability */
 function Input(props: InputProps) {
   return (
     <input
       {...props}
-      className={`w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200 transition-all ${
+      className={`w-full rounded-lg border border-slate-300 bg-white text-slate-900 px-3 py-2.5 text-sm shadow-sm placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200 transition-all ${
         props.className || ""
       }`}
     />
@@ -1093,11 +1184,15 @@ function ReviewStep({
   onChange,
   isChecklistRequired,
   isChecklistComplete,
+  isGatewayOnly,
 }: ReviewStepProps) {
   // Show full checklist if New Setup OR Switching Processor
   const showFullChecklist =
     form.hasExistingProcessor === "no" ||
     (form.hasExistingProcessor === "yes" && form.isSwitchingProcessor === "yes");
+
+  // Gateway-only clients need to confirm they've reviewed before submitting
+  const isGatewayOnlyConfirmed = form.gatewayOnlyReviewConfirmed === "yes";
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -1135,6 +1230,45 @@ function ReviewStep({
           Please review the details below. Once you submit, this data will be queued for formal onboarding.
         </p>
       </div>
+
+      {/* Gateway-Only Review Confirmation - requires explicit acknowledgment before submission */}
+      {isGatewayOnly && (
+        <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-5 animate-in fade-in">
+          <h4 className="flex items-center gap-2 mb-4 text-sm font-bold text-blue-900 uppercase tracking-wide">
+            <Info size={16} className="text-blue-500" />
+            Review & Confirm
+          </h4>
+          <p className="text-sm text-blue-800 mb-4">
+            You are setting up a <span className="font-semibold">Gateway-Only</span> configuration (keeping your existing processor).
+            Please review all the information above and confirm you are ready to submit.
+          </p>
+          <div
+            className={`flex items-center gap-2 text-xs font-semibold mb-3 ${
+              isGatewayOnlyConfirmed ? "text-emerald-700" : "text-blue-700"
+            }`}
+            role="status"
+          >
+            {isGatewayOnlyConfirmed ? <Check size={14} /> : <AlertCircle size={14} />}
+            <span>
+              {isGatewayOnlyConfirmed
+                ? "Review confirmed. You may now submit."
+                : "Please confirm your review to enable submission."}
+            </span>
+          </div>
+          <div className="flex items-center gap-3 p-4 border border-blue-200 rounded-xl bg-white">
+            <input
+              type="checkbox"
+              id="gatewayOnlyConfirm"
+              className="h-5 w-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+              checked={isGatewayOnlyConfirmed}
+              onChange={(e) => onChange("gatewayOnlyReviewConfirmed", e.target.checked ? "yes" : "")}
+            />
+            <label htmlFor="gatewayOnlyConfirm" className="text-sm text-slate-700 cursor-pointer select-none">
+              I have reviewed all the application details and confirm they are correct. <span className="text-rose-500">*</span>
+            </label>
+          </div>
+        </div>
+      )}
 
       {/* Required Docs Confirmation for NEW SETUPS & SWITCHING */}
       {showFullChecklist && (
