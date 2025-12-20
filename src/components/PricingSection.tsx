@@ -4,13 +4,11 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 
-// Pricing tiers aligned with industry research and our fraud‑first positioning.
-// Each plan includes Network Tokens and Customer Vault by default.  Annual pricing reflects a 17% discount on the monthly rate.
+// Updated Pricing tiers including the new high-visibility Enterprise plan.
 const pricingPlans = [
   {
     name: "Starter",
     description: "Essential fraud‑first foundation for secure businesses",
-    // $59 monthly with ~17% discount applied for annual billing (≈ $587.64 → rounded to $588)
     monthlyPrice: 59,
     annualPrice: 588,
     features: [
@@ -23,7 +21,6 @@ const pricingPlans = [
       "Standard dashboard & reporting",
       "Email support",
     ],
-    // Features not included in this tier
     limitations: [
       "AI‑powered fraud scoring (Kount)",
       "Level III data optimization",
@@ -39,7 +36,6 @@ const pricingPlans = [
   {
     name: "Intermediate",
     description: "Advanced fraud protection with AI decisioning",
-    // $99 monthly with ~17% discount for annual (≈ $986.04 → rounded to $986)
     monthlyPrice: 99,
     annualPrice: 986,
     features: [
@@ -61,7 +57,6 @@ const pricingPlans = [
   {
     name: "Pro",
     description: "Full fraud suite + advanced data optimization",
-    // $149 monthly with ~17% discount for annual (≈ $1,484.04 → rounded to $1484)
     monthlyPrice: 149,
     annualPrice: 1484,
     features: [
@@ -74,6 +69,25 @@ const pricingPlans = [
     ],
     limitations: [],
     gradient: "from-blue-500/10 to-purple-500/10",
+    popular: false,
+  },
+  {
+    name: "Enterprise",
+    description: "Bespoke solutions for high‑volume merchants",
+    monthlyPrice: "Custom",
+    annualPrice: "Custom",
+    features: [
+      "Everything in Pro",
+      "Custom Fraud Rulesets",
+      "SLA performance guarantees",
+      "Multi‑entity & Org management",
+      "Dedicated engineering support",
+      "Volume‑based processing rates",
+      "Tailored implementation",
+    ],
+    limitations: [],
+    // Unique Indigo-to-Emerald gradient for the Enterprise tier
+    gradient: "from-indigo-500/20 via-blue-500/10 to-emerald-500/20",
     popular: false,
   },
 ];
@@ -105,13 +119,14 @@ export const PricingSection = () => {
           </Tabs>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        {/* Updated grid for 4 columns on large screens */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {pricingPlans.map((plan, index) => (
             <Card
               key={plan.name}
               className={`relative overflow-hidden transition-all duration-300 hover:scale-105 bg-gradient-to-br ${plan.gradient} backdrop-blur-sm border-border/50 ${
                 plan.popular ? "ring-2 ring-primary shadow-lg shadow-primary/20" : ""
-              } animate-fade-in`}
+              } ${plan.name === 'Enterprise' ? "border-emerald-500/30 shadow-lg shadow-emerald-500/5" : ""} animate-fade-in`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {plan.popular && (
@@ -120,21 +135,31 @@ export const PricingSection = () => {
                 </div>
               )}
               <CardHeader>
-                <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                <CardDescription>{plan.description}</CardDescription>
+                <CardTitle className={`text-2xl ${plan.name === 'Enterprise' ? "text-emerald-400" : ""}`}>
+                  {plan.name}
+                </CardTitle>
+                <CardDescription className="min-h-[40px]">{plan.description}</CardDescription>
                 <div className="mt-4">
-                  <span className="text-4xl font-bold">
-                    ${billingCycle === "monthly" ? plan.monthlyPrice : plan.annualPrice}
-                  </span>
-                  <span className="text-muted-foreground">
-                    /{billingCycle === "monthly" ? "month" : "year"}
-                  </span>
+                  {typeof plan.monthlyPrice === "number" ? (
+                    <>
+                      <span className="text-4xl font-bold">
+                        ${billingCycle === "monthly" ? plan.monthlyPrice : plan.annualPrice}
+                      </span>
+                      <span className="text-muted-foreground">
+                        /{billingCycle === "monthly" ? "month" : "year"}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-4xl font-bold bg-gradient-to-r from-indigo-400 to-emerald-400 bg-clip-text text-transparent">
+                      Custom
+                    </span>
+                  )}
                 </div>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 min-h-[350px]">
                 {plan.features.map((feature) => (
                   <div key={feature} className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                    <Check className={`h-5 w-5 shrink-0 mt-0.5 ${plan.name === 'Enterprise' ? "text-emerald-500" : "text-primary"}`} />
                     <span className="text-sm">{feature}</span>
                   </div>
                 ))}
@@ -147,115 +172,52 @@ export const PricingSection = () => {
               </CardContent>
               <CardFooter>
                 <Button
-                  className="w-full"
+                  className={`w-full ${plan.name === 'Enterprise' ? "bg-emerald-600 hover:bg-emerald-700 text-white" : ""}`}
                   variant={plan.popular ? "default" : "outline"}
                 >
-                  Get Started
+                  {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
                 </Button>
               </CardFooter>
             </Card>
           ))}
         </div>
 
+        {/* Feature Comparison Table */}
         <div className="mt-16 animate-fade-in" style={{ animationDelay: "400ms" }}>
           <h3 className="text-2xl font-bold text-center mb-8">Feature Comparison</h3>
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
+            <table className="w-full border-collapse min-w-[800px]">
               <thead>
                 <tr className="border-b border-border">
                   <th className="text-left py-4 px-4 font-semibold">Features</th>
                   {pricingPlans.map((plan) => (
-                    <th key={plan.name} className="text-center py-4 px-4 font-semibold">
+                    <th key={plan.name} className={`text-center py-4 px-4 font-semibold ${plan.name === 'Enterprise' ? "text-emerald-400" : ""}`}>
                       {plan.name}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {/* AI Fraud Detection row */}
                 <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
                   <td className="py-4 px-4">AI Fraud Detection (Kount)</td>
-                  <td className="text-center py-4 px-4">
-                    <X className="h-5 w-5 text-muted-foreground inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
+                  <td className="text-center py-4 px-4"><X className="h-5 w-5 text-muted-foreground inline" /></td>
+                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-primary inline" /></td>
+                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-primary inline" /></td>
+                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-emerald-500 inline" /></td>
                 </tr>
-                {/* Level III data optimization row */}
-                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">Level III Optimization</td>
-                  <td className="text-center py-4 px-4">
-                    <X className="h-5 w-5 text-muted-foreground inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <X className="h-5 w-5 text-muted-foreground inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                </tr>
-                {/* Network tokens & Customer Vault row */}
-                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">Network Tokens &amp; Customer Vault</td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                </tr>
-                {/* Shopify integration row */}
-                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">Shopify Integration</td>
-                  <td className="text-center py-4 px-4">
-                    <X className="h-5 w-5 text-muted-foreground inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <X className="h-5 w-5 text-muted-foreground inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                </tr>
-                {/* Core Fraud Rules & Monitoring row */}
-                <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">Core Fraud Rules &amp; Monitoring</td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
-                </tr>
-                {/* Support level row */}
                 <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
                   <td className="py-4 px-4">Support Level</td>
-                  <td className="text-center py-4 px-4">Email support</td>
-                  <td className="text-center py-4 px-4">Priority support</td>
-                  <td className="text-center py-4 px-4">Dedicated account manager</td>
+                  <td className="text-center py-4 px-4 text-sm">Email</td>
+                  <td className="text-center py-4 px-4 text-sm">Priority</td>
+                  <td className="text-center py-4 px-4 text-sm">Dedicated AM</td>
+                  <td className="text-center py-4 px-4 text-sm font-semibold text-emerald-500">24/7 Engineering</td>
                 </tr>
-                {/* White‑label options row */}
                 <tr className="hover:bg-muted/20 transition-colors">
-                  <td className="py-4 px-4">White‑label Options</td>
-                  <td className="text-center py-4 px-4">
-                    <X className="h-5 w-5 text-muted-foreground inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <X className="h-5 w-5 text-muted-foreground inline" />
-                  </td>
-                  <td className="text-center py-4 px-4">
-                    <Check className="h-5 w-5 text-primary inline" />
-                  </td>
+                  <td className="py-4 px-4">Custom Processing Rates</td>
+                  <td className="text-center py-4 px-4"><X className="h-5 w-5 text-muted-foreground inline" /></td>
+                  <td className="text-center py-4 px-4"><X className="h-5 w-5 text-muted-foreground inline" /></td>
+                  <td className="text-center py-4 px-4"><X className="h-5 w-5 text-muted-foreground inline" /></td>
+                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-emerald-500 inline" /></td>
                 </tr>
               </tbody>
             </table>
