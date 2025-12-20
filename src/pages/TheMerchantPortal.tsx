@@ -1,15 +1,16 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import NavTree from "@/components/NavTree";
 
 /**
+ * Merchant Portal Landing Page
+ *
  * This page acts as the landing page for Merchant Portal resources on the MerchantHaus
- * partner site. It provides a high‑level introduction and links to individual guides
- * on transaction reporting and account management. The layout mirrors the existing
- * MerchantHaus pages, using the same header and footer components and the same
- * tailwind utility classes found in the Terms page. Cards are used for each guide
- * to create a clear and approachable navigation experience.
+ * partner site. It provides a high-level introduction and links to individual guides
+ * on transaction reporting and account management. Uses React Router Links for
+ * instant SPA navigation without page reloads.
  */
 const TheMerchantPortal = () => {
   useEffect(() => {
@@ -21,9 +22,9 @@ const TheMerchantPortal = () => {
     <>
       <Header />
       <main className="bg-background py-16 px-6">
-        {/* Load Inter font */}        <div className="max-w-6xl mx-auto flex">
+        <div className="max-w-6xl mx-auto flex gap-8">
           <NavTree />
-          <div className="flex-1 docs-typography">
+          <div className="flex-1 docs-typography min-w-0">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               The Merchant Portal
             </h1>
@@ -44,12 +45,12 @@ const TheMerchantPortal = () => {
                   transactions, run snapshots by settlement batch or payment type,
                   and export results for further analysis.
                 </p>
-                <a
-                  href="/TransactionReports"
+                <Link
+                  to="/TransactionReports"
                   className="font-semibold text-primary hover:underline"
                 >
                   View Guide →
-                </a>
+                </Link>
               </div>
               {/* Card for Merchant User Accounts */}
               <div className="p-6 border border-border rounded-2xl hover:shadow-lg transition-shadow">
@@ -57,15 +58,15 @@ const TheMerchantPortal = () => {
                   Merchant User Accounts
                 </h2>
                 <p className="text-muted-foreground mb-4 leading-relaxed">
-                  Step‑by‑step instructions on adding, editing and removing merchant
+                  Step-by-step instructions on adding, editing and removing merchant
                   users, resetting passwords and assigning the correct permissions.
                 </p>
-                <a
-                  href="/MerchantUserAccounts"
+                <Link
+                  to="/MerchantUserAccounts"
                   className="font-semibold text-primary hover:underline"
                 >
                   View Guide →
-                </a>
+                </Link>
               </div>
               {/* Card for Managing Partner Users */}
               <div className="p-6 border border-border rounded-2xl hover:shadow-lg transition-shadow">
@@ -77,12 +78,12 @@ const TheMerchantPortal = () => {
                   including how to reset passwords, change primary usernames and
                   assign roles.
                 </p>
-                <a
-                  href="/ManagingPartnerUsers"
+                <Link
+                  to="/ManagingPartnerUsers"
                   className="font-semibold text-primary hover:underline"
                 >
                   View Guide →
-                </a>
+                </Link>
               </div>
             </div>
           </div>
