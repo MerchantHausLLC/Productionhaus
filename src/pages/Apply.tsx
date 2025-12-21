@@ -122,7 +122,7 @@ const STEPS: StepConfig[] = [
   { label: "Business Profile", icon: Briefcase },
   { label: "Legal Information", icon: Scale },
   { label: "Processing Info", icon: CreditCard },
-  { label: "Review", icon: FileText },
+  { label: "Application Readiness", icon: FileText },
 ];
 
 const REQUIRED_FIELDS: RequiredFieldsMap = {
@@ -406,6 +406,16 @@ export default function Apply() {
     finalizeSubmit();
   };
 
+  // Auto-redirect to homepage after 10 seconds on success
+  useEffect(() => {
+    if (submissionStatus === "success") {
+      const timer = setTimeout(() => {
+        window.location.href = "/";
+      }, 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [submissionStatus]);
+
   if (submissionStatus === "success") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
@@ -413,16 +423,25 @@ export default function Apply() {
           <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
             <Check size={32} strokeWidth={3} />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900">Preboarding Complete!</h2>
+          <h2 className="text-2xl font-bold text-slate-900">Application Received!</h2>
           <p className="text-slate-600">
-            We've successfully captured the merchant details.
+            Thank you for submitting your application. A member of our sales team will contact you within 24 hours to request any supporting documentation.
+          </p>
+          <p className="text-slate-600 text-sm">
+            Alternatively, you can send documents directly to{" "}
+            <a href="mailto:sales@merchanthaus.io" className="text-emerald-600 font-medium hover:underline">
+              sales@merchanthaus.io
+            </a>
+          </p>
+          <p className="text-xs text-slate-400 mt-2">
+            You will be redirected to the homepage in 10 seconds.
           </p>
           <div className="pt-4">
             <button
-              onClick={() => window.location.reload()}
+              onClick={() => window.location.href = "/"}
               className="px-6 py-2 bg-slate-100 text-slate-700 font-medium rounded-lg hover:bg-slate-200 transition-colors"
             >
-              Start New Application
+              Return to Home
             </button>
           </div>
         </div>
@@ -671,7 +690,7 @@ export default function Apply() {
                     <AlertCircle size={14} />
                     <span>
                       {isChecklistRequired && !isChecklistComplete
-                        ? "Complete the documents readiness checklist before submitting."
+                        ? "Complete the application readiness checklist before submitting."
                         : "Please confirm you have reviewed the application details before submitting."}
                     </span>
                   </div>
@@ -731,7 +750,7 @@ export default function Apply() {
             <div className="bg-indigo-50 rounded-2xl border border-indigo-100 p-5">
               <h3 className="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-2">Tip</h3>
               <p className="text-xs text-indigo-800 leading-relaxed">
-                If the merchant doesn't have a current processor, we will ask for additional documentation readiness checks after you click
+                If your business does not currently have a processor, we will ask for additional documentation readiness checks after you click
                 "Complete".
               </p>
             </div>
@@ -1278,7 +1297,7 @@ function ReviewStep({
         <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-5 animate-in fade-in">
           <h4 className="flex items-center gap-2 mb-4 text-sm font-bold text-amber-900 uppercase tracking-wide">
             <FileText size={16} className="text-amber-500" />
-            Required Documents Confirmation
+            Application Readiness Checklist
           </h4>
           <p className="text-sm text-amber-800 mb-4">
             Please confirm you have access to the following documents before proceeding.
@@ -1293,7 +1312,7 @@ function ReviewStep({
             {isChecklistComplete ? <Check size={14} /> : <AlertCircle size={14} />}
             <span>
               {isChecklistComplete
-                ? "Documents readiness checklist completed."
+                ? "Application readiness checklist completed."
                 : "Please answer each checklist item to enable submission."}
             </span>
           </div>
