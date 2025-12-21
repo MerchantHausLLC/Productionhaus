@@ -2,54 +2,48 @@ import React, { useEffect } from "react";
 
 /**
  * Merchanthaus Prediction 2026 Article
- * Restored original image references with refined editorial styling.
+ * Refined editorial styling for body and text.
+ * Note: Header and Footer are defined locally to ensure the preview is runnable.
  */
 
-// Self-contained Header
-const Header: React.FC = () => {
-  return (
-    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-100 px-6 py-4">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-crimson rounded-sm flex items-center justify-center text-white font-bold text-xl">M</div>
-          <span className="font-ubuntu font-bold text-xl text-[#0A2A43] tracking-tight">merchanthaus<span className="text-cyber-teal">.io</span></span>
-        </div>
-        <div className="hidden md:flex space-x-8 text-sm font-medium text-neutral-600 uppercase tracking-wider">
-          <a href="#" className="hover:text-crimson transition-colors">Solutions</a>
-          <a href="#" className="hover:text-crimson transition-colors">Insights</a>
-          <a href="#" className="hover:text-crimson transition-colors">Company</a>
-        </div>
-        <button className="bg-[#0A2A43] text-white px-5 py-2 rounded text-sm font-bold hover:bg-crimson transition-colors">
-          Get Started
-        </button>
+// Local Header (mirrors project design for self-contained preview)
+const Header: React.FC = () => (
+  <nav className="w-full bg-white border-b border-neutral-100 px-6 py-4 sticky top-0 z-50">
+    <div className="max-w-7xl mx-auto flex justify-between items-center">
+      <div className="flex items-center space-x-2">
+        <div className="w-8 h-8 bg-[#DC143C] flex items-center justify-center text-white font-bold rounded-sm">M</div>
+        <span className="font-ubuntu font-bold text-xl text-[#0A2A43]">merchanthaus<span className="text-[#00CEDB]">.io</span></span>
       </div>
-    </nav>
-  );
-};
+      <div className="hidden md:flex space-x-8 text-sm font-semibold text-neutral-600 uppercase tracking-wider">
+        <a href="#" className="hover:text-[#DC143C] transition-colors">Solutions</a>
+        <a href="#" className="hover:text-[#DC143C] transition-colors">Insights</a>
+        <a href="#" className="hover:text-[#DC143C] transition-colors">Company</a>
+      </div>
+      <button className="bg-[#0A2A43] text-white px-5 py-2 rounded text-sm font-bold hover:bg-[#DC143C] transition-all">
+        Get Started
+      </button>
+    </div>
+  </nav>
+);
 
-// Self-contained Footer
-const Footer: React.FC = () => {
-  return (
-    <footer className="mt-20 py-12 border-t border-neutral-100 text-center">
-      <div className="flex flex-col items-center space-y-6">
-        <div className="font-ubuntu font-bold text-2xl text-[#0A2A43]">
-          merchanthaus<span className="text-cyber-teal">.io</span>
-        </div>
-        <p className="text-neutral-500 max-w-md">
-          Empowering the next generation of commerce with seamless, embedded payment solutions.
-        </p>
-        <div className="flex space-x-6 text-sm font-medium text-neutral-400">
-          <a href="#" className="hover:text-neutral-900">Privacy Policy</a>
-          <a href="#" className="hover:text-neutral-900">Terms of Service</a>
-          <a href="#" className="hover:text-neutral-900">Contact</a>
-        </div>
-        <div className="text-xs text-neutral-400">
-          © {new Date().getFullYear()} Merchanthaus. All rights reserved.
-        </div>
+// Local Footer
+const Footer: React.FC = () => (
+  <footer className="w-full bg-neutral-50 border-t border-neutral-200 py-16 mt-20">
+    <div className="max-w-7xl mx-auto px-6 text-center">
+      <div className="font-ubuntu font-bold text-2xl text-[#0A2A43] mb-6">
+        merchanthaus<span className="text-[#00CEDB]">.io</span>
       </div>
-    </footer>
-  );
-};
+      <p className="text-neutral-500 max-w-md mx-auto mb-8">
+        Leading the transition to seamless, embedded commerce through innovative payment technology.
+      </p>
+      <div className="flex justify-center space-x-6 text-sm text-neutral-400 font-medium">
+        <a href="#" className="hover:text-neutral-900">Privacy</a>
+        <a href="#" className="hover:text-neutral-900">Terms</a>
+        <a href="#" className="hover:text-neutral-900">Contact</a>
+      </div>
+    </div>
+  </footer>
+);
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -57,15 +51,9 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] text-neutral-800 selection:bg-cyber-teal/30">
+    <div className="min-h-screen bg-[#FDFDFD] text-neutral-800 selection:bg-[#00CEDB]/20">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Ubuntu:wght@500;700&family=Montserrat:wght@700&display=swap');
-
-        :root {
-          --crimson: #DC143C;
-          --cyber-teal: #00CEDB;
-          --navy: #0A2A43;
-        }
 
         body { 
           font-family: 'Inter', sans-serif; 
@@ -74,27 +62,29 @@ const App: React.FC = () => {
         }
 
         .post-container { 
-          max-width: 720px; 
+          max-width: 740px; 
           margin: 0 auto;
         }
 
         h2 {
           font-family: 'Ubuntu', sans-serif;
-          font-size: 2.25rem;
+          font-size: 2.5rem;
           font-weight: 700;
-          color: var(--navy);
-          margin-top: 4rem;
+          color: #0A2A43;
+          margin-top: 4.5rem;
           margin-bottom: 1.5rem;
-          line-height: 1.2;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
         }
 
         h3 {
           font-family: 'Ubuntu', sans-serif;
-          font-size: 1.5rem;
+          font-size: 1.65rem;
           font-weight: 600;
           color: #0F5E82;
           margin-top: 3rem;
           margin-bottom: 1rem;
+          line-height: 1.2;
         }
 
         p {
@@ -104,126 +94,129 @@ const App: React.FC = () => {
         }
 
         .section-heading {
-          border-left: 6px solid var(--crimson);
+          border-left: 6px solid #DC143C;
           padding-left: 1.5rem;
           margin-left: -1.5rem;
         }
 
+        /* Drop Cap for the Introduction */
         .drop-cap::first-letter {
           font-family: 'Ubuntu', sans-serif;
           font-weight: 700;
           float: left;
-          font-size: 5rem;
-          line-height: 0.8;
-          padding-right: 0.75rem;
-          padding-top: 0.5rem;
-          color: var(--crimson);
+          font-size: 4.8rem;
+          line-height: 0.85;
+          padding-right: 0.8rem;
+          padding-top: 0.4rem;
+          color: #DC143C;
         }
 
         .callout-box {
-          border-radius: 16px;
+          border-radius: 12px;
           padding: 2.5rem;
           margin: 4rem 0;
-          position: relative;
-          box-shadow: 0 10px 30px -15px rgba(0,0,0,0.05);
+          border-left: 6px solid;
+          box-shadow: 0 10px 25px -15px rgba(0,0,0,0.05);
         }
 
         .callout-teal {
           background-color: #F0FDFA;
-          border: 1px solid #CCFBF1;
-          border-left: 8px solid var(--cyber-teal);
+          border-color: #00CEDB;
         }
 
         .callout-crimson {
           background-color: #FFF5F5;
-          border: 1px solid #FEE2E2;
-          border-left: 8px solid var(--crimson);
+          border-color: #DC143C;
         }
 
         .article-list {
           margin: 2.5rem 0;
-          padding-left: 0;
         }
 
         .article-list li {
           margin-bottom: 1.25rem;
-          position: relative;
-          list-style: none;
           padding-left: 2rem;
-          font-size: 1.1rem;
+          position: relative;
+          font-size: 1.125rem;
+          list-style: none;
         }
 
         .article-list li::before {
           content: "";
-          width: 10px;
-          height: 10px;
-          background: var(--crimson);
-          border-radius: 2px;
           position: absolute;
           left: 0;
-          top: 0.65rem;
+          top: 0.7rem;
+          width: 12px;
+          height: 3px;
+          background-color: #DC143C;
         }
 
         sup a {
           text-decoration: none;
-          color: var(--crimson);
+          color: #DC143C;
           font-weight: 700;
-          padding: 0 2px;
+          margin-left: 1px;
+        }
+
+        /* Hero Text Shadow to maintain readability without an overlay */
+        .hero-text-shadow {
+          text-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
 
         @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(30px); }
+          from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-up { animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        .animate-fade-up { animation: fadeUp 0.8s ease-out forwards; }
       `}</style>
 
       <Header />
 
-      <header className="relative w-full h-[65vh] flex items-end pb-20 bg-[#0A2A43] overflow-hidden">
-        <div className="absolute inset-0 z-0">
+      {/* Hero Header: NO OVERLAY as requested. Using standard background reference. */}
+      <header className="relative w-full h-[65vh] flex items-end pb-20 overflow-hidden">
+        <div className="absolute inset-0">
           <img
             src="/blog-images/prediction.webp"
             alt="Professional woman working at her laptop with AI and payment icons"
-            className="w-full h-full object-cover opacity-50 grayscale-[10%]"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A2A43] via-[#0A2A43]/40 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full animate-fade-up">
-          <div className="inline-block px-4 py-1.5 bg-crimson text-white font-ubuntu text-xs font-bold tracking-[0.2em] uppercase mb-8">
-            Strategic Outlook 2026
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full animate-fade-up hero-text-shadow">
+          <div className="inline-block px-4 py-1.5 bg-[#DC143C] text-white font-ubuntu text-xs font-bold tracking-[0.2em] uppercase mb-8 shadow-xl">
+            Market Analysis 2026
           </div>
-          <h1 className="font-ubuntu font-bold text-5xl sm:text-7xl lg:text-8xl text-white leading-[1.1] mb-8 max-w-4xl tracking-tight">
-            Beyond The <span className="text-cyber-teal italic">Hype</span>
+          <h1 className="font-ubuntu font-bold text-5xl sm:text-7xl lg:text-8xl text-white leading-tight mb-8">
+            Beyond The <span className="text-[#00CEDB] italic">Hype</span>
           </h1>
-          <p className="font-medium text-xl md:text-2xl text-neutral-300 max-w-2xl leading-relaxed border-l-2 border-cyber-teal pl-6">
-            Analyzing why 2026 will be the year AI expectations meet reality, while SaaS payments become the invisible engine of global trade.
+          <p className="font-medium text-xl md:text-2xl text-white max-w-2xl leading-relaxed">
+            Why 2026 will reset our expectations for AI and accelerate the adoption of SaaS-embedded payments.
           </p>
         </div>
       </header>
 
+      {/* Article Content */}
       <main className="px-6 py-24 bg-white">
         <article className="post-container">
-          <section>
+          <section className="mb-16">
             <h2 className="section-heading">Introduction</h2>
             <p className="drop-cap">
               Artificial intelligence (AI) has dominated headlines for the last few years. Generative models like
               ChatGPT captured the public imagination and triggered a gold rush of venture funding. At the same
               time, software‑as‑a‑service (SaaS) providers have quietly been transforming the way merchants accept
-              payments, turning a once‑complex process into a few clicks.
+              payments, turning a once‑complex process into a few clicks. What happens when the hype cycle slows
+              and the real business value comes into focus?
             </p>
             <p>
               This article looks ahead to 2026 and argues that the coming year will be a tipping point: AI
               expectations will correct toward reality, while SaaS‑driven payment solutions will become the
-              default choice for merchants. The analysis draws on recent research, industry reports and market
-              data to separate signal from noise and offer merchants practical guidance for the road ahead.
+              default choice for merchants.
             </p>
           </section>
 
-          <section>
-            <h2 className="section-heading">The AI Correction</h2>
-            <h3>1. Returns vs. Reality</h3>
+          <section className="mb-16">
+            <h2 className="section-heading">AI Hype Is Cooling</h2>
+            <h3>1. Exponential Expectations vs. Linear Progress</h3>
             <p>
               The last three years saw extraordinary hype around generative AI. Billions of dollars flowed into
               large language models (LLMs) with the promise of imminent disruption. Yet recent research shows
@@ -231,55 +224,61 @@ const App: React.FC = () => {
             </p>
 
             <div className="callout-box callout-crimson">
-              <h4 className="font-ubuntu font-bold text-crimson mb-3 uppercase text-xs tracking-widest">Critical Data Point</h4>
+              <h4 className="font-ubuntu font-bold text-[#DC143C] mb-3 uppercase text-xs tracking-widest">Key Performance Insight</h4>
               <p className="text-lg text-neutral-800 font-medium mb-0">
-                "Enterprise AI initiatives have reached a crossroads. Only about 5% of projects are delivering 
-                measurable revenue growth despite $40B in annual global spend."
+                Fewer than one third of decision-makers can tie AI investments to actual revenue growth, leading 
+                to a deferral of 25% of planned spending into late 2027.
               </p>
-              <p className="mt-4 text-sm text-neutral-500">— MIT Technology Review, 2025</p>
             </div>
 
-            <h3>2. The Hallucination Ceiling</h3>
+            <h3>2. The Inevitability of Hallucination</h3>
             <p>
               Large language models are powerful prediction engines, but they are not omniscient. Studies show
               that hallucination—confidently generating incorrect information—is mathematically inevitable.
+              probabilistic models cannot eliminate hallucinations.<sup><a href="#fn3" id="ref3">[3]</a></sup> 
               In practical terms, this means LLMs should not be trusted with critical decisions without human 
-              oversight—particularly in regulated industries like payments.<sup><a href="#fn3" id="ref3">[3]</a></sup>
+              oversight—particularly in regulated industries like payments.
             </p>
           </section>
 
-          <section>
-            <h2 className="section-heading">SaaS Payments: The Heat is On</h2>
+          <section className="mb-16">
+            <h2 className="section-heading">SaaS Payments: The New Standard</h2>
             <p>
-              While AI fever cools, the rise of embedded payments is creating a new standard for merchant experiences. 
-              Software is no longer just a tool for business; it is the financial backbone.
+              While AI fever cools, the rise of embedded payments and humanless merchant onboarding is accelerating. 
+              SaaS platforms are becoming the primary gateway for commerce.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
-              <div className="p-6 bg-neutral-50 border border-neutral-100 rounded-xl">
-                <div className="text-3xl font-bold text-cyber-teal mb-2">50%</div>
-                <p className="text-sm text-neutral-600 mb-0 font-medium">Small businesses already utilizing ISVs for integrated payments.</p>
+              <div className="p-8 bg-neutral-50 rounded-xl border border-neutral-100">
+                <div className="text-3xl font-bold text-[#00CEDB] mb-2">50%+</div>
+                <p className="text-sm text-neutral-600 font-medium mb-0 leading-snug">
+                  Of merchants now obtain payment services via software vendors rather than traditional banks.
+                </p>
               </div>
-              <div className="p-6 bg-neutral-50 border border-neutral-100 rounded-xl">
-                <div className="text-3xl font-bold text-crimson mb-2">$6.5T</div>
-                <p className="text-sm text-neutral-600 mb-0 font-medium">Projected global volume for embedded payment channels by 2026.</p>
+              <div className="p-8 bg-neutral-50 rounded-xl border border-neutral-100">
+                <div className="text-3xl font-bold text-[#DC143C] mb-2">$6.5T</div>
+                <p className="text-sm text-neutral-600 font-medium mb-0 leading-snug">
+                  Projected value of the embedded payments market by the end of 2025.
+                </p>
               </div>
             </div>
 
             <ul className="article-list">
               <li>
-                <strong>Embedded Standard:</strong> More than 80% of U.S. card‑accepting merchants now use a SaaS platform for their primary business operations.
+                <strong>Instant Onboarding:</strong> Leading platforms can now onboard merchants in under five minutes, 
+                eliminating days of manual underwriting.<sup><a href="#fn7" id="ref7">[7]</a></sup>
               </li>
               <li>
-                <strong>Instant Onboarding:</strong> Leading platforms can onboard merchants in minutes, automating compliance checks that previously took days.<sup><a href="#fn7" id="ref7">[7]</a></sup>
+                <strong>Vertical Integration:</strong> Adoption of embedded payments has reached 65% in specific sectors like 
+                Food & Beverage and Professional Services.
               </li>
             </ul>
 
             <div className="callout-box callout-teal">
-              <h4 className="font-ubuntu font-bold text-cyan-700 mb-3 uppercase text-xs tracking-widest">The Strategy Shift</h4>
-              <p className="text-lg text-neutral-800 font-medium mb-0 leading-relaxed">
-                By 2026, the competitive advantage will shift from "who has AI" to "who has the most seamless 
-                integration of financial services into their core software workflow."
+              <h4 className="font-ubuntu font-bold text-cyan-700 mb-3 uppercase text-xs tracking-widest">Market Shift</h4>
+              <p className="text-lg text-neutral-800 font-medium mb-0">
+                Merchants no longer view payments as a commodity; they want integrated solutions that 
+                streamline operations and provide unified data insights.
               </p>
             </div>
           </section>
@@ -288,21 +287,22 @@ const App: React.FC = () => {
             <h2 className="section-heading">Conclusion</h2>
             <p>
               2026 is poised to be a year of <strong>reset and refocus</strong>. The AI conversation will shift 
-              from breathless hype to sober assessment of utility. Meanwhile, SaaS payments will become the 
-              invisible standard of global commerce, offering merchants a frictionless way to get paid.
+              from breathless hype to sober assessment. Meanwhile, SaaS payments will become the invisible 
+              standard of global commerce, offering merchants a frictionless way to get paid.
             </p>
-            <p>
-              Merchanthaus.io stands at this intersection. We’re building for a future that is pragmatic about AI, 
-              but relentless about the promise of seamless, embedded payments.
+            <p className="text-lg font-medium text-neutral-900 border-l-4 border-[#00CEDB] pl-6 py-2 italic">
+              Merchanthaus.io stands at this intersection, building technology that is pragmatic about AI 
+              but relentless about the promise of seamless commerce.
             </p>
           </section>
 
+          {/* Footnotes Section */}
           <footer className="mt-20 pt-12 border-t border-neutral-100">
             <h5 className="font-ubuntu font-bold text-xs uppercase tracking-widest text-neutral-400 mb-8">Citations & Research</h5>
             <div id="footnotes" className="text-sm text-neutral-500 space-y-4 leading-relaxed">
-              <p id="fn1"><span className="text-neutral-300 mr-3">1.</span> Forrester Research: AI Investment Deferrals in Enterprise (2025).</p>
-              <p id="fn3"><span className="text-neutral-300 mr-3">3.</span> ScienceAlert: Probabilistic Limits of LLM Accuracy.</p>
-              <p id="fn7"><span className="text-neutral-300 mr-3">7.</span> Dotfile Analysis: The Evolution of Automated KYC/AML in Fintech.</p>
+              <p id="fn1"><span className="text-neutral-300 font-bold mr-3">1.</span> Forrester: AI Priorities and Recalibrating for 2026 Growth.</p>
+              <p id="fn3"><span className="text-neutral-300 font-bold mr-3">3.</span> ScienceAlert: The Mathematical Inevitability of LLM Hallucinations.</p>
+              <p id="fn7"><span className="text-neutral-300 font-bold mr-3">7.</span> Dotfile: Comparing Traditional vs. Humanless Onboarding Times.</p>
             </div>
           </footer>
         </article>
