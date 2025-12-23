@@ -462,7 +462,8 @@ All colors MUST be HSL.
     }
 
     .solutions-modal-banner {
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 16 / 5;
+      max-height: 200px;
     }
   }
 

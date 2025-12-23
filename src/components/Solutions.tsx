@@ -416,6 +416,17 @@ export const Solutions = () => {
             </button>
           </div>
         </div>
+        {/* Services Banner Link */}
+        <a
+          href="/services"
+          className="block mt-12 mx-auto max-w-4xl overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] group"
+        >
+          <img
+            src="/images/services-banner.webp"
+            alt="Explore Our Services"
+            className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </a>
       </div>
       {/* Fullscreen Modal with Flip Animation */}
       {selectedCard !== null && (
