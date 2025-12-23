@@ -431,14 +431,15 @@ export const Solutions = () => {
       {/* Fullscreen Modal with Flip Animation */}
       {selectedCard !== null && (
         <div
-          className="fixed inset-0 z-50 bg-neutral-dark/95 dark:bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-fade-in overflow-y-auto"
+          className="fixed inset-0 z-50 bg-neutral-dark/95 dark:bg-black/95 backdrop-blur-sm flex items-start justify-center p-4 sm:p-6 animate-fade-in overflow-y-auto"
           onClick={closeFullscreen}
         >
           <div
-            className="relative max-w-4xl w-full max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3rem)] bg-background dark:bg-card rounded-3xl shadow-2xl overflow-hidden animate-scale-in flex flex-col"
+            className="relative max-w-4xl w-full my-auto bg-background dark:bg-card rounded-3xl shadow-2xl overflow-hidden animate-scale-in flex flex-col"
             onClick={(e) => e.stopPropagation()}
             style={{
-              animation: 'flipIn 0.6s ease-out'
+              animation: 'flipIn 0.6s ease-out',
+              maxHeight: 'calc(100vh - 2rem)'
             }}
           >
             {/* Banner Image in Modal */}
@@ -466,7 +467,7 @@ export const Solutions = () => {
             >
               <X className="w-6 h-6 text-foreground" />
             </button>
-            <div className="p-6 sm:p-8 md:p-12 overflow-y-auto max-h-full flex-1">
+            <div className="p-6 sm:p-8 md:p-12 overflow-y-auto flex-1 min-h-0">
               {/* Large icon */}
               <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-6 md:mb-8 animate-scale-in">
                 {(() => {
@@ -479,10 +480,12 @@ export const Solutions = () => {
                 {typewriterText}
                 <span className="animate-pulse">|</span>
               </h2>
-              <p className="font-inter text-base md:text-lg text-muted-foreground leading-relaxed mb-6 md:mb-8">
+              <p className="font-inter text-base md:text-lg text-muted-foreground leading-relaxed">
                 {solutions[selectedCard].fullDescription}
               </p>
-              {/* CTA Buttons */}
+            </div>
+            {/* CTA Buttons - Fixed at bottom */}
+            <div className="shrink-0 p-6 sm:p-8 md:px-12 border-t border-border bg-background dark:bg-card">
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
                   className={`${solutions[selectedCard].buttonColor} text-white font-inter font-medium rounded-lg px-8`}
@@ -490,8 +493,8 @@ export const Solutions = () => {
                 >
                   Get Started
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={closeFullscreen}
                   className="font-inter font-medium rounded-lg px-8"
                 >
