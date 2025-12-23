@@ -1,49 +1,6 @@
 import React, { useEffect } from "react";
-
-/**
- * Merchanthaus Prediction 2026 Article
- * Refined editorial styling for body and text.
- * Note: Header and Footer are defined locally to ensure the preview is runnable.
- */
-
-// Local Header (mirrors project design for self-contained preview)
-const Header: React.FC = () => (
-  <nav className="w-full bg-white border-b border-neutral-100 px-6 py-4 sticky top-0 z-50">
-    <div className="max-w-7xl mx-auto flex justify-between items-center">
-      <div className="flex items-center space-x-2">
-        <div className="w-8 h-8 bg-[#DC143C] flex items-center justify-center text-white font-bold rounded-sm">M</div>
-        <span className="font-ubuntu font-bold text-xl text-[#0A2A43]">merchanthaus<span className="text-[#00CEDB]">.io</span></span>
-      </div>
-      <div className="hidden md:flex space-x-8 text-sm font-semibold text-neutral-600 uppercase tracking-wider">
-        <a href="#" className="hover:text-[#DC143C] transition-colors">Solutions</a>
-        <a href="#" className="hover:text-[#DC143C] transition-colors">Insights</a>
-        <a href="#" className="hover:text-[#DC143C] transition-colors">Company</a>
-      </div>
-      <button className="bg-[#0A2A43] text-white px-5 py-2 rounded text-sm font-bold hover:bg-[#DC143C] transition-all">
-        Get Started
-      </button>
-    </div>
-  </nav>
-);
-
-// Local Footer
-const Footer: React.FC = () => (
-  <footer className="w-full bg-neutral-50 border-t border-neutral-200 py-16 mt-20">
-    <div className="max-w-7xl mx-auto px-6 text-center">
-      <div className="font-ubuntu font-bold text-2xl text-[#0A2A43] mb-6">
-        merchanthaus<span className="text-[#00CEDB]">.io</span>
-      </div>
-      <p className="text-neutral-500 max-w-md mx-auto mb-8">
-        Leading the transition to seamless, embedded commerce through innovative payment technology.
-      </p>
-      <div className="flex justify-center space-x-6 text-sm text-neutral-400 font-medium">
-        <a href="#" className="hover:text-neutral-900">Privacy</a>
-        <a href="#" className="hover:text-neutral-900">Terms</a>
-        <a href="#" className="hover:text-neutral-900">Contact</a>
-      </div>
-    </div>
-  </footer>
-);
+import { Header } from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const App: React.FC = () => {
   useEffect(() => {
