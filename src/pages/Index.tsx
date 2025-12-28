@@ -11,7 +11,6 @@ import VampBlogBanner from "@/components/VampBlogBanner";
 import { useParallax } from "@/hooks/use-parallax";
 import { Reveal } from "@/components/Reveal";
 import { PricingSection } from "@/components/PricingSection";
-import ChristmasDecorations from "@/components/ChristmasDecorations";
 
 const Index = () => {
   const softGradientRef = useParallax<HTMLDivElement>({ speed: 0.04 });
@@ -20,8 +19,6 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
-      {/* Christmas Decorations */}
-      <ChristmasDecorations />
       <div className="pointer-events-none absolute inset-0 -z-10">
         {/* Soft gradient background layer */}
         <div
