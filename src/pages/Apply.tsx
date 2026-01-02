@@ -57,8 +57,6 @@ interface MerchantFormState {
   currentProcessorName: string;
 
   // Billing (if keeping MID)
-  routingNumber: string;
-  accountNumber: string;
   hasVarSheet: string; // "yes" | "no" | ""
 
   monthlyVolume: string;
@@ -174,6 +172,57 @@ const DOCS_CHECKLIST_FIELDS: (keyof MerchantFormState)[] = [
   "hasTaxDocument",
 ];
 
+const SAFE_PAYLOAD_FIELDS: (keyof MerchantFormState)[] = [
+  "id",
+  "dbaName",
+  "products",
+  "natureOfBusiness",
+  "dbaContactFirst",
+  "dbaContactLast",
+  "dbaPhone",
+  "dbaEmail",
+  "dbaAddress",
+  "dbaAddress2",
+  "dbaCity",
+  "dbaState",
+  "dbaZip",
+  "legalEntityName",
+  "legalPhone",
+  "legalEmail",
+  "tin",
+  "ownershipType",
+  "formationDate",
+  "stateIncorporated",
+  "legalAddress",
+  "legalAddress2",
+  "legalCity",
+  "legalState",
+  "legalZip",
+  "hasExistingProcessor",
+  "isSwitchingProcessor",
+  "currentProcessorName",
+  "hasVarSheet",
+  "monthlyVolume",
+  "avgTicket",
+  "highTicket",
+  "swipedPct",
+  "keyedPct",
+  "motoPct",
+  "ecomPct",
+  "b2cPct",
+  "b2bPct",
+  "sicMcc",
+  "website",
+  "hasBankOrProcessingStatements",
+  "hasVoidedCheckOrBankLetter",
+  "hasGovernmentId",
+  "hasArticlesOfOrganization",
+  "hasTaxDocument",
+  "docsLocationOrLink",
+  "gatewayOnlyReviewConfirmed",
+  "notes",
+];
+
 const initialState: MerchantFormState = {
   id: "",
 
@@ -211,8 +260,6 @@ const initialState: MerchantFormState = {
   currentProcessorName: "",
 
   // billing info
-  routingNumber: "",
-  accountNumber: "",
   hasVarSheet: "",
 
   monthlyVolume: "",
@@ -241,6 +288,12 @@ const initialState: MerchantFormState = {
   // notes
   notes: "",
 };
+
+const buildSafePayload = (formData: MerchantFormState) =>
+  SAFE_PAYLOAD_FIELDS.reduce((acc, key) => {
+    acc[key] = formData[key] ?? "";
+    return acc;
+  }, {} as Record<keyof MerchantFormState, string>);
 
 // Helper for Netlify Form Encoding
 const encode = (data: Record<string, string>) => {
@@ -296,7 +349,8 @@ export default function Apply() {
     }
 
     const timer = setTimeout(() => {
-      saveToSupabase(form);
+      const safePayload = buildSafePayload(form);
+      saveToSupabase(safePayload);
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -309,7 +363,7 @@ export default function Apply() {
   }, [isChecklistComplete]);
 
   // 3. Supabase Save Handler
-  const saveToSupabase = async (formData: MerchantFormState) => {
+  const saveToSupabase = async (formData: Record<keyof MerchantFormState, string>) => {
     setSaveStatus("saving");
     try {
       /* --- SUPABASE IMPLEMENTATION ---
@@ -366,15 +420,17 @@ export default function Apply() {
   const finalizeSubmit = async () => {
     setSubmissionStatus("submitting");
 
+    const safePayload = buildSafePayload(form);
+
     // 1. Ensure final state is saved to Supabase
-    await saveToSupabase(form);
+    await saveToSupabase(safePayload);
 
     // 2. Submit to Netlify Forms
     try {
       await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode({ "form-name": FORM_NAME, ...form }),
+        body: encode({ "form-name": FORM_NAME, ...safePayload }),
       });
 
       console.log("Netlify Form Submitted Successfully");
@@ -600,8 +656,6 @@ export default function Apply() {
               <input type="hidden" name="hasExistingProcessor" value={form.hasExistingProcessor} />
               <input type="hidden" name="isSwitchingProcessor" value={form.isSwitchingProcessor} />
               <input type="hidden" name="currentProcessorName" value={form.currentProcessorName} />
-              <input type="hidden" name="routingNumber" value={form.routingNumber} />
-              <input type="hidden" name="accountNumber" value={form.accountNumber} />
               <input type="hidden" name="hasVarSheet" value={form.hasVarSheet} />
               <input type="hidden" name="monthlyVolume" value={form.monthlyVolume} />
               <input type="hidden" name="avgTicket" value={form.avgTicket} />
@@ -1088,6 +1142,9 @@ function ProcessingStep({ form, onChange }: StepProps) {
                     Since you are keeping your current processor, we need to bridge the gateway manually.
                     Please email a <span className="font-semibold">Voided Check</span> or <span className="font-semibold">Bank Confirmation Letter</span> to:
                   </p>
+                  <p className="text-xs text-blue-800">
+                    Do not enter routing or account numbers in this form. We only accept the documents above for banking verification.
+                  </p>
                   <div className="font-mono bg-blue-100/50 p-2 rounded text-blue-800 select-all inline-block mt-1">
                     sales@merchanthaus.io
                   </div>
@@ -1301,7 +1358,7 @@ function ReviewStep({
           </h4>
           <p className="text-sm text-amber-800 mb-4">
             Please confirm you have access to the following documents before proceeding.
-            (Uploads will be requested in the formal application).
+            (Uploads will be requested in the formal application). Do not enter routing or account numbers in this form.
           </p>
           <div
             className={`flex items-center gap-2 text-xs font-semibold mb-3 ${
