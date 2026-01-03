@@ -289,11 +289,11 @@ const initialState: MerchantFormState = {
   notes: "",
 };
 
-const buildSafePayload = (formData: MerchantFormState) =>
+const buildSafePayload = (formData: MerchantFormState): Record<string, string> =>
   SAFE_PAYLOAD_FIELDS.reduce((acc, key) => {
     acc[key] = formData[key] ?? "";
     return acc;
-  }, {} as Record<keyof MerchantFormState, string>);
+  }, {} as Record<string, string>);
 
 // Helper for Netlify Form Encoding
 const encode = (data: Record<string, string>) => {
@@ -363,7 +363,7 @@ export default function Apply() {
   }, [isChecklistComplete]);
 
   // 3. Supabase Save Handler
-  const saveToSupabase = async (formData: Record<keyof MerchantFormState, string>) => {
+  const saveToSupabase = async (formData: Record<string, string>) => {
     setSaveStatus("saving");
     try {
       /* --- SUPABASE IMPLEMENTATION ---
