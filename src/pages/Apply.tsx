@@ -17,6 +17,8 @@ import {
   Loader2,
   LucideIcon,
 } from "lucide-react";
+import { supabase } from "@/supabase"; // Ensure path is correct
+import { MerchantApplication } from "@/types/database";
 
 // --- Types & Interfaces ---
 
@@ -114,8 +116,6 @@ interface ReviewStepProps extends StepProps {
 
 // --- Constants & Config ---
 
-const FORM_NAME = "merchant-apply";
-
 const STEPS: StepConfig[] = [
   { label: "Business Profile", icon: Briefcase },
   { label: "Legal Information", icon: Scale },
@@ -170,57 +170,6 @@ const DOCS_CHECKLIST_FIELDS: (keyof MerchantFormState)[] = [
   "hasGovernmentId",
   "hasArticlesOfOrganization",
   "hasTaxDocument",
-];
-
-const SAFE_PAYLOAD_FIELDS: (keyof MerchantFormState)[] = [
-  "id",
-  "dbaName",
-  "products",
-  "natureOfBusiness",
-  "dbaContactFirst",
-  "dbaContactLast",
-  "dbaPhone",
-  "dbaEmail",
-  "dbaAddress",
-  "dbaAddress2",
-  "dbaCity",
-  "dbaState",
-  "dbaZip",
-  "legalEntityName",
-  "legalPhone",
-  "legalEmail",
-  "tin",
-  "ownershipType",
-  "formationDate",
-  "stateIncorporated",
-  "legalAddress",
-  "legalAddress2",
-  "legalCity",
-  "legalState",
-  "legalZip",
-  "hasExistingProcessor",
-  "isSwitchingProcessor",
-  "currentProcessorName",
-  "hasVarSheet",
-  "monthlyVolume",
-  "avgTicket",
-  "highTicket",
-  "swipedPct",
-  "keyedPct",
-  "motoPct",
-  "ecomPct",
-  "b2cPct",
-  "b2bPct",
-  "sicMcc",
-  "website",
-  "hasBankOrProcessingStatements",
-  "hasVoidedCheckOrBankLetter",
-  "hasGovernmentId",
-  "hasArticlesOfOrganization",
-  "hasTaxDocument",
-  "docsLocationOrLink",
-  "gatewayOnlyReviewConfirmed",
-  "notes",
 ];
 
 const initialState: MerchantFormState = {
@@ -289,19 +238,6 @@ const initialState: MerchantFormState = {
   notes: "",
 };
 
-const buildSafePayload = (formData: MerchantFormState): Record<string, string> =>
-  SAFE_PAYLOAD_FIELDS.reduce((acc, key) => {
-    acc[key] = formData[key] ?? "";
-    return acc;
-  }, {} as Record<string, string>);
-
-// Helper for Netlify Form Encoding
-const encode = (data: Record<string, string>) => {
-  return Object.keys(data)
-    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-    .join("&");
-};
-
 // --- Main Component ---
 
 export default function Apply() {
@@ -336,8 +272,9 @@ export default function Apply() {
   // 1. Initialize Session ID
   useEffect(() => {
     if (!form.id) {
-      const mockId = "draft_" + Math.random().toString(36).substr(2, 9);
-      setForm((prev) => ({ ...prev, id: mockId }));
+      // Use crypto.randomUUID() for Supabase compatibility
+      const newId = crypto.randomUUID();
+      setForm((prev) => ({ ...prev, id: newId }));
     }
   }, [form.id]);
 
@@ -349,9 +286,8 @@ export default function Apply() {
     }
 
     const timer = setTimeout(() => {
-      const safePayload = buildSafePayload(form);
-      saveToSupabase(safePayload);
-    }, 1000);
+      saveToSupabase(form);
+    }, 1500); // Slightly longer delay to debounce typing
 
     return () => clearTimeout(timer);
   }, [form]);
@@ -363,19 +299,70 @@ export default function Apply() {
   }, [isChecklistComplete]);
 
   // 3. Supabase Save Handler
-  const saveToSupabase = async (formData: Record<string, string>) => {
+  const saveToSupabase = async (formData: MerchantFormState) => {
+    if (!formData.id) return;
     setSaveStatus("saving");
+
+    // Map Frontend State to Database Columns
+    const dbPayload: MerchantApplication = {
+      id: formData.id,
+      dba_name: formData.dbaName,
+      products: formData.products,
+      nature_of_business: formData.natureOfBusiness,
+      dba_contact_first: formData.dbaContactFirst,
+      dba_contact_last: formData.dbaContactLast,
+      dba_phone: formData.dbaPhone,
+      dba_email: formData.dbaEmail,
+      dba_address: formData.dbaAddress,
+      dba_address2: formData.dbaAddress2,
+      dba_city: formData.dbaCity,
+      dba_state: formData.dbaState,
+      dba_zip: formData.dbaZip,
+      legal_entity_name: formData.legalEntityName,
+      legal_phone: formData.legalPhone,
+      legal_email: formData.legalEmail,
+      tin: formData.tin,
+      ownership_type: formData.ownershipType,
+      formation_date: formData.formationDate || null, // Handle empty date
+      state_incorporated: formData.stateIncorporated,
+      legal_address: formData.legalAddress,
+      legal_address2: formData.legalAddress2,
+      legal_city: formData.legalCity,
+      legal_state: formData.legalState,
+      legal_zip: formData.legalZip,
+      has_existing_processor: formData.hasExistingProcessor,
+      is_switching_processor: formData.isSwitchingProcessor,
+      current_processor_name: formData.currentProcessorName,
+      has_var_sheet: formData.hasVarSheet,
+      // Helper to parse numbers safely
+      monthly_volume: parseFloat(formData.monthlyVolume) || 0,
+      avg_ticket: parseFloat(formData.avgTicket) || 0,
+      high_ticket: parseFloat(formData.highTicket) || 0,
+      swiped_pct: parseFloat(formData.swipedPct) || 0,
+      keyed_pct: parseFloat(formData.keyedPct) || 0,
+      moto_pct: parseFloat(formData.motoPct) || 0,
+      ecom_pct: parseFloat(formData.ecomPct) || 0,
+      b2c_pct: parseFloat(formData.b2cPct) || 0,
+      b2b_pct: parseFloat(formData.b2bPct) || 0,
+      website: formData.website,
+      sic_mcc: formData.sicMcc,
+      has_bank_statements: formData.hasBankOrProcessingStatements,
+      has_voided_check: formData.hasVoidedCheckOrBankLetter,
+      has_gov_id: formData.hasGovernmentId,
+      has_articles_org: formData.hasArticlesOfOrganization,
+      has_tax_doc: formData.hasTaxDocument,
+      docs_link: formData.docsLocationOrLink,
+      notes: formData.notes,
+      gateway_only_confirmed: formData.gatewayOnlyReviewConfirmed,
+      updated_at: new Date().toISOString()
+    };
+
     try {
-      /* --- SUPABASE IMPLEMENTATION ---
-         const { data, error } = await supabase
-           .from('merchant_onboarding_intake')
-           .upsert(formData, { onConflict: 'id' });
-         if (error) throw error;
-      */
+      const { error } = await supabase
+        .from('merchant_applications')
+        .upsert(dbPayload, { onConflict: 'id' });
 
-      // Fake network delay for preview
-      await new Promise((resolve) => setTimeout(resolve, 800));
-
+      if (error) throw error;
       setSaveStatus("saved");
     } catch (err) {
       console.error("Autosave failed:", err);
@@ -414,29 +401,28 @@ export default function Apply() {
   );
 
   const nextDisabled = () => {
-    return false; // Validation disabled
+    return false; // Validation disabled per original code
   };
 
   const finalizeSubmit = async () => {
     setSubmissionStatus("submitting");
 
-    const safePayload = buildSafePayload(form);
-
-    // 1. Ensure final state is saved to Supabase
-    await saveToSupabase(safePayload);
-
-    // 2. Submit to Netlify Forms
     try {
-      await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode({ "form-name": FORM_NAME, ...safePayload }),
-      });
+      // 1. Force a final save first
+      await saveToSupabase(form);
 
-      console.log("Netlify Form Submitted Successfully");
+      // 2. Update Status to 'submitted'
+      const { error } = await supabase
+        .from('merchant_applications')
+        .update({ status: 'submitted' })
+        .eq('id', form.id);
+
+      if (error) throw error;
+
+      console.log("Supabase Form Submitted Successfully");
       setSubmissionStatus("success");
     } catch (error) {
-      console.error("Netlify Submission Failed:", error);
+      console.error("Submission Failed:", error);
       alert("Submission failed. Please check your connection.");
       setSubmissionStatus("idle");
     }
@@ -517,7 +503,7 @@ export default function Apply() {
             <div>
               <h1 className="text-lg font-bold text-slate-900 leading-tight">Merchant Preboarding</h1>
               <div className="flex items-center gap-2 mt-0.5">
-                <p className="text-xs text-slate-500 hidden sm:block">Intake Wizard v2.4</p>
+                <p className="text-xs text-slate-500 hidden sm:block">Intake Wizard v2.4 (Supabase)</p>
                 {/* Save Status Indicator */}
                 {saveStatus === "saving" && (
                   <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-slate-400 animate-pulse">
@@ -608,81 +594,9 @@ export default function Apply() {
         <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-start">
           {/* Main Form Area */}
           <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            {/* NETLIFY FORM WRAPPER */}
             <form
-              name={FORM_NAME}
-              method="POST"
-              data-netlify="true"
-              data-netlify-honeypot="bot-field"
               onSubmit={handleSubmit}
             >
-              {/* Hidden input for Netlify Form Name */}
-              <input type="hidden" name="form-name" value={FORM_NAME} />
-              <input type="hidden" name="bot-field" />
-
-              {/* Hidden inputs for all form fields - Netlify Forms requires these to detect fields at build time */}
-              {/* Session ID */}
-              <input type="hidden" name="id" value={form.id} />
-
-              {/* Business Profile Fields */}
-              <input type="hidden" name="dbaName" value={form.dbaName} />
-              <input type="hidden" name="products" value={form.products} />
-              <input type="hidden" name="natureOfBusiness" value={form.natureOfBusiness} />
-              <input type="hidden" name="dbaContactFirst" value={form.dbaContactFirst} />
-              <input type="hidden" name="dbaContactLast" value={form.dbaContactLast} />
-              <input type="hidden" name="dbaPhone" value={form.dbaPhone} />
-              <input type="hidden" name="dbaEmail" value={form.dbaEmail} />
-              <input type="hidden" name="dbaAddress" value={form.dbaAddress} />
-              <input type="hidden" name="dbaAddress2" value={form.dbaAddress2} />
-              <input type="hidden" name="dbaCity" value={form.dbaCity} />
-              <input type="hidden" name="dbaState" value={form.dbaState} />
-              <input type="hidden" name="dbaZip" value={form.dbaZip} />
-
-              {/* Legal Information Fields */}
-              <input type="hidden" name="legalEntityName" value={form.legalEntityName} />
-              <input type="hidden" name="legalPhone" value={form.legalPhone} />
-              <input type="hidden" name="legalEmail" value={form.legalEmail} />
-              <input type="hidden" name="tin" value={form.tin} />
-              <input type="hidden" name="ownershipType" value={form.ownershipType} />
-              <input type="hidden" name="formationDate" value={form.formationDate} />
-              <input type="hidden" name="stateIncorporated" value={form.stateIncorporated} />
-              <input type="hidden" name="legalAddress" value={form.legalAddress} />
-              <input type="hidden" name="legalAddress2" value={form.legalAddress2} />
-              <input type="hidden" name="legalCity" value={form.legalCity} />
-              <input type="hidden" name="legalState" value={form.legalState} />
-              <input type="hidden" name="legalZip" value={form.legalZip} />
-
-              {/* Processing Information Fields */}
-              <input type="hidden" name="hasExistingProcessor" value={form.hasExistingProcessor} />
-              <input type="hidden" name="isSwitchingProcessor" value={form.isSwitchingProcessor} />
-              <input type="hidden" name="currentProcessorName" value={form.currentProcessorName} />
-              <input type="hidden" name="hasVarSheet" value={form.hasVarSheet} />
-              <input type="hidden" name="monthlyVolume" value={form.monthlyVolume} />
-              <input type="hidden" name="avgTicket" value={form.avgTicket} />
-              <input type="hidden" name="highTicket" value={form.highTicket} />
-              <input type="hidden" name="swipedPct" value={form.swipedPct} />
-              <input type="hidden" name="keyedPct" value={form.keyedPct} />
-              <input type="hidden" name="motoPct" value={form.motoPct} />
-              <input type="hidden" name="ecomPct" value={form.ecomPct} />
-              <input type="hidden" name="b2cPct" value={form.b2cPct} />
-              <input type="hidden" name="b2bPct" value={form.b2bPct} />
-              <input type="hidden" name="sicMcc" value={form.sicMcc} />
-              <input type="hidden" name="website" value={form.website} />
-
-              {/* Document Readiness Fields */}
-              <input type="hidden" name="hasBankOrProcessingStatements" value={form.hasBankOrProcessingStatements} />
-              <input type="hidden" name="hasVoidedCheckOrBankLetter" value={form.hasVoidedCheckOrBankLetter} />
-              <input type="hidden" name="hasGovernmentId" value={form.hasGovernmentId} />
-              <input type="hidden" name="hasArticlesOfOrganization" value={form.hasArticlesOfOrganization} />
-              <input type="hidden" name="hasTaxDocument" value={form.hasTaxDocument} />
-              <input type="hidden" name="docsLocationOrLink" value={form.docsLocationOrLink} />
-
-              {/* Notes Field */}
-              <input type="hidden" name="notes" value={form.notes} />
-
-              {/* Gateway-only Review Confirmation Field */}
-              <input type="hidden" name="gatewayOnlyReviewConfirmed" value={form.gatewayOnlyReviewConfirmed} />
-
               <div className="p-6 md:p-8">
                 <div className="mb-6">
                   <h2 className="text-xl font-bold text-slate-900 mb-1">{STEPS[step].label}</h2>
@@ -839,8 +753,6 @@ function Field({ label, required, children, hint, className = "" }: FieldProps) 
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-/* Input component - white background with black text for readability
-   Shows green border when field has a value to provide visual acknowledgment */
 function Input(props: InputProps) {
   const hasValue = props.value !== undefined && props.value !== null && String(props.value).trim() !== "";
   return (
@@ -1483,6 +1395,8 @@ interface SummaryCardProps {
   title: string;
   icon?: LucideIcon;
   children: React.ReactNode;
+  hint?: string;
+  className?: string;
 }
 
 function SummaryCard({ title, icon: Icon, children }: SummaryCardProps) {
