@@ -4,9 +4,9 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
 import { ThankYouDialog } from "./ThankYouDialog";
-import { formDataToQueryString } from "@/lib/netlify";
 import { Label } from "./ui/label";
 import { RequiredIndicator } from "./ui/required-indicator";
+import { supabase } from "@/supabase"; //
 
 export const Contact = () => {
   const { toast } = useToast();
@@ -25,16 +25,21 @@ export const Contact = () => {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    try {
-      const response = await fetch(form.action || "/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formDataToQueryString(formData),
-      });
+    const submission = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      company: (formData.get("company") as string) || null,
+      message: formData.get("message") as string,
+    };
 
-      if (!response.ok) {
-        throw new Error("Form submission failed");
-      }
+    try {
+      // Supabase Insert
+      const { error } = await supabase
+        .from("contact_submissions")
+        .insert([submission]);
+
+      if (error) throw error;
 
       toast({
         title: "Message sent!",
@@ -43,6 +48,7 @@ export const Contact = () => {
       setShowThankYou(true);
       form.reset();
     } catch (error) {
+      console.error("Supabase Error:", error);
       toast({
         title: "Error",
         description: "Failed to send message. Please try again.",
@@ -66,19 +72,10 @@ export const Contact = () => {
         </div>
 
         <form
-          name="contact"
-          method="POST"
-          data-netlify="true"
-          data-netlify-honeypot="bot-field"
-          action="/"
-          acceptCharset="UTF-8"
           onSubmit={handleSubmit}
           className="space-y-6 animate-fade-in"
           style={{ animationDelay: '200ms' }}
         >
-          <input type="hidden" name="form-name" value="contact" />
-          <input type="hidden" name="bot-field" />
-          
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
               <Label className="text-crimson flex items-center text-sm font-semibold">
@@ -90,7 +87,6 @@ export const Contact = () => {
                 autoComplete="name"
                 placeholder="Your Name"
                 required
-                aria-required="true"
                 className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-silver-grey"
               />
             </div>
@@ -105,7 +101,6 @@ export const Contact = () => {
                 autoComplete="email"
                 placeholder="Your Email"
                 required
-                aria-required="true"
                 className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-silver-grey"
               />
             </div>
@@ -121,7 +116,6 @@ export const Contact = () => {
                 inputMode="tel"
                 placeholder="Your Phone"
                 required
-                aria-required="true"
                 className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-silver-grey"
               />
             </div>
@@ -145,10 +139,8 @@ export const Contact = () => {
               name="message"
               placeholder="How can we help you?"
               required
-              aria-required="true"
               rows={6}
               className="mt-2 bg-white/10 border-white/20 text-white placeholder:text-silver-grey resize-none"
-              aria-label="How can we help you?"
             />
           </div>
 
