@@ -1,0 +1,60 @@
+typesexport interface ContactSubmission {
+  name: string;
+  email: string;
+  phone: string;
+  company?: string;
+  message: string;
+}
+
+export interface MerchantApplication {
+  id: string;
+  dba_name?: string;
+  products?: string;
+  nature_of_business?: string;
+  dba_contact_first?: string;
+  dba_contact_last?: string;
+  dba_phone?: string;
+  dba_email?: string;
+  dba_address?: string;
+  dba_address2?: string;
+  dba_city?: string;
+  dba_state?: string;
+  dba_zip?: string;
+  legal_entity_name?: string;
+  legal_phone?: string;
+  legal_email?: string;
+  tin?: string;
+  ownership_type?: string;
+  formation_date?: string | null;
+  state_incorporated?: string;
+  legal_address?: string;
+  legal_address2?: string;
+  legal_city?: string;
+  legal_state?: string;
+  legal_zip?: string;
+  has_existing_processor?: string;
+  is_switching_processor?: string;
+  current_processor_name?: string;
+  has_var_sheet?: string;
+  monthly_volume?: number;
+  avg_ticket?: number;
+  high_ticket?: number;
+  swiped_pct?: number;
+  keyed_pct?: number;
+  moto_pct?: number;
+  ecom_pct?: number;
+  b2c_pct?: number;
+  b2b_pct?: number;
+  website?: string;
+  sic_mcc?: string;
+  has_bank_statements?: string;
+  has_voided_check?: string;
+  has_gov_id?: string;
+  has_articles_org?: string;
+  has_tax_doc?: string;
+  docs_link?: string;
+  notes?: string;
+  gateway_only_confirmed?: string;
+  status?: string;
+  updated_at?: string;
+}
