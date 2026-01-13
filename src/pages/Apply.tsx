@@ -412,12 +412,35 @@ export default function Apply() {
       await saveToSupabase(form);
 
       // 2. Update Status to 'submitted'
-      const { error } = await supabase
+      const { error: dbError } = await supabase
         .from('merchant_applications')
         .update({ status: 'submitted' })
         .eq('id', form.id);
 
-      if (error) throw error;
+      if (dbError) throw dbError;
+
+      // 3. TRIGGER EMAIL (New Code)
+      console.log("Triggering email notification...");
+      const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
+        body: {
+          type: 'new_web_application',
+          recipientEmail: 'sales@merchanthaus.io', // <--- REPLACE THIS EMAIL if needed
+          recipientName: 'Sales Team',
+          data: {
+            dbaName: form.dbaName,
+            contactName: `${form.dbaContactFirst} ${form.dbaContactLast}`,
+            email: form.dbaEmail,
+            phone: form.dbaPhone,
+            monthlyVolume: form.monthlyVolume,
+            crmUrl: "https://merchantflow.merchanthaus.io/admin/web-submissions"
+          }
+        }
+      });
+
+      if (emailError) {
+        console.error("Email failed to send:", emailError);
+        // We do NOT stop execution here; the DB save was successful.
+      }
 
       console.log("Supabase Form Submitted Successfully");
       setSubmissionStatus("success");
