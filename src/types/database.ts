@@ -1,4 +1,4 @@
-typesexport interface ContactSubmission {
+export interface ContactSubmission {
   name: string;
   email: string;
   phone: string;
