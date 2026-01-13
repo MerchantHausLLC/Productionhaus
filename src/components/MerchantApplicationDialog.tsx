@@ -14,9 +14,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { CheckCircle2 } from "lucide-react";
-import { formDataToQueryString } from "@/lib/netlify";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { RequiredIndicator } from "./ui/required-indicator";
+import { supabase } from "@/supabase"; // <--- NOW USING SUPABASE
 
 const applicationFormSchema = z.object({
   company_name: z.string().trim().min(1, "Company name is required").max(100),
@@ -95,47 +95,60 @@ export function MerchantApplicationDialog({
 
   const onSubmit = async (data: ApplicationFormValues) => {
     try {
-      const formData = new FormData();
-      formData.append("form-name", "merchant-apply-dialog");
-      formData.append("bot-field", "");
-      
-      // Add hidden fields
-      formData.append("country", "United States");
-      formData.append("timezone", "(GMT-08:00) Pacific Time (US & Canada)");
-      formData.append("language", "English");
-      
-      // Add all form fields
-      Object.entries(data).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          value.forEach((item) => formData.append(key, item));
-        } else if (value !== undefined && value !== null) {
-          if (typeof value === "boolean") {
-            formData.append(key, value ? "yes" : "no");
-          } else {
-            formData.append(key, String(value));
+      // 1. SAVE TO SUPABASE
+      const { error: dbError } = await supabase.from("merchant_applications").insert([
+        {
+          dba_name: data.company_name,
+          dba_address: data.address,
+          dba_address2: data.address2,
+          dba_city: data.city,
+          dba_state: data.state,
+          dba_zip: data.zip,
+          website: data.website,
+          dba_contact_first: data.first_name,
+          dba_contact_last: data.last_name,
+          dba_email: data.email,
+          dba_phone: data.phone,
+          // Mapping custom fields to notes or existing columns
+          notes: `Username: ${data.username}\nFax: ${data.fax || 'N/A'}`,
+          has_existing_processor: data.hasCurrentProcessor,
+          current_processor_name: data.currentProcessorName,
+          products: data.processing_services?.join(", "),
+          nature_of_business: "From Dialog Form", // Default tag
+          status: "submitted"
+        }
+      ]);
+
+      if (dbError) throw dbError;
+
+      // 2. TRIGGER EMAIL NOTIFICATION
+      await supabase.functions.invoke('send-notification-email', {
+        body: {
+          type: 'new_web_application',
+          recipientEmail: 'sales@merchanthaus.io',
+          recipientName: 'Admin',
+          data: {
+            dbaName: data.company_name,
+            contactName: `${data.first_name} ${data.last_name}`,
+            email: data.email,
+            phone: data.phone,
+            monthlyVolume: "Not specified (Dialog)",
+            crmUrl: "https://merchantflow.merchanthaus.io/admin/web-submissions"
           }
         }
       });
 
-      const response = await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formDataToQueryString(formData),
+      setIsSubmitted(true);
+      toast({
+        title: "Application Received",
+        description: "We'll review your application and get back to you soon.",
       });
 
-      if (response.ok) {
-        setIsSubmitted(true);
-        toast({
-          title: "Application Submitted",
-          description: "We'll review your application and get back to you soon.",
-        });
-      } else {
-        throw new Error("Submission failed");
-      }
     } catch (error) {
+      console.error("Submission error:", error);
       toast({
         title: "Submission Failed",
-        description: "Please try again or contact support.",
+        description: "Please check your connection and try again.",
         variant: "destructive",
       });
     }
@@ -186,28 +199,7 @@ export function MerchantApplicationDialog({
             </Button>
           </div>
         ) : (
-          <form
-            name="merchant-apply-dialog"
-            method="POST"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
-            action="/"
-            acceptCharset="UTF-8"
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6"
-          >
-            <input type="hidden" name="form-name" value="merchant-apply-dialog" />
-            <input type="hidden" name="bot-field" />
-            <input
-              type="hidden"
-              name="agree_to_terms"
-              value={watch("agree_to_terms") ? "yes" : "no"}
-            />
-            <input
-              type="hidden"
-              name="agree_to_security_policy"
-              value={watch("agree_to_security_policy") ? "yes" : "no"}
-            />
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Merchant Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold font-ubuntu text-crimson">Merchant Information</h3>
@@ -219,9 +211,6 @@ export function MerchantApplicationDialog({
                   </Label>
                   <Input
                     id="company_name"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.company_name}
                     {...register("company_name")}
                   />
                   {errors.company_name && (
@@ -235,9 +224,6 @@ export function MerchantApplicationDialog({
                   </Label>
                   <Input
                     id="address"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.address}
                     {...register("address")}
                   />
                   {errors.address && (
@@ -255,9 +241,6 @@ export function MerchantApplicationDialog({
                   </Label>
                   <Input
                     id="city"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.city}
                     {...register("city")}
                   />
                   {errors.city && (
@@ -271,9 +254,6 @@ export function MerchantApplicationDialog({
                   </Label>
                   <Input
                     id="state"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.state}
                     {...register("state")}
                   />
                   {errors.state && (
@@ -287,9 +267,6 @@ export function MerchantApplicationDialog({
                   </Label>
                   <Input
                     id="zip"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.zip}
                     {...register("zip")}
                   />
                   {errors.zip && (
@@ -363,9 +340,6 @@ export function MerchantApplicationDialog({
                   </Label>
                   <Input
                     id="first_name"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.first_name}
                     {...register("first_name")}
                   />
                   {errors.first_name && (
@@ -379,9 +353,6 @@ export function MerchantApplicationDialog({
                   </Label>
                   <Input
                     id="last_name"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.last_name}
                     {...register("last_name")}
                   />
                   {errors.last_name && (
@@ -396,9 +367,6 @@ export function MerchantApplicationDialog({
                   <Input
                     id="email"
                     type="email"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.email}
                     {...register("email")}
                   />
                   {errors.email && (
@@ -413,9 +381,6 @@ export function MerchantApplicationDialog({
                   <Input
                     id="phone"
                     type="tel"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.phone}
                     {...register("phone")}
                   />
                   {errors.phone && (
@@ -439,9 +404,6 @@ export function MerchantApplicationDialog({
                 </Label>
                 <Input
                   id="username"
-                  required
-                  aria-required="true"
-                  aria-invalid={!!errors.username}
                   {...register("username")}
                 />
                 {errors.username && (
@@ -554,25 +516,15 @@ export function MerchantApplicationDialog({
               )}
             </div>
 
-            {processingServices.map((service) => (
-              <input
-                key={`dialog-processing-${service}`}
-                type="hidden"
-                name="processing_services[]"
-                value={service}
-              />
-            ))}
-            {valueServices.map((service) => (
-              <input
-                key={`dialog-value-${service}`}
-                type="hidden"
-                name="value_services[]"
-                value={service}
-              />
-            ))}
-
             <Button type="submit" disabled={isSubmitting} className="w-full">
-              {isSubmitting ? "Submitting..." : "Submit Application"}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Submit Application"
+              )}
             </Button>
           </form>
         )}
