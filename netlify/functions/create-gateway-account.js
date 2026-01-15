@@ -21,7 +21,7 @@
  *   integrate it.
  */
 
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const { fetch } = globalThis;
 
 // Helper to build the request body for the Gateway Accounts API
 function buildGatewayRequestBody(merchant) {
@@ -51,6 +51,9 @@ function buildGatewayRequestBody(merchant) {
 
 exports.handler = async function (event) {
   try {
+    if (typeof fetch !== 'function') {
+      throw new Error('Global fetch is unavailable. Ensure the function runs on a Node.js version that includes fetch.');
+    }
     // Parse the merchant object from the event body.
     const data = JSON.parse(event.body);
     const merchant = data.merchant;
