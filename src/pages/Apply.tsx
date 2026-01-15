@@ -454,6 +454,10 @@ export default function Apply() {
   const handleSubmit = (e: FormEvent) => {
     if (e) e.preventDefault();
 
+    if (step < STEPS.length - 1) {
+      return;
+    }
+
     // Block submission if document checklist is required but not complete
     if (isChecklistRequired && !isChecklistComplete) {
       setStep(3);
