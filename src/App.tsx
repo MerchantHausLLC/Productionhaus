@@ -27,6 +27,7 @@ const Security = lazy(() => import("./pages/Security"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Quote = lazy(() => import("./pages/Quote"));
+const Todos = lazy(() => import("./pages/Todos"));
 
 /**
  * Developer Guides and Merchant Portal pages - directly imported for instant navigation
@@ -102,6 +103,7 @@ const App = () => (
               <Route path="/tap-to-mobile" element={<TapToMobile />} />
               <Route path="/apply" element={<Apply />} />
               <Route path="/quote" element={<Quote />} />
+              <Route path="/todos" element={<Todos />} />
               <Route path="/security" element={<Security />} />
               <Route path="/developer-guides" element={<DeveloperPortal />} />
               <Route path="/terms" element={<Terms />} />
