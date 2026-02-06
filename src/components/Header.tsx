@@ -16,7 +16,7 @@ export const Header = () => {
     { href: "/about", label: "About" },
     { href: "/services", label: "Services" },
     { href: "/blog", label: "Blog" },
-    { href: "/apply", label: "Get Started" }
+    { href: "https://ops-terminal.merchant.haus/merchant-apply", label: "Get Started" }
   ];
 
   useEffect(() => {

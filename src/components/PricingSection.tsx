@@ -174,8 +174,11 @@ export const PricingSection = () => {
                 <Button
                   className={`w-full ${plan.name === 'Enterprise' ? "bg-emerald-600 hover:bg-emerald-700 text-white" : ""}`}
                   variant={plan.popular ? "default" : "outline"}
+                  asChild
                 >
-                  {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
+                  <a href="https://ops-terminal.merchant.haus/merchant-apply">
+                    {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
+                  </a>
                 </Button>
               </CardFooter>
             </Card>

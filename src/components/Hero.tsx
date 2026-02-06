@@ -197,7 +197,7 @@ export const Hero = () => {
             size="lg"
             className="bg-crimson hover:opacity-90 text-white font-montserrat font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all w-full sm:w-auto"
           >
-            <a href="/apply">Get Started</a>
+            <a href="https://ops-terminal.merchant.haus/merchant-apply">Get Started</a>
           </Button>
         </div>
         {/* Scroll Indicator */}

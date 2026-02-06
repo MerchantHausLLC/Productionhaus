@@ -63,7 +63,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/apply" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="https://ops-terminal.merchant.haus/merchant-apply" className="text-muted-foreground hover:text-cyber-teal transition-colors">
                   Apply Now
                 </a>
               </li>

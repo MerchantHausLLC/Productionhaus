@@ -195,7 +195,7 @@ const Services = () => {
                   className="border-2 border-foreground text-foreground hover:bg-foreground hover:text-background font-bold px-8 py-6 text-lg rounded-lg transition-all"
                   asChild
                 >
-                  <a href="/apply">Get Started</a>
+                  <a href="https://ops-terminal.merchant.haus/merchant-apply">Get Started</a>
                 </Button>
               </div>
             </div>
@@ -404,7 +404,7 @@ const Services = () => {
                 className="border-2 border-white text-white bg-transparent hover:bg-white/15 hover:text-white font-bold px-8 py-6 text-lg rounded-lg transition-all"
                 asChild
               >
-                <a href="/apply">
+                <a href="https://ops-terminal.merchant.haus/merchant-apply">
                   <Mail className="mr-2 w-5 h-5" />
                   Apply Now
                 </a>
