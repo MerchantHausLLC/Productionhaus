@@ -346,7 +346,7 @@ const Security = () => {
                 Call 1-505-600-6042
               </a>
               <a 
-                href="/apply"
+                href="https://ops-terminal.merchant.haus/merchant-apply"
                 className="inline-flex items-center justify-center rounded-full border-2 border-crimson px-8 py-4 text-base font-semibold text-crimson transition hover:bg-crimson/10"
               >
                 Apply Now

@@ -1,13 +1,11 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Shield, Zap, Users, Lock, TrendingUp, Globe } from "lucide-react";
-import { MerchantApplicationDialog } from "@/components/MerchantApplicationDialog";
 import { TypewriterParagraph } from "@/components/TypewriterParagraph";
 import { useParallax } from "@/hooks/use-parallax";
 
 const AboutPage = () => {
-  const [isContactOpen, setIsContactOpen] = useState(false);
   const crimsonAuraRef = useParallax<HTMLDivElement>({ speed: 0.06 });
   const tealAuraRef = useParallax<HTMLDivElement>({ speed: 0.1 });
   const purpleAuraRef = useParallax<HTMLDivElement>({ speed: 0.14 });
@@ -188,16 +186,15 @@ const AboutPage = () => {
             <p className="text-lg mb-8 text-neutral-dark/80">
               Join the businesses that trust MerchantHaus to power their payments. Fast setup, enterprise-grade security, and support that actually helps.
             </p>
-            <button
-              onClick={() => setIsContactOpen(true)}
+            <a
+              href="https://ops-terminal.merchant.haus/merchant-apply"
               className="inline-block bg-crimson hover:bg-crimson/90 text-white font-bold py-4 px-10 rounded-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
             >
               Apply Now
-            </button>
+            </a>
           </div>
         </section>
       </div>
-      <MerchantApplicationDialog open={isContactOpen} onOpenChange={setIsContactOpen} />
       <Footer />
     </>
   );

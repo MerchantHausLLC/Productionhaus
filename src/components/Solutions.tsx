@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Button } from "./ui/button";
-import { MerchantApplicationDialog } from "./MerchantApplicationDialog";
 import shieldLogo from "@/assets/shield.webp";
 import { useParallax } from "@/hooks/use-parallax";
 
@@ -139,7 +138,6 @@ const solutions: Solution[] = [
 export const Solutions = () => {
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [typewriterText, setTypewriterText] = useState("");
-  const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const marqueeRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
   const scrollPositionRef = useRef(0);
@@ -249,7 +247,7 @@ export const Solutions = () => {
 
   const handleGetStarted = () => {
     closeFullscreen();
-    setIsApplicationOpen(true);
+    window.location.href = "https://ops-terminal.merchant.haus/merchant-apply";
   };
 
   // Tilt effect handler for cards based on cursor position
@@ -520,7 +518,6 @@ export const Solutions = () => {
           }
         }
       `}</style>
-      <MerchantApplicationDialog open={isApplicationOpen} onOpenChange={setIsApplicationOpen} />
     </section>
   );
 };
