@@ -25,6 +25,7 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Apply = lazy(() => import("./pages/Apply"));
 const Security = lazy(() => import("./pages/Security"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
+const SupportedProcessors = lazy(() => import("./pages/SupportedProcessors"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Quote = lazy(() => import("./pages/Quote"));
 const Todos = lazy(() => import("./pages/Todos"));
@@ -152,6 +153,7 @@ const App = () => (
               <Route path="/QueryAPI" element={<QueryAPI />} />
               <Route path="/ThreeStepRedirect" element={<ThreeStepRedirect />} />
               <Route path="/Webhooks" element={<Webhooks />} />
+              <Route path="/supported-processors" element={<SupportedProcessors />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
