@@ -15,6 +15,7 @@ export const Header = () => {
   const navLinks = [
     { href: "/about", label: "About" },
     { href: "/services", label: "Services" },
+    { href: "/supported-processors", label: "Processors" },
     { href: "/blog", label: "Blog" },
     { href: "https://ops-terminal.merchant.haus/merchant-apply", label: "Get Started" }
   ];
