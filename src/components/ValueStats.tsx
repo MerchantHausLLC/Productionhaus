@@ -200,16 +200,13 @@ function useReveal(threshold = 0.15) {
 
 function ValueSection({
   section,
-  index,
 }: {
   section: Section;
-  index: number;
 }) {
-  const isEven = index % 2 === 0;
   const { ref, visible } = useReveal();
 
   return (
-    <div ref={ref} className="vs-row" data-even={isEven ? "" : undefined}>
+    <div ref={ref} className="vs-row">
       {/* Left: text window */}
       <div className={`vs-text ${visible ? "vs-text--visible" : ""}`}>
         <span className="vs-section-emoji" aria-hidden="true">
@@ -254,8 +251,8 @@ export const ValueStats = () => {
 
       {/* Modular sections */}
       <div className="vs-sections-wrap">
-        {sections.map((section, idx) => (
-          <ValueSection key={section.heading} section={section} index={idx} />
+        {sections.map((section) => (
+          <ValueSection key={section.heading} section={section} />
         ))}
       </div>
 
@@ -323,15 +320,6 @@ export const ValueStats = () => {
             flex-direction: row;
             align-items: center;
             gap: 3rem;
-          }
-
-          /* Alternate layout: even rows = text left, card right */
-          /* Odd rows = card left, text right */
-          .vs-row[data-even] {
-            flex-direction: row;
-          }
-          .vs-row:not([data-even]) {
-            flex-direction: row-reverse;
           }
         }
 
