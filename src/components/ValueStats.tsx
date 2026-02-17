@@ -241,16 +241,6 @@ export const ValueStats = () => {
           </span>
           <h3 className="vs-section-heading">{currentSection.heading}</h3>
           <div className="vs-section-copy">{currentSection.leftCopy}</div>
-          <ul className="vs-bullet-list">
-            {currentSection.stats.map((stat) => (
-              <li key={stat.text} className="vs-bullet-item">
-                <span className="vs-bullet-icon" aria-hidden="true">
-                  {stat.icon}
-                </span>
-                <span className="vs-bullet-text">{stat.text}</span>
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* Right: 3D carousel */}
@@ -268,12 +258,18 @@ export const ValueStats = () => {
             >
               {sections.map((section, i) => {
                 const angle = (360 / TOTAL) * i;
+                /* Calculate relative angle from front for graduated opacity */
+                let relAngle = ((angle - active * (360 / TOTAL)) % 360 + 360) % 360;
+                if (relAngle > 180) relAngle = 360 - relAngle;
+                const cardOpacity = i === active ? 1 : Math.max(0.25, 1 - relAngle / 220);
+                const cardScale = i === active ? 1 : Math.max(0.82, 1 - relAngle / 900);
                 return (
                   <div
                     key={section.heading}
                     className={`vs-carousel-card ${i === active ? "vs-carousel-card--active" : ""}`}
                     style={{
-                      transform: `rotateY(${angle}deg) translateZ(320px)`,
+                      transform: `rotateY(${angle}deg) translateZ(320px) scale(${cardScale})`,
+                      opacity: cardOpacity,
                     }}
                     onClick={() => goTo(i)}
                   >
@@ -478,56 +474,6 @@ export const ValueStats = () => {
           margin-bottom: 0;
         }
 
-        /* ===== Left: bullet points ===== */
-        .vs-bullet-list {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-          margin-top: 0.5rem;
-        }
-
-        .vs-bullet-item {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          padding: 0.55rem 0.85rem;
-          border-radius: 0.6rem;
-          background: hsla(var(--cyber-teal), 0.06);
-          border: 1px solid hsla(var(--cyber-teal), 0.12);
-          transition: background 0.25s ease, border-color 0.25s ease;
-        }
-
-        .dark .vs-bullet-item {
-          background: rgba(59, 130, 246, 0.06);
-          border-color: rgba(59, 130, 246, 0.15);
-        }
-
-        .vs-bullet-item:hover {
-          background: hsla(var(--cyber-teal), 0.12);
-          border-color: hsla(var(--cyber-teal), 0.25);
-        }
-
-        .dark .vs-bullet-item:hover {
-          background: rgba(59, 130, 246, 0.12);
-          border-color: rgba(59, 130, 246, 0.28);
-        }
-
-        .vs-bullet-icon {
-          flex: 0 0 auto;
-          font-size: 1.2rem;
-          line-height: 1;
-        }
-
-        .vs-bullet-text {
-          font-size: 1rem;
-          font-weight: 600;
-          color: var(--vs-foreground);
-          line-height: 1.3;
-        }
-
         /* ===== Right: 3D carousel ===== */
         .vs-carousel-wrapper {
           flex: 0 0 auto;
@@ -540,10 +486,11 @@ export const ValueStats = () => {
         }
 
         .vs-carousel-scene {
-          width: 260px;
-          height: 340px;
-          perspective: 1100px;
+          width: 280px;
+          height: 360px;
+          perspective: 1000px;
           position: relative;
+          transform: rotateX(2deg) rotateY(-5deg);
         }
 
         .vs-carousel-ring {
@@ -563,28 +510,44 @@ export const ValueStats = () => {
           border-radius: 1.25rem;
           border: 1px solid var(--vs-card-border);
           background: var(--vs-card-bg);
-          box-shadow: var(--vs-card-shadow);
+          box-shadow:
+            0 0 0 1px hsla(210 10% 23%, 0.08),
+            0 8px 24px rgba(0, 0, 0, 0.12),
+            0 2px 8px rgba(0, 0, 0, 0.08),
+            0 0 20px hsla(var(--cyber-teal), 0.10);
           padding: 1.5rem 1.25rem;
           display: flex;
           flex-direction: column;
           gap: 0.6rem;
-          backface-visibility: hidden;
+          backface-visibility: visible;
           cursor: pointer;
-          transition: box-shadow 0.35s ease, opacity 0.4s ease;
-          opacity: 0.45;
+          transition: box-shadow 0.5s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+        }
+
+        .dark .vs-carousel-card {
+          box-shadow:
+            0 0 0 1px rgba(15, 23, 42, 0.7),
+            0 8px 24px rgba(0, 0, 0, 0.5),
+            0 2px 8px rgba(0, 0, 0, 0.3),
+            0 0 16px rgba(59, 130, 246, 0.12);
         }
 
         .vs-carousel-card--active {
-          opacity: 1;
           box-shadow:
-            var(--vs-card-shadow),
-            0 0 28px hsla(var(--cyber-teal), 0.22);
+            0 0 0 1px hsla(var(--cyber-teal), 0.2),
+            0 16px 48px rgba(0, 0, 0, 0.15),
+            0 4px 16px rgba(0, 0, 0, 0.1),
+            0 0 40px hsla(var(--cyber-teal), 0.25),
+            0 0 80px hsla(var(--cyber-teal), 0.12);
         }
 
         .dark .vs-carousel-card--active {
           box-shadow:
-            var(--vs-card-shadow),
-            0 0 28px rgba(59, 130, 246, 0.3);
+            0 0 0 1px rgba(59, 130, 246, 0.3),
+            0 16px 48px rgba(0, 0, 0, 0.6),
+            0 4px 16px rgba(0, 0, 0, 0.4),
+            0 0 40px rgba(59, 130, 246, 0.3),
+            0 0 80px rgba(59, 130, 246, 0.15);
         }
 
         .vs-card-emoji {
@@ -750,9 +713,10 @@ export const ValueStats = () => {
           }
 
           .vs-carousel-scene {
-            width: 240px;
-            height: 310px;
-            perspective: 900px;
+            width: 250px;
+            height: 320px;
+            perspective: 850px;
+            transform: rotateX(2deg) rotateY(-3deg);
           }
 
           .vs-carousel-card {
@@ -772,11 +736,6 @@ export const ValueStats = () => {
             max-width: 100%;
           }
 
-          .vs-bullet-list {
-            align-items: stretch;
-            max-width: 360px;
-            width: 100%;
-          }
         }
 
         @media (max-width: 480px) {
@@ -785,9 +744,10 @@ export const ValueStats = () => {
           }
 
           .vs-carousel-scene {
-            width: 200px;
-            height: 270px;
-            perspective: 750px;
+            width: 210px;
+            height: 280px;
+            perspective: 700px;
+            transform: rotateX(2deg) rotateY(-3deg);
           }
 
           .vs-carousel-card {
