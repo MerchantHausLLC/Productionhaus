@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 
 /* ------------------------------------------------------------------ */
 /*  Section data – 7 merchant-first modular sections                   */
@@ -160,84 +166,61 @@ const sections: Section[] = [
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  Intersection Observer reveal hook (scroll-triggered)               */
-/* ------------------------------------------------------------------ */
-
-function useReveal(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mql.matches) {
-      setVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, visible };
-}
-
-/* ------------------------------------------------------------------ */
-/*  Single two-column section                                          */
-/* ------------------------------------------------------------------ */
-
-function ValueSection({
-  section,
-}: {
-  section: Section;
-}) {
-  const { ref, visible } = useReveal();
-
-  return (
-    <div ref={ref} className="vs-row">
-      {/* Left: text window */}
-      <div className={`vs-text ${visible ? "vs-text--visible" : ""}`}>
-        <span className="vs-section-emoji" aria-hidden="true">
-          {section.emoji}
-        </span>
-        <h3 className="vs-section-heading">{section.heading}</h3>
-        <div className="vs-section-copy">{section.leftCopy}</div>
-      </div>
-
-      {/* Right: stat card */}
-      <div className={`vs-card ${visible ? "vs-card--visible" : ""}`}>
-        <ul className="vs-stat-list">
-          {section.stats.map((stat) => (
-            <li key={stat.text} className="vs-stat-item">
-              <span className="vs-stat-icon" aria-hidden="true">
-                {stat.icon}
-              </span>
-              <span className="vs-stat-text">{stat.text}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
+const TOTAL = sections.length;
+const AUTO_INTERVAL = 5000;
 
 /* ------------------------------------------------------------------ */
 /*  Main export                                                        */
 /* ------------------------------------------------------------------ */
 
 export const ValueStats = () => {
+  const [active, setActive] = useState(0);
+  const [textAnimating, setTextAnimating] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  /* Auto-rotation */
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setTextAnimating(true);
+      setTimeout(() => {
+        setActive((prev) => (prev + 1) % TOTAL);
+        setTextAnimating(false);
+      }, 350);
+    }, AUTO_INTERVAL);
+  }, []);
+
+  useEffect(() => {
+    if (!isPaused) startTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [isPaused, startTimer]);
+
+  const goTo = useCallback(
+    (index: number) => {
+      if (index === active) return;
+      setTextAnimating(true);
+      setTimeout(() => {
+        setActive(index);
+        setTextAnimating(false);
+      }, 350);
+      if (!isPaused) startTimer();
+    },
+    [active, isPaused, startTimer]
+  );
+
+  const goNext = useCallback(() => {
+    goTo((active + 1) % TOTAL);
+  }, [active, goTo]);
+
+  const goPrev = useCallback(() => {
+    goTo((active - 1 + TOTAL) % TOTAL);
+  }, [active, goTo]);
+
+  const currentSection = sections[active];
+
   return (
     <section className="vs-section py-20 px-4 sm:px-6 bg-transparent">
       {/* Section heading */}
@@ -249,11 +232,108 @@ export const ValueStats = () => {
         </div>
       </div>
 
-      {/* Modular sections */}
-      <div className="vs-sections-wrap">
-        {sections.map((section) => (
-          <ValueSection key={section.heading} section={section} />
+      {/* Two-column layout: text left, carousel right */}
+      <div className="vs-layout">
+        {/* Left: animated text description */}
+        <div className={`vs-text-panel ${textAnimating ? "vs-text-panel--exit" : "vs-text-panel--enter"}`}>
+          <span className="vs-section-emoji" aria-hidden="true">
+            {currentSection.emoji}
+          </span>
+          <h3 className="vs-section-heading">{currentSection.heading}</h3>
+          <div className="vs-section-copy">{currentSection.leftCopy}</div>
+          <ul className="vs-bullet-list">
+            {currentSection.stats.map((stat) => (
+              <li key={stat.text} className="vs-bullet-item">
+                <span className="vs-bullet-icon" aria-hidden="true">
+                  {stat.icon}
+                </span>
+                <span className="vs-bullet-text">{stat.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Right: 3D carousel */}
+        <div
+          className="vs-carousel-wrapper"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <div className="vs-carousel-scene">
+            <div
+              className="vs-carousel-ring"
+              style={{
+                transform: `rotateY(${-(active * (360 / TOTAL))}deg)`,
+              }}
+            >
+              {sections.map((section, i) => {
+                const angle = (360 / TOTAL) * i;
+                return (
+                  <div
+                    key={section.heading}
+                    className={`vs-carousel-card ${i === active ? "vs-carousel-card--active" : ""}`}
+                    style={{
+                      transform: `rotateY(${angle}deg) translateZ(320px)`,
+                    }}
+                    onClick={() => goTo(i)}
+                  >
+                    <div className="vs-card-emoji">{section.emoji}</div>
+                    <h4 className="vs-card-title">{section.heading}</h4>
+                    <ul className="vs-card-stats">
+                      {section.stats.map((stat) => (
+                        <li key={stat.text} className="vs-card-stat-item">
+                          <span className="vs-card-stat-icon" aria-hidden="true">{stat.icon}</span>
+                          <span className="vs-card-stat-text">{stat.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Arrow navigation */}
+          <div className="vs-nav-arrows">
+            <button
+              className="vs-arrow vs-arrow--prev"
+              onClick={goPrev}
+              aria-label="Previous card"
+            >
+              ‹
+            </button>
+            <button
+              className="vs-arrow vs-arrow--next"
+              onClick={goNext}
+              aria-label="Next card"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Bullet navigation */}
+      <div className="vs-bullets">
+        {sections.map((section, i) => (
+          <button
+            key={section.heading}
+            className={`vs-bullet ${i === active ? "vs-bullet--active" : ""}`}
+            onClick={() => goTo(i)}
+            aria-label={`Go to ${section.heading}`}
+          />
         ))}
+      </div>
+
+      {/* Pause / Play toggle */}
+      <div className="vs-pause-wrap">
+        <button
+          className="vs-pause-btn"
+          onClick={() => setIsPaused((p) => !p)}
+          aria-label={isPaused ? "Resume auto-rotation" : "Pause auto-rotation"}
+        >
+          {isPaused ? "▶" : "❚❚"}
+        </button>
       </div>
 
       <style>{`
@@ -298,64 +378,83 @@ export const ValueStats = () => {
           transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
         }
 
-        /* ===== Sections wrapper ===== */
-        .vs-sections-wrap {
+        /* ===== Two-column layout ===== */
+        .vs-layout {
           max-width: 1200px;
           margin: 0 auto;
           display: flex;
           flex-direction: column;
-          gap: 4rem;
+          gap: 3rem;
+          align-items: center;
         }
 
-        /* ===== Each row (two-column) ===== */
-        .vs-row {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-          align-items: stretch;
-        }
-
-        @media (min-width: 768px) {
-          .vs-row {
+        @media (min-width: 900px) {
+          .vs-layout {
             flex-direction: row;
             align-items: center;
-            gap: 3rem;
+            gap: 4rem;
           }
         }
 
-        /* ===== Left: text window ===== */
-        .vs-text {
-          flex: 1 1 55%;
+        /* ===== Left: animated text panel ===== */
+        .vs-text-panel {
+          flex: 1 1 50%;
           min-width: 0;
           padding: 1rem 0;
-          opacity: 0;
-          transform: translateY(32px);
-          transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+          min-height: 360px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
 
-        .vs-text--visible {
-          opacity: 1;
-          transform: translateY(0);
+        .vs-text-panel--enter {
+          animation: vsTextEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .vs-text-panel--exit {
+          animation: vsTextExit 0.35s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+        }
+
+        @keyframes vsTextEnter {
+          from {
+            opacity: 0;
+            transform: translateY(18px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes vsTextExit {
+          from {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          to {
+            opacity: 0;
+            transform: translateY(-12px);
+          }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .vs-text {
+          .vs-text-panel--enter,
+          .vs-text-panel--exit {
+            animation: none;
             opacity: 1;
             transform: none;
-            transition: none;
           }
         }
 
         .vs-section-emoji {
           display: inline-block;
-          font-size: 2rem;
-          margin-bottom: 0.5rem;
+          font-size: 2.2rem;
+          margin-bottom: 0.6rem;
         }
 
         .vs-section-heading {
           font-family: 'Ubuntu', sans-serif;
-          font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+          font-size: clamp(1.6rem, 3.5vw, 2.4rem);
           font-weight: 800;
           line-height: 1.15;
           color: var(--vs-foreground);
@@ -368,6 +467,7 @@ export const ValueStats = () => {
           line-height: 1.75;
           color: var(--vs-muted);
           max-width: 36rem;
+          margin-bottom: 1.5rem;
         }
 
         .vs-section-copy p {
@@ -378,99 +478,354 @@ export const ValueStats = () => {
           margin-bottom: 0;
         }
 
-        /* ===== Right: stat card ===== */
-        .vs-card {
-          flex: 0 0 auto;
-          width: 100%;
-          max-width: 340px;
-          border-radius: 1.25rem;
-          border: 1px solid var(--vs-card-border);
-          background: var(--vs-card-bg);
-          box-shadow: var(--vs-card-shadow);
-          padding: 2rem 1.75rem;
-          opacity: 0;
-          transform: translateY(24px) scale(0.97);
-          transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
-                      transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
-        }
-
-        .vs-card--visible {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .vs-card {
-            opacity: 1;
-            transform: none;
-            transition: none;
-          }
-        }
-
-        @media (min-width: 768px) {
-          .vs-card {
-            flex: 0 0 340px;
-          }
-        }
-
-        @media (max-width: 767px) {
-          .vs-card {
-            max-width: 100%;
-            margin: 0 auto;
-          }
-        }
-
-        /* ===== Stat list ===== */
-        .vs-stat-list {
+        /* ===== Left: bullet points ===== */
+        .vs-bullet-list {
           list-style: none;
           margin: 0;
           padding: 0;
           display: flex;
           flex-direction: column;
-          gap: 1.2rem;
+          gap: 0.75rem;
+          margin-top: 0.5rem;
         }
 
-        .vs-stat-item {
+        .vs-bullet-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.55rem 0.85rem;
+          border-radius: 0.6rem;
+          background: hsla(var(--cyber-teal), 0.06);
+          border: 1px solid hsla(var(--cyber-teal), 0.12);
+          transition: background 0.25s ease, border-color 0.25s ease;
+        }
+
+        .dark .vs-bullet-item {
+          background: rgba(59, 130, 246, 0.06);
+          border-color: rgba(59, 130, 246, 0.15);
+        }
+
+        .vs-bullet-item:hover {
+          background: hsla(var(--cyber-teal), 0.12);
+          border-color: hsla(var(--cyber-teal), 0.25);
+        }
+
+        .dark .vs-bullet-item:hover {
+          background: rgba(59, 130, 246, 0.12);
+          border-color: rgba(59, 130, 246, 0.28);
+        }
+
+        .vs-bullet-icon {
+          flex: 0 0 auto;
+          font-size: 1.2rem;
+          line-height: 1;
+        }
+
+        .vs-bullet-text {
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--vs-foreground);
+          line-height: 1.3;
+        }
+
+        /* ===== Right: 3D carousel ===== */
+        .vs-carousel-wrapper {
+          flex: 0 0 auto;
+          width: 380px;
+          height: 420px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .vs-carousel-scene {
+          width: 260px;
+          height: 340px;
+          perspective: 1100px;
+          position: relative;
+        }
+
+        .vs-carousel-ring {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          transform-style: preserve-3d;
+          transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .vs-carousel-card {
+          position: absolute;
+          width: 240px;
+          height: 310px;
+          top: 15px;
+          left: 10px;
+          border-radius: 1.25rem;
+          border: 1px solid var(--vs-card-border);
+          background: var(--vs-card-bg);
+          box-shadow: var(--vs-card-shadow);
+          padding: 1.5rem 1.25rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+          backface-visibility: hidden;
+          cursor: pointer;
+          transition: box-shadow 0.35s ease, opacity 0.4s ease;
+          opacity: 0.45;
+        }
+
+        .vs-carousel-card--active {
+          opacity: 1;
+          box-shadow:
+            var(--vs-card-shadow),
+            0 0 28px hsla(var(--cyber-teal), 0.22);
+        }
+
+        .dark .vs-carousel-card--active {
+          box-shadow:
+            var(--vs-card-shadow),
+            0 0 28px rgba(59, 130, 246, 0.3);
+        }
+
+        .vs-card-emoji {
+          font-size: 1.8rem;
+          line-height: 1;
+        }
+
+        .vs-card-title {
+          font-family: 'Ubuntu', sans-serif;
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: var(--vs-foreground);
+          line-height: 1.25;
+          margin: 0;
+        }
+
+        .vs-card-stats {
+          list-style: none;
+          margin: 0.4rem 0 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+        }
+
+        .vs-card-stat-item {
           display: flex;
           align-items: flex-start;
-          gap: 0.85rem;
+          gap: 0.55rem;
         }
 
-        .vs-stat-icon {
+        .vs-card-stat-icon {
           flex: 0 0 auto;
-          font-size: 1.4rem;
+          font-size: 1rem;
           line-height: 1;
           margin-top: 0.1rem;
         }
 
-        .vs-stat-text {
-          font-size: 1.1rem;
-          font-weight: 700;
+        .vs-card-stat-text {
+          font-size: 0.88rem;
+          font-weight: 600;
           color: var(--vs-foreground);
-          line-height: 1.35;
-          letter-spacing: 0.01em;
+          line-height: 1.3;
         }
 
-        /* Bold numbers / highlight within text */
-        .vs-stat-text strong,
-        .vs-stat-text b {
-          color: var(--vs-stat-highlight);
+        /* ===== Navigation arrows ===== */
+        .vs-nav-arrows {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 0.25rem;
         }
 
-        /* ===== Hover effect on card ===== */
-        @media (hover: hover) {
-          .vs-card:hover {
-            box-shadow:
-              var(--vs-card-shadow),
-              0 0 20px hsla(var(--cyber-teal), 0.18);
-            transform: translateY(-2px) scale(1.005);
-            transition-delay: 0s;
+        .vs-arrow {
+          pointer-events: auto;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          border: 1px solid var(--vs-card-border);
+          background: var(--vs-heading-bg);
+          color: var(--vs-foreground);
+          font-size: 1.6rem;
+          line-height: 1;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          backdrop-filter: blur(8px);
+          transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .vs-arrow:hover {
+          background: hsla(var(--cyber-teal), 0.18);
+          border-color: hsla(var(--cyber-teal), 0.5);
+          transform: scale(1.08);
+        }
+
+        .dark .vs-arrow:hover {
+          background: rgba(59, 130, 246, 0.2);
+          border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        /* ===== Bullet dots ===== */
+        .vs-bullets {
+          display: flex;
+          justify-content: center;
+          gap: 0.65rem;
+          margin-top: 2.5rem;
+        }
+
+        .vs-bullet {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          border: 2px solid hsla(var(--cyber-teal), 0.4);
+          background: transparent;
+          cursor: pointer;
+          padding: 0;
+          transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .vs-bullet:hover {
+          border-color: hsla(var(--cyber-teal), 0.7);
+          transform: scale(1.15);
+        }
+
+        .vs-bullet--active {
+          background: hsl(var(--cyber-teal));
+          border-color: hsl(var(--cyber-teal));
+          transform: scale(1.2);
+        }
+
+        .dark .vs-bullet {
+          border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .dark .vs-bullet:hover {
+          border-color: rgba(59, 130, 246, 0.7);
+        }
+
+        .dark .vs-bullet--active {
+          background: hsl(210, 100%, 60%);
+          border-color: hsl(210, 100%, 60%);
+        }
+
+        /* ===== Pause button ===== */
+        .vs-pause-wrap {
+          display: flex;
+          justify-content: center;
+          margin-top: 1rem;
+        }
+
+        .vs-pause-btn {
+          background: none;
+          border: none;
+          color: var(--vs-muted);
+          font-size: 0.85rem;
+          cursor: pointer;
+          padding: 0.35rem 0.75rem;
+          border-radius: 0.5rem;
+          transition: color 0.2s ease, background 0.2s ease;
+          letter-spacing: 0.12em;
+        }
+
+        .vs-pause-btn:hover {
+          color: var(--vs-foreground);
+          background: hsla(var(--cyber-teal), 0.08);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 899px) {
+          .vs-layout {
+            flex-direction: column-reverse;
           }
 
-          .dark .vs-card:hover {
-            box-shadow:
-              var(--vs-card-shadow),
-              0 0 20px rgba(59, 130, 246, 0.25);
+          .vs-carousel-wrapper {
+            width: 100%;
+            max-width: 380px;
+            height: 380px;
+          }
+
+          .vs-carousel-scene {
+            width: 240px;
+            height: 310px;
+            perspective: 900px;
+          }
+
+          .vs-carousel-card {
+            width: 220px;
+            height: 290px;
+            top: 10px;
+            left: 10px;
+          }
+
+          .vs-text-panel {
+            min-height: auto;
+            text-align: center;
+            align-items: center;
+          }
+
+          .vs-section-copy {
+            max-width: 100%;
+          }
+
+          .vs-bullet-list {
+            align-items: stretch;
+            max-width: 360px;
+            width: 100%;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .vs-carousel-wrapper {
+            height: 340px;
+          }
+
+          .vs-carousel-scene {
+            width: 200px;
+            height: 270px;
+            perspective: 750px;
+          }
+
+          .vs-carousel-card {
+            width: 185px;
+            height: 250px;
+            top: 10px;
+            left: 7px;
+            padding: 1.1rem 1rem;
+          }
+
+          .vs-card-emoji {
+            font-size: 1.4rem;
+          }
+
+          .vs-card-title {
+            font-size: 0.92rem;
+          }
+
+          .vs-card-stat-text {
+            font-size: 0.8rem;
+          }
+
+          .vs-carousel-card {
+            transform-origin: center center;
+          }
+        }
+
+        /* ===== Reduced motion ===== */
+        @media (prefers-reduced-motion: reduce) {
+          .vs-carousel-ring {
+            transition: none;
+          }
+
+          .vs-text-panel--enter,
+          .vs-text-panel--exit {
+            animation: none;
+            opacity: 1;
+            transform: none;
           }
         }
       `}</style>
