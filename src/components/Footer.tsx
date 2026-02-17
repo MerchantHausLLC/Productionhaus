@@ -173,6 +173,9 @@ const Footer = () => {
               />
             </div>
           </div>
+          <p className="text-xs text-muted-foreground text-center mt-6">
+            Payment processing services are provided by NMI Payments, a registered ISO/MSP of Merrick Bank, Woodbury, NY. MerchantHaus LLC provides payment technology and support services.
+          </p>
         </div>
 
         {/* Bottom Line */}
