@@ -87,6 +87,10 @@ const Terms = () => {
                     <li>Your business becoming insolvent or subject to bankruptcy proceedings.</li>
                   </ul>
                 </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">3.4 Underwriting & Approval</h3>
+                  <p>Access to payment processing services is subject to underwriting approval and ongoing monitoring by NMI Payments and the applicable Acquiring Bank. MerchantHaus does not guarantee approval of any merchant account and may suspend onboarding or processing access pending underwriting review, compliance verification, or risk assessment.</p>
+                </div>
               </div>
             </section>
 
@@ -97,18 +101,32 @@ const Terms = () => {
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">4.1 Role of MerchantHaus</h3>
-                  <p>MerchantHaus acts as a technology facilitator and intermediary. We are not a bank or a licensed financial institution. We facilitate the processing of payments through our relationships with third-party acquiring banks and Card Networks.</p>
+                  <p className="mb-2">MerchantHaus acts as a payment technology provider facilitating access to payment processing services through NMI Payments and its sponsoring acquiring bank(s). MerchantHaus is not a bank, does not accept deposits, does not hold funds for the benefit of Merchant, and does not operate as a money transmitter or custodial financial institution.</p>
+                  <p className="mb-2">MerchantHaus does not hold, receive, or control Merchant settlement funds and does not operate as a money transmitter, custodial institution, or acquiring bank.</p>
+                  <p>Payment processing services are provided through NMI Payments, a registered ISO/MSP, and its sponsoring Acquiring Bank(s), including where applicable Merrick Bank, Woodbury, NY.</p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">4.2 Fees</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">4.2 Acquiring Bank & Processing Relationship</h3>
+                  <p className="mb-2">Merchant acknowledges and agrees that:</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>(a) NMI Payments is a registered ISO/MSP of its sponsoring Acquiring Bank(s).</li>
+                    <li>(b) The Acquiring Bank is the only entity authorized to extend acceptance of Card Network products to Merchant.</li>
+                    <li>(c) The Acquiring Bank is responsible for holding, administering, and controlling settlement funds and reserve funds derived from transaction processing.</li>
+                    <li>(d) The Acquiring Bank is a principal party to the Merchant Processing Agreement governing card acceptance.</li>
+                    <li>(e) Merchant is subject to the operating regulations of the applicable Card Networks, which may be amended from time to time.</li>
+                    <li>(f) The Acquiring Bank retains ultimate authority with respect to compliance monitoring, reserve requirements, funding holds, chargeback programs, and account termination as required by Card Network rules.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">4.3 Fees</h3>
                   <p>You agree to pay the fees, charges, and other assessments (collectively, "Fees") applicable to your use of the Services, which will be disclosed to you during onboarding or in a separate signed agreement. All Fees are quoted in U.S. Dollars unless otherwise specified. Fees are non-refundable unless explicitly stated otherwise. We reserve the right to change our Fees with thirty (30) days' prior notice.</p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">4.3 Payment of Fees</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">4.4 Payment of Fees</h3>
                   <p>Fees will typically be deducted from the settlement funds due to you from your processed transactions. If settlement funds are insufficient, or for any other charges due, you authorize MerchantHaus to debit your designated bank account on file.</p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">4.4 Chargebacks and Refunds</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">4.5 Chargebacks and Refunds</h3>
                   <ul className="list-disc pl-6 space-y-2">
                     <li>You are solely and fully liable for the total amount of all Chargebacks, refunds, retrievals, and any associated fees (including Card Network fees and MerchantHaus administrative fees).</li>
                     <li>You are responsible for managing your own customer service and providing refunds to your customers as per your business policies.</li>
@@ -117,12 +135,17 @@ const Terms = () => {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">4.5 Reserves</h3>
-                  <p>MerchantHaus reserves the right to establish a "Reserve" — a portion of your settlement funds held by us to cover potential future losses from Chargebacks, refunds, or other liabilities. We may establish or change the terms of your Reserve at any time based on our assessment of the risk associated with your account or business.</p>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">4.6 Reserves</h3>
+                  <p className="mb-2">Merchant acknowledges that reserves, holdbacks, or other risk mitigation measures may be established by NMI Payments and/or the applicable Acquiring Bank to cover potential future losses arising from Chargebacks, refunds, fines, penalties, or other liabilities.</p>
+                  <p>MerchantHaus does not hold, control, administer, or have custody of any settlement funds or reserve funds. All settlement and reserve funds are held and administered by NMI Payments, the applicable Acquiring Bank, or their designated processing partners in accordance with the applicable Merchant Processing Agreement and Card Network rules.</p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">4.6 Payouts (Settlements)</h3>
-                  <p>MerchantHaus will settle funds from processed transactions to your designated bank account, less our Fees, any Chargebacks, refunds, and Reserve amounts, according to the payout schedule agreed upon. Payouts may be delayed by us or our partners for risk management, compliance, or investigative purposes.</p>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">4.7 Payouts (Settlements)</h3>
+                  <p>Settlement funds from processed transactions will be directed to your designated bank account by NMI Payments and/or the applicable Acquiring Bank, less applicable Fees, any Chargebacks, refunds, and Reserve amounts, according to the payout schedule agreed upon. MerchantHaus facilitates the payout process but does not hold, control, or have custody of settlement funds. Payouts may be delayed, adjusted, or withheld by the Acquiring Bank, NMI Payments, or their processing partners for risk management, compliance, investigative, or regulatory purposes. MerchantHaus is not responsible for actions taken by NMI Payments, the Acquiring Bank, Card Networks, or third-party processors.</p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">4.8 Third-Party Processing Dependency</h3>
+                  <p>Merchant acknowledges that the Services rely on third-party Acquiring Banks, processors, financial institutions, and Card Networks. MerchantHaus shall not be liable for service interruptions, funding delays, network outages, reserve adjustments, monitoring programs, enforcement actions, or account suspensions resulting from decisions or actions taken by such third parties.</p>
                 </div>
               </div>
             </section>
@@ -138,7 +161,8 @@ const Terms = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">5.2 MerchantHaus Security</h3>
-                  <p>MerchantHaus maintains compliance with the Payment Card Industry Data Security Standard (PCI DSS) as a service provider. We use commercially reasonable administrative, technical, and physical safeguards, including encryption, to protect data processed through our Services.</p>
+                  <p className="mb-2">MerchantHaus maintains compliance with the Payment Card Industry Data Security Standard (PCI DSS) as a service provider. We use commercially reasonable administrative, technical, and physical safeguards, including encryption, to protect data processed through our Services.</p>
+                  <p>MerchantHaus acts as a service provider or data processor with respect to personal data processed on behalf of Merchant in connection with payment transactions. Merchant remains responsible for its own compliance with applicable data protection laws and Card Network security requirements.</p>
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">5.3 Merchant Responsibilities</h3>
@@ -164,6 +188,10 @@ const Terms = () => {
                 <li>Attempt to reverse-engineer, decompile, or disassemble the Platform or any part of the Services.</li>
                 <li>Misuse our APIs, including by making excessive or abusive API calls.</li>
                 <li>Resell, sublicense, or otherwise provide the Services to any third party without our express written authorization.</li>
+              </ul>
+              <p className="text-muted-foreground mt-4">You also agree to:</p>
+              <ul className="list-disc pl-6 space-y-2 text-muted-foreground mt-2">
+                <li>Comply with all applicable Card Network rules, anti-money laundering laws, sanctions regulations, and payment industry requirements.</li>
               </ul>
             </section>
 
@@ -206,11 +234,11 @@ const Terms = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">8.3 Termination by Us</h3>
-                  <p>We may terminate this Agreement as outlined in Section 3.3.</p>
+                  <p>We may terminate this Agreement as outlined in Section 3.3. Payment processing services may also be suspended or terminated upon direction from NMI Payments or the applicable Acquiring Bank.</p>
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">8.4 Effect of Termination</h3>
-                  <p>Upon termination, your license to use the Services is revoked. You must immediately pay any outstanding Fees. Any funds held in your Reserve may be held for a period (typically 180 days or longer) sufficient to cover potential Chargebacks. Sections of this Agreement that by their nature should survive termination will survive, including (but not limited to) sections on Fees, Chargebacks, Intellectual Property, Confidentiality, Disclaimers, Liability, Indemnification, and Dispute Resolution.</p>
+                  <p>Upon termination, your license to use the Services is revoked. You must immediately pay any outstanding Fees. Any reserve funds held by NMI Payments, the applicable Acquiring Bank, or their designated processing partners may continue to be held for a period (typically 180 days or longer) sufficient to cover potential Chargebacks. Sections of this Agreement that by their nature should survive termination will survive, including (but not limited to) sections on Fees, Chargebacks, Intellectual Property, Confidentiality, Disclaimers, Liability, Indemnification, and Dispute Resolution.</p>
                 </div>
               </div>
             </section>
