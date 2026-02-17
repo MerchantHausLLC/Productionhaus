@@ -45,15 +45,12 @@ const UsersIcon = ({ className }: IconProps) => (
 /*  Helper: extract rotateY (yaw) degrees from a CSS matrix3d string  */
 /* ------------------------------------------------------------------ */
 function extractYawFromMatrix(matrixStr: string): number | null {
-  // matrix3d(m11, m12, m13, m14, m21, …, m44) — 16 values
   const match = matrixStr.match(/matrix3d\((.+)\)/);
   if (!match) {
-    // 2-D matrix — no Y rotation
     return 0;
   }
   const v = match[1].split(",").map((s) => parseFloat(s.trim()));
   if (v.length < 16) return null;
-  // rotateY angle = atan2(m13, m33)  (indices 2, 10 in 0-based)
   const yaw = Math.atan2(v[2], v[10]) * (180 / Math.PI);
   return yaw;
 }
@@ -114,6 +111,7 @@ export const ValueStats = () => {
   /* ----- state ---------------------------------------------------- */
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [manualPause, setManualPause] = useState(false);
 
   /* ----- refs ----------------------------------------------------- */
   const ringRef = useRef<HTMLDivElement>(null);
@@ -141,7 +139,7 @@ export const ValueStats = () => {
     const tick = () => {
       if (!active) return;
       const now = performance.now();
-      if (now - lastSmartSelectTime.current >= 120) {
+      if (now - lastSmartSelectTime.current >= 150) {
         const ringEl = ringRef.current;
         if (ringEl) {
           const style = getComputedStyle(ringEl);
@@ -169,6 +167,7 @@ export const ValueStats = () => {
     (idx: number) => {
       setSelectedIndex(idx);
       setIsPaused(true);
+      setManualPause(true);
     },
     []
   );
@@ -186,20 +185,38 @@ export const ValueStats = () => {
   const goToPrev = useCallback(() => {
     setSelectedIndex((p) => (p - 1 + quantity) % quantity);
     setIsPaused(true);
+    setManualPause(true);
   }, [quantity]);
 
   const goToNext = useCallback(() => {
     setSelectedIndex((p) => (p + 1) % quantity);
     setIsPaused(true);
+    setManualPause(true);
   }, [quantity]);
 
   const togglePause = useCallback(() => {
-    setIsPaused((p) => !p);
+    setIsPaused((p) => {
+      const next = !p;
+      setManualPause(next);
+      return next;
+    });
   }, []);
 
   /* ----- carousel hover / focus handlers ------------------------- */
-  const handleCarouselEnter = useCallback(() => setIsPaused(true), []);
-  const handleCarouselLeave = useCallback(() => setIsPaused(false), []);
+  const handleCarouselEnter = useCallback(() => {
+    setIsPaused(true);
+  }, []);
+
+  const handleCarouselLeave = useCallback(() => {
+    // Only resume if the user hasn't manually paused
+    if (!manualPause) {
+      setIsPaused(false);
+    }
+  }, [manualPause]);
+
+  /* Need to keep handleCarouselLeave up to date with manualPause */
+  const handleCarouselLeaveRef = useRef(handleCarouselLeave);
+  handleCarouselLeaveRef.current = handleCarouselLeave;
 
   /* ----- computed ring style ------------------------------------- */
   const ringStyle: React.CSSProperties = isPaused
@@ -228,54 +245,78 @@ export const ValueStats = () => {
         {/* LEFT: text panel */}
         <div className="valuestats-panel">
           <span className="valuestats-kicker">Selected highlight</span>
-          <div className="valuestats-panel-value" key={`v-${selectedIndex}`}>
-            {activeStat.value}
-          </div>
-          <h3 className="valuestats-panel-label" key={`l-${selectedIndex}`}>
-            {activeStat.label}
-          </h3>
-          <p className="valuestats-panel-desc" key={`d-${selectedIndex}`}>
-            {activeStat.description}
-          </p>
 
+          {/* Keyed wrapper for fade+slide animation on selection change */}
+          <div key={activeStat.label} className="valuestats-left-content">
+            <div className="valuestats-panel-value">
+              {activeStat.value}
+            </div>
+            <h3 className="valuestats-panel-label">
+              {activeStat.label}
+            </h3>
+            <p className="valuestats-panel-desc">
+              {activeStat.description}
+            </p>
+          </div>
+
+          {/* Controls cluster */}
           <div className="valuestats-controls">
             <button
               type="button"
-              className="valuestats-ctrl-btn"
+              className="valuestats-ctrl-circle"
               onClick={goToPrev}
               aria-label="Previous stat"
             >
-              ‹ Prev
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
+
             <button
               type="button"
-              className="valuestats-ctrl-btn valuestats-ctrl-btn--toggle"
+              className="valuestats-ctrl-pill"
               onClick={togglePause}
               aria-label={isPaused ? "Resume rotation" : "Pause rotation"}
             >
-              {isPaused ? "▶ Resume" : "⏸ Pause"}
+              {isPaused ? (
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 1.5L12 7L3 12.5V1.5Z" fill="currentColor"/>
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/>
+                  <rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/>
+                </svg>
+              )}
+              <span>{isPaused ? "Play" : "Pause"}</span>
             </button>
+
             <button
               type="button"
-              className="valuestats-ctrl-btn"
+              className="valuestats-ctrl-circle"
               onClick={goToNext}
               aria-label="Next stat"
             >
-              Next ›
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
+
+            <span className="valuestats-indicator">
+              {selectedIndex + 1} / {quantity}
+            </span>
           </div>
         </div>
 
-        {/* RIGHT: carousel shell (clipped on desktop) */}
+        {/* RIGHT: carousel shell — NO clip-path */}
         <div
           className="valuestats-carousel-shell"
           onMouseEnter={handleCarouselEnter}
-          onMouseLeave={handleCarouselLeave}
+          onMouseLeave={() => handleCarouselLeaveRef.current()}
           onFocus={handleCarouselEnter}
           onBlur={(e) => {
-            // only un-pause if focus leaves the shell entirely
             if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-              handleCarouselLeave();
+              handleCarouselLeaveRef.current();
             }
           }}
         >
@@ -389,7 +430,7 @@ export const ValueStats = () => {
           .valuestats-layout {
             flex-direction: row;
             align-items: center;
-            gap: 0;
+            gap: 2rem;
           }
         }
 
@@ -406,10 +447,10 @@ export const ValueStats = () => {
 
         @media (min-width: 1024px) {
           .valuestats-panel {
-            flex: 0 0 45%;
+            flex: 0 0 42%;
             align-items: flex-start;
             text-align: left;
-            padding: 2rem 2.5rem 2rem 1rem;
+            padding: 2rem 1rem 2rem 1rem;
           }
         }
 
@@ -421,6 +462,28 @@ export const ValueStats = () => {
           text-transform: uppercase;
           color: var(--vs-muted);
           margin-bottom: 0.25rem;
+        }
+
+        /* ===== Animated left content ===== */
+        .valuestats-left-content {
+          animation: valuestats-fadein 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes valuestats-fadein {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .valuestats-left-content {
+            animation: none;
+          }
         }
 
         .valuestats-panel-value {
@@ -449,15 +512,46 @@ export const ValueStats = () => {
         /* ===== Controls ===== */
         .valuestats-controls {
           display: flex;
-          gap: 0.5rem;
+          align-items: center;
+          gap: 0.6rem;
           flex-wrap: wrap;
         }
 
-        .valuestats-ctrl-btn {
+        /* Circular icon buttons (prev/next) */
+        .valuestats-ctrl-circle {
           display: inline-flex;
           align-items: center;
-          gap: 0.3rem;
-          padding: 0.45rem 1rem;
+          justify-content: center;
+          width: 42px;
+          height: 42px;
+          padding: 0;
+          border-radius: 50%;
+          border: 1px solid var(--vs-card-border);
+          background: var(--vs-icon-bg);
+          color: var(--vs-foreground);
+          cursor: pointer;
+          transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .valuestats-ctrl-circle:hover,
+        .valuestats-ctrl-circle:focus-visible {
+          border-color: var(--vs-heading-border);
+          box-shadow: 0 0 0 2px hsla(var(--cyber-teal), 0.18);
+          outline: none;
+        }
+
+        .dark .valuestats-ctrl-circle:hover,
+        .dark .valuestats-ctrl-circle:focus-visible {
+          box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Pill button (pause/play) */
+        .valuestats-ctrl-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding: 0 1rem;
+          height: 42px;
           font-size: 0.82rem;
           font-weight: 600;
           border-radius: 9999px;
@@ -465,22 +559,32 @@ export const ValueStats = () => {
           background: var(--vs-icon-bg);
           color: var(--vs-foreground);
           cursor: pointer;
-          transition: border-color 0.2s, box-shadow 0.2s;
+          transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
 
-        .valuestats-ctrl-btn:hover,
-        .valuestats-ctrl-btn:focus-visible {
+        .valuestats-ctrl-pill:hover,
+        .valuestats-ctrl-pill:focus-visible {
           border-color: var(--vs-heading-border);
           box-shadow: 0 0 0 2px hsla(var(--cyber-teal), 0.18);
           outline: none;
         }
 
-        .dark .valuestats-ctrl-btn:hover,
-        .dark .valuestats-ctrl-btn:focus-visible {
+        .dark .valuestats-ctrl-pill:hover,
+        .dark .valuestats-ctrl-pill:focus-visible {
           box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
         }
 
-        /* ===== Carousel shell (clipped on desktop) ===== */
+        /* Indicator text */
+        .valuestats-indicator {
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: var(--vs-muted);
+          letter-spacing: 0.06em;
+          padding-left: 0.25rem;
+          user-select: none;
+        }
+
+        /* ===== Carousel shell — NO clip-path, fully visible ===== */
         .valuestats-carousel-shell {
           position: relative;
           width: 100%;
@@ -491,14 +595,14 @@ export const ValueStats = () => {
 
         @media (min-width: 1024px) {
           .valuestats-carousel-shell {
-            flex: 0 0 55%;
-            clip-path: inset(0 0 0 45%);
-            justify-content: flex-end;
+            flex: 1 1 58%;
+            min-width: 0;
+            justify-content: center;
           }
         }
 
         .valuestats-banner-container {
-          width: 100%;
+          width: min(580px, 100%);
           min-height: clamp(26rem, 64vh, 36rem);
           position: relative;
           overflow: visible;
@@ -510,7 +614,7 @@ export const ValueStats = () => {
 
         @media (min-width: 1024px) {
           .valuestats-banner-container {
-            transform: translateX(15%);
+            transform: translateX(14%);
           }
         }
 
@@ -534,8 +638,6 @@ export const ValueStats = () => {
         .valuestats-slider-item {
           position: absolute;
           inset: 0;
-          /* Allow pointer events to pass through the invisible
-             positioning layer to the button within */
           pointer-events: none;
         }
 
@@ -647,6 +749,7 @@ export const ValueStats = () => {
         @media (max-width: 1023px) {
           .valuestats-banner-container {
             min-height: 24rem;
+            transform: none;
           }
           .valuestats-slider-3d {
             width: 300px;
@@ -660,6 +763,7 @@ export const ValueStats = () => {
         @media (max-width: 767px) {
           .valuestats-banner-container {
             min-height: 22rem;
+            transform: none;
           }
           .valuestats-slider-3d {
             width: 260px;
@@ -676,6 +780,11 @@ export const ValueStats = () => {
             animation: none;
             transform: rotateX(-14deg) rotateY(0deg);
           }
+        }
+
+        /* ===== Section-level overflow (page edge only) ===== */
+        .valuestats-section {
+          overflow-x: clip;
         }
       `}</style>
     </section>
