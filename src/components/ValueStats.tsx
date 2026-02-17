@@ -176,8 +176,12 @@ const AUTO_INTERVAL = 5000;
 export const ValueStats = () => {
   const [active, setActive] = useState(0);
   const [textAnimating, setTextAnimating] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [arrowPaused, setArrowPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const arrowPauseRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const isPaused = isHovered || arrowPaused;
 
   /* Auto-rotation */
   const startTimer = useCallback(() => {
@@ -193,10 +197,20 @@ export const ValueStats = () => {
 
   useEffect(() => {
     if (!isPaused) startTimer();
+    else if (timerRef.current) clearInterval(timerRef.current);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [isPaused, startTimer]);
+
+  /* Temporarily pause after arrow/manual navigation, then resume */
+  const pauseForArrow = useCallback(() => {
+    setArrowPaused(true);
+    if (arrowPauseRef.current) clearTimeout(arrowPauseRef.current);
+    arrowPauseRef.current = setTimeout(() => {
+      setArrowPaused(false);
+    }, AUTO_INTERVAL);
+  }, []);
 
   const goTo = useCallback(
     (index: number) => {
@@ -206,9 +220,9 @@ export const ValueStats = () => {
         setActive(index);
         setTextAnimating(false);
       }, 350);
-      if (!isPaused) startTimer();
+      pauseForArrow();
     },
-    [active, isPaused, startTimer]
+    [active, pauseForArrow]
   );
 
   const goNext = useCallback(() => {
@@ -234,21 +248,48 @@ export const ValueStats = () => {
 
       {/* Two-column layout: text left, carousel right */}
       <div className="vs-layout">
-        {/* Left: animated text description */}
-        <div className={`vs-text-panel ${textAnimating ? "vs-text-panel--exit" : "vs-text-panel--enter"}`}>
-          <span className="vs-section-emoji" aria-hidden="true">
-            {currentSection.emoji}
-          </span>
-          <h3 className="vs-section-heading">{currentSection.heading}</h3>
-          <div className="vs-section-copy">{currentSection.leftCopy}</div>
+        {/* Left: animated text description + navigation arrows */}
+        <div className="vs-left-col">
+          <div className={`vs-text-panel ${textAnimating ? "vs-text-panel--exit" : "vs-text-panel--enter"}`}>
+            <span className="vs-section-emoji" aria-hidden="true">
+              {currentSection.emoji}
+            </span>
+            <h3 className="vs-section-heading">{currentSection.heading}</h3>
+            <div className="vs-section-copy">{currentSection.leftCopy}</div>
+          </div>
+
+          {/* Arrow navigation below text */}
+          <div className="vs-nav-arrows">
+            <button
+              className="vs-arrow vs-arrow--prev"
+              onClick={goPrev}
+              aria-label="Previous card"
+            >
+              ‹
+            </button>
+            {/* Bullet navigation inline */}
+            <div className="vs-bullets">
+              {sections.map((section, i) => (
+                <button
+                  key={section.heading}
+                  className={`vs-bullet ${i === active ? "vs-bullet--active" : ""}`}
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to ${section.heading}`}
+                />
+              ))}
+            </div>
+            <button
+              className="vs-arrow vs-arrow--next"
+              onClick={goNext}
+              aria-label="Next card"
+            >
+              ›
+            </button>
+          </div>
         </div>
 
         {/* Right: 3D carousel */}
-        <div
-          className="vs-carousel-wrapper"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
+        <div className="vs-carousel-wrapper">
           <div className="vs-carousel-scene">
             <div
               className="vs-carousel-ring"
@@ -272,6 +313,8 @@ export const ValueStats = () => {
                       opacity: cardOpacity,
                     }}
                     onClick={() => goTo(i)}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
                   >
                     <div className="vs-card-emoji">{section.emoji}</div>
                     <h4 className="vs-card-title">{section.heading}</h4>
@@ -288,48 +331,7 @@ export const ValueStats = () => {
               })}
             </div>
           </div>
-
-          {/* Arrow navigation */}
-          <div className="vs-nav-arrows">
-            <button
-              className="vs-arrow vs-arrow--prev"
-              onClick={goPrev}
-              aria-label="Previous card"
-            >
-              ‹
-            </button>
-            <button
-              className="vs-arrow vs-arrow--next"
-              onClick={goNext}
-              aria-label="Next card"
-            >
-              ›
-            </button>
-          </div>
         </div>
-      </div>
-
-      {/* Bullet navigation */}
-      <div className="vs-bullets">
-        {sections.map((section, i) => (
-          <button
-            key={section.heading}
-            className={`vs-bullet ${i === active ? "vs-bullet--active" : ""}`}
-            onClick={() => goTo(i)}
-            aria-label={`Go to ${section.heading}`}
-          />
-        ))}
-      </div>
-
-      {/* Pause / Play toggle */}
-      <div className="vs-pause-wrap">
-        <button
-          className="vs-pause-btn"
-          onClick={() => setIsPaused((p) => !p)}
-          aria-label={isPaused ? "Resume auto-rotation" : "Pause auto-rotation"}
-        >
-          {isPaused ? "▶" : "❚❚"}
-        </button>
       </div>
 
       <style>{`
@@ -392,12 +394,19 @@ export const ValueStats = () => {
           }
         }
 
-        /* ===== Left: animated text panel ===== */
-        .vs-text-panel {
+        /* ===== Left column wrapper ===== */
+        .vs-left-col {
           flex: 1 1 50%;
           min-width: 0;
+          display: flex;
+          flex-direction: column;
+        }
+
+        /* ===== Left: animated text panel ===== */
+        .vs-text-panel {
+          min-width: 0;
           padding: 1rem 0;
-          min-height: 360px;
+          min-height: 300px;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -595,17 +604,14 @@ export const ValueStats = () => {
 
         /* ===== Navigation arrows ===== */
         .vs-nav-arrows {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          padding: 0 0.25rem;
+          justify-content: flex-start;
+          gap: 1rem;
+          padding-top: 1.5rem;
         }
 
         .vs-arrow {
-          pointer-events: auto;
           width: 40px;
           height: 40px;
           border-radius: 50%;
@@ -620,6 +626,7 @@ export const ValueStats = () => {
           justify-content: center;
           backdrop-filter: blur(8px);
           transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+          flex-shrink: 0;
         }
 
         .vs-arrow:hover {
@@ -636,9 +643,8 @@ export const ValueStats = () => {
         /* ===== Bullet dots ===== */
         .vs-bullets {
           display: flex;
-          justify-content: center;
-          gap: 0.65rem;
-          margin-top: 2.5rem;
+          align-items: center;
+          gap: 0.5rem;
         }
 
         .vs-bullet {
@@ -674,30 +680,6 @@ export const ValueStats = () => {
         .dark .vs-bullet--active {
           background: hsl(210, 100%, 60%);
           border-color: hsl(210, 100%, 60%);
-        }
-
-        /* ===== Pause button ===== */
-        .vs-pause-wrap {
-          display: flex;
-          justify-content: center;
-          margin-top: 1rem;
-        }
-
-        .vs-pause-btn {
-          background: none;
-          border: none;
-          color: var(--vs-muted);
-          font-size: 0.85rem;
-          cursor: pointer;
-          padding: 0.35rem 0.75rem;
-          border-radius: 0.5rem;
-          transition: color 0.2s ease, background 0.2s ease;
-          letter-spacing: 0.12em;
-        }
-
-        .vs-pause-btn:hover {
-          color: var(--vs-foreground);
-          background: hsla(var(--cyber-teal), 0.08);
         }
 
         /* ===== Responsive ===== */
@@ -736,6 +718,9 @@ export const ValueStats = () => {
             max-width: 100%;
           }
 
+          .vs-nav-arrows {
+            justify-content: center;
+          }
         }
 
         @media (max-width: 480px) {
