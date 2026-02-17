@@ -1,790 +1,489 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-type IconProps = {
-  className?: string;
+/* ------------------------------------------------------------------ */
+/*  Section data – 7 merchant-first modular sections                   */
+/* ------------------------------------------------------------------ */
+
+type Section = {
+  emoji: string;
+  heading: string;
+  leftCopy: ReactNode;
+  stats: { icon: string; text: string }[];
 };
 
-// Simple internal icon components so we don't depend on external icon libraries
-const ZapIcon = ({ className }: IconProps) => (
-  <span className={className} aria-hidden="true">
-    ⚡
-  </span>
-);
-
-const TrendingUpIcon = ({ className }: IconProps) => (
-  <span className={className} aria-hidden="true">
-    📈
-  </span>
-);
-
-const ShoppingCartIcon = ({ className }: IconProps) => (
-  <span className={className} aria-hidden="true">
-    🛒
-  </span>
-);
-
-const ShieldCheckIcon = ({ className }: IconProps) => (
-  <span className={className} aria-hidden="true">
-    ✅
-  </span>
-);
-
-const UsersIcon = ({ className }: IconProps) => (
-  <span className={className} aria-hidden="true">
-    👥
-  </span>
-);
+const sections: Section[] = [
+  {
+    emoji: "🛒",
+    heading: "Seamless eCommerce Integrations",
+    leftCopy: (
+      <>
+        <p>
+          Connect instantly to 200+ leading eCommerce platforms and shopping
+          carts. No custom development. No gateway rebuilds. Launch quickly and
+          scale confidently with a payment infrastructure built for growth.
+        </p>
+        <p>
+          Designed for merchants who want speed to market without sacrificing
+          performance or flexibility.
+        </p>
+      </>
+    ),
+    stats: [
+      { icon: "🛒", text: "200+ eCommerce integrations" },
+      { icon: "🚀", text: "Go live in days, not months" },
+      { icon: "🔌", text: "Plug-and-play setup" },
+      { icon: "🌎", text: "Compatible with leading platforms" },
+    ],
+  },
+  {
+    emoji: "🔒",
+    heading: "Intelligent Fraud Protection",
+    leftCopy: (
+      <>
+        <p>
+          Reduce chargebacks by up to 70% with built-in 3D Secure, behavioral
+          analysis, and adaptive fraud controls. Stop bad actors without
+          introducing friction for legitimate customers.
+        </p>
+        <p>
+          Protect revenue while improving approval rates and reducing false
+          declines.
+        </p>
+      </>
+    ),
+    stats: [
+      { icon: "🔒", text: "Up to 70% chargeback reduction" },
+      { icon: "🧠", text: "Real-time risk scoring" },
+      { icon: "📉", text: "Reduced false declines" },
+      { icon: "🛡", text: "Adaptive authentication" },
+    ],
+  },
+  {
+    emoji: "📈",
+    heading: "Approval Rate Optimization",
+    leftCopy: (
+      <>
+        <p>
+          Intelligent transaction routing and multi-processor redundancy help
+          maximize authorization success. Automatically route transactions to
+          optimize performance and minimize declines.
+        </p>
+        <p>
+          Higher approval rates mean more completed checkouts and more captured
+          revenue.
+        </p>
+      </>
+    ),
+    stats: [
+      { icon: "📈", text: "Smart transaction routing" },
+      { icon: "🔀", text: "Multi-processor redundancy" },
+      { icon: "🌍", text: "40+ global processors" },
+      { icon: "⬆️", text: "Higher authorization rates" },
+    ],
+  },
+  {
+    emoji: "⚡",
+    heading: "High-Speed Processing",
+    leftCopy: (
+      <p>
+        Sub-300 millisecond authorization speeds create smoother checkout
+        experiences and reduce abandoned carts. Faster transactions directly
+        support higher conversion rates and stronger customer satisfaction.
+      </p>
+    ),
+    stats: [
+      { icon: "⚡", text: "< 300ms authorizations" },
+      { icon: "📉", text: "Fewer abandoned carts" },
+      { icon: "🚀", text: "Faster checkout flow" },
+      { icon: "📈", text: "Stronger conversions" },
+    ],
+  },
+  {
+    emoji: "🔁",
+    heading: "Enterprise-Grade Uptime",
+    leftCopy: (
+      <>
+        <p>
+          Built on resilient infrastructure with automatic failover protection,
+          your payments stay online even during peak demand or upstream
+          disruptions.
+        </p>
+        <p>Revenue doesn't stop — even when others do.</p>
+      </>
+    ),
+    stats: [
+      { icon: "🔁", text: "99.99% uptime" },
+      { icon: "🔄", text: "Intelligent failover" },
+      { icon: "☁️", text: "Resilient cloud infrastructure" },
+      { icon: "💵", text: "Protected peak revenue" },
+    ],
+  },
+  {
+    emoji: "💳",
+    heading: "Omnichannel Payment Acceptance",
+    leftCopy: (
+      <>
+        <p>
+          Accept cards, digital wallets, ACH, and alternative payment methods
+          across in-store, online, mobile, and recurring environments — all
+          through a unified gateway.
+        </p>
+        <p>
+          Deliver consistent payment experiences wherever your customers
+          transact.
+        </p>
+      </>
+    ),
+    stats: [
+      { icon: "💳", text: "100+ payment methods" },
+      { icon: "📱", text: "Wallet + ACH support" },
+      { icon: "🌎", text: "Global payment coverage" },
+      { icon: "🔄", text: "Recurring-ready" },
+    ],
+  },
+  {
+    emoji: "📊",
+    heading: "Real-Time Visibility & Control",
+    leftCopy: (
+      <p>
+        Monitor transaction performance, fraud trends, approval rates, and
+        merchant activity in real time. Make faster optimization decisions backed
+        by live reporting and actionable insights.
+      </p>
+    ),
+    stats: [
+      { icon: "📊", text: "Real-time reporting" },
+      { icon: "📈", text: "Approval tracking" },
+      { icon: "🛡", text: "Fraud trend monitoring" },
+      { icon: "📋", text: "Advanced analytics" },
+    ],
+  },
+];
 
 /* ------------------------------------------------------------------ */
-/*  Helper: extract rotateY (yaw) degrees from a CSS matrix3d string  */
+/*  Intersection Observer reveal hook (scroll-triggered)               */
 /* ------------------------------------------------------------------ */
-function extractYawFromMatrix(matrixStr: string): number | null {
-  const match = matrixStr.match(/matrix3d\((.+)\)/);
-  if (!match) {
-    return 0;
-  }
-  const v = match[1].split(",").map((s) => parseFloat(s.trim()));
-  if (v.length < 16) return null;
-  const yaw = Math.atan2(v[2], v[10]) * (180 / Math.PI);
-  return yaw;
+
+function useReveal(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mql.matches) {
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, visible };
 }
 
-export const ValueStats = () => {
-  const stats = useMemo(
-    () => [
-      {
-        icon: ZapIcon,
-        value: "99.99%",
-        label: "Uptime",
-        description:
-          "The NMI Gateway maintains enterprise-grade reliability through redundant data centers and live failover routing.",
-      },
-      {
-        icon: TrendingUpIcon,
-        value: "175+",
-        label: "Processor Connections",
-        description:
-          "Merchants can process through more than 175 global acquirers — one of the broadest connection networks in the industry.",
-      },
-      {
-        icon: ShoppingCartIcon,
-        value: "200+",
-        label: "Shopping Cart & POS Integrations",
-        description:
-          "Compatible with over 200 shopping carts, point-of-sale, and eCommerce platforms for seamless checkout flexibility.",
-      },
-      {
-        icon: ShieldCheckIcon,
-        value: "up to 70%",
-        label: "3D Secure & Fraud Tools Reduce Chargebacks",
-        description:
-          "Merchants who enable built-in fraud protection and 3-D Secure typically experience 50–70% fewer disputes on card-not-present transactions.",
-      },
-      {
-        icon: UsersIcon,
-        value: "Level 1",
-        label: "PCI DSS Certified",
-        description:
-          "The platform meets the highest level of security certification recognized for providers processing more than six million transactions annually.",
-      },
-      {
-        icon: ShieldCheckIcon,
-        value: "7–10 Days",
-        label: "ACH Settlement Window",
-        description:
-          "ACH transactions processed through NMI settle within 7–10 business days, giving merchants a reliable and predictable window for when funds will clear. This consistency helps with cash-flow planning and eliminates uncertainty around deposit timing.",
-      },
-    ],
-    []
-  );
+/* ------------------------------------------------------------------ */
+/*  Single two-column section                                          */
+/* ------------------------------------------------------------------ */
 
-  const quantity = stats.length;
-  const angle = 360 / quantity;
-  const radius = 320;
-
-  /* ----- state ---------------------------------------------------- */
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [manualPause, setManualPause] = useState(false);
-
-  /* ----- refs ----------------------------------------------------- */
-  const ringRef = useRef<HTMLDivElement>(null);
-  const lastSmartSelectTime = useRef(0);
-  const rafId = useRef(0);
-
-  /* ----- reduced-motion detection --------------------------------- */
-  const prefersReducedMotion = useRef(false);
-  useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    prefersReducedMotion.current = mql.matches;
-    const handler = (e: MediaQueryListEvent) => {
-      prefersReducedMotion.current = e.matches;
-    };
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
-  }, []);
-
-  /* ----- smart-select loop --------------------------------------- */
-  useEffect(() => {
-    if (isPaused || prefersReducedMotion.current) return;
-
-    let active = true;
-
-    const tick = () => {
-      if (!active) return;
-      const now = performance.now();
-      if (now - lastSmartSelectTime.current >= 150) {
-        const ringEl = ringRef.current;
-        if (ringEl) {
-          const style = getComputedStyle(ringEl);
-          const yaw = extractYawFromMatrix(style.transform);
-          if (yaw !== null) {
-            const frontIdx =
-              ((Math.round(-yaw / angle) % quantity) + quantity) % quantity;
-            setSelectedIndex((prev) => (prev !== frontIdx ? frontIdx : prev));
-          }
-        }
-        lastSmartSelectTime.current = now;
-      }
-      rafId.current = requestAnimationFrame(tick);
-    };
-
-    rafId.current = requestAnimationFrame(tick);
-    return () => {
-      active = false;
-      cancelAnimationFrame(rafId.current);
-    };
-  }, [isPaused, angle, quantity]);
-
-  /* ----- interaction handlers ------------------------------------ */
-  const handleCardClick = useCallback(
-    (idx: number) => {
-      setSelectedIndex(idx);
-      setIsPaused(true);
-      setManualPause(true);
-    },
-    []
-  );
-
-  const handleCardKeyDown = useCallback(
-    (e: React.KeyboardEvent, idx: number) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        handleCardClick(idx);
-      }
-    },
-    [handleCardClick]
-  );
-
-  const goToPrev = useCallback(() => {
-    setSelectedIndex((p) => (p - 1 + quantity) % quantity);
-    setIsPaused(true);
-    setManualPause(true);
-  }, [quantity]);
-
-  const goToNext = useCallback(() => {
-    setSelectedIndex((p) => (p + 1) % quantity);
-    setIsPaused(true);
-    setManualPause(true);
-  }, [quantity]);
-
-  const togglePause = useCallback(() => {
-    setIsPaused((p) => {
-      const next = !p;
-      setManualPause(next);
-      return next;
-    });
-  }, []);
-
-  /* ----- carousel hover / focus handlers ------------------------- */
-  const handleCarouselEnter = useCallback(() => {
-    setIsPaused(true);
-  }, []);
-
-  const handleCarouselLeave = useCallback(() => {
-    // Only resume if the user hasn't manually paused
-    if (!manualPause) {
-      setIsPaused(false);
-    }
-  }, [manualPause]);
-
-  /* Need to keep handleCarouselLeave up to date with manualPause */
-  const handleCarouselLeaveRef = useRef(handleCarouselLeave);
-  handleCarouselLeaveRef.current = handleCarouselLeave;
-
-  /* ----- computed ring style ------------------------------------- */
-  const ringStyle: React.CSSProperties = isPaused
-    ? {
-        animationPlayState: "paused",
-        transform: `rotateX(-14deg) rotateY(${-selectedIndex * angle}deg)`,
-        transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-      }
-    : {};
-
-  /* ----- active stat --------------------------------------------- */
-  const activeStat = stats[selectedIndex];
+function ValueSection({
+  section,
+  index,
+}: {
+  section: Section;
+  index: number;
+}) {
+  const isEven = index % 2 === 0;
+  const { ref, visible } = useReveal();
 
   return (
-    <section className="valuestats-section py-20 px-4 sm:px-6 bg-transparent">
-      <div className="max-w-5xl mx-auto mb-12 text-center">
-        <div className="valuestats-heading-chip inline-block px-8 py-3 rounded-full">
-          <h2 className="font-ubuntu text-5xl md:text-6xl font-bold tracking-tight text-foreground">
+    <div ref={ref} className="vs-row" data-even={isEven ? "" : undefined}>
+      {/* Left: text window */}
+      <div className={`vs-text ${visible ? "vs-text--visible" : ""}`}>
+        <span className="vs-section-emoji" aria-hidden="true">
+          {section.emoji}
+        </span>
+        <h3 className="vs-section-heading">{section.heading}</h3>
+        <div className="vs-section-copy">{section.leftCopy}</div>
+      </div>
+
+      {/* Right: stat card */}
+      <div className={`vs-card ${visible ? "vs-card--visible" : ""}`}>
+        <ul className="vs-stat-list">
+          {section.stats.map((stat) => (
+            <li key={stat.text} className="vs-stat-item">
+              <span className="vs-stat-icon" aria-hidden="true">
+                {stat.icon}
+              </span>
+              <span className="vs-stat-text">{stat.text}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Main export                                                        */
+/* ------------------------------------------------------------------ */
+
+export const ValueStats = () => {
+  return (
+    <section className="vs-section py-20 px-4 sm:px-6 bg-transparent">
+      {/* Section heading */}
+      <div className="max-w-5xl mx-auto mb-16 text-center">
+        <div className="vs-heading-chip inline-block px-8 py-3 rounded-full">
+          <h2 className="font-ubuntu text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
             Platform Value at a Glance
           </h2>
         </div>
       </div>
 
-      {/* === Two-column layout wrapper === */}
-      <div className="valuestats-layout">
-        {/* LEFT: text panel */}
-        <div className="valuestats-panel">
-          <span className="valuestats-kicker">Selected highlight</span>
-
-          {/* Keyed wrapper for fade+slide animation on selection change */}
-          <div key={activeStat.label} className="valuestats-left-content">
-            <div className="valuestats-panel-value">
-              {activeStat.value}
-            </div>
-            <h3 className="valuestats-panel-label">
-              {activeStat.label}
-            </h3>
-            <p className="valuestats-panel-desc">
-              {activeStat.description}
-            </p>
-          </div>
-
-          {/* Controls cluster */}
-          <div className="valuestats-controls">
-            <button
-              type="button"
-              className="valuestats-ctrl-circle"
-              onClick={goToPrev}
-              aria-label="Previous stat"
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-
-            <button
-              type="button"
-              className="valuestats-ctrl-pill"
-              onClick={togglePause}
-              aria-label={isPaused ? "Resume rotation" : "Pause rotation"}
-            >
-              {isPaused ? (
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 1.5L12 7L3 12.5V1.5Z" fill="currentColor"/>
-                </svg>
-              ) : (
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/>
-                  <rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/>
-                </svg>
-              )}
-              <span>{isPaused ? "Play" : "Pause"}</span>
-            </button>
-
-            <button
-              type="button"
-              className="valuestats-ctrl-circle"
-              onClick={goToNext}
-              aria-label="Next stat"
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-
-            <span className="valuestats-indicator">
-              {selectedIndex + 1} / {quantity}
-            </span>
-          </div>
-        </div>
-
-        {/* RIGHT: carousel shell — NO clip-path */}
-        <div
-          className="valuestats-carousel-shell"
-          onMouseEnter={handleCarouselEnter}
-          onMouseLeave={() => handleCarouselLeaveRef.current()}
-          onFocus={handleCarouselEnter}
-          onBlur={(e) => {
-            if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-              handleCarouselLeaveRef.current();
-            }
-          }}
-        >
-          <div className="valuestats-banner-container">
-            <div
-              ref={ringRef}
-              className="valuestats-slider-3d"
-              style={ringStyle}
-            >
-              {stats.map((stat, idx) => {
-                const Icon = stat.icon;
-                const rotation = idx * angle;
-                const transform = `rotateY(${rotation}deg) translateZ(${radius}px)`;
-                const isSelected = idx === selectedIndex;
-
-                return (
-                  <div
-                    key={stat.label}
-                    className="valuestats-slider-item"
-                    style={{ transform }}
-                  >
-                    <button
-                      type="button"
-                      className={`valuestats-card-btn${isSelected ? " valuestats-card-btn--selected" : ""}`}
-                      onClick={() => handleCardClick(idx)}
-                      onKeyDown={(e) => handleCardKeyDown(e, idx)}
-                      aria-label={`${stat.value} — ${stat.label}`}
-                      aria-pressed={isSelected}
-                    >
-                      <div className="valuestats-card">
-                        <div className="valuestats-card-front">
-                          <div className="valuestats-card-content">
-                            <div className="valuestats-icon-wrap">
-                              <Icon className="w-7 h-7" />
-                            </div>
-                            <div className="valuestats-value">
-                              {stat.value}
-                            </div>
-                            <div className="valuestats-label">
-                              {stat.label}
-                            </div>
-                            <div className="valuestats-description-wrapper">
-                              <div className="valuestats-description">
-                                {stat.description}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+      {/* Modular sections */}
+      <div className="vs-sections-wrap">
+        {sections.map((section, idx) => (
+          <ValueSection key={section.heading} section={section} index={idx} />
+        ))}
       </div>
 
       <style>{`
-        /* ===== CSS variables (unchanged) ===== */
-        .valuestats-section {
+        /* ===== CSS variables ===== */
+        .vs-section {
           --vs-card-bg: linear-gradient(150deg, hsl(0 0% 100%), hsl(210 17% 97%));
           --vs-card-border: hsl(var(--border));
           --vs-card-shadow:
             0 0 0 1px hsla(210 10% 23%, 0.08),
-            0 16px 42px rgba(0, 0, 0, 0.08),
-            0 0 28px hsla(var(--cyber-teal), 0.12);
+            0 12px 32px rgba(0, 0, 0, 0.07),
+            0 0 24px hsla(var(--cyber-teal), 0.10);
           --vs-icon-bg: hsl(var(--muted));
-          --vs-icon-border: hsl(var(--border));
           --vs-foreground: hsl(var(--foreground));
           --vs-muted: hsla(0, 0%, 30%, 0.85);
           --vs-heading-bg: hsla(var(--cyber-teal), 0.08);
           --vs-heading-border: hsla(var(--cyber-teal), 0.35);
           --vs-heading-foreground: hsl(var(--foreground));
+          --vs-stat-highlight: hsl(var(--cyber-teal));
+          overflow-x: clip;
         }
 
-        .dark .valuestats-section {
+        .dark .vs-section {
           --vs-card-bg: linear-gradient(150deg, #020617, #020617 55%, #111827);
           --vs-card-border: #1f2937;
           --vs-card-shadow:
             0 0 0 1px rgba(15, 23, 42, 0.7),
-            0 16px 42px rgba(0, 0, 0, 0.85),
-            0 0 20px rgba(59, 130, 246, 0.3);
+            0 12px 32px rgba(0, 0, 0, 0.7),
+            0 0 18px rgba(59, 130, 246, 0.20);
           --vs-icon-bg: #020617;
-          --vs-icon-border: #4b5563;
           --vs-foreground: #f9fafb;
           --vs-muted: rgba(229, 231, 235, 0.9);
           --vs-heading-bg: rgba(17, 24, 39, 0.9);
           --vs-heading-border: rgba(55, 65, 81, 0.8);
           --vs-heading-foreground: #f9fafb;
+          --vs-stat-highlight: hsl(210, 100%, 60%);
         }
 
-        .valuestats-heading-chip {
+        .vs-heading-chip {
           border: 2px solid var(--vs-heading-border);
           background: var(--vs-heading-bg);
           color: var(--vs-heading-foreground);
           transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
         }
 
-        /* ===== Two-column layout ===== */
-        .valuestats-layout {
+        /* ===== Sections wrapper ===== */
+        .vs-sections-wrap {
+          max-width: 1200px;
+          margin: 0 auto;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          gap: 2rem;
-          max-width: 1280px;
-          margin: 0 auto;
+          gap: 4rem;
         }
 
-        @media (min-width: 1024px) {
-          .valuestats-layout {
+        /* ===== Each row (two-column) ===== */
+        .vs-row {
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+          align-items: stretch;
+        }
+
+        @media (min-width: 768px) {
+          .vs-row {
             flex-direction: row;
             align-items: center;
-            gap: 2rem;
+            gap: 3rem;
+          }
+
+          /* Alternate layout: even rows = text left, card right */
+          /* Odd rows = card left, text right */
+          .vs-row[data-even] {
+            flex-direction: row;
+          }
+          .vs-row:not([data-even]) {
+            flex-direction: row-reverse;
           }
         }
 
-        /* ===== Left panel ===== */
-        .valuestats-panel {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          gap: 0.5rem;
-          padding: 1.5rem;
-          max-width: 28rem;
+        /* ===== Left: text window ===== */
+        .vs-text {
+          flex: 1 1 55%;
+          min-width: 0;
+          padding: 1rem 0;
+          opacity: 0;
+          transform: translateY(32px);
+          transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        @media (min-width: 1024px) {
-          .valuestats-panel {
-            flex: 0 0 42%;
-            align-items: flex-start;
-            text-align: left;
-            padding: 2rem 1rem 2rem 1rem;
-          }
-        }
-
-        .valuestats-kicker {
-          display: inline-block;
-          font-size: 0.7rem;
-          font-weight: 600;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: var(--vs-muted);
-          margin-bottom: 0.25rem;
-        }
-
-        /* ===== Animated left content ===== */
-        .valuestats-left-content {
-          animation: valuestats-fadein 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-
-        @keyframes valuestats-fadein {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        .vs-text--visible {
+          opacity: 1;
+          transform: translateY(0);
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .valuestats-left-content {
-            animation: none;
-          }
-        }
-
-        .valuestats-panel-value {
-          font-size: clamp(2.2rem, 5vw, 3.2rem);
-          font-weight: 800;
-          letter-spacing: 0.03em;
-          color: var(--vs-foreground);
-          line-height: 1.1;
-        }
-
-        .valuestats-panel-label {
-          font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-          font-weight: 700;
-          color: var(--vs-foreground);
-          margin: 0.15rem 0 0.4rem;
-        }
-
-        .valuestats-panel-desc {
-          font-size: 0.92rem;
-          line-height: 1.7;
-          color: var(--vs-muted);
-          max-width: 26rem;
-          margin-bottom: 1.25rem;
-        }
-
-        /* ===== Controls ===== */
-        .valuestats-controls {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          flex-wrap: wrap;
-        }
-
-        /* Circular icon buttons (prev/next) */
-        .valuestats-ctrl-circle {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 42px;
-          height: 42px;
-          padding: 0;
-          border-radius: 50%;
-          border: 1px solid var(--vs-card-border);
-          background: var(--vs-icon-bg);
-          color: var(--vs-foreground);
-          cursor: pointer;
-          transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-        }
-
-        .valuestats-ctrl-circle:hover,
-        .valuestats-ctrl-circle:focus-visible {
-          border-color: var(--vs-heading-border);
-          box-shadow: 0 0 0 2px hsla(var(--cyber-teal), 0.18);
-          outline: none;
-        }
-
-        .dark .valuestats-ctrl-circle:hover,
-        .dark .valuestats-ctrl-circle:focus-visible {
-          box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
-        }
-
-        /* Pill button (pause/play) */
-        .valuestats-ctrl-pill {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.35rem;
-          padding: 0 1rem;
-          height: 42px;
-          font-size: 0.82rem;
-          font-weight: 600;
-          border-radius: 9999px;
-          border: 1px solid var(--vs-card-border);
-          background: var(--vs-icon-bg);
-          color: var(--vs-foreground);
-          cursor: pointer;
-          transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-        }
-
-        .valuestats-ctrl-pill:hover,
-        .valuestats-ctrl-pill:focus-visible {
-          border-color: var(--vs-heading-border);
-          box-shadow: 0 0 0 2px hsla(var(--cyber-teal), 0.18);
-          outline: none;
-        }
-
-        .dark .valuestats-ctrl-pill:hover,
-        .dark .valuestats-ctrl-pill:focus-visible {
-          box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
-        }
-
-        /* Indicator text */
-        .valuestats-indicator {
-          font-size: 0.78rem;
-          font-weight: 600;
-          color: var(--vs-muted);
-          letter-spacing: 0.06em;
-          padding-left: 0.25rem;
-          user-select: none;
-        }
-
-        /* ===== Carousel shell — NO clip-path, fully visible ===== */
-        .valuestats-carousel-shell {
-          position: relative;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        @media (min-width: 1024px) {
-          .valuestats-carousel-shell {
-            flex: 1 1 58%;
-            min-width: 0;
-            justify-content: center;
-          }
-        }
-
-        .valuestats-banner-container {
-          width: min(580px, 100%);
-          min-height: clamp(26rem, 64vh, 36rem);
-          position: relative;
-          overflow: visible;
-          perspective: 1600px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        @media (min-width: 1024px) {
-          .valuestats-banner-container {
-            transform: translateX(14%);
-          }
-        }
-
-        .valuestats-slider-3d {
-          position: relative;
-          width: 340px;
-          height: 320px;
-          transform-style: preserve-3d;
-          animation: valuestats-spin 45s linear infinite;
-        }
-
-        @keyframes valuestats-spin {
-          from {
-            transform: rotateX(-14deg) rotateY(0deg);
-          }
-          to {
-            transform: rotateX(-14deg) rotateY(360deg);
-          }
-        }
-
-        .valuestats-slider-item {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-        }
-
-        /* ===== Card button wrapper (keyboard + click accessible) ===== */
-        .valuestats-card-btn {
-          display: block;
-          width: 100%;
-          height: 100%;
-          padding: 0;
-          margin: 0;
-          border: none;
-          background: transparent;
-          cursor: pointer;
-          pointer-events: auto;
-          -webkit-appearance: none;
-          appearance: none;
-        }
-
-        .valuestats-card-btn:focus-visible .valuestats-card-front {
-          box-shadow:
-            var(--vs-card-shadow),
-            0 0 0 3px hsla(var(--cyber-teal), 0.5);
-        }
-
-        .valuestats-card-btn--selected .valuestats-card-front {
-          box-shadow:
-            var(--vs-card-shadow),
-            0 0 14px hsla(var(--cyber-teal), 0.35);
-        }
-
-        .dark .valuestats-card-btn--selected .valuestats-card-front {
-          box-shadow:
-            var(--vs-card-shadow),
-            0 0 14px rgba(59, 130, 246, 0.35);
-        }
-
-        .valuestats-card {
-          width: 100%;
-          height: 100%;
-          position: relative;
-          transform-style: preserve-3d;
-        }
-
-        .valuestats-card-front {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          border-radius: 1.1rem;
-          overflow: hidden;
-          border: 1px solid var(--vs-card-border);
-          box-shadow: var(--vs-card-shadow);
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
-          background: var(--vs-card-bg);
-          transition: box-shadow 0.35s ease, transform 0.35s ease;
-        }
-
-        .valuestats-card-content {
-          position: absolute;
-          inset: 0;
-          padding: 1.5rem 1.75rem;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: space-between;
-          gap: 1rem;
-          color: var(--vs-foreground);
-          text-align: center;
-        }
-
-        .valuestats-icon-wrap {
-          width: 3.25rem;
-          height: 3.25rem;
-          border-radius: 9999px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: var(--vs-icon-bg);
-          border: 1px solid var(--vs-icon-border);
-          color: var(--vs-foreground);
-        }
-
-        .valuestats-value {
-          font-size: 1.9rem;
-          font-weight: 800;
-          letter-spacing: 0.03em;
-        }
-
-        .valuestats-label {
-          font-size: 1rem;
-          font-weight: 600;
-          opacity: 0.95;
-        }
-
-        .valuestats-description-wrapper {
-          display: flex;
-          flex-direction: column;
-          gap: 0.4rem;
-          font-size: 0.82rem;
-          max-width: 16rem;
-          color: var(--vs-muted);
-        }
-
-        .valuestats-description {
-          line-height: 1.6;
-        }
-
-        /* ===== Responsive ===== */
-        @media (max-width: 1023px) {
-          .valuestats-banner-container {
-            min-height: 24rem;
+          .vs-text {
+            opacity: 1;
             transform: none;
+            transition: none;
           }
-          .valuestats-slider-3d {
-            width: 300px;
-            height: 300px;
+        }
+
+        .vs-section-emoji {
+          display: inline-block;
+          font-size: 2rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .vs-section-heading {
+          font-family: 'Ubuntu', sans-serif;
+          font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+          font-weight: 800;
+          line-height: 1.15;
+          color: var(--vs-foreground);
+          margin: 0 0 1rem;
+          letter-spacing: -0.01em;
+        }
+
+        .vs-section-copy {
+          font-size: clamp(1rem, 2vw, 1.15rem);
+          line-height: 1.75;
+          color: var(--vs-muted);
+          max-width: 36rem;
+        }
+
+        .vs-section-copy p {
+          margin: 0 0 0.85rem;
+        }
+
+        .vs-section-copy p:last-child {
+          margin-bottom: 0;
+        }
+
+        /* ===== Right: stat card ===== */
+        .vs-card {
+          flex: 0 0 auto;
+          width: 100%;
+          max-width: 340px;
+          border-radius: 1.25rem;
+          border: 1px solid var(--vs-card-border);
+          background: var(--vs-card-bg);
+          box-shadow: var(--vs-card-shadow);
+          padding: 2rem 1.75rem;
+          opacity: 0;
+          transform: translateY(24px) scale(0.97);
+          transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+                      transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+        }
+
+        .vs-card--visible {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .vs-card {
+            opacity: 1;
+            transform: none;
+            transition: none;
           }
-          .valuestats-description-wrapper {
-            max-width: 14rem;
+        }
+
+        @media (min-width: 768px) {
+          .vs-card {
+            flex: 0 0 340px;
           }
         }
 
         @media (max-width: 767px) {
-          .valuestats-banner-container {
-            min-height: 22rem;
-            transform: none;
-          }
-          .valuestats-slider-3d {
-            width: 260px;
-            height: 280px;
-          }
-          .valuestats-description-wrapper {
-            max-width: 13rem;
+          .vs-card {
+            max-width: 100%;
+            margin: 0 auto;
           }
         }
 
-        /* ===== Reduced motion ===== */
-        @media (prefers-reduced-motion: reduce) {
-          .valuestats-slider-3d {
-            animation: none;
-            transform: rotateX(-14deg) rotateY(0deg);
-          }
+        /* ===== Stat list ===== */
+        .vs-stat-list {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 1.2rem;
         }
 
-        /* ===== Section-level overflow (page edge only) ===== */
-        .valuestats-section {
-          overflow-x: clip;
+        .vs-stat-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.85rem;
+        }
+
+        .vs-stat-icon {
+          flex: 0 0 auto;
+          font-size: 1.4rem;
+          line-height: 1;
+          margin-top: 0.1rem;
+        }
+
+        .vs-stat-text {
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: var(--vs-foreground);
+          line-height: 1.35;
+          letter-spacing: 0.01em;
+        }
+
+        /* Bold numbers / highlight within text */
+        .vs-stat-text strong,
+        .vs-stat-text b {
+          color: var(--vs-stat-highlight);
+        }
+
+        /* ===== Hover effect on card ===== */
+        @media (hover: hover) {
+          .vs-card:hover {
+            box-shadow:
+              var(--vs-card-shadow),
+              0 0 20px hsla(var(--cyber-teal), 0.18);
+            transform: translateY(-2px) scale(1.005);
+            transition-delay: 0s;
+          }
+
+          .dark .vs-card:hover {
+            box-shadow:
+              var(--vs-card-shadow),
+              0 0 20px rgba(59, 130, 246, 0.25);
+          }
         }
       `}</style>
     </section>
