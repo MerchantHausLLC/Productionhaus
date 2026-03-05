@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 import shieldLogo from "@/assets/shield.webp";
 import { useState, useEffect } from "react";
 import { ContactDialog } from "./ContactDialog";
-import { Moon, Sun, Menu, X } from "lucide-react";
+import { Moon, Sun, Menu, X, LogIn } from "lucide-react";
 import { useTheme } from "next-themes";
 
 export const Header = () => {
@@ -115,6 +115,15 @@ export const Header = () => {
             <span className="sr-only">Toggle theme</span>
           </Button>
           
+          <a
+            href="https://merchanthausio.transactiongateway.com/merchants/login.php?cookie_check=1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:inline-flex items-center gap-2 border border-cyber-teal text-cyber-teal hover:bg-cyber-teal hover:text-white font-montserrat font-medium rounded-lg px-5 py-2 transition-all hover:shadow-lg"
+          >
+            <LogIn className="h-4 w-4" />
+            Client Login
+          </a>
           <Button
             onClick={() => setIsContactOpen(true)}
             className="hidden md:inline-flex bg-crimson hover:opacity-90 text-white font-montserrat font-medium rounded-lg px-6 transition-all hover:shadow-lg"
@@ -137,6 +146,16 @@ export const Header = () => {
                 {label}
               </a>
             ))}
+            <a
+              href="https://merchanthausio.transactiongateway.com/merchants/login.php?cookie_check=1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 justify-center border border-cyber-teal text-cyber-teal hover:bg-cyber-teal hover:text-white font-montserrat font-medium rounded-lg px-4 py-2 transition-all"
+              onClick={handleNavClick}
+            >
+              <LogIn className="h-4 w-4" />
+              Client Login
+            </a>
             <Button
               onClick={() => {
                 setIsContactOpen(true);
