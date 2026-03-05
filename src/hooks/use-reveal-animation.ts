@@ -18,10 +18,16 @@ export const useRevealAnimation = ({
   direction = "up",
   threshold = 0.2
 }: RevealOptions = {}) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const [isVisible, setIsVisible] = useState(prefersReducedMotion);
   const elementRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
+
     const node = elementRef.current;
     if (!node) return;
 

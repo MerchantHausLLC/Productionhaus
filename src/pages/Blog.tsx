@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import { ArrowRight, ShieldCheck, Lock, DollarSign, CreditCard } from "lucide-react";
 import { useEffect, useRef } from "react";
 import shieldLogo from "@/assets/shield.webp";
+import { PageSEO } from "@/components/PageSEO";
 
 const Blog = () => {
   const mainRef = useRef<HTMLElement>(null);
@@ -44,6 +45,11 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-background dark:bg-neutral-dark">
+      <PageSEO
+        title="Blog"
+        description="Insights on payment processing, fraud prevention, 3D Secure, and the future of digital commerce from the MerchantHaus team."
+        path="/blog"
+      />
       <Header />
       
       <style>{`
@@ -105,6 +111,7 @@ const Blog = () => {
                       src="/blog-images/prediction.webp"
                       alt="AI predictions and payment trends"
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                     <div className="absolute top-4 left-4 flex flex-col gap-2">
                       <span className="text-white text-xs font-bold px-3 py-1 rounded-full uppercase bg-cyber-teal">
@@ -192,6 +199,7 @@ const Blog = () => {
                     src="/blog-images/pos-terminal-overlay.png"
                     alt="POS terminal overlay"
                     className="w-full h-40 object-cover"
+                    loading="lazy"
                   />
                   <div className="p-6">
                     <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
@@ -221,6 +229,7 @@ const Blog = () => {
                     src="/blog-images/vamp_metrics.webp"
                     alt="VAMP Metrics"
                     className="w-full h-40 object-cover"
+                    loading="lazy"
                   />
                   <div className="p-6">
                     <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-crimson">
@@ -246,10 +255,11 @@ const Blog = () => {
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
                 <a href="/3ds" className="block">
-                  <img 
-                    src="/blog-images/3ds_ai.png" 
-                    alt="3D Secure Authentication" 
+                  <img
+                    src="/blog-images/3ds_ai.png"
+                    alt="3D Secure Authentication"
                     className="w-full h-40 object-cover"
+                    loading="lazy"
                   />
                   <div className="p-6">
                     <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
@@ -279,6 +289,7 @@ const Blog = () => {
                     src="/blog-images/TAP1.webp"
                     alt="Tap-to-mobile point of sale"
                     className="w-full h-40 object-cover"
+                    loading="lazy"
                   />
                   <div className="p-6">
                     <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">
@@ -308,6 +319,7 @@ const Blog = () => {
                     src="/blog-images/3ds_handshake.png"
                     alt="3D Secure 2 authentication experience"
                     className="w-full h-40 object-cover"
+                    loading="lazy"
                   />
                   <div className="p-6">
                     <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">

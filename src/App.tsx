@@ -5,7 +5,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
+import { HelmetProvider } from "react-helmet-async";
 import LoadingScreen from "./components/LoadingScreen";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 /**
  * Main site pages - lazy loaded for initial bundle optimization
@@ -84,14 +86,16 @@ import Webhooks from "./pages/Webhooks";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Suspense fallback={<LoadingScreen />}>
-            <Routes>
+  <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <ScrollToTop />
+            <Suspense fallback={<LoadingScreen />}>
+              <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/services" element={<Services />} />
               <Route path="/about" element={<AboutPage />} />
@@ -162,6 +166,7 @@ const App = () => (
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;

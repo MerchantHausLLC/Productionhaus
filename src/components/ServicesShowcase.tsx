@@ -175,10 +175,11 @@ const ServicesShowcase = () => {
       {/* Header */}
       <div className="text-center mb-16">
         <div className="flex items-center justify-center gap-4 mb-6">
-          <img 
-            src="/redshield.webp" 
-            alt="MerchantHaus Security Shield" 
+          <img
+            src="/redshield.webp"
+            alt="MerchantHaus Security Shield"
             className="w-16 h-16 md:w-20 md:h-20 object-contain"
+            loading="lazy"
           />
           <h2 className="text-5xl md:text-6xl font-bold font-ubuntu tracking-tight">MerchantHaus Core Services</h2>
         </div>
@@ -219,10 +220,11 @@ const ServicesShowcase = () => {
                     <p className="text-lg text-primary font-semibold italic">{service.subtitle}</p>
                   </div>
                   {service.showPosOverlay && (
-                    <img 
-                      src="/blog-images/opos-terminal.png" 
-                      alt="POS Terminal" 
+                    <img
+                      src="/blog-images/opos-terminal.png"
+                      alt="POS Terminal"
                       className="pos-image w-20 h-20 object-contain flex-shrink-0 transition-transform duration-300"
+                      loading="lazy"
                     />
                   )}
                 </div>

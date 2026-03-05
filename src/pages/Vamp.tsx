@@ -215,7 +215,7 @@ const Vamp = () => {
           
           {/* Header with Logo and Tagline */}
           <header className="mb-12 pt-8 border-b-4 flex items-center space-x-4" style={{ borderColor: '#DC143C' }}>
-            <img src={shieldLogo} alt="MerchantHaus Shield Logo" className="h-10 w-10 sm:h-12 sm:w-12" />
+            <img src={shieldLogo} alt="MerchantHaus Shield Logo" className="h-10 w-10 sm:h-12 sm:w-12" loading="lazy" />
             <div>
               <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight logo-text" style={{ color: '#1A1A1A' }}>
                 MerchantHaus <span style={{ color: '#DC143C' }}>Blog</span>
@@ -237,7 +237,7 @@ const Vamp = () => {
           
           {/* Masked Image 1: Header Visual */}
           <div className="masked-image-container shape-1 initial-hidden" data-animate>
-            <img src="/blog-images/vamp_header.webp" alt="Abstract global payment network" />
+            <img src="/blog-images/vamp_header.webp" alt="Abstract global payment network" loading="lazy" />
             <div className="masked-image-overlay-text text-xl sm:text-3xl lg:text-4xl">Shaping the Future of Payments</div>
           </div>
 
@@ -278,7 +278,7 @@ const Vamp = () => {
 
           {/* Masked Image 2: Metrics Visual */}
           <div className="masked-image-container shape-2 initial-hidden" data-animate>
-            <img src="/blog-images/vamp_metrics.webp" alt="Data analysis and trends" />
+            <img src="/blog-images/vamp_metrics.webp" alt="Data analysis and trends" loading="lazy" />
             <div className="masked-image-overlay-text text-xl sm:text-3xl">Understanding the Metrics</div>
           </div>
 
@@ -310,7 +310,7 @@ const Vamp = () => {
 
           {/* Masked Image 3: Security Visual */}
           <div className="masked-image-container shape-3 initial-hidden" data-animate>
-            <img src="/blog-images/vamp_security.webp" alt="Secure payment solutions" />
+            <img src="/blog-images/vamp_security.webp" alt="Secure payment solutions" loading="lazy" />
             <div className="masked-image-overlay-text text-xl sm:text-3xl">Protecting Your Transactions</div>
           </div>
 

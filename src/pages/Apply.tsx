@@ -18,6 +18,7 @@ import {
   LucideIcon,
 } from "lucide-react";
 import { supabase } from "@/supabase"; // Ensure path is correct
+import { PageSEO } from "@/components/PageSEO";
 import { MerchantApplication } from "@/types/database";
 
 // --- Types & Interfaces ---
@@ -520,6 +521,11 @@ export default function Apply() {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20 md:pb-10">
+      <PageSEO
+        title="Apply"
+        description="Apply for a MerchantHaus merchant account. Start accepting credit cards, ACH, and digital payments with fast approval and transparent pricing."
+        path="/apply"
+      />
       {/* Top Navigation Bar */}
       <div className="sticky top-0 z-30 bg-white border-b border-slate-200 px-4 py-3 shadow-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
