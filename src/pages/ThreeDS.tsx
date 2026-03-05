@@ -34,7 +34,7 @@ const ThreeDS = () => {
 
         <div className="post-container mx-auto">
           <header className="mb-12 pt-8 border-b-4 border-crimson flex items-center space-x-4">
-            <img src={shieldLogo} alt="MerchantHaus Shield Logo" className="h-10 w-10 sm:h-12 sm:w-12" />
+            <img src={shieldLogo} alt="MerchantHaus Shield Logo" className="h-10 w-10 sm:h-12 sm:w-12" loading="lazy" />
             <div>
               <h1 className="text-4xl sm:text-5xl font-extrabold text-neutral-dark font-ubuntu">
                 MerchantHaus <span className="text-crimson">Blog</span>
@@ -52,7 +52,7 @@ const ThreeDS = () => {
           </p>
 
           <div className="masked-image-container shape-1">
-            <img src="/blog-images/3ds_ai.png" alt="Digital security with AI technology" />
+            <img src="/blog-images/3ds_ai.png" alt="Digital security with AI technology" loading="lazy" />
             <div className="masked-image-overlay-text">Authentication That Builds Trust</div>
           </div>
 
@@ -67,7 +67,7 @@ const ThreeDS = () => {
           </div>
 
           <div className="masked-image-container shape-2">
-            <img src="/blog-images/3ds_handshake.png" alt="Digital handshake representing secure partnership" />
+            <img src="/blog-images/3ds_handshake.png" alt="Digital handshake representing secure partnership" loading="lazy" />
             <div className="masked-image-overlay-text">Smarter Data Sharing</div>
           </div>
 
@@ -90,7 +90,7 @@ const ThreeDS = () => {
           </div>
 
           <div className="masked-image-container shape-3">
-            <img src="/blog-images/3ds_developer.png" alt="Developer working with secure authentication systems" />
+            <img src="/blog-images/3ds_developer.png" alt="Developer working with secure authentication systems" loading="lazy" />
             <div className="masked-image-overlay-text">Seamless on Any Device</div>
           </div>
 

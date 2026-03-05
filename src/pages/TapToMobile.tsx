@@ -44,7 +44,7 @@ const TapToMobile = () => {
           </p>
 
           <div className="masked-image-container shape-1">
-            <img src="/blog-images/TAP1.webp" alt="Tap-to-mobile header" />
+            <img src="/blog-images/TAP1.webp" alt="Tap-to-mobile header" loading="lazy" />
             <div className="masked-image-overlay-text">Get Paid With Just a Phone</div>
           </div>
 
@@ -59,7 +59,7 @@ const TapToMobile = () => {
           </div>
 
           <div className="masked-image-container shape-2">
-            <img src="/blog-images/TAP2.webp" alt="Merchant taking a tap-to-phone payment" />
+            <img src="/blog-images/TAP2.webp" alt="Merchant taking a tap-to-phone payment" loading="lazy" />
             <div className="masked-image-overlay-text">Software POS wins when payments travel</div>
           </div>
 
@@ -81,7 +81,7 @@ const TapToMobile = () => {
           </div>
 
           <div className="masked-image-container shape-3">
-            <img src="/blog-images/TAP3.webp" alt="Contactless payments growth" />
+            <img src="/blog-images/TAP3.webp" alt="Contactless payments growth" loading="lazy" />
             <div className="masked-image-overlay-text">Contactless is the default</div>
           </div>
 

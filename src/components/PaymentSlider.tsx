@@ -186,7 +186,7 @@ export default function ImprovedPaymentSlider() {
       >
         {/* Center Shield Logo */}
         <div className="center-shield">
-          <img src="/shield.webp" alt="Shield" className="w-full h-full object-contain" />
+          <img src="/shield.webp" alt="Shield" className="w-full h-full object-contain" loading="lazy" />
         </div>
         
         {/* Slider B - Behind shield (z-index: 3) - Shows positions 5-9 (back half) */}

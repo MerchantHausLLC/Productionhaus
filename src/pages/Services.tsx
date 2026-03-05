@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import ServicesShowcase from "@/components/ServicesShowcase";
 import { TypewriterReveal } from "@/components/TypewriterReveal";
+import { PageSEO } from "@/components/PageSEO";
 import {
   Smartphone,
   ShieldAlert,
@@ -128,6 +129,11 @@ const Services = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <PageSEO
+        title="Services"
+        description="Accept payments anywhere — in-store, online, or on-the-go. Mobile payments, POS devices, fraud detection, and global payment processing."
+        path="/services"
+      />
       <Header />
       
       <main className="flex-1">

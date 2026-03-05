@@ -22,6 +22,11 @@ export const useParallax = <T extends HTMLElement>({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
     const element = elementRef.current;
     if (!element) return;
 

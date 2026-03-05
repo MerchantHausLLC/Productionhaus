@@ -12,7 +12,7 @@ const Footer = () => {
           {/* Logo + Contact - Wider column */}
           <div className="space-y-6 md:col-span-2">
             <div className="flex items-center gap-3 mb-2">
-              <img src={shieldLogo} alt="MerchantHaus Shield" className="h-12 w-12" />
+              <img src={shieldLogo} alt="MerchantHaus Shield" className="h-12 w-12" loading="lazy" />
               <h3 className="font-ubuntu font-semibold text-2xl text-foreground">
                 MerchantHaus
               </h3>

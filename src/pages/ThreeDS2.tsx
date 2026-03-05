@@ -29,7 +29,7 @@ const ThreeDS2 = () => {
 
         <div className="post-container mx-auto">
           <header className="mb-12 pt-8 border-b-4 border-crimson flex items-center space-x-4">
-            <img src={shieldLogo} alt="MerchantHaus Shield Logo" className="h-10 w-10 sm:h-12 sm:w-12" />
+            <img src={shieldLogo} alt="MerchantHaus Shield Logo" className="h-10 w-10 sm:h-12 sm:w-12" loading="lazy" />
             <div>
               <h1 className="text-4xl sm:text-5xl font-extrabold text-neutral-dark font-ubuntu">
                 MerchantHaus <span className="text-crimson">Blog</span>

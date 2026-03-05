@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Shield, Zap, Users, Lock, TrendingUp, Globe } from "lucide-react";
 import { TypewriterParagraph } from "@/components/TypewriterParagraph";
 import { useParallax } from "@/hooks/use-parallax";
+import { PageSEO } from "@/components/PageSEO";
 
 const AboutPage = () => {
   const crimsonAuraRef = useParallax<HTMLDivElement>({ speed: 0.06 });
@@ -16,6 +17,11 @@ const AboutPage = () => {
 
   return (
     <>
+      <PageSEO
+        title="About"
+        description="MerchantHaus empowers merchants and ISOs with modern payment infrastructure, transparent pricing, and dedicated U.S.-based support."
+        path="/about"
+      />
       <Header />
       <div className="relative overflow-hidden bg-neutral-light text-neutral-dark p-8 sm:p-16">
         <div className="pointer-events-none absolute inset-0 -z-10">

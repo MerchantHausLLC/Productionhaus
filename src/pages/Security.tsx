@@ -1,10 +1,16 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Shield, Lock, AlertTriangle, Key, FileCheck, Globe, Eye, ShieldCheck } from "lucide-react";
+import { PageSEO } from "@/components/PageSEO";
 
 const Security = () => {
   return (
     <div className="min-h-screen bg-background">
+      <PageSEO
+        title="Security"
+        description="Learn about MerchantHaus security practices including PCI DSS compliance, encryption, tokenization, and fraud prevention measures."
+        path="/security"
+      />
       <Header />
       
       <main>
