@@ -69,7 +69,9 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://retailmanager.merchant.haus/public/index.html"
+                  href="https://merchanthausio.transactiongateway.com/merchants/login.php?cookie_check=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-cyber-teal transition-colors"
                 >
                   Client Login
