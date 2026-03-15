@@ -176,7 +176,7 @@ export const PricingSection = () => {
                   variant={plan.popular ? "default" : "outline"}
                   asChild
                 >
-                  <a href="https://ops-terminal.merchant.haus/contact.tsx">
+                  <a href="/#contact">
                     {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
                   </a>
                 </Button>

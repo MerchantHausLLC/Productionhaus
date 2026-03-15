@@ -247,7 +247,7 @@ export const Solutions = () => {
 
   const handleGetStarted = () => {
     closeFullscreen();
-    window.location.href = "https://ops-terminal.merchant.haus/contact.tsx";
+    window.location.href = "/#contact";
   };
 
   // Tilt effect handler for cards based on cursor position

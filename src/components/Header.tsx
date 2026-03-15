@@ -17,7 +17,7 @@ export const Header = () => {
     { href: "/services", label: "Services" },
     { href: "/supported-processors", label: "Processors" },
     { href: "/blog", label: "Blog" },
-    { href: "https://ops-terminal.merchant.haus/contact.tsx", label: "Get Started" }
+    { href: "/#contact", label: "Get Started" }
   ];
 
   useEffect(() => {

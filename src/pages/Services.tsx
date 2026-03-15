@@ -201,7 +201,7 @@ const Services = () => {
                   className="border-2 border-foreground text-foreground hover:bg-foreground hover:text-background font-bold px-8 py-6 text-lg rounded-lg transition-all"
                   asChild
                 >
-                  <a href="https://ops-terminal.merchant.haus/contact.tsx">Get Started</a>
+                  <a href="/#contact">Get Started</a>
                 </Button>
               </div>
             </div>
