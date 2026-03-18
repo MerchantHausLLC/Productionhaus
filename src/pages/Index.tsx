@@ -54,11 +54,11 @@ const Index = () => {
         <Reveal direction="left" delay={150}>
           <Solutions />
         </Reveal>
-        <Reveal direction="right" delay={200}>
-          <PricingSection />
-        </Reveal>
         <Reveal direction="up" delay={200}>
           <VampBlogBanner />
+        </Reveal>
+        <Reveal direction="right" delay={200}>
+          <PricingSection />
         </Reveal>
         <Reveal direction="right" delay={250}>
           <ClientResources />
