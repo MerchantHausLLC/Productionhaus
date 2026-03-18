@@ -99,8 +99,8 @@ export const PricingSection = () => {
     <section className="py-20 px-4 bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Secure, Transparent Pricing
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 font-ubuntu text-foreground">
+            Secure, <span className="text-cyber-teal">Transparent</span> Pricing
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             Every plan includes our fraud‑first foundation: Network Tokens, Customer Vault, and Basic Fraud Prevention.
@@ -143,11 +143,14 @@ export const PricingSection = () => {
                   {typeof plan.monthlyPrice === "number" ? (
                     <>
                       <span className="text-4xl font-bold">
-                        ${billingCycle === "monthly" ? plan.monthlyPrice : plan.annualPrice}
+                        ${billingCycle === "monthly" ? plan.monthlyPrice : Math.round((plan.annualPrice as number) / 12)}
                       </span>
-                      <span className="text-muted-foreground">
-                        /{billingCycle === "monthly" ? "month" : "year"}
-                      </span>
+                      <span className="text-muted-foreground">/month</span>
+                      {billingCycle === "annual" && (
+                        <div className="text-xs text-muted-foreground mt-1">
+                          ${plan.annualPrice} billed annually
+                        </div>
+                      )}
                     </>
                   ) : (
                     <span className="text-4xl font-bold bg-gradient-to-r from-indigo-400 to-emerald-400 bg-clip-text text-transparent">

@@ -33,16 +33,16 @@ const wordSets = {
   line3: ["Business", "Enterprise", "Storefront", "Operations", "Revenue", "Brand", "Organization", "Portfolio", "Ecosystem", "Success"]
 };
 
-/* Hero animated text color scheme */
+/* Hero animated text color scheme — brand palette only */
 const colors = [
   "text-crimson",
   "text-cyber-teal",
-  "text-orange-400",
-  "text-blue-400",
-  "text-purple-400",
-  "text-pink-400",
-  "text-yellow-400",
-  "text-green-400"
+  "text-crimson",
+  "text-cyber-teal",
+  "text-crimson",
+  "text-cyber-teal",
+  "text-crimson",
+  "text-cyber-teal"
 ];
 
 export const Hero = () => {
@@ -199,6 +199,14 @@ export const Hero = () => {
           >
             <a href="https://ops-terminal.merchant.haus/contact">Get Started</a>
           </Button>
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="border-2 border-white/60 text-white hover:bg-white/10 font-montserrat font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 rounded-lg transition-all w-full sm:w-auto backdrop-blur-sm"
+          >
+            <a href="#solutions">Explore Solutions</a>
+          </Button>
         </div>
         {/* Scroll Indicator */}
         <div 
@@ -209,8 +217,25 @@ export const Hero = () => {
           <ChevronDown className="w-8 h-8 text-cyber-teal animate-bounce" />
         </div>
         </div>
-        {/* Right side - empty on large screens for hemisphere effect */}
-        <div className="hidden lg:block" />
+        {/* Right side — stats panel */}
+        <div className={`hidden lg:flex flex-col gap-4 transition-all duration-700 delay-[2600ms] ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-xl">
+            <div className="text-4xl font-bold text-cyber-teal font-ubuntu mb-1">99.98%</div>
+            <div className="text-white/80 text-sm font-medium uppercase tracking-wider">Platform Uptime</div>
+          </div>
+          <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-xl">
+            <div className="text-4xl font-bold text-crimson font-ubuntu mb-1">&lt; 5 min</div>
+            <div className="text-white/80 text-sm font-medium uppercase tracking-wider">Merchant Onboarding</div>
+          </div>
+          <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-xl">
+            <div className="text-4xl font-bold text-cyber-teal font-ubuntu mb-1">150+</div>
+            <div className="text-white/80 text-sm font-medium uppercase tracking-wider">Supported Integrations</div>
+          </div>
+          <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-xl">
+            <div className="text-4xl font-bold text-white font-ubuntu mb-1">24 / 7</div>
+            <div className="text-white/80 text-sm font-medium uppercase tracking-wider">Fraud Monitoring</div>
+          </div>
+        </div>
       </div>
     </section>
   );
