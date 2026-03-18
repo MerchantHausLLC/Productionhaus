@@ -69,7 +69,7 @@ const Vamp = () => {
   }, []);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F8F9FA', color: '#1A1A1A' }}>
+    <div className="min-h-screen bg-neutral-light text-neutral-dark">
       <style>{`
         body {
             font-family: 'Inter', sans-serif;

@@ -51,7 +51,7 @@ const App: React.FC = () => {
         }
 
         .section-heading {
-          border-left: 6px solid #DC143C;
+          border-left: 5px solid #DC143C;
           padding-left: 1.5rem;
           margin-left: -1.5rem;
         }

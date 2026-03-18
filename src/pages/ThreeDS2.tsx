@@ -13,10 +13,10 @@ const ThreeDS2 = () => {
       <Header />
       <div className="bg-neutral-light text-neutral-dark p-4 sm:p-8">
         <style>{`
-          .post-container { max-width: 820px; }
-          .section-heading { border-left: 5px solid #00CEDB; padding-left: 1rem; transition: all 0.3s ease-in-out; }
+          .post-container { max-width: 800px; }
+          .section-heading { border-left: 5px solid #DC143C; padding-left: 1rem; transition: all 0.3s ease-in-out; }
           .section-heading:hover { transform: translateX(6px); }
-          .callout { border-left: 4px solid #DC143C; background-color: rgba(220, 20, 60, 0.08); padding: 1.25rem 1.75rem; border-radius: 10px; }
+          .callout { border-left: 4px solid #00CEDB; background-color: #edfcfd; padding: 1.25rem 1.75rem; border-radius: 10px; }
           .quick-list li::marker { color: #DC143C; }
           .tagline-pulse { animation: pulse-tagline 6s ease-in-out infinite; }
           @keyframes pulse-tagline { 0% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.01); opacity: 1; } 100% { transform: scale(1); opacity: 0.75; } }
