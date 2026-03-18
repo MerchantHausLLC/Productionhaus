@@ -292,7 +292,7 @@ const Blog = () => {
                     loading="lazy"
                   />
                   <div className="p-6">
-                    <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-muted-foreground">
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">
                       Payments Tech
                     </p>
                     <h4 className="text-xl font-bold mb-3 text-foreground">

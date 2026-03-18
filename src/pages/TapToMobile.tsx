@@ -1,6 +1,7 @@
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useEffect } from "react";
+import shieldLogo from "@/assets/shield.webp";
 
 const TapToMobile = () => {
   useEffect(() => {
@@ -35,7 +36,17 @@ const TapToMobile = () => {
         `}</style>
 
         <div className="post-container mx-auto">
-          <h2 id="main-title" className="text-3xl sm:text-4xl font-bold text-neutral-dark mb-6 pt-8">
+          <header className="mb-12 pt-8 border-b-4 border-crimson flex items-center space-x-4">
+            <img src={shieldLogo} alt="MerchantHaus Shield Logo" className="h-10 w-10 sm:h-12 sm:w-12" loading="lazy" />
+            <div>
+              <h1 className="text-4xl sm:text-5xl font-extrabold text-neutral-dark font-ubuntu">
+                MerchantHaus <span className="text-crimson">Blog</span>
+              </h1>
+              <p className="mt-2 mb-2 text-lg text-silver-grey tracking-wider tagline-pulse">plug in, play, process.</p>
+            </div>
+          </header>
+
+          <h2 id="main-title" className="text-3xl sm:text-4xl font-bold text-neutral-dark mb-6">
             Tap-to-Mobile Is the New POS: How to Get Paid With Just a Phone in 2025
           </h2>
 
