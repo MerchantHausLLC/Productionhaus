@@ -15,28 +15,40 @@ type FeaturedSlide = {
 
 const slides: FeaturedSlide[] = [
   {
-    title: "Beyond the Hype: Why 2026 Will Reset AI Expectations and Accelerate SaaS Payments",
+    title: "What the 2025 Payments Survey Reveals About How Customers Really Pay",
     description:
-      "Explore why the AI hype cycle will cool while embedded, automated SaaS payments become the default choice for merchants heading into 2026.",
-    href: "/prediction-2026",
-    tag: "Featured Prediction",
+      "Cards still dominate, but wallets and BNPL are now essential levers for margin and AOV. Here's what the data says about your payment mix strategy.",
+    href: "/payments-survey-2025",
+    tag: "Latest Article",
+    gradient: "linear-gradient(135deg, #4f1d96 0%, #1e1b4b 100%)",
+    textColor: "text-white",
+    buttonTextColor: "text-purple-900",
+    buttonBg: "bg-white",
+    date: "December 2025"
+  },
+  {
+    title: "3D Secure 2: Security Without the Speed Bumps",
+    description:
+      "Fraud is getting smarter. Your checkout should too. 3DS2 lets you protect your customers and your bottom line — without slowing down sales.",
+    href: "/3ds2",
+    tag: "Fraud Prevention",
     gradient: "linear-gradient(135deg, #0f766e 0%, #0f172a 100%)",
     textColor: "text-white",
     buttonTextColor: "text-teal-900",
     buttonBg: "bg-white",
-    date: "October 28, 2024"
+    date: "November 2025"
   },
   {
     title: "Visa's VAMP: A New Era for Fraud and Dispute Management",
     description:
       "Discover how Visa's new Acquirer Monitoring Program is reshaping fraud prevention and dispute management across the payment ecosystem.",
     href: "/vamp",
-    tag: "Latest Article",
+    tag: "Compliance",
     gradient: "linear-gradient(135deg, hsl(var(--crimson)) 0%, #8B0000 100%)",
     textColor: "text-white",
     buttonTextColor: "text-crimson",
     buttonBg: "bg-white",
-    date: "September 12, 2024"
+    date: "October 2025"
   }
 ];
 
@@ -104,6 +116,15 @@ export default function VampBlogBanner() {
             />
           ))}
         </div>
+      </div>
+      <div className="text-center mt-5">
+        <a
+          href="/blog"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+        >
+          Browse all articles
+          <ArrowRight className="w-4 h-4" />
+        </a>
       </div>
     </section>
   );
