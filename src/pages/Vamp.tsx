@@ -72,7 +72,7 @@ const Vamp = () => {
     <div className="min-h-screen bg-neutral-light text-neutral-dark">
       <style>{`
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             line-height: 1.7;
         }
         .post-container {
@@ -99,7 +99,7 @@ const Vamp = () => {
             border-radius: 8px;
         }
         .logo-text {
-             font-family: 'Ubuntu', sans-serif;
+             font-family: 'Rajdhani', system-ui, sans-serif;
              font-weight: 600;
         }
         

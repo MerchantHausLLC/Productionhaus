@@ -6,10 +6,6 @@ type FeaturedSlide = {
   description: string;
   href: string;
   tag: string;
-  gradient: string;
-  textColor: string;
-  buttonTextColor: string;
-  buttonBg: string;
   date: string;
 };
 
@@ -20,10 +16,6 @@ const slides: FeaturedSlide[] = [
       "Cards still dominate, but wallets and BNPL are now essential levers for margin and AOV. Here's what the data says about your payment mix strategy.",
     href: "/payments-survey-2025",
     tag: "Latest Article",
-    gradient: "linear-gradient(135deg, #4f1d96 0%, #1e1b4b 100%)",
-    textColor: "text-white",
-    buttonTextColor: "text-purple-900",
-    buttonBg: "bg-white",
     date: "December 2025"
   },
   {
@@ -32,10 +24,6 @@ const slides: FeaturedSlide[] = [
       "Fraud is getting smarter. Your checkout should too. 3DS2 lets you protect your customers and your bottom line — without slowing down sales.",
     href: "/3ds2",
     tag: "Fraud Prevention",
-    gradient: "linear-gradient(135deg, #0f766e 0%, #0f172a 100%)",
-    textColor: "text-white",
-    buttonTextColor: "text-teal-900",
-    buttonBg: "bg-white",
     date: "November 2025"
   },
   {
@@ -44,10 +32,6 @@ const slides: FeaturedSlide[] = [
       "Discover how Visa's new Acquirer Monitoring Program is reshaping fraud prevention and dispute management across the payment ecosystem.",
     href: "/vamp",
     tag: "Compliance",
-    gradient: "linear-gradient(135deg, hsl(var(--crimson)) 0%, #8B0000 100%)",
-    textColor: "text-white",
-    buttonTextColor: "text-crimson",
-    buttonBg: "bg-white",
     date: "October 2025"
   }
 ];
@@ -67,12 +51,12 @@ export default function VampBlogBanner() {
   }, [totalSlides]);
 
   return (
-    <section className="py-8 px-6">
+    <section className="py-12 px-6">
       <div
-        className="relative max-w-7xl mx-auto overflow-hidden rounded-2xl transition-all duration-500"
+        className="relative max-w-7xl mx-auto overflow-hidden border border-border transition-all duration-500"
         style={{
-          background: activeSlide.gradient,
-          boxShadow: "0 10px 40px rgba(0,0,0,0.25)"
+          background: "hsl(var(--foreground))",
+          boxShadow: "none"
         }}
       >
         <a
@@ -80,30 +64,26 @@ export default function VampBlogBanner() {
           className="block group relative"
         >
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between p-8 md:p-12 gap-6">
-            <div className={`flex-1 ${activeSlide.textColor}`}>
-              <div className="inline-flex items-center gap-2 px-4 py-1 bg-white/15 backdrop-blur-sm rounded-full text-sm font-semibold mb-4">
+            <div className="flex-1 text-white">
+              <div className="inline-flex items-center gap-2 px-4 py-1 border border-white/20 text-sm font-inter font-medium mb-4 tracking-wide uppercase">
                 <span>{activeSlide.tag}</span>
-                <span className="text-white/80">• {activeSlide.date}</span>
+                <span className="text-white/50">&middot; {activeSlide.date}</span>
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold mb-3">
+              <h3 className="text-2xl md:text-3xl font-bold font-ubuntu mb-3 text-white">
                 {activeSlide.title}
               </h3>
-              <p className="text-white/90 text-lg leading-relaxed max-w-2xl">
+              <p className="text-white/70 text-base leading-relaxed max-w-2xl font-inter font-light">
                 {activeSlide.description}
               </p>
             </div>
 
             <div className="flex-shrink-0">
-              <div
-                className={`flex items-center gap-3 px-8 py-4 ${activeSlide.buttonBg} ${activeSlide.buttonTextColor} rounded-full font-bold text-lg group-hover:gap-5 transition-all duration-300 shadow-lg`}
-              >
+              <div className="flex items-center gap-3 px-8 py-4 bg-white text-black font-inter font-medium text-sm tracking-wide uppercase group-hover:gap-5 transition-all duration-300">
                 Read Article
-                <ArrowRight className="w-6 h-6" />
+                <ArrowRight className="w-5 h-5" />
               </div>
             </div>
           </div>
-
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
         </a>
 
         <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-2 z-20">
@@ -111,7 +91,7 @@ export default function VampBlogBanner() {
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`h-2 w-8 rounded-full transition-all duration-300 ${index === activeIndex ? "bg-white" : "bg-white/40"}`}
+              className={`h-1.5 w-8 transition-all duration-300 ${index === activeIndex ? "bg-white" : "bg-white/30"}`}
               aria-label={`View slide ${index + 1}`}
             />
           ))}
@@ -120,7 +100,7 @@ export default function VampBlogBanner() {
       <div className="text-center mt-5">
         <a
           href="/blog"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-inter font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide uppercase"
         >
           Browse all articles
           <ArrowRight className="w-4 h-4" />

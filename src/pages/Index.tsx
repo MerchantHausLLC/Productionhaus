@@ -8,62 +8,40 @@ import Footer from "@/components/Footer";
 import { CookieConsent } from "@/components/CookieConsent";
 import ClientResources from "@/components/ClientResources";
 import VampBlogBanner from "@/components/VampBlogBanner";
-import { useParallax } from "@/hooks/use-parallax";
 import { Reveal } from "@/components/Reveal";
 import { PricingSection } from "@/components/PricingSection";
 import { PageSEO } from "@/components/PageSEO";
 
 const Index = () => {
-  const softGradientRef = useParallax<HTMLDivElement>({ speed: 0.04 });
-  const crimsonGlowRef = useParallax<HTMLDivElement>({ speed: 0.08 });
-  const tealGlowRef = useParallax<HTMLDivElement>({ speed: 0.12 });
-
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background">
+    <div className="relative min-h-screen bg-background">
       <PageSEO
         title="Plug In, Play and Process"
         description="Empowering merchants and ISOs through tailored retail solutions for payment processing. Accept cards, ACH, and secure pay links online, in-store, or on the go."
         path="/"
       />
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        {/* Soft gradient background layer */}
-        <div
-          ref={softGradientRef}
-          className="h-full w-full bg-gradient-to-b from-[hsl(var(--light-bg))] via-[hsla(var(--cyber-teal),0.08)] to-[hsl(var(--background))]"
-        />
-        {/* Crimson accent glow */}
-        <div
-          ref={crimsonGlowRef}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,hsla(var(--crimson),0.14)_0%,transparent_55%)]"
-        />
-        {/* Teal accent glow */}
-        <div
-          ref={tealGlowRef}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,hsla(var(--cyber-teal),0.12)_0%,transparent_50%)]"
-        />
-      </div>
       <Header />
       <main className="relative z-1">
         <Hero />
         <Reveal direction="up">
           <LogoBanner />
         </Reveal>
-        <Reveal direction="right" delay={100}>
+        <Reveal direction="up" delay={100}>
           <ValueStats />
         </Reveal>
-        <Reveal direction="left" delay={150}>
+        <Reveal direction="up" delay={100}>
           <Solutions />
         </Reveal>
-        <Reveal direction="up" delay={200}>
+        <Reveal direction="up" delay={100}>
           <VampBlogBanner />
         </Reveal>
-        <Reveal direction="right" delay={200}>
+        <Reveal direction="up" delay={100}>
           <PricingSection />
         </Reveal>
-        <Reveal direction="right" delay={250}>
+        <Reveal direction="up" delay={100}>
           <ClientResources />
         </Reveal>
-        <Reveal direction="up" delay={300}>
+        <Reveal direction="up" delay={100}>
           <Contact />
         </Reveal>
       </main>

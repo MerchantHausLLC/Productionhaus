@@ -17,7 +17,6 @@ import {
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Button } from "./ui/button";
 import shieldLogo from "@/assets/shield.webp";
-import { useParallax } from "@/hooks/use-parallax";
 
 type Solution = {
   icon: LucideIcon;
@@ -143,11 +142,6 @@ export const Solutions = () => {
   const scrollPositionRef = useRef(0);
   const animationFrameRef = useRef<number | null>(null);
   const isPausedRef = useRef(false);
-  const shieldGlowRef = useParallax<HTMLDivElement>({ speed: 0.12 });
-  const shieldLogoRef = useParallax<HTMLImageElement>({ speed: 0.18 });
-  const topGradientRef = useParallax<HTMLDivElement>({ speed: 0.06 });
-  const bottomGradientRef = useParallax<HTMLDivElement>({ speed: 0.09 });
-  const globeRef = useParallax<HTMLImageElement>({ speed: 0.14 });
 
   // Typewriter effect for modal title
   useEffect(() => {
@@ -273,54 +267,38 @@ export const Solutions = () => {
   };
 
   return (
-    <section id="services" className="py-20 px-4 sm:px-6 bg-muted/50 dark:bg-neutral-dark/30 relative overflow-visible">
-      {/* Shield Logo - Positioned within Solutions section */}
-      <div className="relative -mt-32 mb-12 z-20 pointer-events-none">
+    <section id="services" className="py-24 px-4 sm:px-6 bg-background relative overflow-visible border-t border-border">
+      {/* Minimal shield logo */}
+      <div className="relative mb-16 z-20 pointer-events-none">
         <div className="flex justify-center">
-          <div className="relative flex items-center justify-center animate-fade-in">
-            <div
-              ref={shieldGlowRef}
-              className="absolute inset-0 bg-gradient-radial from-crimson/30 to-cyber-teal/20 blur-3xl scale-150"
-            />
-            <img
-              ref={shieldLogoRef}
-              src={shieldLogo}
-              alt="MerchantHaus Shield"
-              className="h-48 w-48 md:h-64 md:w-64 object-contain drop-shadow-2xl relative z-10 animate-scale-in"
-            />
-          </div>
+          <img
+            src={shieldLogo}
+            alt="MerchantHaus Shield"
+            className="h-24 w-24 md:h-32 md:w-32 object-contain opacity-80 grayscale"
+          />
         </div>
       </div>
-      {/* Globe Background */}
+      {/* Subtle background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div
-          ref={topGradientRef}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_top,hsla(var(--crimson),0.14),transparent_60%)]"
-        />
-        <div
-          ref={bottomGradientRef}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,hsla(var(--cyber-teal),0.16),transparent_65%)]"
-        />
         <div className="absolute inset-0 flex items-center justify-center">
           <img
-            ref={globeRef}
             src="/images/globe-background.png"
             alt="Global Payment Network"
-            className="relative w-full max-w-5xl h-auto object-contain opacity-25 md:opacity-35 contrast-125 saturate-125 drop-shadow-[0_0_60px_rgba(220,20,60,0.18)]"
+            className="relative w-full max-w-5xl h-auto object-contain opacity-[0.06] grayscale"
           />
         </div>
       </div>
       <div className="max-w-7xl mx-auto overflow-visible relative z-10">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="font-ubuntu font-bold text-3xl sm:text-4xl md:text-5xl text-foreground mb-4">
-            CORE SERVICES
+            Core Services
           </h2>
-          <p className="font-inter text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
+          <p className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto mb-8 font-light">
             Comprehensive payment solutions designed to help your business thrive in today's digital economy.
           </p>
-          <Button 
+          <Button
             asChild
-            className="bg-crimson hover:bg-crimson/90 text-white font-semibold rounded-full px-8 py-6 text-base shadow-lg hover:shadow-xl transition-all"
+            className="bg-foreground hover:bg-foreground/90 text-background font-inter font-medium rounded-none px-10 py-6 text-sm tracking-wide shadow-none transition-all uppercase"
           >
             <a href="/quote">Get a Quote</a>
           </Button>
@@ -341,50 +319,33 @@ export const Solutions = () => {
                     ref={(el) => {
                       cardRefs.current[index] = el;
                     }}
-                    className="service-card marquee-card flex-shrink-0 w-[320px] md:w-[360px] aspect-[3/4] md:aspect-[4/5]"
+                    className="service-card service-card--has-bg marquee-card flex-shrink-0 w-[320px] md:w-[360px] aspect-[3/4] md:aspect-[4/5]"
                     onMouseMove={(e) => handleMouseMove(e, index)}
                     onMouseLeave={() => handleMouseLeave(index)}
                   >
-                   {(solution.bannerImage && (
-                       /*
-                        * To ensure consistent image sizing across all service cards,
-                        * rely on a fixed aspect ratio rather than a hard-coded height.
-                        * Using the Tailwind `aspect-[4/3]` utility gives each
-                        * preview card a taller image similar to the previous
-                        * fullscreen banner. Removing the fixed `h-[280px]` class
-                        * prevents conflicting heights and ensures images scale
-                        * uniformly as the card width changes. Browsers that do
-                        * not support `aspect-ratio` will fall back to the
-                        * intrinsic dimensions of the image, which still yields
-                        * a reasonable card height.
-                        */
-                       <div
-                         className="card-image-visual relative w-full aspect-[4/3] overflow-hidden rounded-t-[1.5rem]"
-                       >
-                         <img
-                           src={solution.bannerImage}
-                           alt={solution.title}
-                           className="absolute inset-0 h-full w-full object-cover"
-                           draggable={false}
-                         />
-                       </div>
-                     )) || (
-                       <div
-                         className="relative w-full aspect-[4/3] rounded-t-[1.5rem] bg-muted/40"
-                       />
-                     )}
-                    <div className="service-card-body">
-                      <div className="service-card-icon">
-                        <Icon className="h-6 w-6 text-[hsl(var(--crimson))]" strokeWidth={2} />
+                    {/* Full background image with dimming & desaturation */}
+                    {solution.bannerImage && (
+                      <img
+                        src={solution.bannerImage}
+                        alt=""
+                        aria-hidden="true"
+                        className="service-card-bg-img"
+                        draggable={false}
+                      />
+                    )}
+                    <div className="service-card-bg-overlay" />
+                    <div className="service-card-body relative z-10">
+                      <div className="service-card-icon service-card-icon--light">
+                        <Icon className="h-6 w-6 text-white/80" strokeWidth={1.5} />
                       </div>
                       <div className="space-y-3">
-                        <h3 className="text-2xl font-bold font-ubuntu">{solution.title}</h3>
-                        <p className="text-base leading-relaxed text-neutral-600">{solution.description}</p>
+                        <h3 className="text-2xl font-bold font-ubuntu text-white">{solution.title}</h3>
+                        <p className="text-base leading-relaxed text-white/70">{solution.description}</p>
                       </div>
                       <div className="service-card-footer">
                         <button
                           type="button"
-                          className="service-card-button"
+                          className="service-card-button service-card-button--light"
                           onClick={() => handleCardClick(index)}
                         >
                           Learn More
@@ -433,7 +394,7 @@ export const Solutions = () => {
           onClick={closeFullscreen}
         >
           <div
-            className="relative max-w-4xl w-full my-auto bg-background dark:bg-card rounded-3xl shadow-2xl overflow-hidden animate-scale-in flex flex-col"
+            className="relative max-w-4xl w-full my-auto bg-background dark:bg-card shadow-2xl overflow-hidden animate-scale-in flex flex-col"
             onClick={(e) => e.stopPropagation()}
             style={{
               animation: 'flipIn 0.6s ease-out',
@@ -467,10 +428,10 @@ export const Solutions = () => {
             </button>
             <div className="p-6 sm:p-8 md:p-12 overflow-y-auto flex-1 min-h-0">
               {/* Large icon */}
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-crimson/20 to-cyber-teal/20 flex items-center justify-center mb-6 md:mb-8 animate-scale-in">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-none border border-border flex items-center justify-center mb-6 md:mb-8 animate-scale-in">
                 {(() => {
                   const Icon = solutions[selectedCard].icon;
-                  return <Icon className="w-10 h-10 md:w-12 md:h-12 text-crimson" strokeWidth={2} />;
+                  return <Icon className="w-10 h-10 md:w-12 md:h-12 text-foreground/70" strokeWidth={1.5} />;
                 })()}
               </div>
               {/* Content with typewriter effect */}
@@ -486,7 +447,7 @@ export const Solutions = () => {
             <div className="shrink-0 p-6 sm:p-8 md:px-12 border-t border-border bg-background dark:bg-card">
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
-                  className={`${solutions[selectedCard].buttonColor} text-white font-inter font-medium rounded-lg px-8`}
+                  className="bg-foreground text-background hover:bg-foreground/90 font-inter font-medium rounded-none px-8"
                   onClick={handleGetStarted}
                 >
                   Get Started
@@ -494,7 +455,7 @@ export const Solutions = () => {
                 <Button
                   variant="outline"
                   onClick={closeFullscreen}
-                  className="font-inter font-medium rounded-lg px-8"
+                  className="font-inter font-medium rounded-none px-8 border-foreground/20"
                 >
                   Close
                 </Button>

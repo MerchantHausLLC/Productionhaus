@@ -15,8 +15,11 @@ export default {
     },
     extend: {
       fontFamily: {
-        ubuntu: ['Ubuntu', 'sans-serif'],
-        montserrat: ['Montserrat', 'sans-serif'],
+        ubuntu: ['Rajdhani', 'system-ui', 'sans-serif'],
+        montserrat: ['Montserrat', 'system-ui', 'sans-serif'],
+        playfair: ['Rajdhani', 'system-ui', 'sans-serif'],
+        inter: ['Montserrat', 'system-ui', 'sans-serif'],
+        rajdhani: ['Rajdhani', 'system-ui', 'sans-serif'],
       },
       colors: {
         crimson: 'hsl(var(--crimson))',

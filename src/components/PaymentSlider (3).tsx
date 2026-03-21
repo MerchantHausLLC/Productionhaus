@@ -389,7 +389,7 @@ export const PaymentSlider = () => {
           font-size: 0.95rem;
           font-weight: 600;
           text-align: center;
-          font-family: 'Inter', sans-serif;
+          font-family: 'Montserrat', sans-serif;
         }
 
         .model-shadow {

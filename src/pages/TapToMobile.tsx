@@ -13,7 +13,7 @@ const TapToMobile = () => {
       <Header />
       <div className="bg-neutral-light text-neutral-dark p-4 sm:p-8">
         <style>{`
-          body { font-family: 'Inter', sans-serif; line-height: 1.7; }
+          body { font-family: 'Montserrat', sans-serif; line-height: 1.7; }
           .post-container { max-width: 800px; }
           .section-heading { border-left: 5px solid #DC143C; padding-left: 1rem; transition: all 0.3s ease-in-out; }
           .callout { border-left: 4px solid #00CEDB; background-color: #edfcfd; padding: 1rem 1.5rem; border-radius: 8px; }

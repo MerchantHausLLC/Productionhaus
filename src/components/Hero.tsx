@@ -2,58 +2,18 @@ import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import heroVideo from "@/assets/Hero.webm";
-import { useParallax } from "@/hooks/use-parallax";
-
-const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
-  const [displayText, setDisplayText] = useState("");
-  const [startTyping, setStartTyping] = useState(false);
-  useEffect(() => {
-    const startTimer = setTimeout(() => setStartTyping(true), delay);
-    return () => clearTimeout(startTimer);
-  }, [delay]);
-  useEffect(() => {
-    if (!startTyping) return;
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index <= text.length) {
-        setDisplayText(text.slice(0, index));
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 50);
-    return () => clearInterval(interval);
-  }, [text, startTyping]);
-  return <>{displayText}</>;
-};
 
 const wordSets = {
-  line1: ["Solutions", "Technology", "Systems", "Processing", "Platforms", "Services", "Networks", "Structures", "Innovation", "Infrastructure"],
-  line2: ["Advance", "Grow", "Secure", "Empower", "Optimize", "Simplify", "Scale", "Elevate", "Modernize", "Transform"],
-  line3: ["Business", "Enterprise", "Storefront", "Operations", "Revenue", "Brand", "Organization", "Portfolio", "Ecosystem", "Success"]
+  line1: ["Solutions", "Technology", "Systems", "Processing", "Platforms", "Services", "Networks", "Infrastructure"],
+  line2: ["Advance", "Grow", "Secure", "Empower", "Optimize", "Simplify", "Scale", "Elevate"],
+  line3: ["Business", "Enterprise", "Storefront", "Operations", "Revenue", "Brand", "Organization", "Success"]
 };
-
-/* Hero animated text color scheme — brand palette only */
-const colors = [
-  "text-crimson",
-  "text-cyber-teal",
-  "text-crimson",
-  "text-cyber-teal",
-  "text-crimson",
-  "text-cyber-teal",
-  "text-crimson",
-  "text-cyber-teal"
-];
 
 export const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentWords, setCurrentWords] = useState({ line1: 0, line2: 0, line3: 0 });
-  const [previousWords, setPreviousWords] = useState({ line1: -1, line2: -1, line3: -1 });
-  const [colorIndices, setColorIndices] = useState({ line1: 0, line2: 1, line3: 2 });
   const [isAnimating, setIsAnimating] = useState(false);
-  const videoParallaxRef = useParallax<HTMLDivElement>({ speed: 0.08 });
-  const shadowOverlayRef = useParallax<HTMLDivElement>({ speed: 0.12 });
-  const accentOverlayRef = useParallax<HTMLDivElement>({ speed: 0.16 });
+
   const getRandomIndex = (max: number, previous: number) => {
     let newIndex = Math.floor(Math.random() * max);
     while (newIndex === previous && max > 1) {
@@ -61,141 +21,114 @@ export const Hero = () => {
     }
     return newIndex;
   };
+
   useEffect(() => {
-    // Trigger animations on mount
     setTimeout(() => setIsLoaded(true), 100);
-    // Word cycling every 6 seconds with staggered timing
+
     const interval = setInterval(() => {
       setIsAnimating(true);
-      // Line 1 (Payment) changes first
       setTimeout(() => {
-        setPreviousWords(prev => ({ ...prev, line1: currentWords.line1 }));
         setCurrentWords(prev => ({
-          ...prev,
-          line1: getRandomIndex(wordSets.line1.length, prev.line1)
-        }));
-        setColorIndices(prev => ({
-          ...prev,
-          line1: (prev.line1 + 1) % colors.length
-        }));
-      }, 0);
-      // Line 2 (That) changes 500ms after Line 1
-      setTimeout(() => {
-        setPreviousWords(prev => ({ ...prev, line2: currentWords.line2 }));
-        setCurrentWords(prev => ({
-          ...prev,
-          line2: getRandomIndex(wordSets.line2.length, prev.line2)
-        }));
-        setColorIndices(prev => ({
-          ...prev,
-          line2: (prev.line2 + 1) % colors.length
-        }));
-      }, 500);
-      // Line 3 (Your) changes 500ms after Line 2 (1s total from Line 1)
-      setTimeout(() => {
-        setPreviousWords(prev => ({ ...prev, line3: currentWords.line3 }));
-        setCurrentWords(prev => ({
-          ...prev,
-          line3: getRandomIndex(wordSets.line3.length, prev.line3)
-        }));
-        setColorIndices(prev => ({
-          ...prev,
-          line3: (prev.line3 + 1) % colors.length
+          line1: getRandomIndex(wordSets.line1.length, prev.line1),
+          line2: getRandomIndex(wordSets.line2.length, prev.line2),
+          line3: getRandomIndex(wordSets.line3.length, prev.line3),
         }));
         setIsAnimating(false);
-      }, 1000);
-    }, 6000);
+      }, 400);
+    }, 5000);
+
     return () => clearInterval(interval);
-  }, [currentWords]);
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-visible">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-neutral-900">
       {/* Video Background */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
-        <div ref={videoParallaxRef} className="absolute inset-0">
-          <video autoPlay loop muted playsInline className="h-full w-full object-cover" poster="/hero-replacement.webp">
-            <source src={heroVideo} type="video/webm" />
-          </video>
-        </div>
-        {/* Dark overlay for text readability */}
-        <div ref={shadowOverlayRef} className="absolute inset-0 bg-neutral-dark/30" />
-        {/* Gradient overlay for brand effect */}
-        <div ref={accentOverlayRef} className="absolute inset-0 bg-gradient-to-br from-crimson/20 via-transparent to-cyber-teal/20" />
+      <div className="absolute inset-0 w-full h-full pointer-events-none">
+        <video autoPlay loop muted playsInline className="h-full w-full object-cover" poster="/hero-replacement.webp">
+          <source src={heroVideo} type="video/webm" />
+        </video>
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/65" />
       </div>
-      {/* Desktop: Left hemisphere layout, Mobile: Full width */}
-      <div className="relative max-w-7xl mx-auto px-6 md:px-12 py-20 md:grid md:grid-cols-1 lg:grid-cols-2 md:gap-12 items-center">
-        {/* Desktop: Left hemisphere layout, Mobile: Full width */}
-        <div className="text-left space-y-6 md:space-y-8 w-full max-w-xl md:max-w-3xl lg:max-w-6xl xl:max-w-7xl">
+
+      {/* Centered Content */}
+      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         {/* Animated Headline */}
-        <div 
-          className={`font-ubuntu font-semibold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight transition-all duration-700 delay-300 drop-shadow-2xl ${
+        <div
+          className={`font-ubuntu font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight transition-all duration-700 delay-300 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
-          style={{ letterSpacing: '0.05em' }}
+          style={{ letterSpacing: '0.02em' }}
         >
-          <div className="flex flex-col">
-            {/* Payment stacked vertically with its word */}
-            <div className="mb-2">
-              <span className="text-white whitespace-nowrap">Payment{' '}
-                <span
-                  className={`inline-block whitespace-nowrap transition-all duration-300 ease-in-out ${
-                    isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-                  } ${colors[colorIndices.line1]}`}
-                >
-                  {wordSets.line1[currentWords.line1]}
-                </span>
-              </span>
-            </div>
-            {/* That and Your inline with their words */}
-            <div className="mb-2">
-              <span className="text-white whitespace-nowrap">That{' '}
-                <span
-                  className={`inline-block whitespace-nowrap transition-all duration-300 ease-in-out ${
-                    isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-                  } ${colors[colorIndices.line2]}`}
-                >
-                  {wordSets.line2[currentWords.line2]}
-                </span>
+          <div className="flex flex-col gap-1">
+            <div>
+              <span className="text-white">Payment </span>
+              <span
+                className={`inline-block transition-all duration-400 ease-in-out ${
+                  isAnimating ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'
+                } text-white/70`}
+              >
+                {wordSets.line1[currentWords.line1]}
               </span>
             </div>
             <div>
-              <span className="text-white whitespace-nowrap">Your{' '}
-                <span
-                  className={`inline-block whitespace-nowrap transition-all duration-300 ease-in-out ${
-                    isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-                  } ${colors[colorIndices.line3]}`}
-                >
-                  {wordSets.line3[currentWords.line3]}
-                </span>
+              <span className="text-white">That </span>
+              <span
+                className={`inline-block transition-all duration-400 ease-in-out ${
+                  isAnimating ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'
+                } text-white/70`}
+              >
+                {wordSets.line2[currentWords.line2]}
+              </span>
+            </div>
+            <div>
+              <span className="text-white">Your </span>
+              <span
+                className={`inline-block transition-all duration-400 ease-in-out ${
+                  isAnimating ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'
+                } text-white/70`}
+              >
+                {wordSets.line3[currentWords.line3]}
               </span>
             </div>
           </div>
         </div>
-        {/* Subheadline with Typewriter Effect */}
-        <p 
-          className={`font-montserrat text-lg sm:text-xl md:text-2xl text-neutral-light max-w-2xl transition-all duration-700 delay-500 drop-shadow-lg ${
+
+        {/* Subtle divider */}
+        <div
+          className={`mx-auto mt-8 mb-6 w-16 h-px bg-white/40 transition-all duration-700 delay-500 ${
+            isLoaded ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+          }`}
+        />
+
+        {/* Subheadline */}
+        <p
+          className={`font-inter text-lg sm:text-xl md:text-2xl text-white/80 font-light tracking-wide transition-all duration-700 delay-500 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          <TypewriterText text="Plug in, play and process." delay={1500} />
+          Plug in, play and process.
         </p>
-        {/* Hero Body Text */}
-        <p 
-          className={`font-montserrat text-sm sm:text-base md:text-lg text-neutral-light/90 max-w-3xl md:max-w-2xl transition-all duration-700 delay-[2200ms] drop-shadow-lg ${
+
+        {/* Body Text */}
+        <p
+          className={`font-inter text-sm sm:text-base text-white/60 max-w-2xl mx-auto mt-4 leading-relaxed transition-all duration-700 delay-700 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          Create your business profile in minutes and start accepting cards, ACH, and secure pay links — online, in-store, or on the go. Reduce costs, onboard quickly, and safeguard every transaction with advanced fraud protection and chargeback defense.
+          Create your business profile in minutes and start accepting cards, ACH, and secure pay links — online, in-store, or on the go.
         </p>
+
         {/* CTA Buttons */}
         <div
-          className={`pt-4 flex flex-col sm:flex-row gap-4 transition-all duration-700 delay-[2400ms] ${
+          className={`pt-8 flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 delay-[900ms] ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
           <Button
             asChild
             size="lg"
-            className="bg-crimson hover:opacity-90 text-white font-montserrat font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all w-full sm:w-auto"
+            className="bg-white text-black hover:bg-white/90 font-inter font-medium text-base px-10 py-6 rounded-none tracking-wide transition-all w-full sm:w-auto"
           >
             <a href="https://ops-terminal.merchant.haus/contact">Get Started</a>
           </Button>
@@ -203,38 +136,19 @@ export const Hero = () => {
             asChild
             size="lg"
             variant="outline"
-            className="border-2 border-white/60 text-white hover:bg-white/10 font-montserrat font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 rounded-lg transition-all w-full sm:w-auto backdrop-blur-sm"
+            className="border border-white/40 text-white hover:bg-white/10 font-inter font-medium text-base px-10 py-6 rounded-none tracking-wide transition-all w-full sm:w-auto"
           >
             <a href="#solutions">Explore Solutions</a>
           </Button>
         </div>
+
         {/* Scroll Indicator */}
-        <div 
-          className={`md:hidden absolute bottom-12 left-1/2 -translate-x-1/2 transition-all duration-700 delay-[2600ms] ${
+        <div
+          className={`mt-16 transition-all duration-700 delay-[1100ms] ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <ChevronDown className="w-8 h-8 text-cyber-teal animate-bounce" />
-        </div>
-        </div>
-        {/* Right side — stats panel */}
-        <div className={`hidden lg:flex flex-col gap-4 transition-all duration-700 delay-[2600ms] ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-xl">
-            <div className="text-4xl font-bold text-cyber-teal font-ubuntu mb-1">99.98%</div>
-            <div className="text-white/80 text-sm font-medium uppercase tracking-wider">Platform Uptime</div>
-          </div>
-          <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-xl">
-            <div className="text-4xl font-bold text-crimson font-ubuntu mb-1">&lt; 5 min</div>
-            <div className="text-white/80 text-sm font-medium uppercase tracking-wider">Merchant Onboarding</div>
-          </div>
-          <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-xl">
-            <div className="text-4xl font-bold text-cyber-teal font-ubuntu mb-1">150+</div>
-            <div className="text-white/80 text-sm font-medium uppercase tracking-wider">Supported Integrations</div>
-          </div>
-          <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 shadow-xl">
-            <div className="text-4xl font-bold text-white font-ubuntu mb-1">24 / 7</div>
-            <div className="text-white/80 text-sm font-medium uppercase tracking-wider">Fraud Monitoring</div>
-          </div>
+          <ChevronDown className="w-6 h-6 text-white/40 animate-bounce mx-auto" />
         </div>
       </div>
     </section>

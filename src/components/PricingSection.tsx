@@ -96,14 +96,14 @@ export const PricingSection = () => {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-background to-muted/20">
+    <section className="py-24 px-4 bg-background border-t border-border">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 font-ubuntu text-foreground">
-            Secure, <span className="text-cyber-teal">Transparent</span> Pricing
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 font-ubuntu text-foreground">
+            Transparent Pricing
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Every plan includes our fraud‑first foundation: Network Tokens, Customer Vault, and Basic Fraud Prevention.
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto mb-8 font-inter font-light">
+            Every plan includes our fraud-first foundation: Network Tokens, Customer Vault, and Basic Fraud Prevention.
           </p>
           
           <Tabs value={billingCycle} onValueChange={(v) => setBillingCycle(v as "monthly" | "annual")} className="inline-flex">
@@ -124,9 +124,9 @@ export const PricingSection = () => {
           {pricingPlans.map((plan, index) => (
             <Card
               key={plan.name}
-              className={`relative overflow-hidden transition-all duration-300 hover:scale-105 bg-gradient-to-br ${plan.gradient} backdrop-blur-sm border-border/50 ${
-                plan.popular ? "ring-2 ring-primary shadow-lg shadow-primary/20" : ""
-              } ${plan.name === 'Enterprise' ? "border-emerald-500/30 shadow-lg shadow-emerald-500/5" : ""} animate-fade-in`}
+              className={`relative overflow-hidden transition-all duration-300 hover:scale-[1.02] bg-background backdrop-blur-sm border-border ${
+                plan.popular ? "ring-1 ring-foreground shadow-lg" : ""
+              } animate-fade-in`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {plan.popular && (
@@ -135,7 +135,7 @@ export const PricingSection = () => {
                 </div>
               )}
               <CardHeader>
-                <CardTitle className={`text-2xl ${plan.name === 'Enterprise' ? "text-emerald-400" : ""}`}>
+                <CardTitle className="text-2xl">
                   {plan.name}
                 </CardTitle>
                 <CardDescription className="min-h-[40px]">{plan.description}</CardDescription>
@@ -153,7 +153,7 @@ export const PricingSection = () => {
                       )}
                     </>
                   ) : (
-                    <span className="text-4xl font-bold bg-gradient-to-r from-indigo-400 to-emerald-400 bg-clip-text text-transparent">
+                    <span className="text-4xl font-bold">
                       Custom
                     </span>
                   )}
@@ -162,7 +162,7 @@ export const PricingSection = () => {
               <CardContent className="space-y-3 min-h-[350px]">
                 {plan.features.map((feature) => (
                   <div key={feature} className="flex items-start gap-2">
-                    <Check className={`h-5 w-5 shrink-0 mt-0.5 ${plan.name === 'Enterprise' ? "text-emerald-500" : "text-primary"}`} />
+                    <Check className={`h-5 w-5 shrink-0 mt-0.5 text-foreground`} />
                     <span className="text-sm">{feature}</span>
                   </div>
                 ))}
@@ -175,7 +175,7 @@ export const PricingSection = () => {
               </CardContent>
               <CardFooter>
                 <Button
-                  className={`w-full ${plan.name === 'Enterprise' ? "bg-emerald-600 hover:bg-emerald-700 text-white" : ""}`}
+                  className="w-full rounded-none font-inter"
                   variant={plan.popular ? "default" : "outline"}
                   asChild
                 >
@@ -197,7 +197,7 @@ export const PricingSection = () => {
                 <tr className="border-b border-border">
                   <th className="text-left py-4 px-4 font-semibold">Features</th>
                   {pricingPlans.map((plan) => (
-                    <th key={plan.name} className={`text-center py-4 px-4 font-semibold ${plan.name === 'Enterprise' ? "text-emerald-400" : ""}`}>
+                    <th key={plan.name} className="text-center py-4 px-4 font-semibold">
                       {plan.name}
                     </th>
                   ))}
@@ -207,23 +207,23 @@ export const PricingSection = () => {
                 <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
                   <td className="py-4 px-4">AI Fraud Detection (Kount)</td>
                   <td className="text-center py-4 px-4"><X className="h-5 w-5 text-muted-foreground inline" /></td>
-                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-primary inline" /></td>
-                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-primary inline" /></td>
-                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-emerald-500 inline" /></td>
+                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-foreground inline" /></td>
+                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-foreground inline" /></td>
+                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-foreground inline" /></td>
                 </tr>
                 <tr className="border-b border-border/50 hover:bg-muted/20 transition-colors">
                   <td className="py-4 px-4">Support Level</td>
                   <td className="text-center py-4 px-4 text-sm">Email</td>
                   <td className="text-center py-4 px-4 text-sm">Priority</td>
                   <td className="text-center py-4 px-4 text-sm">Dedicated AM</td>
-                  <td className="text-center py-4 px-4 text-sm font-semibold text-emerald-500">24/7 Engineering</td>
+                  <td className="text-center py-4 px-4 text-sm font-semibold">24/7 Engineering</td>
                 </tr>
                 <tr className="hover:bg-muted/20 transition-colors">
                   <td className="py-4 px-4">Custom Processing Rates</td>
                   <td className="text-center py-4 px-4"><X className="h-5 w-5 text-muted-foreground inline" /></td>
                   <td className="text-center py-4 px-4"><X className="h-5 w-5 text-muted-foreground inline" /></td>
                   <td className="text-center py-4 px-4"><X className="h-5 w-5 text-muted-foreground inline" /></td>
-                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-emerald-500 inline" /></td>
+                  <td className="text-center py-4 px-4"><Check className="h-5 w-5 text-foreground inline" /></td>
                 </tr>
               </tbody>
             </table>

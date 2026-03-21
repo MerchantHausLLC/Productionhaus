@@ -31,13 +31,13 @@ const LogoBanner = () => {
   }, []);
 
   return (
-    <section className="py-16 overflow-hidden bg-muted/20 dark:bg-neutral-dark/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-8">
+    <section className="py-20 overflow-hidden border-b border-border">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-10">
         <div className="text-center">
-          <p className="font-ubuntu text-5xl md:text-6xl font-bold tracking-tight text-foreground mb-4">
+          <p className="font-ubuntu text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-3">
             Integrations & Partnerships
           </p>
-          <p className="font-inter text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="font-inter text-base md:text-lg text-muted-foreground max-w-2xl mx-auto font-light">
             Plug into the platforms your business already trusts
           </p>
         </div>
@@ -53,7 +53,7 @@ const LogoBanner = () => {
           {[...shuffledLogos, ...shuffledLogos].map((logo, index) => (
             <div
               key={`${logo.name}-${index}`}
-              className="flex-shrink-0 mx-8 hover:scale-105 transition-all duration-300 opacity-80 hover:opacity-100"
+              className="flex-shrink-0 mx-8 hover:scale-105 transition-all duration-300 opacity-50 hover:opacity-80 grayscale"
             >
               <img
                 src={`/logos/${logo.file}`}
