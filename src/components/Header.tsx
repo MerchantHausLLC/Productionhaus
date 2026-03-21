@@ -63,14 +63,14 @@ export const Header = () => {
               className={`transition-all duration-300 relative z-20 ${isScrolled ? 'h-7 w-7' : 'h-9 w-9'}`}
             />
             <div className="relative z-10">
-              <h1 className={`font-ubuntu font-bold text-foreground transition-all duration-300 ${
-                isScrolled ? 'text-xl' : 'text-2xl'
+              <h1 className={`font-rajdhani font-medium text-foreground tracking-wider uppercase transition-all duration-300 ${
+                isScrolled ? 'text-lg' : 'text-xl'
               }`}>
-                MerchantHaus
+                Merchant Haus
               </h1>
               {showShimmer && (
                 <div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-crimson to-transparent opacity-40 z-0"
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/20 to-transparent opacity-40 z-0"
                   style={{
                     animation: 'shimmer 5s linear forwards'
                   }}
@@ -86,7 +86,7 @@ export const Header = () => {
             <a
               key={href}
               href={href}
-              className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-cyber-teal after:transition-all hover:after:w-full"
+              className="font-inter font-medium text-sm tracking-wide text-foreground/70 hover:text-foreground transition-colors uppercase"
             >
               {label}
             </a>
@@ -119,14 +119,14 @@ export const Header = () => {
             href="https://merchanthausio.transactiongateway.com/merchants/login.php?cookie_check=1"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:inline-flex items-center gap-2 border border-cyber-teal text-cyber-teal hover:bg-cyber-teal hover:text-white font-montserrat font-medium rounded-lg px-5 py-2 transition-all hover:shadow-lg"
+            className="hidden md:inline-flex items-center gap-2 border border-foreground/20 text-foreground/70 hover:bg-foreground hover:text-background font-inter font-medium text-sm tracking-wide rounded-none px-5 py-2 transition-all"
           >
             <LogIn className="h-4 w-4" />
             Client Login
           </a>
           <Button
             onClick={() => setIsContactOpen(true)}
-            className="hidden md:inline-flex bg-crimson hover:opacity-90 text-white font-montserrat font-medium rounded-lg px-6 transition-all hover:shadow-lg"
+            className="hidden md:inline-flex bg-foreground hover:bg-foreground/90 text-background font-inter font-medium text-sm tracking-wide rounded-none px-6 transition-all"
           >
             Contact Us
           </Button>
@@ -140,7 +140,7 @@ export const Header = () => {
               <a
                 key={href}
                 href={href}
-                className="font-montserrat font-medium text-foreground hover:text-crimson transition-colors"
+                className="font-inter font-medium text-sm tracking-wide text-foreground/70 hover:text-foreground transition-colors uppercase"
                 onClick={handleNavClick}
               >
                 {label}
@@ -150,7 +150,7 @@ export const Header = () => {
               href="https://merchanthausio.transactiongateway.com/merchants/login.php?cookie_check=1"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 justify-center border border-cyber-teal text-cyber-teal hover:bg-cyber-teal hover:text-white font-montserrat font-medium rounded-lg px-4 py-2 transition-all"
+              className="inline-flex items-center gap-2 justify-center border border-foreground/20 text-foreground/70 hover:bg-foreground hover:text-background font-inter font-medium text-sm tracking-wide rounded-none px-4 py-2 transition-all"
               onClick={handleNavClick}
             >
               <LogIn className="h-4 w-4" />
@@ -161,7 +161,7 @@ export const Header = () => {
                 setIsContactOpen(true);
                 setIsMenuOpen(false);
               }}
-              className="bg-crimson hover:opacity-90 text-white font-montserrat font-medium rounded-lg"
+              className="bg-foreground hover:bg-foreground/90 text-background font-inter font-medium text-sm tracking-wide rounded-none"
             >
               Contact Us
             </Button>

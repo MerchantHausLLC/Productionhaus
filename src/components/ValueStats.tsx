@@ -225,14 +225,12 @@ export const ValueStats = () => {
     <section className="vs-section py-20 px-4 sm:px-6 bg-transparent">
       {/* Section heading */}
       <div className="max-w-5xl mx-auto mb-16 text-center">
-        <div className="vs-heading-chip inline-block px-8 py-3 rounded-full">
-          <h2 className="font-ubuntu text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
-            Platform Value at a Glance
-          </h2>
-        </div>
+        <h2 className="font-rajdhani text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground uppercase">
+          Platform Value at a Glance
+        </h2>
       </div>
 
-      {/* Two-column layout: text left, carousel right */}
+      {/* Two-column layout: text left, card right */}
       <div className="vs-layout">
         {/* Left: animated text description */}
         <div className={`vs-text-panel ${textAnimating ? "vs-text-panel--exit" : "vs-text-panel--enter"}`}>
@@ -243,49 +241,25 @@ export const ValueStats = () => {
           <div className="vs-section-copy">{currentSection.leftCopy}</div>
         </div>
 
-        {/* Right: 3D carousel */}
+        {/* Right: flat card display */}
         <div
-          className="vs-carousel-wrapper"
+          className="vs-card-panel"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div className="vs-carousel-scene">
-            <div
-              className="vs-carousel-ring"
-              style={{
-                transform: `rotateY(${-(active * (360 / TOTAL))}deg)`,
-              }}
-            >
-              {sections.map((section, i) => {
-                const angle = (360 / TOTAL) * i;
-                /* Calculate relative angle from front for graduated opacity */
-                let relAngle = ((angle - active * (360 / TOTAL)) % 360 + 360) % 360;
-                if (relAngle > 180) relAngle = 360 - relAngle;
-                const cardOpacity = i === active ? 1 : Math.max(0.25, 1 - relAngle / 220);
-                const cardScale = i === active ? 1 : Math.max(0.82, 1 - relAngle / 900);
-                return (
-                  <div
-                    key={section.heading}
-                    className={`vs-carousel-card ${i === active ? "vs-carousel-card--active" : ""}`}
-                    style={{
-                      transform: `rotateY(${angle}deg) translateZ(320px) scale(${cardScale})`,
-                      opacity: cardOpacity,
-                    }}
-                    onClick={() => goTo(i)}
-                  >
-                    <div className="vs-card-emoji">{section.emoji}</div>
-                    <h4 className="vs-card-title">{section.heading}</h4>
-                    <ul className="vs-card-stats">
-                      {section.stats.map((stat) => (
-                        <li key={stat.text} className="vs-card-stat-item">
-                          <span className="vs-card-stat-icon" aria-hidden="true">{stat.icon}</span>
-                          <span className="vs-card-stat-text">{stat.text}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                );
-              })}
+          <div className={`vs-flat-card ${textAnimating ? "vs-flat-card--exit" : "vs-flat-card--enter"}`}>
+            <div className="vs-card-emoji">{currentSection.emoji}</div>
+            <h4 className="vs-card-title">{currentSection.heading}</h4>
+            <ul className="vs-card-stats">
+              {currentSection.stats.map((stat) => (
+                <li key={stat.text} className="vs-card-stat-item">
+                  <span className="vs-card-stat-icon" aria-hidden="true">{stat.icon}</span>
+                  <span className="vs-card-stat-text">{stat.text}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="vs-card-index">
+              {String(active + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
             </div>
           </div>
 
@@ -335,53 +309,34 @@ export const ValueStats = () => {
       <style>{`
         /* ===== CSS variables ===== */
         .vs-section {
-          --vs-card-bg: linear-gradient(150deg, hsl(0 0% 100%), hsl(210 17% 97%));
+          --vs-card-bg: hsl(0 0% 100%);
           --vs-card-border: hsl(var(--border));
-          --vs-card-shadow:
-            0 0 0 1px hsla(210 10% 23%, 0.08),
-            0 12px 32px rgba(0, 0, 0, 0.07),
-            0 0 24px hsla(var(--cyber-teal), 0.10);
-          --vs-icon-bg: hsl(var(--muted));
           --vs-foreground: hsl(var(--foreground));
           --vs-muted: hsla(0, 0%, 30%, 0.85);
-          --vs-heading-bg: hsla(var(--cyber-teal), 0.08);
-          --vs-heading-border: hsla(var(--cyber-teal), 0.35);
+          --vs-heading-bg: hsla(0, 0%, 0%, 0.03);
+          --vs-heading-border: hsla(0, 0%, 0%, 0.1);
           --vs-heading-foreground: hsl(var(--foreground));
-          --vs-stat-highlight: hsl(var(--cyber-teal));
           overflow-x: clip;
         }
 
         .dark .vs-section {
-          --vs-card-bg: linear-gradient(150deg, #020617, #020617 55%, #111827);
-          --vs-card-border: #1f2937;
-          --vs-card-shadow:
-            0 0 0 1px rgba(15, 23, 42, 0.7),
-            0 12px 32px rgba(0, 0, 0, 0.7),
-            0 0 18px rgba(59, 130, 246, 0.20);
-          --vs-icon-bg: #020617;
-          --vs-foreground: #f9fafb;
-          --vs-muted: rgba(229, 231, 235, 0.9);
-          --vs-heading-bg: rgba(17, 24, 39, 0.9);
-          --vs-heading-border: rgba(55, 65, 81, 0.8);
-          --vs-heading-foreground: #f9fafb;
-          --vs-stat-highlight: hsl(210, 100%, 60%);
-        }
-
-        .vs-heading-chip {
-          border: 2px solid var(--vs-heading-border);
-          background: var(--vs-heading-bg);
-          color: var(--vs-heading-foreground);
-          transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+          --vs-card-bg: hsl(0 0% 10%);
+          --vs-card-border: hsl(0 0% 20%);
+          --vs-foreground: hsl(0 0% 95%);
+          --vs-muted: rgba(200, 200, 200, 0.8);
+          --vs-heading-bg: rgba(255, 255, 255, 0.05);
+          --vs-heading-border: rgba(255, 255, 255, 0.1);
+          --vs-heading-foreground: hsl(0 0% 95%);
         }
 
         /* ===== Two-column layout ===== */
         .vs-layout {
-          max-width: 1200px;
+          max-width: 1100px;
           margin: 0 auto;
           display: flex;
           flex-direction: column;
           gap: 3rem;
-          align-items: center;
+          align-items: stretch;
         }
 
         @media (min-width: 900px) {
@@ -394,10 +349,10 @@ export const ValueStats = () => {
 
         /* ===== Left: animated text panel ===== */
         .vs-text-panel {
-          flex: 1 1 50%;
+          flex: 1 1 55%;
           min-width: 0;
           padding: 1rem 0;
-          min-height: 360px;
+          min-height: 320px;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -412,30 +367,20 @@ export const ValueStats = () => {
         }
 
         @keyframes vsTextEnter {
-          from {
-            opacity: 0;
-            transform: translateY(18px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(18px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes vsTextExit {
-          from {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          to {
-            opacity: 0;
-            transform: translateY(-12px);
-          }
+          from { opacity: 1; transform: translateY(0); }
+          to { opacity: 0; transform: translateY(-12px); }
         }
 
         @media (prefers-reduced-motion: reduce) {
           .vs-text-panel--enter,
-          .vs-text-panel--exit {
+          .vs-text-panel--exit,
+          .vs-flat-card--enter,
+          .vs-flat-card--exit {
             animation: none;
             opacity: 1;
             transform: none;
@@ -449,9 +394,9 @@ export const ValueStats = () => {
         }
 
         .vs-section-heading {
-          font-family: 'Ubuntu', sans-serif;
+          font-family: 'Rajdhani', system-ui, sans-serif;
           font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-          font-weight: 800;
+          font-weight: 700;
           line-height: 1.15;
           color: var(--vs-foreground);
           margin: 0 0 1rem;
@@ -474,80 +419,52 @@ export const ValueStats = () => {
           margin-bottom: 0;
         }
 
-        /* ===== Right: 3D carousel ===== */
-        .vs-carousel-wrapper {
+        /* ===== Right: flat card panel ===== */
+        .vs-card-panel {
           flex: 0 0 auto;
-          width: 380px;
-          height: 420px;
+          width: 340px;
           position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
         }
 
-        .vs-carousel-scene {
-          width: 280px;
-          height: 360px;
-          perspective: 1000px;
-          position: relative;
-          transform: rotateX(2deg) rotateY(-5deg);
-        }
-
-        .vs-carousel-ring {
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          transform-style: preserve-3d;
-          transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .vs-carousel-card {
-          position: absolute;
-          width: 240px;
-          height: 310px;
-          top: 15px;
-          left: 10px;
-          border-radius: 1.25rem;
-          border: 1px solid var(--vs-card-border);
+        .vs-flat-card {
           background: var(--vs-card-bg);
-          box-shadow:
-            0 0 0 1px hsla(210 10% 23%, 0.08),
-            0 8px 24px rgba(0, 0, 0, 0.12),
-            0 2px 8px rgba(0, 0, 0, 0.08),
-            0 0 20px hsla(var(--cyber-teal), 0.10);
-          padding: 1.5rem 1.25rem;
+          border: 1px solid var(--vs-card-border);
+          padding: 2rem 1.75rem;
           display: flex;
           flex-direction: column;
-          gap: 0.6rem;
-          backface-visibility: visible;
-          cursor: pointer;
-          transition: box-shadow 0.5s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+          gap: 0.8rem;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+          transition: box-shadow 0.3s ease;
         }
 
-        .dark .vs-carousel-card {
-          box-shadow:
-            0 0 0 1px rgba(15, 23, 42, 0.7),
-            0 8px 24px rgba(0, 0, 0, 0.5),
-            0 2px 8px rgba(0, 0, 0, 0.3),
-            0 0 16px rgba(59, 130, 246, 0.12);
+        .vs-flat-card:hover {
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         }
 
-        .vs-carousel-card--active {
-          box-shadow:
-            0 0 0 1px hsla(var(--cyber-teal), 0.2),
-            0 16px 48px rgba(0, 0, 0, 0.15),
-            0 4px 16px rgba(0, 0, 0, 0.1),
-            0 0 40px hsla(var(--cyber-teal), 0.25),
-            0 0 80px hsla(var(--cyber-teal), 0.12);
+        .dark .vs-flat-card {
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
 
-        .dark .vs-carousel-card--active {
-          box-shadow:
-            0 0 0 1px rgba(59, 130, 246, 0.3),
-            0 16px 48px rgba(0, 0, 0, 0.6),
-            0 4px 16px rgba(0, 0, 0, 0.4),
-            0 0 40px rgba(59, 130, 246, 0.3),
-            0 0 80px rgba(59, 130, 246, 0.15);
+        .dark .vs-flat-card:hover {
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .vs-flat-card--enter {
+          animation: vsCardEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .vs-flat-card--exit {
+          animation: vsCardExit 0.35s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+        }
+
+        @keyframes vsCardEnter {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes vsCardExit {
+          from { opacity: 1; transform: translateY(0); }
+          to { opacity: 0; transform: translateY(-8px); }
         }
 
         .vs-card-emoji {
@@ -556,8 +473,8 @@ export const ValueStats = () => {
         }
 
         .vs-card-title {
-          font-family: 'Ubuntu', sans-serif;
-          font-size: 1.05rem;
+          font-family: 'Rajdhani', system-ui, sans-serif;
+          font-size: 1.15rem;
           font-weight: 700;
           color: var(--vs-foreground);
           line-height: 1.25;
@@ -566,17 +483,17 @@ export const ValueStats = () => {
 
         .vs-card-stats {
           list-style: none;
-          margin: 0.4rem 0 0;
+          margin: 0.6rem 0 0;
           padding: 0;
           display: flex;
           flex-direction: column;
-          gap: 0.6rem;
+          gap: 0.75rem;
         }
 
         .vs-card-stat-item {
           display: flex;
           align-items: flex-start;
-          gap: 0.55rem;
+          gap: 0.6rem;
         }
 
         .vs-card-stat-icon {
@@ -587,50 +504,52 @@ export const ValueStats = () => {
         }
 
         .vs-card-stat-text {
-          font-size: 0.88rem;
+          font-size: 0.9rem;
           font-weight: 600;
           color: var(--vs-foreground);
           line-height: 1.3;
         }
 
+        .vs-card-index {
+          margin-top: 0.75rem;
+          font-size: 0.75rem;
+          font-weight: 500;
+          letter-spacing: 0.15em;
+          color: var(--vs-muted);
+          text-transform: uppercase;
+          font-family: 'Montserrat', system-ui, sans-serif;
+        }
+
         /* ===== Navigation arrows ===== */
         .vs-nav-arrows {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
           display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 0.25rem;
+          gap: 0.5rem;
+          margin-top: 1rem;
         }
 
         .vs-arrow {
-          pointer-events: auto;
           width: 40px;
           height: 40px;
-          border-radius: 50%;
           border: 1px solid var(--vs-card-border);
-          background: var(--vs-heading-bg);
+          background: transparent;
           color: var(--vs-foreground);
-          font-size: 1.6rem;
+          font-size: 1.4rem;
           line-height: 1;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          backdrop-filter: blur(8px);
-          transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+          transition: background 0.2s ease, border-color 0.2s ease;
         }
 
         .vs-arrow:hover {
-          background: hsla(var(--cyber-teal), 0.18);
-          border-color: hsla(var(--cyber-teal), 0.5);
-          transform: scale(1.08);
+          background: hsla(0, 0%, 0%, 0.06);
+          border-color: hsla(0, 0%, 0%, 0.3);
         }
 
         .dark .vs-arrow:hover {
-          background: rgba(59, 130, 246, 0.2);
-          border-color: rgba(59, 130, 246, 0.5);
+          background: rgba(255, 255, 255, 0.08);
+          border-color: rgba(255, 255, 255, 0.3);
         }
 
         /* ===== Bullet dots ===== */
@@ -642,38 +561,36 @@ export const ValueStats = () => {
         }
 
         .vs-bullet {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          border: 2px solid hsla(var(--cyber-teal), 0.4);
+          width: 10px;
+          height: 10px;
+          border-radius: 0;
+          border: 1.5px solid hsla(0, 0%, 0%, 0.2);
           background: transparent;
           cursor: pointer;
           padding: 0;
-          transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+          transition: background 0.25s ease, border-color 0.25s ease;
         }
 
         .vs-bullet:hover {
-          border-color: hsla(var(--cyber-teal), 0.7);
-          transform: scale(1.15);
+          border-color: hsla(0, 0%, 0%, 0.5);
         }
 
         .vs-bullet--active {
-          background: hsl(var(--cyber-teal));
-          border-color: hsl(var(--cyber-teal));
-          transform: scale(1.2);
+          background: hsl(var(--foreground));
+          border-color: hsl(var(--foreground));
         }
 
         .dark .vs-bullet {
-          border-color: rgba(59, 130, 246, 0.4);
+          border-color: rgba(255, 255, 255, 0.2);
         }
 
         .dark .vs-bullet:hover {
-          border-color: rgba(59, 130, 246, 0.7);
+          border-color: rgba(255, 255, 255, 0.5);
         }
 
         .dark .vs-bullet--active {
-          background: hsl(210, 100%, 60%);
-          border-color: hsl(210, 100%, 60%);
+          background: hsl(0 0% 90%);
+          border-color: hsl(0 0% 90%);
         }
 
         /* ===== Pause button ===== */
@@ -690,14 +607,13 @@ export const ValueStats = () => {
           font-size: 0.85rem;
           cursor: pointer;
           padding: 0.35rem 0.75rem;
-          border-radius: 0.5rem;
           transition: color 0.2s ease, background 0.2s ease;
           letter-spacing: 0.12em;
         }
 
         .vs-pause-btn:hover {
           color: var(--vs-foreground);
-          background: hsla(var(--cyber-teal), 0.08);
+          background: hsla(0, 0%, 0%, 0.05);
         }
 
         /* ===== Responsive ===== */
@@ -706,24 +622,10 @@ export const ValueStats = () => {
             flex-direction: column-reverse;
           }
 
-          .vs-carousel-wrapper {
+          .vs-card-panel {
             width: 100%;
-            max-width: 380px;
-            height: 380px;
-          }
-
-          .vs-carousel-scene {
-            width: 250px;
-            height: 320px;
-            perspective: 850px;
-            transform: rotateX(2deg) rotateY(-3deg);
-          }
-
-          .vs-carousel-card {
-            width: 220px;
-            height: 290px;
-            top: 10px;
-            left: 10px;
+            max-width: 400px;
+            margin: 0 auto;
           }
 
           .vs-text-panel {
@@ -736,56 +638,8 @@ export const ValueStats = () => {
             max-width: 100%;
           }
 
-        }
-
-        @media (max-width: 480px) {
-          .vs-carousel-wrapper {
-            height: 340px;
-          }
-
-          .vs-carousel-scene {
-            width: 210px;
-            height: 280px;
-            perspective: 700px;
-            transform: rotateX(2deg) rotateY(-3deg);
-          }
-
-          .vs-carousel-card {
-            width: 185px;
-            height: 250px;
-            top: 10px;
-            left: 7px;
-            padding: 1.1rem 1rem;
-          }
-
-          .vs-card-emoji {
-            font-size: 1.4rem;
-          }
-
-          .vs-card-title {
-            font-size: 0.92rem;
-          }
-
-          .vs-card-stat-text {
-            font-size: 0.8rem;
-          }
-
-          .vs-carousel-card {
-            transform-origin: center center;
-          }
-        }
-
-        /* ===== Reduced motion ===== */
-        @media (prefers-reduced-motion: reduce) {
-          .vs-carousel-ring {
-            transition: none;
-          }
-
-          .vs-text-panel--enter,
-          .vs-text-panel--exit {
-            animation: none;
-            opacity: 1;
-            transform: none;
+          .vs-nav-arrows {
+            justify-content: center;
           }
         }
       `}</style>

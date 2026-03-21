@@ -54,10 +54,10 @@ const Blog = () => {
       
       <style>{`
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
         .logo-text {
-             font-family: 'Ubuntu', sans-serif;
+             font-family: 'Rajdhani', system-ui, sans-serif;
              font-weight: 600;
         }
         .card-container {

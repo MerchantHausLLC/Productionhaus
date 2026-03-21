@@ -12,26 +12,26 @@ const Footer = () => {
           {/* Logo + Contact - Wider column */}
           <div className="space-y-6 md:col-span-2">
             <div className="flex items-center gap-3 mb-2">
-              <img src={shieldLogo} alt="MerchantHaus Shield" className="h-12 w-12" loading="lazy" />
-              <h3 className="font-ubuntu font-semibold text-2xl text-foreground">
-                MerchantHaus
+              <img src={shieldLogo} alt="MerchantHaus Shield" className="h-10 w-10 grayscale" loading="lazy" />
+              <h3 className="font-rajdhani font-medium text-xl text-foreground tracking-wider uppercase">
+                Merchant Haus
               </h3>
             </div>
-            <p className="font-montserrat text-base text-muted-foreground max-w-md leading-relaxed">
+            <p className="font-inter text-sm text-muted-foreground max-w-md leading-relaxed font-light">
               Empowering merchants and ISOs through tailored retail solutions for payment processing.
             </p>
-            <div className="space-y-3 font-montserrat text-base text-muted-foreground">
+            <div className="space-y-3 font-inter text-sm text-muted-foreground">
               <div>
-                <span className="text-foreground font-semibold">Phone:</span>{" "}
-                <a href="tel:+15056006042" className="text-cyber-teal hover:underline">
+                <span className="text-foreground font-medium">Phone:</span>{" "}
+                <a href="tel:+15056006042" className="hover:text-foreground transition-colors">
                   1-505-600-6042
                 </a>
               </div>
               <div>
-                <span className="text-foreground font-semibold">Email:</span>{" "}
+                <span className="text-foreground font-medium">Email:</span>{" "}
                 <button
                   onClick={() => setIsApplicationOpen(true)}
-                  className="text-cyber-teal hover:underline text-left"
+                  className="hover:text-foreground transition-colors text-left"
                 >
                   support@merchanthaus.io
                 </button>
@@ -45,25 +45,25 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-ubuntu font-semibold text-lg text-foreground mb-6">Quick Links</h4>
-            <ul className="space-y-3 font-montserrat text-base">
+            <h4 className="font-ubuntu font-semibold text-sm text-foreground mb-6 tracking-wide uppercase">Quick Links</h4>
+            <ul className="space-y-3 font-inter text-sm">
               <li>
-                <a href="/about" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                   About
                 </a>
               </li>
               <li>
-                <a href="/services" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="/services" className="text-muted-foreground hover:text-foreground transition-colors">
                   Services
                 </a>
               </li>
               <li>
-                <a href="/blog" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
                   Blog
                 </a>
               </li>
               <li>
-                <a href="https://ops-terminal.merchant.haus/merchant-apply" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="https://ops-terminal.merchant.haus/merchant-apply" className="text-muted-foreground hover:text-foreground transition-colors">
                   Apply Now
                 </a>
               </li>
@@ -72,7 +72,7 @@ const Footer = () => {
                   href="https://merchanthausio.transactiongateway.com/merchants/login.php?cookie_check=1"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-cyber-teal transition-colors"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Client Login
                 </a>
@@ -82,39 +82,39 @@ const Footer = () => {
 
           {/* Resources & Social */}
           <div>
-            <h4 className="font-ubuntu font-semibold text-lg text-foreground mb-6">Resources</h4>
-            <ul className="space-y-3 font-montserrat text-base mb-8">
+            <h4 className="font-ubuntu font-semibold text-sm text-foreground mb-6 tracking-wide uppercase">Resources</h4>
+            <ul className="space-y-3 font-inter text-sm mb-8">
               <li>
-                <a href="/TheMerchantPortal" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="/TheMerchantPortal" className="text-muted-foreground hover:text-foreground transition-colors">
                   The Merchant Portal
                 </a>
               </li>
               <li>
-                <a href="/terms" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
                   Terms & Conditions
                 </a>
               </li>
               <li>
-                <a href="/privacy" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="/security" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="/security" className="text-muted-foreground hover:text-foreground transition-colors">
                   Security & Compliance
                 </a>
               </li>
               <li>
-                <a href="/developer-guides" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="/developer-guides" className="text-muted-foreground hover:text-foreground transition-colors">
                   Developer Guides
                 </a>
               </li>
             </ul>
 
-            <h4 className="font-ubuntu font-semibold text-lg text-foreground mb-6">Follow Us</h4>
-            <ul className="space-y-3 font-montserrat text-base">
+            <h4 className="font-ubuntu font-semibold text-sm text-foreground mb-6 tracking-wide uppercase">Follow Us</h4>
+            <ul className="space-y-3 font-inter text-sm">
               <li>
-                <a href="#" className="text-muted-foreground hover:text-cyber-teal transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   LinkedIn
                 </a>
               </li>
@@ -124,7 +124,7 @@ const Footer = () => {
 
         {/* Trust Seals Section */}
         <div className="py-8 border-t border-border">
-          <h4 className="font-ubuntu font-semibold text-lg text-foreground text-center mb-6">
+          <h4 className="font-ubuntu font-semibold text-sm text-foreground text-center mb-6 tracking-wide uppercase">
             Trusted & Secure Payment Processing
           </h4>
           <div className="flex flex-wrap justify-center items-center gap-8">
@@ -132,7 +132,7 @@ const Footer = () => {
               <img
                 src="/trust-seals/pci-dss.png"
                 alt="PCI DSS Level 1 Compliant"
-                className="h-20 w-20 object-contain transition-transform group-hover:scale-110"
+                className="h-16 w-16 object-contain grayscale opacity-60 group-hover:opacity-80 transition-all"
               />
               <span className="text-xs text-muted-foreground mt-2">PCI DSS Compliant</span>
             </div>
@@ -140,7 +140,7 @@ const Footer = () => {
               <img
                 src="/trust-seals/ssl-secure.png"
                 alt="SSL Secure 256-bit Encryption"
-                className="h-20 w-20 object-contain transition-transform group-hover:scale-110"
+                className="h-16 w-16 object-contain grayscale opacity-60 group-hover:opacity-80 transition-all"
               />
               <span className="text-xs text-muted-foreground mt-2">256-bit SSL</span>
             </div>
@@ -148,7 +148,7 @@ const Footer = () => {
               <img
                 src="/trust-seals/bank-security.png"
                 alt="Bank-Level Security"
-                className="h-20 w-20 object-contain transition-transform group-hover:scale-110"
+                className="h-16 w-16 object-contain grayscale opacity-60 group-hover:opacity-80 transition-all"
               />
               <span className="text-xs text-muted-foreground mt-2">Bank-Level Security</span>
             </div>
@@ -156,7 +156,7 @@ const Footer = () => {
               <img
                 src="/trust-seals/247-support.png"
                 alt="24/7 Customer Support"
-                className="h-20 w-20 object-contain transition-transform group-hover:scale-110"
+                className="h-16 w-16 object-contain grayscale opacity-60 group-hover:opacity-80 transition-all"
               />
               <span className="text-xs text-muted-foreground mt-2">24/7 Support</span>
             </div>
@@ -164,14 +164,14 @@ const Footer = () => {
               <img
                 src="/logos/visa.webp"
                 alt="Visa"
-                className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
+                className="h-10 w-auto object-contain grayscale opacity-50 group-hover:opacity-70 transition-all"
               />
             </div>
             <div className="flex flex-col items-center group">
               <img
                 src="/logos/mastercard.webp"
                 alt="Mastercard"
-                className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
+                className="h-10 w-auto object-contain grayscale opacity-50 group-hover:opacity-70 transition-all"
               />
             </div>
           </div>
@@ -181,11 +181,11 @@ const Footer = () => {
         </div>
 
         {/* Bottom Line */}
-        <div className="pt-8 border-t border-border text-center font-montserrat text-sm text-muted-foreground">
+        <div className="pt-8 border-t border-border text-center font-inter text-xs text-muted-foreground">
           <p>
-            © MerchantHaus {new Date().getFullYear()}. All rights reserved. |{" "}
-            <a href="/privacy" className="hover:text-cyber-teal transition-colors">Privacy Policy</a> |{" "}
-            <a href="/terms" className="hover:text-cyber-teal transition-colors">Terms and Conditions</a>
+            &copy; MerchantHaus {new Date().getFullYear()}. All rights reserved. |{" "}
+            <a href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</a> |{" "}
+            <a href="/terms" className="hover:text-foreground transition-colors">Terms and Conditions</a>
           </p>
         </div>
       </div>

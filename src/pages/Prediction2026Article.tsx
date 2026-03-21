@@ -10,10 +10,10 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-neutral-800 selection:bg-[#00CEDB]/20">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Ubuntu:wght@500;700&family=Montserrat:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 
         body { 
-          font-family: 'Inter', sans-serif; 
+          font-family: 'Montserrat', sans-serif; 
           line-height: 1.8; 
           -webkit-font-smoothing: antialiased;
         }
@@ -24,7 +24,7 @@ const App: React.FC = () => {
         }
 
         h2 {
-          font-family: 'Ubuntu', sans-serif;
+          font-family: 'Rajdhani', system-ui, sans-serif;
           font-size: 2.5rem;
           font-weight: 700;
           color: #0A2A43;
@@ -35,7 +35,7 @@ const App: React.FC = () => {
         }
 
         h3 {
-          font-family: 'Ubuntu', sans-serif;
+          font-family: 'Rajdhani', system-ui, sans-serif;
           font-size: 1.65rem;
           font-weight: 600;
           color: #0F5E82;
@@ -58,7 +58,7 @@ const App: React.FC = () => {
 
         /* Drop Cap for the Introduction */
         .drop-cap::first-letter {
-          font-family: 'Ubuntu', sans-serif;
+          font-family: 'Rajdhani', system-ui, sans-serif;
           font-weight: 700;
           float: left;
           font-size: 4.8rem;
