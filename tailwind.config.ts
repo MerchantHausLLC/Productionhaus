@@ -133,7 +133,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "scale-in": "scale-in 0.3s ease-out",
-        scroll: "scroll 40s linear infinite",
+        scroll: "scroll 20s linear infinite",
       },
     },
   },
