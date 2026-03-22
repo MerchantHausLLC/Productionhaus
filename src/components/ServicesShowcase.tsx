@@ -7,9 +7,9 @@ const services = [
   {
     icon: Smartphone,
     title: "Mobile Payments",
-    subtitle: "Pay Anywhere, Stay Connected",
-    description: "Empower your customers with seamless, secure payment experiences wherever they are—whether on the go, curbside, or from the comfort of their home. Our mobile solutions adapt to every context, supporting digital wallets, QR codes, and in-app purchases for ultimate flexibility. Fast, convenient, and designed for today's shopper, it's commerce that fits their lifestyle.",
-    stats: ["Over 60% of online shopping is now done via mobile devices", "Supports Apple Pay, Google Pay, Samsung Pay, and more", "PCI-compliant for maximum data security", "Real-time receipts and loyalty integration"],
+    subtitle: "Accept Payments Anywhere",
+    description: "Enable seamless, secure payment experiences across every touchpoint — whether in the field, at the counter, or through remote channels. Our mobile solutions support digital wallets, QR codes, and in-app transactions for maximum operational flexibility. Fast, compliant, and built for organizations that need payment acceptance beyond fixed terminals.",
+    stats: ["Over 60% of digital transactions now originate from mobile devices", "Supports Apple Pay, Google Pay, Samsung Pay, and more", "PCI-compliant for maximum data security", "Real-time receipts and loyalty integration"],
     gradient: "from-crimson to-red-600",
     shadow: "shadow-crimson/30",
     showTapToPay: true,
@@ -18,7 +18,7 @@ const services = [
     icon: ShieldAlert,
     title: "Advanced Fraud Detection",
     subtitle: "Built-In Vigilance, Zero Guesswork",
-    description: "Protect your business and your customers with our multi-layered fraud prevention system. Leveraging machine learning and real-time analysis, we proactively spot and stop suspicious activity—so threats never reach your bottom line. You get peace of mind, fewer disputes, and more time to focus on growth.",
+    description: "Protect your organization and your customers with our multi-layered fraud prevention system. Leveraging machine learning and real-time analysis, we proactively identify and block suspicious activity — so threats never reach your bottom line. Gain peace of mind, fewer disputes, and more time to focus on growth.",
     stats: ["70% of fraud attempts are blocked automatically by our systems", "Includes 3D Secure, custom rules, and velocity checks", "Alerts and auto-responses keep your team ahead of threats", "Chargeback rates drop significantly with AI-driven monitoring"],
     gradient: "from-green-600 to-emerald-700",
     shadow: "shadow-green-900/40",
@@ -26,9 +26,9 @@ const services = [
   {
     icon: POS,
     title: "Modern POS Devices",
-    subtitle: "Checkout, Evolved",
-    description: "Upgrade your in-person experience with sleek, fast, and future-ready Point-of-Sale solutions. Accept all major payment types—chip, tap, swipe, and mobile—on hardware that just works, or use Tap to Pay to turn your smartphone or tablet into a secure, contactless payment terminal. With reliable connectivity and customizable branding, every transaction is frictionless and every interaction feels premium.",
-    stats: ["92% of customers expect contactless options at checkout", "Tap to Pay: Accept cards, phones, and wearables directly on your device—no extra reader needed", "Built-in receipt printing and wireless options", "EMV and PCI-certified for security", "Integrated customer feedback and tipping prompts"],
+    subtitle: "In-Person Payments, Modernized",
+    description: "Upgrade your in-person payment experience with fast, reliable, and future-ready Point-of-Sale hardware. Accept all major payment types — chip, tap, swipe, and mobile — on devices that integrate directly with your operations, or use Tap to Pay to turn any smartphone or tablet into a secure, contactless terminal. Built for high-throughput environments with customizable branding and frictionless transactions.",
+    stats: ["92% of customers expect contactless options at the point of sale", "Tap to Pay: Accept cards, phones, and wearables directly on your device — no extra reader needed", "Built-in receipt printing and wireless options", "EMV and PCI-certified for security", "Integrated tipping and feedback prompts"],
     gradient: "from-silver-grey to-slate-700",
     shadow: "shadow-gray-900/40",
     showPosOverlay: true,
@@ -37,7 +37,7 @@ const services = [
     icon: Globe2,
     title: "Global Payments",
     subtitle: "Business Without Borders",
-    description: "Expand your reach and accept payments from anywhere on the planet. Our global payment solution lets you process in 135+ currencies, handle local methods, and manage international settlements—all from a single dashboard. Grow beyond limits, without the usual global headaches.",
+    description: "Expand your reach and accept payments from anywhere on the planet. Our global payment infrastructure lets you process in 135+ currencies, handle local methods, and manage international settlements — all from a single dashboard. Scale across markets without the typical cross-border complexity.",
     stats: ["Serve customers in over 200 countries", "Dynamic currency conversion built-in", "Automated compliance for every region", "Local payment methods boost conversion rates up to 25%"],
     gradient: "from-emerald-600 to-green-700",
     shadow: "shadow-emerald-900/40",
@@ -46,26 +46,26 @@ const services = [
     icon: Lock,
     title: "Network Tokenization",
     subtitle: "Security That Stays with Every Card",
-    description: "Enhance payment security and approval rates with network tokenization. By replacing sensitive card data with unique, encrypted tokens, you minimize the risk of breaches and keep recurring payments running smoothly—even when cards are updated or replaced.",
-    stats: ["Up to 3% increase in transaction approvals", "Reduces PCI compliance burdens", "Automatic card updater—no more failed recurring payments", "Vault-stored tokens for maximum safety"],
+    description: "Enhance payment security and approval rates with network tokenization. By replacing sensitive card data with unique, encrypted tokens, you minimize the risk of breaches and keep recurring payments running smoothly — even when cards are updated or replaced.",
+    stats: ["Up to 3% increase in transaction approvals", "Reduces PCI compliance burdens", "Automatic card updater — no more failed recurring payments", "Vault-stored tokens for maximum safety"],
     gradient: "from-indigo-600 to-purple-700",
     shadow: "shadow-indigo-900/40",
   },
   {
     icon: ShoppingCart,
     title: "Ecommerce Solutions",
-    subtitle: "Your Storefront, Supercharged",
-    description: "Launch and grow your online presence with robust ecommerce tools that keep you agile and secure. From payment gateways to customizable checkouts, we give you everything you need to sell, scale, and connect with customers—without the technical pain.",
-    stats: ["Pre-built integrations with top shopping carts", "Customizable checkout pages for any brand", "Secure, PCI-compliant transactions", "Stores with advanced ecommerce tools see 35% faster growth"],
+    subtitle: "Your Digital Channel, Optimized",
+    description: "Launch and scale your online payment acceptance with enterprise-grade ecommerce tools. From payment gateways to customizable checkout experiences, we provide the infrastructure you need to sell, scale, and maintain compliance — without engineering overhead.",
+    stats: ["Pre-built integrations with leading commerce platforms", "Customizable checkout pages for any brand", "Secure, PCI-compliant transactions", "Organizations with advanced ecommerce tools see 35% faster growth"],
     gradient: "from-crimson to-purple-800",
     shadow: "shadow-purple-900/40",
   },
   {
     icon: BarChart2,
     title: "Data & Analytics",
-    subtitle: "See the Story in Your Sales",
-    description: "Unlock powerful insights from your transaction data. Our analytics dashboard turns complex numbers into actionable trends, letting you track sales, customer behaviors, and campaign results in real time—no spreadsheets, no guesswork.",
-    stats: ["Live dashboards with instant sales and refund metrics", "Custom reporting by product, channel, or region", "Customer segmentation and loyalty analytics", "Merchants with analytics tools make decisions 2x faster"],
+    subtitle: "Insight-Driven Payment Operations",
+    description: "Unlock powerful insights from your transaction data. Our analytics dashboard transforms complex data into actionable trends, letting you track volume, authorization rates, and performance metrics in real time — no spreadsheets, no guesswork.",
+    stats: ["Live dashboards with instant transaction and refund metrics", "Custom reporting by product, channel, or region", "Segmentation and portfolio analytics", "Organizations with analytics tools make decisions 2x faster"],
     gradient: "from-blue-600 to-cyan-500",
     shadow: "shadow-blue-900/40",
   },
@@ -73,7 +73,7 @@ const services = [
     icon: Repeat,
     title: "Subscription Billing",
     subtitle: "Effortless Recurring Revenue",
-    description: "Automate your billing and grow your subscription base with tools that handle the complexity for you. Create, manage, and optimize plans—while smart dunning and card updating keep your revenue steady.",
+    description: "Automate your billing and grow your subscription base with tools that handle the complexity for you. Create, manage, and optimize plans — while smart dunning and card updating keep your revenue steady.",
     stats: ["46% of consumers pay for at least one subscription service", "Flexible trial, renewal, and proration options", "Automated failed payment recovery", "Reduce churn with card updater and retry logic"],
     gradient: "from-amber-500 to-orange-600",
     shadow: "shadow-orange-900/40",
@@ -81,8 +81,8 @@ const services = [
   {
     icon: ShieldCheck,
     title: "Chargeback Management",
-    subtitle: "Win More Disputes, Keep More Revenue",
-    description: "Don't let disputes eat into your bottom line. Our automated system tracks, compiles, and submits evidence on your behalf, making it easier to contest chargebacks and reclaim lost revenue.",
+    subtitle: "Win More Disputes, Protect More Revenue",
+    description: "Don't let disputes erode your margins. Our automated system tracks, compiles, and submits evidence on your behalf, making it easier to contest chargebacks and reclaim lost revenue.",
     stats: ["Real-time chargeback alerts", "20% higher reversal rates with rapid response", "Integrated evidence templates for major card brands", "Analytics to spot and stop patterns before they repeat"],
     gradient: "from-indigo-700 to-purple-800",
     shadow: "shadow-indigo-900/40",
@@ -90,8 +90,8 @@ const services = [
   {
     icon: Shuffle,
     title: "Payment Orchestration",
-    subtitle: "Smart Routing. More Approvals. Less Cost.",
-    description: "Connect to multiple payment processors and dynamically route every transaction for the best outcome—lower fees, higher approval rates, fewer declines. Control your entire payment stack without extra IT overhead.",
+    subtitle: "Smart Routing. Higher Approvals. Lower Cost.",
+    description: "Connect to multiple payment processors and dynamically route every transaction for the best outcome — lower fees, higher approval rates, fewer declines. Control your entire payment stack without added engineering overhead.",
     stats: ["Lower transaction costs by up to 20%", "Built-in failover for always-on acceptance", "Unified reporting across all channels and providers", "Optimize every payment path, automatically"],
     gradient: "from-teal-600 to-cyan-800",
     shadow: "shadow-teal-900/40",
@@ -183,7 +183,7 @@ const ServicesShowcase = () => {
           />
           <h2 className="text-5xl md:text-6xl font-bold font-ubuntu tracking-tight">MerchantHaus Core Services</h2>
         </div>
-        <p className="mt-6 text-xl text-muted-foreground max-w-3xl mx-auto">Innovative solutions designed to power modern commerce safely and efficiently across the globe.</p>
+        <p className="mt-6 text-xl text-muted-foreground max-w-3xl mx-auto">Scalable solutions designed to power modern payment operations securely and efficiently across the globe.</p>
       </div>
 
       {/* Services Grid */}
@@ -263,9 +263,9 @@ const ServicesShowcase = () => {
       {/* CTA Section */}
       <div className="mt-24 md:mt-32">
         <div className="max-w-4xl mx-auto bg-crimson text-white text-center py-12 px-6 rounded-2xl shadow-2xl shadow-crimson/40">
-          <h2 className="text-3xl md:text-4xl font-bold font-ubuntu">Ready to Elevate Your Payments?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold font-ubuntu">Ready to Elevate Your Payment Operations?</h2>
           <p className="mt-4 text-lg max-w-2xl mx-auto text-white/90">
-            Join the top merchants who trust MerchantHaus to deliver secure, reliable, and innovative payment solutions. Let's build the future of commerce together.
+            Join the leading organizations that trust MerchantHaus to deliver secure, reliable, and scalable payment infrastructure. Let's build the future of your payment operations together.
           </p>
           <Button 
             onClick={() => setIsContactOpen(true)}

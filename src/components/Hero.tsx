@@ -4,9 +4,9 @@ import { ChevronDown } from "lucide-react";
 import heroVideo from "@/assets/Hero.webm";
 
 const wordSets = {
-  line1: ["Solutions", "Technology", "Systems", "Processing", "Platforms", "Services", "Networks", "Infrastructure"],
-  line2: ["Advance", "Grow", "Secure", "Empower", "Optimize", "Simplify", "Scale", "Elevate"],
-  line3: ["Business", "Enterprise", "Storefront", "Operations", "Revenue", "Brand", "Organization", "Success"]
+  line1: ["Solutions", "Technology", "Systems", "Processing", "Platforms", "Services", "Infrastructure", "Architecture"],
+  line2: ["Advance", "Grow", "Secure", "Empower", "Optimize", "Transform", "Scale", "Elevate"],
+  line3: ["Business", "Enterprise", "Operations", "Organization", "Revenue", "Portfolio", "Growth", "Performance"]
 };
 
 export const Hero = () => {
@@ -107,7 +107,7 @@ export const Hero = () => {
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          Plug in, play and process.
+          Integrated payments. Enterprise performance.
         </p>
 
         {/* Body Text */}
@@ -116,7 +116,7 @@ export const Hero = () => {
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          Create your business profile in minutes and start accepting cards, ACH, and secure pay links — online, in-store, or on the go.
+          Deploy a unified payment gateway in days — supporting cards, ACH, and secure pay links across every channel your organization operates.
         </p>
 
         {/* CTA Buttons */}
@@ -130,7 +130,7 @@ export const Hero = () => {
             size="lg"
             className="bg-white text-black hover:bg-white/90 font-inter font-medium text-base px-10 py-6 rounded-none tracking-wide transition-all w-full sm:w-auto"
           >
-            <a href="https://ops-terminal.merchant.haus/contact">Get Started</a>
+            <a href="https://ops-terminal.merchant.haus/contact">Schedule a Consultation</a>
           </Button>
           <Button
             asChild

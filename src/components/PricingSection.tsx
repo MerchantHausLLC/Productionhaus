@@ -7,8 +7,8 @@ import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 // Updated Pricing tiers including the new high-visibility Enterprise plan.
 const pricingPlans = [
   {
-    name: "Starter",
-    description: "Essential fraud‑first foundation for secure businesses",
+    name: "Foundation",
+    description: "Essential fraud-first platform for growing organizations",
     monthlyPrice: 59,
     annualPrice: 588,
     features: [
@@ -22,26 +22,26 @@ const pricingPlans = [
       "Email support",
     ],
     limitations: [
-      "AI‑powered fraud scoring (Kount)",
+      "AI\u2011powered fraud scoring (Kount)",
       "Level III data optimization",
       "Shopify premium integration",
       "Priority support",
       "API access",
       "Dedicated account manager",
-      "White‑label options",
+      "White\u2011label options",
     ],
     gradient: "from-cyan-500/10 to-blue-500/10",
     popular: false,
   },
   {
-    name: "Intermediate",
+    name: "Growth",
     description: "Advanced fraud protection with AI decisioning",
     monthlyPrice: 99,
     annualPrice: 986,
     features: [
-      "Everything in Starter",
+      "Everything in Foundation",
       "Kount AI Fraud Manager",
-      "Enhanced rule‑based risk controls",
+      "Enhanced rule\u2011based risk controls",
       "Priority support",
       "API access",
     ],
@@ -49,23 +49,23 @@ const pricingPlans = [
       "Level III data optimization",
       "Shopify premium integration",
       "Dedicated account manager",
-      "White‑label options",
+      "White\u2011label options",
     ],
     gradient: "from-orange-500/10 to-pink-500/10",
     popular: true,
   },
   {
-    name: "Pro",
+    name: "Scale",
     description: "Full fraud suite + advanced data optimization",
     monthlyPrice: 149,
     annualPrice: 1484,
     features: [
-      "Everything in Intermediate",
+      "Everything in Growth",
       "Level III Advantage (B2B optimization)",
       "Shopify Integration",
       "Custom analytics & reporting",
       "Dedicated account manager",
-      "White‑label options",
+      "White\u2011label options",
     ],
     limitations: [],
     gradient: "from-blue-500/10 to-purple-500/10",
@@ -73,20 +73,19 @@ const pricingPlans = [
   },
   {
     name: "Enterprise",
-    description: "Bespoke solutions for high‑volume merchants",
+    description: "Bespoke solutions for high-volume organizations",
     monthlyPrice: "Custom",
     annualPrice: "Custom",
     features: [
-      "Everything in Pro",
+      "Everything in Scale",
       "Custom Fraud Rulesets",
       "SLA performance guarantees",
-      "Multi‑entity & Org management",
+      "Multi\u2011entity & Org management",
       "Dedicated engineering support",
-      "Volume‑based processing rates",
+      "Volume\u2011based processing rates",
       "Tailored implementation",
     ],
     limitations: [],
-    // Unique Indigo-to-Emerald gradient for the Enterprise tier
     gradient: "from-indigo-500/20 via-blue-500/10 to-emerald-500/20",
     popular: false,
   },
@@ -103,7 +102,7 @@ export const PricingSection = () => {
             Transparent Pricing
           </h2>
           <p className="text-base text-muted-foreground max-w-2xl mx-auto mb-8 font-inter font-light">
-            Every plan includes our fraud-first foundation: Network Tokens, Customer Vault, and Basic Fraud Prevention.
+            Every plan includes our fraud-first foundation: Network Tokens, Customer Vault, and Basic Fraud Prevention. Custom volume pricing available.
           </p>
           
           <Tabs value={billingCycle} onValueChange={(v) => setBillingCycle(v as "monthly" | "annual")} className="inline-flex">

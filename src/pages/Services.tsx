@@ -80,7 +80,7 @@ const Services = () => {
     {
       icon: Building2,
       title: "Retail & In-Store",
-      description: "Power your storefront with fast, reliable POS terminals, Tap-to-Pay, and seamless inventory sync."
+      description: "Power your in-person operations with fast, reliable POS terminals, Tap-to-Pay, and seamless inventory sync."
     },
     {
       icon: Globe2,
@@ -90,7 +90,7 @@ const Services = () => {
     {
       icon: Smartphone,
       title: "Mobile & On-the-Go",
-      description: "Take payments anywhere with our mobile app and pocket-sized card readers. Perfect for services, markets, and events."
+      description: "Take payments anywhere with our mobile app and card readers. Built for field services, events, and multi-location operations."
     },
     {
       icon: FileText,
@@ -103,15 +103,15 @@ const Services = () => {
   const faqs = [
     {
       question: "What does MerchantHaus do?",
-      answer: "We provide everything your business needs to accept credit cards and other payments. This includes POS terminals for stores, online checkout for websites, mobile apps for on-the-go payments, and secure invoicing, all in one simple, secure platform."
+      answer: "We provide everything your organization needs to accept credit cards and other payments. This includes POS terminals for in-person transactions, online checkout for websites, mobile apps for field payments, and secure invoicing — all in one unified, secure platform."
     },
     {
       question: "How fast is onboarding?",
-      answer: "Most merchant applications are approved within 24-48 hours. Once approved, you can start accepting payments immediately."
+      answer: "Most applications are approved within 24-48 hours. Once approved, you can start accepting payments immediately."
     },
     {
       question: "What are the rates?",
-      answer: "We offer simple, transparent pricing tailored to your business. We believe in no hidden fees or confusing statements. Contact us for a free quote, and we'll show you how much you can save."
+      answer: "We offer transparent pricing tailored to your organization. No hidden fees or complex statements. Contact us for a custom quote, and we'll show you how our rates compare."
     },
     {
       question: "What if I need support?",
@@ -123,7 +123,7 @@ const Services = () => {
     },
     {
       question: "Do I need to switch bank accounts?",
-      answer: "No. We deposit your funds directly into your existing business checking account. Most merchants receive their funding the next business day."
+      answer: "No. We deposit funds directly into your existing business checking account. Most clients receive their funding the next business day."
     }
   ];
 
@@ -131,7 +131,7 @@ const Services = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <PageSEO
         title="Services"
-        description="Accept payments anywhere — in-store, online, or on-the-go. Mobile payments, POS devices, fraud detection, and global payment processing."
+        description="Accept payments anywhere — in-person, online, or in the field. Mobile payments, POS devices, fraud detection, and global payment processing for mid-market and enterprise organizations."
         path="/services"
       />
       <Header />
@@ -160,7 +160,7 @@ const Services = () => {
               {/* UPDATED: Merchant-facing sub-headline */}
               <TypewriterReveal
                 as="p"
-                text="In-store, online, or on-the-go. Get everything you need to accept payments, protect revenue, and grow your business."
+                text="In-store, online, or in the field. Get everything you need to accept payments, protect revenue, and scale your operations."
                 className="text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed text-balance"
                 delay={200}
                 speed={24}
@@ -220,7 +220,7 @@ const Services = () => {
               />
               <TypewriterReveal
                 as="p"
-                text="Stop losing sales to clunky checkouts, high fees, and poor support. We built MerchantHaus for business owners who need payments to just *work*."
+                text="Stop losing revenue to outdated systems, excessive fees, and poor support. MerchantHaus is built for organizations that need payments to simply work."
                 className="text-xl text-muted-foreground max-w-3xl mx-auto"
                 delay={150}
                 speed={22}
@@ -389,7 +389,7 @@ const Services = () => {
             />
             <TypewriterReveal
               as="p"
-              text="Partner-centric, modular, compliant, and proven. Join the merchants and partners who trust MerchantHaus to power their payment operations."
+              text="Modular, compliant, and proven. Join the organizations and partners who trust MerchantHaus to power their payment operations."
               className="text-xl mb-8 text-white/90 leading-relaxed"
               delay={150}
               speed={22}

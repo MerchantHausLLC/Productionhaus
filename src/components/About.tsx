@@ -10,13 +10,13 @@ export const About = () => {
             </h2>
             <div className="space-y-4 font-inter text-lg text-muted-foreground leading-relaxed">
               <p>
-                MerchantHaus delivers comprehensive payment processing solutions designed specifically for U.S. retailers and independent sales organizations (ISOs). With years of industry experience, we understand the unique challenges merchants face.
+                MerchantHaus delivers comprehensive payment processing solutions designed for U.S. mid-market and enterprise organizations, as well as independent sales organizations (ISOs). With years of industry experience, we understand the operational and compliance demands that growing businesses face.
               </p>
               <p>
-                Our platform combines cutting-edge technology with personalized service, ensuring secure transactions, competitive rates, and seamless integration with your existing systems. From mobile payments to advanced fraud detection, we provide the tools you need to grow your business with confidence.
+                Our platform combines enterprise-grade technology with dedicated service, ensuring secure transactions, competitive rates, and seamless integration with your existing systems. From omnichannel acceptance to advanced fraud detection, we provide the infrastructure you need to scale with confidence.
               </p>
               <p>
-                Partner with us to experience payment processing that's built for reliability, scalability, and success.
+                Partner with us to experience payment processing built for reliability, scalability, and measurable results.
               </p>
             </div>
           </div>
@@ -32,7 +32,7 @@ export const About = () => {
                   Years of Excellence
                 </div>
                 <div className="text-lg text-muted-foreground max-w-xs mx-auto">
-                  Trusted by thousands of merchants nationwide
+                  Trusted by enterprise clients and partners nationwide
                 </div>
               </div>
             </div>
