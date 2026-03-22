@@ -18,7 +18,7 @@ const Footer = () => {
               </h3>
             </div>
             <p className="font-inter text-sm text-muted-foreground max-w-md leading-relaxed font-light">
-              Empowering merchants and ISOs through tailored retail solutions for payment processing.
+              Empowering mid-market and enterprise organizations through tailored payment processing solutions.
             </p>
             <div className="space-y-3 font-inter text-sm text-muted-foreground">
               <div>

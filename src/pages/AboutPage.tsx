@@ -19,7 +19,7 @@ const AboutPage = () => {
     <>
       <PageSEO
         title="About"
-        description="MerchantHaus empowers merchants and ISOs with modern payment infrastructure, transparent pricing, and dedicated U.S.-based support."
+        description="MerchantHaus empowers mid-market and enterprise organizations with modern payment infrastructure, transparent pricing, and dedicated U.S.-based support."
         path="/about"
       />
       <Header />
@@ -57,7 +57,7 @@ const AboutPage = () => {
             About <span className="text-crimson">Merchant Haus</span>
           </h1>
           <p className="text-lg text-silver-grey max-w-3xl">
-            A modern approach to payments — helping businesses accept, manage, and grow payments in a world that never stops moving.
+            A modern approach to payments — helping organizations accept, manage, and scale payments in a world that never stops moving.
           </p>
         </section>
 
@@ -68,10 +68,10 @@ const AboutPage = () => {
               We believe technology should make payments invisible—reliable, secure, and beautifully simple to use.
             </p>
             <p className="text-lg leading-relaxed mb-6">
-              Through our partnership with <span className="font-semibold text-cyber-teal">NMI</span>, one of the most trusted names in global payments infrastructure, we deliver everything a business needs to accept cards, ACH, digital wallets, and more—without the friction.
+              Through our partnership with <span className="font-semibold text-cyber-teal">NMI</span>, one of the most trusted names in global payments infrastructure, we deliver everything an organization needs to accept cards, ACH, digital wallets, and more — without the friction.
             </p>
             <p className="text-lg leading-relaxed">
-              Whether you're launching a new storefront or scaling an enterprise operation, we're here to make it happen fast, secure, and fully compliant.
+              Whether you're onboarding a new division or scaling enterprise-wide operations, we're here to make it happen fast, secure, and fully compliant.
             </p>
           </div>
         </section>
@@ -141,7 +141,7 @@ const AboutPage = () => {
               <div className="space-y-4 text-lg">
                 <TypewriterParagraph
                   emphasis="Simple First."
-                  text="We strip away unnecessary complexity so you can focus on growing your business."
+                  text="We strip away unnecessary complexity so you can focus on scaling your operations."
                 />
                 <TypewriterParagraph
                   emphasis="Secure Always."
@@ -150,7 +150,7 @@ const AboutPage = () => {
                 />
                 <TypewriterParagraph
                   emphasis="Scale Anywhere."
-                  text="From startup to enterprise, our platform grows with you—no limits, no surprises."
+                  text="From mid-market to enterprise, our platform grows with you — no limits, no surprises."
                   startDelay={2400}
                 />
               </div>
@@ -167,7 +167,7 @@ const AboutPage = () => {
             <ul className="space-y-6 text-lg">
               <li className="flex items-start">
                 <span className="text-crimson font-bold mr-3 text-2xl">•</span>
-                <span><strong>Powered by NMI:</strong> One of the most reliable payment platforms in the world, trusted by thousands of businesses globally.</span>
+                <span><strong>Powered by NMI:</strong> One of the most reliable payment platforms in the world, trusted by thousands of organizations globally.</span>
               </li>
               <li className="flex items-start">
                 <span className="text-cyber-teal font-bold mr-3 text-2xl">•</span>
@@ -190,7 +190,7 @@ const AboutPage = () => {
           <div className="section-card p-12 text-neutral-dark">
             <h2 className="text-4xl font-ubuntu font-bold mb-6 text-neutral-dark">Ready to Get Started?</h2>
             <p className="text-lg mb-8 text-neutral-dark/80">
-              Join the businesses that trust MerchantHaus to power their payments. Fast setup, enterprise-grade security, and support that actually helps.
+              Join the organizations that trust MerchantHaus to power their payments. Fast deployment, enterprise-grade security, and support that actually delivers.
             </p>
             <a
               href="https://ops-terminal.merchant.haus/merchant-apply"

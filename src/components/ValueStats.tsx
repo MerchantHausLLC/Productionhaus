@@ -5,51 +5,75 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import {
+  ShoppingCart,
+  Zap,
+  Plug,
+  Globe,
+  Lock,
+  Activity,
+  TrendingDown,
+  Shield,
+  TrendingUp,
+  Shuffle,
+  ArrowUp,
+  RefreshCw,
+  RefreshCcw,
+  Cloud,
+  DollarSign,
+  CreditCard,
+  Smartphone,
+  BarChart3,
+  ClipboardList,
+} from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /*  Section data – 7 merchant-first modular sections                   */
 /* ------------------------------------------------------------------ */
 
 type Section = {
-  emoji: string;
+  icon: ReactNode;
   heading: string;
   leftCopy: ReactNode;
-  stats: { icon: string; text: string }[];
+  stats: { icon: ReactNode; text: string }[];
 };
+
+const iconClass = "w-5 h-5 text-current";
+const sectionIconClass = "w-6 h-6 text-current";
 
 const sections: Section[] = [
   {
-    emoji: "🛒",
-    heading: "Seamless eCommerce Integrations",
+    icon: <ShoppingCart className={sectionIconClass} strokeWidth={1.5} />,
+    heading: "Seamless Platform Integrations",
     leftCopy: (
       <>
         <p>
-          Connect instantly to 200+ leading eCommerce platforms and shopping
-          carts. No custom development. No gateway rebuilds. Launch quickly and
-          scale confidently with a payment infrastructure built for growth.
+          Connect instantly to 200+ leading commerce platforms and enterprise
+          systems. No custom development. No gateway rebuilds. Deploy quickly and
+          scale confidently with payment infrastructure built for high-volume operations.
         </p>
         <p>
-          Designed for merchants who want speed to market without sacrificing
-          performance or flexibility.
+          Engineered for organizations that demand speed to market without
+          sacrificing performance or flexibility.
         </p>
       </>
     ),
     stats: [
-      { icon: "🛒", text: "200+ eCommerce integrations" },
-      { icon: "🚀", text: "Go live in days, not months" },
-      { icon: "🔌", text: "Plug-and-play setup" },
-      { icon: "🌎", text: "Compatible with leading platforms" },
+      { icon: <ShoppingCart className={iconClass} strokeWidth={1.5} />, text: "200+ platform integrations" },
+      { icon: <Zap className={iconClass} strokeWidth={1.5} />, text: "Go live in days, not months" },
+      { icon: <Plug className={iconClass} strokeWidth={1.5} />, text: "Plug-and-play deployment" },
+      { icon: <Globe className={iconClass} strokeWidth={1.5} />, text: "Compatible with leading systems" },
     ],
   },
   {
-    emoji: "🔒",
+    icon: <Lock className={sectionIconClass} strokeWidth={1.5} />,
     heading: "Intelligent Fraud Protection",
     leftCopy: (
       <>
         <p>
           Reduce chargebacks by up to 70% with built-in 3D Secure, behavioral
           analysis, and adaptive fraud controls. Stop bad actors without
-          introducing friction for legitimate customers.
+          introducing friction for legitimate transactions.
         </p>
         <p>
           Protect revenue while improving approval rates and reducing false
@@ -58,14 +82,14 @@ const sections: Section[] = [
       </>
     ),
     stats: [
-      { icon: "🔒", text: "Up to 70% chargeback reduction" },
-      { icon: "🧠", text: "Real-time risk scoring" },
-      { icon: "📉", text: "Reduced false declines" },
-      { icon: "🛡", text: "Adaptive authentication" },
+      { icon: <Lock className={iconClass} strokeWidth={1.5} />, text: "Up to 70% chargeback reduction" },
+      { icon: <Activity className={iconClass} strokeWidth={1.5} />, text: "Real-time risk scoring" },
+      { icon: <TrendingDown className={iconClass} strokeWidth={1.5} />, text: "Reduced false declines" },
+      { icon: <Shield className={iconClass} strokeWidth={1.5} />, text: "Adaptive authentication" },
     ],
   },
   {
-    emoji: "📈",
+    icon: <TrendingUp className={sectionIconClass} strokeWidth={1.5} />,
     heading: "Approval Rate Optimization",
     leftCopy: (
       <>
@@ -75,37 +99,37 @@ const sections: Section[] = [
           optimize performance and minimize declines.
         </p>
         <p>
-          Higher approval rates mean more completed checkouts and more captured
+          Higher approval rates mean more completed transactions and more captured
           revenue.
         </p>
       </>
     ),
     stats: [
-      { icon: "📈", text: "Smart transaction routing" },
-      { icon: "🔀", text: "Multi-processor redundancy" },
-      { icon: "🌍", text: "40+ global processors" },
-      { icon: "⬆️", text: "Higher authorization rates" },
+      { icon: <TrendingUp className={iconClass} strokeWidth={1.5} />, text: "Smart transaction routing" },
+      { icon: <Shuffle className={iconClass} strokeWidth={1.5} />, text: "Multi-processor redundancy" },
+      { icon: <Globe className={iconClass} strokeWidth={1.5} />, text: "40+ global processors" },
+      { icon: <ArrowUp className={iconClass} strokeWidth={1.5} />, text: "Higher authorization rates" },
     ],
   },
   {
-    emoji: "⚡",
+    icon: <Zap className={sectionIconClass} strokeWidth={1.5} />,
     heading: "High-Speed Processing",
     leftCopy: (
       <p>
-        Sub-300 millisecond authorization speeds create smoother checkout
-        experiences and reduce abandoned carts. Faster transactions directly
-        support higher conversion rates and stronger customer satisfaction.
+        Sub-300 millisecond authorization speeds deliver smoother transaction
+        experiences and reduce abandonment. Faster processing directly
+        supports higher conversion rates and stronger operational throughput.
       </p>
     ),
     stats: [
-      { icon: "⚡", text: "< 300ms authorizations" },
-      { icon: "📉", text: "Fewer abandoned carts" },
-      { icon: "🚀", text: "Faster checkout flow" },
-      { icon: "📈", text: "Stronger conversions" },
+      { icon: <Zap className={iconClass} strokeWidth={1.5} />, text: "< 300ms authorizations" },
+      { icon: <TrendingDown className={iconClass} strokeWidth={1.5} />, text: "Lower transaction abandonment" },
+      { icon: <ArrowUp className={iconClass} strokeWidth={1.5} />, text: "Faster transaction flow" },
+      { icon: <TrendingUp className={iconClass} strokeWidth={1.5} />, text: "Stronger conversions" },
     ],
   },
   {
-    emoji: "🔁",
+    icon: <RefreshCw className={sectionIconClass} strokeWidth={1.5} />,
     heading: "Enterprise-Grade Uptime",
     leftCopy: (
       <>
@@ -118,50 +142,50 @@ const sections: Section[] = [
       </>
     ),
     stats: [
-      { icon: "🔁", text: "99.99% uptime" },
-      { icon: "🔄", text: "Intelligent failover" },
-      { icon: "☁️", text: "Resilient cloud infrastructure" },
-      { icon: "💵", text: "Protected peak revenue" },
+      { icon: <RefreshCw className={iconClass} strokeWidth={1.5} />, text: "99.99% uptime" },
+      { icon: <RefreshCcw className={iconClass} strokeWidth={1.5} />, text: "Intelligent failover" },
+      { icon: <Cloud className={iconClass} strokeWidth={1.5} />, text: "Resilient cloud infrastructure" },
+      { icon: <DollarSign className={iconClass} strokeWidth={1.5} />, text: "Protected peak revenue" },
     ],
   },
   {
-    emoji: "💳",
+    icon: <CreditCard className={sectionIconClass} strokeWidth={1.5} />,
     heading: "Omnichannel Payment Acceptance",
     leftCopy: (
       <>
         <p>
           Accept cards, digital wallets, ACH, and alternative payment methods
-          across in-store, online, mobile, and recurring environments — all
+          across in-person, online, mobile, and recurring environments — all
           through a unified gateway.
         </p>
         <p>
-          Deliver consistent payment experiences wherever your customers
-          transact.
+          Deliver consistent payment experiences across every channel your
+          organization operates.
         </p>
       </>
     ),
     stats: [
-      { icon: "💳", text: "100+ payment methods" },
-      { icon: "📱", text: "Wallet + ACH support" },
-      { icon: "🌎", text: "Global payment coverage" },
-      { icon: "🔄", text: "Recurring-ready" },
+      { icon: <CreditCard className={iconClass} strokeWidth={1.5} />, text: "100+ payment methods" },
+      { icon: <Smartphone className={iconClass} strokeWidth={1.5} />, text: "Wallet + ACH support" },
+      { icon: <Globe className={iconClass} strokeWidth={1.5} />, text: "Global payment coverage" },
+      { icon: <RefreshCcw className={iconClass} strokeWidth={1.5} />, text: "Recurring-ready" },
     ],
   },
   {
-    emoji: "📊",
+    icon: <BarChart3 className={sectionIconClass} strokeWidth={1.5} />,
     heading: "Real-Time Visibility & Control",
     leftCopy: (
       <p>
         Monitor transaction performance, fraud trends, approval rates, and
-        merchant activity in real time. Make faster optimization decisions backed
+        portfolio activity in real time. Make faster optimization decisions backed
         by live reporting and actionable insights.
       </p>
     ),
     stats: [
-      { icon: "📊", text: "Real-time reporting" },
-      { icon: "📈", text: "Approval tracking" },
-      { icon: "🛡", text: "Fraud trend monitoring" },
-      { icon: "📋", text: "Advanced analytics" },
+      { icon: <BarChart3 className={iconClass} strokeWidth={1.5} />, text: "Real-time reporting" },
+      { icon: <TrendingUp className={iconClass} strokeWidth={1.5} />, text: "Approval tracking" },
+      { icon: <Shield className={iconClass} strokeWidth={1.5} />, text: "Fraud trend monitoring" },
+      { icon: <ClipboardList className={iconClass} strokeWidth={1.5} />, text: "Advanced analytics" },
     ],
   },
 ];
@@ -226,7 +250,7 @@ export const ValueStats = () => {
       {/* Section heading */}
       <div className="max-w-5xl mx-auto mb-16 text-center">
         <h2 className="font-rajdhani text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground uppercase">
-          Platform Value at a Glance
+          Platform Capabilities at a Glance
         </h2>
       </div>
 
@@ -234,8 +258,8 @@ export const ValueStats = () => {
       <div className="vs-layout">
         {/* Left: animated text description */}
         <div className={`vs-text-panel ${textAnimating ? "vs-text-panel--exit" : "vs-text-panel--enter"}`}>
-          <span className="vs-section-emoji" aria-hidden="true">
-            {currentSection.emoji}
+          <span className="vs-section-icon" aria-hidden="true">
+            {currentSection.icon}
           </span>
           <h3 className="vs-section-heading">{currentSection.heading}</h3>
           <div className="vs-section-copy">{currentSection.leftCopy}</div>
@@ -248,7 +272,7 @@ export const ValueStats = () => {
           onMouseLeave={() => setIsPaused(false)}
         >
           <div className={`vs-flat-card ${textAnimating ? "vs-flat-card--exit" : "vs-flat-card--enter"}`}>
-            <div className="vs-card-emoji">{currentSection.emoji}</div>
+            <div className="vs-card-icon">{currentSection.icon}</div>
             <h4 className="vs-card-title">{currentSection.heading}</h4>
             <ul className="vs-card-stats">
               {currentSection.stats.map((stat) => (
@@ -302,7 +326,7 @@ export const ValueStats = () => {
           onClick={() => setIsPaused((p) => !p)}
           aria-label={isPaused ? "Resume auto-rotation" : "Pause auto-rotation"}
         >
-          {isPaused ? "▶" : "❚❚"}
+          {isPaused ? "▶" : "II"}
         </button>
       </div>
 
@@ -387,10 +411,15 @@ export const ValueStats = () => {
           }
         }
 
-        .vs-section-emoji {
-          display: inline-block;
-          font-size: 2.2rem;
+        .vs-section-icon {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 2.5rem;
+          height: 2.5rem;
           margin-bottom: 0.6rem;
+          color: var(--vs-foreground);
+          opacity: 0.7;
         }
 
         .vs-section-heading {
@@ -467,9 +496,14 @@ export const ValueStats = () => {
           to { opacity: 0; transform: translateY(-8px); }
         }
 
-        .vs-card-emoji {
-          font-size: 1.8rem;
-          line-height: 1;
+        .vs-card-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.8rem;
+          height: 1.8rem;
+          color: var(--vs-foreground);
+          opacity: 0.7;
         }
 
         .vs-card-title {
@@ -498,9 +532,14 @@ export const ValueStats = () => {
 
         .vs-card-stat-icon {
           flex: 0 0 auto;
-          font-size: 1rem;
-          line-height: 1;
-          margin-top: 0.1rem;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 1rem;
+          height: 1rem;
+          margin-top: 0.15rem;
+          color: var(--vs-foreground);
+          opacity: 0.6;
         }
 
         .vs-card-stat-text {

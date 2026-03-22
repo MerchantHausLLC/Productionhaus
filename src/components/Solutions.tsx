@@ -35,9 +35,9 @@ const solutions: Solution[] = [
     icon: CreditCard,
     title: "Payment Processing",
     description:
-      "Accept all major credit cards, debit cards, and digital wallets with competitive rates and instant settlements.",
+      "Accept all major credit cards, debit cards, and digital wallets with competitive rates and rapid settlements.",
     fullDescription:
-      "Our comprehensive payment processing solution enables businesses to accept all major credit cards, debit cards, and digital wallets seamlessly. With competitive transaction rates, instant settlements, and advanced reconciliation tools, you can streamline your payment operations and improve cash flow. Our platform supports EMV chip cards, contactless payments, and mobile wallets like Apple Pay and Google Pay. Get real-time reporting, automated invoicing, and dedicated merchant support available 24/7.",
+      "Our comprehensive payment processing solution enables organizations to accept all major credit cards, debit cards, and digital wallets seamlessly. With competitive transaction rates, rapid settlements, and advanced reconciliation tools, you can streamline your payment operations and improve cash flow. Our platform supports EMV chip cards, contactless payments, and mobile wallets like Apple Pay and Google Pay. Get real-time reporting, automated invoicing, and dedicated support available 24/7.",
     borderColor: "border-crimson",
     buttonColor: "bg-crimson hover:bg-crimson/90",
     bannerImage: "/card-banners/card1.webp",
@@ -45,9 +45,9 @@ const solutions: Solution[] = [
   {
     icon: ShieldAlert,
     title: "Advanced Fraud Detection",
-    description: "Protect your business and your customers with our multi-layered fraud prevention system.",
+    description: "Protect your organization and your customers with our multi-layered fraud prevention system.",
     fullDescription:
-      "Stay protected with our multi-layered fraud prevention system featuring AI-powered transaction monitoring, real-time risk assessment, and advanced encryption protocols. Our system automatically flags suspicious activities, uses machine learning to detect patterns, and provides customizable security rules. Features include 3D Secure authentication, tokenization, PCI DSS Level 1 compliance, and chargeback management tools. Reduce fraud losses while maintaining a smooth customer experience with intelligent risk scoring.",
+      "Stay protected with our multi-layered fraud prevention system featuring AI-powered transaction monitoring, real-time risk assessment, and advanced encryption protocols. Our system automatically flags suspicious activities, uses machine learning to detect patterns, and provides customizable security rules. Features include 3D Secure authentication, tokenization, PCI DSS Level 1 compliance, and chargeback management tools. Reduce fraud losses while maintaining a frictionless transaction experience with intelligent risk scoring.",
     borderColor: "border-green-600",
     buttonColor: "bg-green-600 hover:bg-green-600/90",
     bannerImage: "/card-banners/card2.webp",
@@ -55,9 +55,9 @@ const solutions: Solution[] = [
   {
     icon: Smartphone,
     title: "Mobile Solutions",
-    description: "Process payments anywhere with our mobile-ready technology and POS systems for on-the-go businesses.",
+    description: "Process payments anywhere with our mobile-ready technology and POS systems for distributed operations.",
     fullDescription:
-      "Transform any smartphone or tablet into a powerful point-of-sale system with our mobile payment solutions. Perfect for businesses on the go, our mobile POS accepts payments anywhere with reliable offline mode capabilities. Features include inventory management, customer relationship tools, digital receipts, tip management, and split payment options. Compatible with Bluetooth card readers and supports both iOS and Android devices. Ideal for food trucks, pop-up shops, delivery services, and field service providers.",
+      "Transform any smartphone or tablet into a powerful point-of-sale system with our mobile payment solutions. Built for organizations with distributed operations, our mobile POS accepts payments anywhere with reliable offline mode capabilities. Features include inventory management, customer relationship tools, digital receipts, tip management, and split payment options. Compatible with Bluetooth card readers and supports both iOS and Android devices. Ideal for field service providers, events, distributed teams, and multi-location organizations.",
     borderColor: "border-orange-400",
     buttonColor: "bg-orange-400 hover:bg-orange-400/90",
     bannerImage: "/card-banners/card4.webp",
@@ -85,9 +85,9 @@ const solutions: Solution[] = [
   {
     icon: ShoppingCart,
     title: "Ecommerce Solutions",
-    description: "Launch and grow your online presence with robust ecommerce tools.",
+    description: "Launch and scale your online payment acceptance with enterprise-grade ecommerce tools.",
     fullDescription:
-      "Launch and grow your online presence with robust ecommerce tools that keep you agile and secure. From payment gateways to customizable checkouts, we give you everything you need to sell, scale, and connect with customers—without the technical pain. Features include pre-built integrations with top shopping carts, customizable checkout pages for any brand, secure PCI-compliant transactions, and advanced ecommerce tools that help stores grow 35% faster.",
+      "Launch and scale your online payment acceptance with enterprise-grade ecommerce tools that keep you agile and secure. From payment gateways to customizable checkout experiences, we give you everything you need to sell, scale, and maintain compliance — without the engineering overhead. Features include pre-built integrations with leading commerce platforms, customizable checkout pages for any brand, secure PCI-compliant transactions, and advanced tools that help organizations grow 35% faster.",
     borderColor: "border-purple-600",
     buttonColor: "bg-purple-600 hover:bg-purple-600/90",
     bannerImage: "/card-banners/card7.webp",
@@ -97,7 +97,7 @@ const solutions: Solution[] = [
     title: "Data & Analytics",
     description: "Unlock powerful insights from your transaction data with real-time analytics.",
     fullDescription:
-      "Unlock powerful insights from your transaction data. Our analytics dashboard turns complex numbers into actionable trends, letting you track sales, customer behaviors, and campaign results in real time—no spreadsheets, no guesswork. Features include live dashboards with instant sales and refund metrics, custom reporting by product, channel, or region, customer segmentation and loyalty analytics. Merchants with analytics tools make decisions 2x faster.",
+      "Unlock powerful insights from your transaction data. Our analytics dashboard transforms complex data into actionable trends, letting you track volume, authorization rates, and performance metrics in real time — no spreadsheets, no guesswork. Features include live dashboards with instant transaction and refund metrics, custom reporting by product, channel, or region, segmentation and portfolio analytics. Organizations with analytics tools make decisions 2x faster.",
     borderColor: "border-blue-600",
     buttonColor: "bg-blue-600 hover:bg-blue-600/90",
     bannerImage: "/card-banners/card10.webp",
@@ -127,7 +127,7 @@ const solutions: Solution[] = [
     title: "Payment Orchestration",
     description: "Smart routing for better approvals, lower costs, and optimized payment paths.",
     fullDescription:
-      "Connect to multiple payment processors and dynamically route every transaction for the best outcome—lower fees, higher approval rates, fewer declines. Control your entire payment stack without extra IT overhead. Features include lower transaction costs by up to 20%, built-in failover for always-on acceptance, unified reporting across all channels and providers, and automatic optimization of every payment path.",
+      "Connect to multiple payment processors and dynamically route every transaction for the best outcome — lower fees, higher approval rates, fewer declines. Control your entire payment stack without added engineering overhead. Features include lower transaction costs by up to 20%, built-in failover for always-on acceptance, unified reporting across all channels and providers, and automatic optimization of every payment path.",
     borderColor: "border-teal-600",
     buttonColor: "bg-teal-600 hover:bg-teal-600/90",
     bannerImage: "/card-banners/card4.webp",
@@ -294,7 +294,7 @@ export const Solutions = () => {
             Core Services
           </h2>
           <p className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto mb-8 font-light">
-            Comprehensive payment solutions designed to help your business thrive in today's digital economy.
+            Comprehensive payment solutions designed to help your organization thrive in today's digital economy.
           </p>
           <Button
             asChild
