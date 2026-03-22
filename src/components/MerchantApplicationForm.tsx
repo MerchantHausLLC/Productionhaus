@@ -121,7 +121,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             placeholder="e.g. Acme Corp"
           />
           {errors.company_name && (
-            <p className="text-xs text-red-500">{errors.company_name.message}</p>
+            <p className="text-xs text-destructive">{errors.company_name.message}</p>
           )}
         </div>
         <div className="space-y-1">
@@ -140,7 +140,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             className="w-full border rounded px-3 py-2 text-sm"
             placeholder="Street address"
           />
-          {errors.address && <p className="text-xs text-red-500">{errors.address.message}</p>}
+          {errors.address && <p className="text-xs text-destructive">{errors.address.message}</p>}
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">Address 2</label>
@@ -156,7 +156,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             {...register("city", { required: "City is required" })}
             className="w-full border rounded px-3 py-2 text-sm"
           />
-          {errors.city && <p className="text-xs text-red-500">{errors.city.message}</p>}
+          {errors.city && <p className="text-xs text-destructive">{errors.city.message}</p>}
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">State / Province*</label>
@@ -164,7 +164,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             {...register("state", { required: "State is required" })}
             className="w-full border rounded px-3 py-2 text-sm"
           />
-          {errors.state && <p className="text-xs text-red-500">{errors.state.message}</p>}
+          {errors.state && <p className="text-xs text-destructive">{errors.state.message}</p>}
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">Postal Code*</label>
@@ -172,7 +172,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             {...register("zip", { required: "Postal code is required" })}
             className="w-full border rounded px-3 py-2 text-sm"
           />
-          {errors.zip && <p className="text-xs text-red-500">{errors.zip.message}</p>}
+          {errors.zip && <p className="text-xs text-destructive">{errors.zip.message}</p>}
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">Phone*</label>
@@ -181,7 +181,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             {...register("phone", { required: "Phone is required" })}
             className="w-full border rounded px-3 py-2 text-sm"
           />
-          {errors.phone && <p className="text-xs text-red-500">{errors.phone.message}</p>}
+          {errors.phone && <p className="text-xs text-destructive">{errors.phone.message}</p>}
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">Fax</label>
@@ -197,7 +197,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             {...register("first_name", { required: "First name is required" })}
             className="w-full border rounded px-3 py-2 text-sm"
           />
-          {errors.first_name && <p className="text-xs text-red-500">{errors.first_name.message}</p>}
+          {errors.first_name && <p className="text-xs text-destructive">{errors.first_name.message}</p>}
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">Contact Last Name*</label>
@@ -205,7 +205,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             {...register("last_name", { required: "Last name is required" })}
             className="w-full border rounded px-3 py-2 text-sm"
           />
-          {errors.last_name && <p className="text-xs text-red-500">{errors.last_name.message}</p>}
+          {errors.last_name && <p className="text-xs text-destructive">{errors.last_name.message}</p>}
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">Email*</label>
@@ -214,7 +214,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             {...register("email", { required: "Email is required" })}
             className="w-full border rounded px-3 py-2 text-sm"
           />
-          {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
+          {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">Desired Username*</label>
@@ -222,7 +222,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             {...register("username", { required: "Username is required" })}
             className="w-full border rounded px-3 py-2 text-sm"
           />
-          {errors.username && <p className="text-xs text-red-500">{errors.username.message}</p>}
+          {errors.username && <p className="text-xs text-destructive">{errors.username.message}</p>}
         </div>
       </div>
 
@@ -230,15 +230,15 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
         <label className="block text-sm font-medium">Do you currently have a processor account?*</label>
         <select
           {...register("hasCurrentProcessor", { required: "Please select an option" })}
-          className="w-full border rounded px-3 py-2 text-sm bg-white"
+          className="w-full border rounded px-3 py-2 text-sm bg-background"
         >
           <option value="">Select an option</option>
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </select>
-        <p className="text-xs text-gray-500">e.g. Chase, TSYS, First Data, etc.</p>
+        <p className="text-xs text-muted-foreground">e.g. Chase, TSYS, First Data, etc.</p>
         {errors.hasCurrentProcessor && (
-          <p className="text-xs text-red-500">{errors.hasCurrentProcessor.message}</p>
+          <p className="text-xs text-destructive">{errors.hasCurrentProcessor.message}</p>
         )}
       </div>
 
@@ -254,7 +254,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
             className="w-full border rounded px-3 py-2 text-sm"
           />
           {errors.currentProcessorName && (
-            <p className="text-xs text-red-500">{errors.currentProcessorName.message}</p>
+            <p className="text-xs text-destructive">{errors.currentProcessorName.message}</p>
           )}
         </div>
       )}
@@ -267,8 +267,8 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
               key={service}
               className={`flex items-center space-x-3 p-3 rounded border cursor-pointer transition-colors ${
                 processing_services.includes(service)
-                  ? "border-black bg-gray-50"
-                  : "border-gray-200 hover:border-black"
+                  ? "border-foreground bg-muted"
+                  : "border-border hover:border-foreground"
               }`}
             >
               <input
@@ -293,8 +293,8 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
               key={service}
               className={`flex items-center space-x-3 p-3 rounded border cursor-pointer transition-colors ${
                 value_services.includes(service)
-                  ? "border-black bg-gray-50"
-                  : "border-gray-200 hover:border-black"
+                  ? "border-foreground bg-muted"
+                  : "border-border hover:border-foreground"
               }`}
             >
               <input
@@ -308,7 +308,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
               <span className="text-sm">
                 {service}
                 {service === "Encryption" && (
-                  <span className="block text-xs text-gray-500">Encrypted Devices</span>
+                  <span className="block text-xs text-muted-foreground">Encrypted Devices</span>
                 )}
               </span>
             </label>
@@ -329,7 +329,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
               href="/terms"
               target="_blank"
               rel="noreferrer"
-              className="text-blue-600 hover:underline ml-1"
+              className="text-primary hover:underline ml-1"
             >
               Terms and Conditions
             </a>
@@ -337,7 +337,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
           </span>
         </label>
         {errors.agree_to_terms && (
-          <p className="text-xs text-red-500">{errors.agree_to_terms.message}</p>
+          <p className="text-xs text-destructive">{errors.agree_to_terms.message}</p>
         )}
 
         <label className="flex items-start space-x-3 text-sm">
@@ -354,7 +354,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
               href="/security"
               target="_blank"
               rel="noreferrer"
-              className="text-blue-600 hover:underline ml-1"
+              className="text-primary hover:underline ml-1"
             >
               Security Policy
             </a>
@@ -362,11 +362,11 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
           </span>
         </label>
         {errors.agree_to_security_policy && (
-          <p className="text-xs text-red-500">{errors.agree_to_security_policy.message}</p>
+          <p className="text-xs text-destructive">{errors.agree_to_security_policy.message}</p>
         )}
       </div>
 
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-muted-foreground">
         <strong>Note:</strong> You will receive a DocuSign agreement and a secure request for your banking
         details within 24–48 hours.
       </p>
@@ -374,7 +374,7 @@ export const MerchantApplicationForm: React.FC<MerchantApplicationFormProps> = (
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-2 inline-flex items-center px-4 py-2 rounded-md bg-black text-white text-sm font-medium disabled:opacity-50"
+        className="mt-2 inline-flex items-center px-4 py-2 rounded-md bg-foreground text-background text-sm font-medium disabled:opacity-50"
       >
         {isSubmitting ? "Submitting..." : "Submit Application"}
       </button>

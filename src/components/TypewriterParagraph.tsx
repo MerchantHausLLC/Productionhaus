@@ -51,8 +51,8 @@ export function TypewriterParagraph({
   const isTyping = displayedLength < fullText.length;
 
   return (
-    <p className={`typewriter-paragraph leading-relaxed text-neutral-dark/80 ${className}`.trim()}>
-      <span className="font-semibold text-neutral-dark">{typedEmphasis}</span>
+    <p className={`typewriter-paragraph leading-relaxed text-foreground/80 ${className}`.trim()}>
+      <span className="font-semibold text-foreground">{typedEmphasis}</span>
       <span>{typedRest}</span>
       {isTyping && <span className="typewriter-caret" />}
     </p>
