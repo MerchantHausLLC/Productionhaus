@@ -130,7 +130,7 @@ export const Hero = () => {
             size="lg"
             className="bg-white text-black hover:bg-white/90 font-inter font-medium text-base px-10 py-6 rounded-none tracking-wide transition-all w-full sm:w-auto"
           >
-            <a href="https://ops-terminal.merchant.haus/contact">Schedule a Consultation</a>
+            <a href="https://ops-terminal.merchant.haus/contact">Get Started</a>
           </Button>
           <Button
             asChild
