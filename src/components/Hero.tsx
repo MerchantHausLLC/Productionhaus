@@ -132,14 +132,6 @@ export const Hero = () => {
           >
             <a href="https://ops-terminal.merchant.haus/contact">Get Started</a>
           </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="border border-white/40 text-white hover:bg-white/10 font-inter font-medium text-base px-10 py-6 rounded-none tracking-wide transition-all w-full sm:w-auto"
-          >
-            <a href="#solutions">Explore Solutions</a>
-          </Button>
         </div>
 
         {/* Scroll Indicator */}
