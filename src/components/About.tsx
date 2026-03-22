@@ -1,11 +1,11 @@
 export const About = () => {
   return (
-    <section id="about" className="py-20 px-6 bg-white">
+    <section id="about" className="py-20 px-6 bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Text Content */}
           <div className="space-y-6 animate-fade-in">
-            <h2 className="font-ubuntu font-bold text-4xl md:text-5xl text-neutral-dark">
+            <h2 className="font-ubuntu font-bold text-4xl md:text-5xl text-foreground">
               Trusted Payment Solutions
             </h2>
             <div className="space-y-4 font-inter text-lg text-muted-foreground leading-relaxed">
@@ -28,7 +28,7 @@ export const About = () => {
                 <div className="text-6xl md:text-7xl font-ubuntu font-bold text-crimson">
                   10+
                 </div>
-                <div className="text-xl md:text-2xl font-inter font-semibold text-neutral-dark">
+                <div className="text-xl md:text-2xl font-inter font-semibold text-foreground">
                   Years of Excellence
                 </div>
                 <div className="text-lg text-muted-foreground max-w-xs mx-auto">

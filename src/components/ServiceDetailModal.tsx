@@ -30,7 +30,7 @@ export const ServiceDetailModal = ({ service, onClose }: ServiceDetailModalProps
       <DialogContent className="max-w-4xl h-[90vh] overflow-y-auto animate-scale-in">
         <DialogHeader className="space-y-6">
           <div className="flex items-center justify-center w-24 h-24 mx-auto bg-gradient-to-br from-primary to-accent rounded-2xl">
-            <ServiceIcon className="w-12 h-12 text-white" />
+            <ServiceIcon className="w-12 h-12 text-primary-foreground" />
           </div>
           <DialogTitle className="text-4xl font-ubuntu text-center">
             {service.name}
