@@ -410,7 +410,7 @@ const Services = () => {
                 className="border-2 border-white text-white bg-transparent hover:bg-white/15 hover:text-white font-bold px-8 py-6 text-lg rounded-lg transition-all"
                 asChild
               >
-                <a href="https://ops-terminal.merchant.haus/merchant-apply">
+                <a href="https://ops-terminal.merchant.haus/contact">
                   <Mail className="mr-2 w-5 h-5" />
                   Apply Now
                 </a>
