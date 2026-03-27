@@ -338,7 +338,7 @@ const SupportedProcessors = () => {
                     {columns.map((c) => (
                       <th
                         key={c}
-                        className="text-left px-4 py-3 font-semibold text-foreground whitespace-nowrap bg-muted/40"
+                        className={`text-left px-4 py-3 font-semibold text-foreground whitespace-nowrap bg-muted/40${c === PLATFORM_COL ? " sticky left-0 z-20 after:absolute after:right-0 after:top-0 after:bottom-0 after:w-px after:bg-border" : ""}`}
                       >
                         {c}
                       </th>
@@ -357,7 +357,7 @@ const SupportedProcessors = () => {
                         {columns.map((c) => (
                           <td
                             key={c}
-                            className={`px-4 py-3 align-top ${c === PLATFORM_COL ? "font-medium" : "text-muted-foreground"}`}
+                            className={`px-4 py-3 align-top ${c === PLATFORM_COL ? "font-medium sticky left-0 z-10 bg-background after:absolute after:right-0 after:top-0 after:bottom-0 after:w-px after:bg-border" : "text-muted-foreground"}`}
                             style={c === PLATFORM_COL && brandColor ? { color: brandColor } : undefined}
                           >
                             {c === CURRENCIES_COL ? (
