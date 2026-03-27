@@ -76,7 +76,7 @@ export default function MarqueeServices() {
       {/* Scrollable marquee container with mask gradient */}
       <div
         ref={marqueeRef}
-        className="flex gap-6 overflow-x-hidden scroll-smooth px-10 mask-gradient"
+        className="flex gap-6 overflow-x-hidden scroll-smooth px-10 mask-gradient marquee-auto-scroll"
       >
         {/* Triple the services array for infinite scroll illusion */}
         {[...services, ...services, ...services].map((s, i) => (
@@ -84,7 +84,7 @@ export default function MarqueeServices() {
             key={i}
             onMouseMove={handleTilt}
             onMouseLeave={resetTilt}
-            className="relative flex-shrink-0 w-48 h-64 rounded-2xl bg-zinc-900 border border-zinc-800 shadow-[0_0_20px_rgba(220,20,60,0.2)] transition-transform duration-300 ease-out hover:shadow-[0_0_40px_rgba(220,20,60,0.5)] group"
+            className="relative flex-shrink-0 w-48 h-64 rounded-2xl bg-card border border-border shadow-sm transition-transform duration-300 ease-out hover:shadow-md group"
           >
             {/* Card content - icon and title */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center select-none">
@@ -93,7 +93,7 @@ export default function MarqueeServices() {
                 alt={s.title}
                 className="w-16 h-16 mb-4 transition-transform duration-300 ease-out group-hover:scale-[1.5]"
               />
-              <h3 className="text-white text-lg font-semibold">{s.title}</h3>
+              <h3 className="text-foreground text-lg font-semibold">{s.title}</h3>
             </div>
           </div>
         ))}
@@ -103,7 +103,7 @@ export default function MarqueeServices() {
       <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 flex justify-between px-4 pointer-events-none">
         <button
           onClick={() => scroll("left")}
-          className="pointer-events-auto p-3 rounded-full bg-zinc-800/90 hover:bg-zinc-700 text-white shadow-[0_0_10px_rgba(220,20,60,0.3)] hover:shadow-[0_0_20px_rgba(220,20,60,0.5)] transition-all duration-300 z-10"
+          className="pointer-events-auto nav-arrow-button z-10"
           aria-label="Scroll left"
         >
           <ChevronLeft size={24} />
@@ -111,7 +111,7 @@ export default function MarqueeServices() {
 
         <button
           onClick={() => scroll("right")}
-          className="pointer-events-auto p-3 rounded-full bg-zinc-800/90 hover:bg-zinc-700 text-white shadow-[0_0_10px_rgba(220,20,60,0.3)] hover:shadow-[0_0_20px_rgba(220,20,60,0.5)] transition-all duration-300 z-10"
+          className="pointer-events-auto nav-arrow-button z-10"
           aria-label="Scroll right"
         >
           <ChevronRight size={24} />
