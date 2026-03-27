@@ -53,9 +53,8 @@ export default function VampBlogBanner() {
   return (
     <section className="py-12 px-6">
       <div
-        className="relative max-w-7xl mx-auto overflow-hidden border border-border transition-all duration-500"
+        className="relative max-w-7xl mx-auto overflow-hidden border border-border transition-all duration-500 bg-neutral-dark"
         style={{
-          background: "hsl(var(--foreground))",
           boxShadow: "none"
         }}
       >

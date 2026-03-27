@@ -132,14 +132,14 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] bg-white">
+      <DialogContent className="sm:max-w-[600px] bg-background">
         {!isSubmitted ? (
           <>
             <DialogHeader>
-              <DialogTitle className="font-ubuntu text-3xl font-semibold text-neutral-dark">
+              <DialogTitle className="font-ubuntu text-3xl font-semibold text-foreground">
                 Get in Touch
               </DialogTitle>
-              <DialogDescription className="font-montserrat text-base text-silver-grey">
+              <DialogDescription className="font-montserrat text-base text-muted-foreground">
                 Ready to transform your payment processing? Fill out the form below and we'll get back to you shortly.
               </DialogDescription>
             </DialogHeader>
@@ -245,7 +245,7 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                   name="company"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-montserrat font-medium text-neutral-dark">
+                      <FormLabel className="font-montserrat font-medium text-foreground">
                         Company
                       </FormLabel>
                       <FormControl>
@@ -320,7 +320,7 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
                 <Button
                   type="submit"
                   disabled={form.formState.isSubmitting}
-                  className="w-full bg-cyber-teal hover:bg-cyber-teal/90 text-white font-montserrat font-semibold text-lg py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                  className="w-full bg-foreground hover:bg-foreground/90 text-background font-montserrat font-semibold text-lg py-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
                 >
                   {form.formState.isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
@@ -331,7 +331,7 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
           <div className="py-12 text-center">
             <button
               onClick={handleClose}
-              className="absolute top-4 right-4 text-silver-grey hover:text-neutral-dark transition-colors"
+              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Close"
             >
               <X className="w-6 h-6" />
@@ -343,16 +343,16 @@ export const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps
               </div>
               
               <div className="space-y-3">
-                <h3 className="font-ubuntu text-3xl font-semibold text-neutral-dark">
+                <h3 className="font-ubuntu text-3xl font-semibold text-foreground">
                   Thank You!
                 </h3>
-                <p className="font-montserrat text-lg text-silver-grey max-w-md">
+                <p className="font-montserrat text-lg text-muted-foreground max-w-md">
                   Your message has been sent successfully. We'll get back to you shortly.
                 </p>
               </div>
 
               <div className="pt-4">
-                <p className="font-montserrat text-sm text-silver-grey/80">
+                <p className="font-montserrat text-sm text-muted-foreground/80">
                   Redirecting to home page in a moment...
                 </p>
               </div>

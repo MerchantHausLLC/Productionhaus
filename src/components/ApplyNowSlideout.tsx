@@ -9,7 +9,7 @@ export const ApplyNowSlideout: React.FC = () => {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="px-4 py-2 rounded-md border border-gray-300 bg-white hover:bg-gray-50 text-sm font-medium"
+        className="px-4 py-2 rounded-md border border-border bg-background hover:bg-muted text-sm font-medium"
       >
         Apply Now
       </button>
@@ -20,13 +20,13 @@ export const ApplyNowSlideout: React.FC = () => {
           <div className="flex-1 bg-black/40" onClick={() => setOpen(false)} />
 
           {/* Slideout panel (right) */}
-          <div className="w-full max-w-lg h-full bg-white shadow-xl p-6 overflow-y-auto">
+          <div className="w-full max-w-lg h-full bg-background shadow-xl p-6 overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Merchant Application</h2>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-muted-foreground hover:text-foreground"
               >
                 ✕
               </button>
