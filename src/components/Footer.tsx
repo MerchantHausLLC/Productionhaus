@@ -12,7 +12,7 @@ const Footer = () => {
           {/* Logo + Contact - Wider column */}
           <div className="space-y-6 md:col-span-2">
             <div className="flex items-center gap-3 mb-2">
-              <img src={shieldLogo} alt="MerchantHaus Shield" className="h-10 w-10 grayscale" loading="lazy" />
+              <img src={shieldLogo} alt="MerchantHaus Shield" className="h-10 w-10" loading="lazy" />
               <h3 className="font-rajdhani font-medium text-xl text-foreground tracking-wider uppercase">
                 Merchant Haus
               </h3>
@@ -132,7 +132,7 @@ const Footer = () => {
               <img
                 src="/trust-seals/pci-dss.png"
                 alt="PCI DSS Level 1 Compliant"
-                className="h-16 w-16 object-contain grayscale opacity-60 group-hover:opacity-80 transition-all"
+                className="h-16 w-16 object-contain opacity-60 group-hover:opacity-80 transition-all"
               />
               <span className="text-xs text-muted-foreground mt-2">PCI DSS Compliant</span>
             </div>
@@ -140,7 +140,7 @@ const Footer = () => {
               <img
                 src="/trust-seals/ssl-secure.png"
                 alt="SSL Secure 256-bit Encryption"
-                className="h-16 w-16 object-contain grayscale opacity-60 group-hover:opacity-80 transition-all"
+                className="h-16 w-16 object-contain opacity-60 group-hover:opacity-80 transition-all"
               />
               <span className="text-xs text-muted-foreground mt-2">256-bit SSL</span>
             </div>
@@ -148,7 +148,7 @@ const Footer = () => {
               <img
                 src="/trust-seals/bank-security.png"
                 alt="Bank-Level Security"
-                className="h-16 w-16 object-contain grayscale opacity-60 group-hover:opacity-80 transition-all"
+                className="h-16 w-16 object-contain opacity-60 group-hover:opacity-80 transition-all"
               />
               <span className="text-xs text-muted-foreground mt-2">Bank-Level Security</span>
             </div>
@@ -156,7 +156,7 @@ const Footer = () => {
               <img
                 src="/trust-seals/247-support.png"
                 alt="24/7 Customer Support"
-                className="h-16 w-16 object-contain grayscale opacity-60 group-hover:opacity-80 transition-all"
+                className="h-16 w-16 object-contain opacity-60 group-hover:opacity-80 transition-all"
               />
               <span className="text-xs text-muted-foreground mt-2">24/7 Support</span>
             </div>
@@ -164,14 +164,14 @@ const Footer = () => {
               <img
                 src="/logos/visa.webp"
                 alt="Visa"
-                className="h-10 w-auto object-contain grayscale opacity-50 group-hover:opacity-70 transition-all"
+                className="h-10 w-auto object-contain opacity-50 group-hover:opacity-70 transition-all"
               />
             </div>
             <div className="flex flex-col items-center group">
               <img
                 src="/logos/mastercard.webp"
                 alt="Mastercard"
-                className="h-10 w-auto object-contain grayscale opacity-50 group-hover:opacity-70 transition-all"
+                className="h-10 w-auto object-contain opacity-50 group-hover:opacity-70 transition-all"
               />
             </div>
           </div>
