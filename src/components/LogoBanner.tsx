@@ -53,7 +53,7 @@ const LogoBanner = () => {
           {[...shuffledLogos, ...shuffledLogos].map((logo, index) => (
             <div
               key={`${logo.name}-${index}`}
-              className="flex-shrink-0 mx-8 hover:scale-105 transition-all duration-300 opacity-50 hover:opacity-80 grayscale"
+              className="flex-shrink-0 mx-8 hover:scale-105 transition-all duration-300 opacity-50 hover:opacity-80"
             >
               <img
                 src={`/logos/${logo.file}`}

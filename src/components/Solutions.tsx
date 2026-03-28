@@ -274,7 +274,7 @@ export const Solutions = () => {
           <img
             src={shieldLogo}
             alt="MerchantHaus Shield"
-            className="h-24 w-24 md:h-32 md:w-32 object-contain opacity-80 grayscale"
+            className="h-24 w-24 md:h-32 md:w-32 object-contain opacity-80"
           />
         </div>
       </div>
@@ -284,7 +284,7 @@ export const Solutions = () => {
           <img
             src="/images/globe-background.png"
             alt="Global Payment Network"
-            className="relative w-full max-w-5xl h-auto object-contain opacity-[0.06] grayscale"
+            className="relative w-full max-w-5xl h-auto object-contain opacity-[0.06]"
           />
         </div>
       </div>
