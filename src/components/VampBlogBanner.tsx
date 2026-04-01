@@ -53,7 +53,7 @@ export default function VampBlogBanner() {
   return (
     <section className="py-12 px-6">
       <div
-        className="relative max-w-7xl mx-auto overflow-hidden border border-border transition-all duration-500 bg-neutral-dark"
+        className="relative max-w-7xl mx-auto overflow-hidden border border-border transition-all duration-500 bg-card"
         style={{
           boxShadow: "none"
         }}
@@ -63,21 +63,21 @@ export default function VampBlogBanner() {
           className="block group relative"
         >
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between p-8 md:p-12 gap-6">
-            <div className="flex-1 text-white">
-              <div className="inline-flex items-center gap-2 px-4 py-1 border border-white/20 text-sm font-inter font-medium mb-4 tracking-wide uppercase">
+            <div className="flex-1 text-foreground">
+              <div className="inline-flex items-center gap-2 px-4 py-1 border border-foreground/20 text-sm font-inter font-medium mb-4 tracking-wide uppercase">
                 <span>{activeSlide.tag}</span>
-                <span className="text-white/50">&middot; {activeSlide.date}</span>
+                <span className="text-foreground/50">&middot; {activeSlide.date}</span>
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold font-ubuntu mb-3 text-white">
+              <h3 className="text-2xl md:text-3xl font-bold font-ubuntu mb-3 text-foreground">
                 {activeSlide.title}
               </h3>
-              <p className="text-white/70 text-base leading-relaxed max-w-2xl font-inter font-light">
+              <p className="text-muted-foreground text-base leading-relaxed max-w-2xl font-inter font-light">
                 {activeSlide.description}
               </p>
             </div>
 
             <div className="flex-shrink-0">
-              <div className="flex items-center gap-3 px-8 py-4 bg-white text-black font-inter font-medium text-sm tracking-wide uppercase group-hover:gap-5 transition-all duration-300">
+              <div className="flex items-center gap-3 px-8 py-4 bg-foreground text-background font-inter font-medium text-sm tracking-wide uppercase group-hover:gap-5 transition-all duration-300">
                 Read Article
                 <ArrowRight className="w-5 h-5" />
               </div>
@@ -90,7 +90,7 @@ export default function VampBlogBanner() {
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`h-1.5 w-8 transition-all duration-300 ${index === activeIndex ? "bg-white" : "bg-white/30"}`}
+              className={`h-1.5 w-8 transition-all duration-300 ${index === activeIndex ? "bg-foreground" : "bg-foreground/30"}`}
               aria-label={`View slide ${index + 1}`}
             />
           ))}
