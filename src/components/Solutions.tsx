@@ -336,11 +336,11 @@ export const Solutions = () => {
                     <div className="service-card-bg-overlay" />
                     <div className="service-card-body relative z-10">
                       <div className="service-card-icon service-card-icon--light">
-                        <Icon className="h-6 w-6 text-white/80" strokeWidth={1.5} />
+                        <Icon className="h-6 w-6 text-foreground/80 dark:text-white/80" strokeWidth={1.5} />
                       </div>
                       <div className="space-y-3">
-                        <h3 className="text-2xl font-bold font-ubuntu text-white">{solution.title}</h3>
-                        <p className="text-base leading-relaxed text-white/70">{solution.description}</p>
+                        <h3 className="text-2xl font-bold font-ubuntu text-foreground dark:text-white">{solution.title}</h3>
+                        <p className="text-base leading-relaxed text-foreground/70 dark:text-white/70">{solution.description}</p>
                       </div>
                       <div className="service-card-footer">
                         <button

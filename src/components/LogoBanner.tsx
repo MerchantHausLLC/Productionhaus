@@ -17,6 +17,7 @@ const logos = [
   { file: "visa.webp", name: "Visa" },
   { file: "wix.webp", name: "Wix" },
   { file: "zoho_crm.webp", name: "Zoho CRM" },
+  { file: "kurvs.svg", name: "Kurvs" },
 ];
 
 const LogoBanner = () => {
@@ -53,12 +54,12 @@ const LogoBanner = () => {
           {[...shuffledLogos, ...shuffledLogos].map((logo, index) => (
             <div
               key={`${logo.name}-${index}`}
-              className="flex-shrink-0 mx-8 hover:scale-105 transition-all duration-300 opacity-50 hover:opacity-80"
+              className="flex-shrink-0 mx-8 group hover:scale-105 transition-all duration-300 opacity-65 hover:opacity-90"
             >
               <img
                 src={`/logos/${logo.file}`}
                 alt={logo.name}
-                className="h-12 w-auto object-contain transition-opacity duration-500"
+                className="h-12 w-auto object-contain transition-all duration-500 grayscale-[40%] group-hover:grayscale-0"
               />
             </div>
           ))}
