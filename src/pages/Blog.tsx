@@ -168,6 +168,30 @@ const Blog = () => {
         <section>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
+            {/* Card: Construction Finance */}
+            <div className="card-container">
+              <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
+                <a href="/construction-finance" className="block">
+                  <div className="h-40 text-white p-6 flex flex-col justify-between relative overflow-hidden" style={{ backgroundImage: "url('/blog-images/construction-finance-hero.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
+                    <div className="relative z-10 text-xs font-semibold uppercase tracking-wider">Construction FinTech</div>
+                    <h4 className="relative z-10 text-xl font-bold">The Digital Transformation of Construction Finance</h4>
+                    <p className="relative z-10 text-xs text-white/80">April 2026</p>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-cyber-teal">Payments Strategy</p>
+                    <p className="text-sm mb-4 text-muted-foreground">
+                      How payment gateways, CRM ecosystems, and Level III processing are solving construction's chronic cash flow challenges.
+                    </p>
+                    <div className="flex items-center text-sm font-medium text-foreground">
+                      Read More
+                      <ArrowRight className="arrow-icon w-4 h-4 ml-2" />
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
             {/* Card: Payments Survey 2025 */}
             <div className="card-container">
               <div className="bg-card dark:bg-card/80 rounded-xl overflow-hidden card-shadow hover-crimson-arrow">
