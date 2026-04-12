@@ -1,273 +1,502 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
+import { PageSEO } from "@/components/PageSEO";
 
-const App: React.FC = () => {
+const accent = "#534AB7";
+const accentLight = "#EEEDFE";
+const accentDark = "#26215C";
+
+const blogStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  .blog-root {
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--color-text-primary);
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+    line-height: 1.75;
+    font-size: 17px;
+  }
+
+  .blog-root h1, .blog-root h2, .blog-root h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  .hero {
+    border-bottom: 3px solid var(--color-text-primary);
+    padding: 3rem 0 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .kicker::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 2px;
+    background: ${accent};
+  }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.25rem;
+    color: var(--color-text-primary);
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .hero-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.08em;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-border-tertiary);
+    border: 1px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .hero-stat {
+    background: var(--color-background-primary);
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .hero-stat-num {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: ${accent};
+    line-height: 1;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .hero-stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+    display: block;
+  }
+
+  .section {
+    margin-bottom: 3.5rem;
+    position: relative;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border-tertiary);
+  }
+
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+
+  .section h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .section p {
+    margin-bottom: 1.25rem;
+    color: var(--color-text-primary);
+  }
+
+  .pullquote {
+    border-left: 3px solid ${accent};
+    margin: 2rem 0;
+    padding: 0.5rem 0 0.5rem 1.5rem;
+  }
+
+  .pullquote p {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    margin: 0 0 0.5rem;
+    line-height: 1.5;
+  }
+
+  .pullquote cite {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+
+  .callout {
+    background: var(--color-background-secondary);
+    border-left: 3px solid ${accent};
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .callout-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: ${accent};
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .callout p {
+    margin: 0;
+    font-size: 15px;
+    color: var(--color-text-primary);
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 1.5rem 0;
+  }
+
+  .stat-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 1rem 1.25rem;
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .stat-card-num {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: ${accent};
+    line-height: 1;
+    display: block;
+  }
+
+  .stat-card-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 1.5rem 0;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+
+  .data-table thead th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    border-bottom: 1.5px solid var(--color-text-primary);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: var(--color-background-secondary);
+  }
+
+  .data-table tbody td {
+    padding: 0.65rem 0.75rem;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .data-table tbody td:first-child {
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--color-border-tertiary);
+    margin: 3rem 0;
+  }
+
+  .watermark {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 8rem;
+    font-weight: 900;
+    color: var(--color-border-tertiary);
+    opacity: 0.12;
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+    z-index: 0;
+  }
+
+  .footnotes {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.03em;
+  }
+
+  .footnotes p {
+    margin-bottom: 0.5rem;
+  }
+
+  .footnotes .fn-num {
+    color: ${accent};
+    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    .hero-stats .hero-stat:last-child { grid-column: span 2; }
+    .stat-row { grid-template-columns: 1fr; }
+    .watermark { font-size: 4rem; }
+  }
+`;
+
+export default function Prediction2026Article() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] text-neutral-800 selection:bg-[#00CEDB]/20">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
-
-        body { 
-          font-family: 'Montserrat', sans-serif; 
-          line-height: 1.8; 
-          -webkit-font-smoothing: antialiased;
-        }
-
-        .post-container { 
-          max-width: 740px; 
-          margin: 0 auto;
-        }
-
-        h2 {
-          font-family: 'Rajdhani', system-ui, sans-serif;
-          font-size: 2.5rem;
-          font-weight: 700;
-          color: #0A2A43;
-          margin-top: 4.5rem;
-          margin-bottom: 1.5rem;
-          line-height: 1.1;
-          letter-spacing: -0.02em;
-        }
-
-        h3 {
-          font-family: 'Rajdhani', system-ui, sans-serif;
-          font-size: 1.65rem;
-          font-weight: 600;
-          color: #0F5E82;
-          margin-top: 3rem;
-          margin-bottom: 1rem;
-          line-height: 1.2;
-        }
-
-        p {
-          margin-bottom: 2rem;
-          font-size: 1.15rem;
-          color: #374151;
-        }
-
-        .section-heading {
-          border-left: 5px solid #DC143C;
-          padding-left: 1.5rem;
-          margin-left: -1.5rem;
-        }
-
-        /* Drop Cap for the Introduction */
-        .drop-cap::first-letter {
-          font-family: 'Rajdhani', system-ui, sans-serif;
-          font-weight: 700;
-          float: left;
-          font-size: 4.8rem;
-          line-height: 0.85;
-          padding-right: 0.8rem;
-          padding-top: 0.4rem;
-          color: #DC143C;
-        }
-
-        .callout-box {
-          border-radius: 12px;
-          padding: 2.5rem;
-          margin: 4rem 0;
-          border-left: 6px solid;
-          box-shadow: 0 10px 25px -15px rgba(0,0,0,0.05);
-        }
-
-        .callout-teal {
-          background-color: #F0FDFA;
-          border-color: #00CEDB;
-        }
-
-        .callout-crimson {
-          background-color: #FFF5F5;
-          border-color: #DC143C;
-        }
-
-        .article-list {
-          margin: 2.5rem 0;
-        }
-
-        .article-list li {
-          margin-bottom: 1.25rem;
-          padding-left: 2rem;
-          position: relative;
-          font-size: 1.125rem;
-          list-style: none;
-        }
-
-        .article-list li::before {
-          content: "";
-          position: absolute;
-          left: 0;
-          top: 0.7rem;
-          width: 12px;
-          height: 3px;
-          background-color: #DC143C;
-        }
-
-        sup a {
-          text-decoration: none;
-          color: #DC143C;
-          font-weight: 700;
-          margin-left: 1px;
-        }
-
-        /* Hero Text Shadow to maintain readability without an overlay */
-        .hero-text-shadow {
-          text-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
-
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-up { animation: fadeUp 0.8s ease-out forwards; }
-      `}</style>
+    <div className="min-h-screen bg-background">
+      <PageSEO
+        title="Beyond the Hype: Why 2026 Will Reset AI Expectations and Accelerate SaaS Payments"
+        description="An analysis of the coming correction in AI expectations and the simultaneous acceleration of SaaS-embedded payments."
+        path="/prediction-2026"
+      />
+      <style>{blogStyles}</style>
 
       <Header />
 
-      {/* Hero Header: NO OVERLAY as requested. Using standard background reference. */}
-      <header className="relative w-full h-[65vh] flex items-end pb-20 overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="/blog-images/prediction.webp"
-            alt="Professional woman working at her laptop with AI and payment icons"
-            className="w-full h-full object-cover"
-          />
-        </div>
+      <div className="blog-root">
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full animate-fade-up hero-text-shadow">
-          <div className="inline-block px-4 py-1.5 bg-[#DC143C] text-white font-ubuntu text-xs font-bold tracking-[0.2em] uppercase mb-8 shadow-xl">
-            Market Analysis 2026
+        <div className="hero" style={{ position: "relative", overflow: "hidden" }}>
+          <span className="watermark">AI</span>
+          <div className="kicker">MerchantHaus — Market Analysis — 2026</div>
+          <h1>Beyond the Hype: Why 2026 Will Reset AI Expectations and Accelerate SaaS Payments</h1>
+          <p className="hero-sub">The coming year will be a tipping point — AI expectations will correct toward reality, while SaaS-driven payment solutions become the default choice for merchants.</p>
+          <div className="hero-meta">
+            <span>MerchantHaus</span>
+            <span>Plug in, play and process</span>
+            <span>merchanthaus.io</span>
           </div>
-          <h1 className="font-ubuntu font-bold text-5xl sm:text-7xl lg:text-8xl text-white leading-tight mb-8">
-            Beyond The <span className="text-[#00CEDB] italic">Hype</span>
-          </h1>
-          <p className="font-medium text-xl md:text-2xl text-white max-w-2xl leading-relaxed">
-            Why 2026 will reset our expectations for AI and accelerate the adoption of SaaS-embedded payments.
-          </p>
+
+          <div className="hero-stats">
+            <div className="hero-stat">
+              <span className="hero-stat-num">50%+</span>
+              <span className="hero-stat-label">merchants via software vendors not banks</span>
+            </div>
+            <div className="hero-stat">
+              <span className="hero-stat-num">$6.5T</span>
+              <span className="hero-stat-label">embedded payments market by 2025</span>
+            </div>
+            <div className="hero-stat">
+              <span className="hero-stat-num">25%</span>
+              <span className="hero-stat-label">of AI spend deferred to late 2027</span>
+            </div>
+          </div>
         </div>
-      </header>
 
-      {/* Article Content */}
-      <main className="px-6 py-24 bg-white">
-        <article className="post-container">
-          <section className="mb-16">
-            <h2 className="section-heading">Introduction</h2>
-            <p className="drop-cap">
-              Artificial intelligence (AI) has dominated headlines for the last few years. Generative models like
-              ChatGPT captured the public imagination and triggered a gold rush of venture funding. At the same
-              time, software‑as‑a‑service (SaaS) providers have quietly been transforming the way merchants accept
-              payments, turning a once‑complex process into a few clicks. What happens when the hype cycle slows
-              and the real business value comes into focus?
-            </p>
-            <p>
-              This article looks ahead to 2026 and argues that the coming year will be a tipping point: AI
-              expectations will correct toward reality, while SaaS‑driven payment solutions will become the
-              default choice for merchants.
-            </p>
-          </section>
+        <p style={{ fontSize: "1.1rem", fontStyle: "italic", fontWeight: 300, color: "var(--color-text-secondary)", marginBottom: "2.5rem", lineHeight: 1.7 }}>
+          Artificial intelligence has dominated headlines for the last few years. Generative models captured the public imagination and triggered a gold rush of venture funding. At the same time, SaaS providers have quietly been transforming the way merchants accept payments, turning a once-complex process into a few clicks. What happens when the hype cycle slows and the real business value comes into focus?
+        </p>
 
-          <section className="mb-16">
-            <h2 className="section-heading">AI Hype Is Cooling</h2>
-            <h3>1. Exponential Expectations vs. Linear Progress</h3>
-            <p>
-              The last three years saw extraordinary hype around generative AI. Billions of dollars flowed into
-              large language models (LLMs) with the promise of imminent disruption. Yet recent research shows
-              that returns on these investments have been minimal.<sup><a href="#fn1" id="ref1">[1]</a></sup>
-            </p>
+        <hr className="divider" />
 
-            <div className="callout-box callout-crimson">
-              <h4 className="font-ubuntu font-bold text-[#DC143C] mb-3 uppercase text-xs tracking-widest">Key Performance Insight</h4>
-              <p className="text-lg text-neutral-800 font-medium mb-0">
-                Fewer than one third of decision-makers can tie AI investments to actual revenue growth, leading 
-                to a deferral of 25% of planned spending into late 2027.
-              </p>
+        <section className="section">
+          <div className="section-header">
+            <span className="section-num">01</span>
+            <h2>Exponential Expectations vs. Linear Progress</h2>
+          </div>
+
+          <p>The last three years saw extraordinary hype around generative AI. Billions of dollars flowed into large language models (LLMs) with the promise of imminent disruption. Yet recent research shows that returns on these investments have been minimal.<sup>1</sup></p>
+
+          <div className="pullquote">
+            <p>"Fewer than one third of decision-makers can tie AI investments to actual revenue growth, leading to a deferral of 25% of planned spending into late 2027."</p>
+            <cite>Forrester Research</cite>
+          </div>
+
+          <p>The gap between expectations and measurable outcomes is widening. Enterprises that raced to integrate LLMs into core workflows are now auditing those deployments, discovering that the cost of inference, data governance, and human oversight often exceeds the efficiency gains.</p>
+        </section>
+
+        <hr className="divider" />
+
+        <section className="section">
+          <div className="section-header">
+            <span className="section-num">02</span>
+            <h2>The Inevitability of Hallucination</h2>
+          </div>
+
+          <p>Large language models are powerful prediction engines, but they are not omniscient. Studies show that hallucination — confidently generating incorrect information — is mathematically inevitable. Probabilistic models cannot eliminate hallucinations.<sup>3</sup></p>
+
+          <div className="callout">
+            <div className="callout-label">Critical Distinction</div>
+            <p>In practical terms, LLMs should not be trusted with critical decisions without human oversight — particularly in regulated industries like payments. The models are best deployed as augmentation tools, not autonomous decision-makers.</p>
+          </div>
+
+          <p>This doesn't diminish the value of AI — it reframes where the value lies. Narrow, task-specific models embedded within existing workflows deliver far more reliable returns than general-purpose "AI-for-everything" strategies.</p>
+        </section>
+
+        <hr className="divider" />
+
+        <section className="section">
+          <div className="section-header">
+            <span className="section-num">03</span>
+            <h2>SaaS Payments: The New Standard</h2>
+          </div>
+
+          <p>While AI fever cools, the rise of embedded payments and humanless merchant onboarding is accelerating. SaaS platforms are becoming the primary gateway for commerce.</p>
+
+          <div className="stat-row">
+            <div className="stat-card">
+              <span className="stat-card-num">50%+</span>
+              <span className="stat-card-label">merchants via software vendors</span>
             </div>
-
-            <h3>2. The Inevitability of Hallucination</h3>
-            <p>
-              Large language models are powerful prediction engines, but they are not omniscient. Studies show
-              that hallucination—confidently generating incorrect information—is mathematically inevitable.
-              probabilistic models cannot eliminate hallucinations.<sup><a href="#fn3" id="ref3">[3]</a></sup> 
-              In practical terms, this means LLMs should not be trusted with critical decisions without human 
-              oversight—particularly in regulated industries like payments.
-            </p>
-          </section>
-
-          <section className="mb-16">
-            <h2 className="section-heading">SaaS Payments: The New Standard</h2>
-            <p>
-              While AI fever cools, the rise of embedded payments and humanless merchant onboarding is accelerating. 
-              SaaS platforms are becoming the primary gateway for commerce.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
-              <div className="p-8 bg-neutral-50 rounded-xl border border-neutral-100">
-                <div className="text-3xl font-bold text-[#00CEDB] mb-2">50%+</div>
-                <p className="text-sm text-neutral-600 font-medium mb-0 leading-snug">
-                  Of merchants now obtain payment services via software vendors rather than traditional banks.
-                </p>
-              </div>
-              <div className="p-8 bg-neutral-50 rounded-xl border border-neutral-100">
-                <div className="text-3xl font-bold text-[#DC143C] mb-2">$6.5T</div>
-                <p className="text-sm text-neutral-600 font-medium mb-0 leading-snug">
-                  Projected value of the embedded payments market by the end of 2025.
-                </p>
-              </div>
+            <div className="stat-card">
+              <span className="stat-card-num">$6.5T</span>
+              <span className="stat-card-label">embedded payments market</span>
             </div>
+          </div>
 
-            <ul className="article-list">
-              <li>
-                <strong>Instant Onboarding:</strong> Leading platforms can now onboard merchants in under five minutes, 
-                eliminating days of manual underwriting.<sup><a href="#fn7" id="ref7">[7]</a></sup>
-              </li>
-              <li>
-                <strong>Vertical Integration:</strong> Adoption of embedded payments has reached 65% in specific sectors like 
-                Food & Beverage and Professional Services.
-              </li>
-            </ul>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Trend</th>
+                <th>Impact</th>
+                <th>Merchant Benefit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Instant Onboarding</td>
+                <td>Under 5 minutes vs. days of manual underwriting</td>
+                <td>Faster time-to-revenue</td>
+              </tr>
+              <tr>
+                <td>Vertical Integration</td>
+                <td>65% adoption in F&B and Professional Services</td>
+                <td>Unified operations and data</td>
+              </tr>
+              <tr>
+                <td>Embedded Analytics</td>
+                <td>Real-time revenue insights within platform</td>
+                <td>Data-driven business decisions</td>
+              </tr>
+            </tbody>
+          </table>
 
-            <div className="callout-box callout-teal">
-              <h4 className="font-ubuntu font-bold text-cyan-700 mb-3 uppercase text-xs tracking-widest">Market Shift</h4>
-              <p className="text-lg text-neutral-800 font-medium mb-0">
-                Merchants no longer view payments as a commodity; they want integrated solutions that 
-                streamline operations and provide unified data insights.
-              </p>
-            </div>
-          </section>
+          <div className="callout">
+            <div className="callout-label">Market Shift</div>
+            <p>Merchants no longer view payments as a commodity; they want integrated solutions that streamline operations and provide unified data insights. The platform that processes payments is increasingly the platform that runs the business.</p>
+          </div>
+        </section>
 
-          <section className="mb-20">
-            <h2 className="section-heading">Conclusion</h2>
-            <p>
-              2026 is poised to be a year of <strong>reset and refocus</strong>. The AI conversation will shift 
-              from breathless hype to sober assessment. Meanwhile, SaaS payments will become the invisible 
-              standard of global commerce, offering merchants a frictionless way to get paid.
-            </p>
-            <p className="text-lg font-medium text-neutral-900 border-l-4 border-[#00CEDB] pl-6 py-2 italic">
-              Merchanthaus.io stands at this intersection, building technology that is pragmatic about AI 
-              but relentless about the promise of seamless commerce.
-            </p>
-          </section>
+        <hr className="divider" />
 
-          {/* Footnotes Section */}
-          <footer className="mt-20 pt-12 border-t border-neutral-100">
-            <h5 className="font-ubuntu font-bold text-xs uppercase tracking-widest text-neutral-400 mb-8">Citations & Research</h5>
-            <div id="footnotes" className="text-sm text-neutral-500 space-y-4 leading-relaxed">
-              <p id="fn1"><span className="text-neutral-300 font-bold mr-3">1.</span> Forrester: AI Priorities and Recalibrating for 2026 Growth.</p>
-              <p id="fn3"><span className="text-neutral-300 font-bold mr-3">3.</span> ScienceAlert: The Mathematical Inevitability of LLM Hallucinations.</p>
-              <p id="fn7"><span className="text-neutral-300 font-bold mr-3">7.</span> Dotfile: Comparing Traditional vs. Humanless Onboarding Times.</p>
-            </div>
-          </footer>
-        </article>
-      </main>
+        <section className="section">
+          <div className="section-header">
+            <span className="section-num">04</span>
+            <h2>Conclusion &amp; Outlook</h2>
+          </div>
+
+          <p>2026 is poised to be a year of <strong>reset and refocus</strong>. The AI conversation will shift from breathless hype to sober assessment. Meanwhile, SaaS payments will become the invisible standard of global commerce, offering merchants a frictionless way to get paid.</p>
+
+          <div className="pullquote">
+            <p>"Merchanthaus.io stands at this intersection, building technology that is pragmatic about AI but relentless about the promise of seamless commerce."</p>
+          </div>
+        </section>
+
+        <hr className="divider" />
+
+        <section className="section">
+          <div className="section-header">
+            <span className="section-num">05</span>
+            <h2>Citations &amp; Research</h2>
+          </div>
+
+          <div className="footnotes">
+            <p><span className="fn-num">1.</span> Forrester: AI Priorities and Recalibrating for 2026 Growth.</p>
+            <p><span className="fn-num">3.</span> ScienceAlert: The Mathematical Inevitability of LLM Hallucinations.</p>
+            <p><span className="fn-num">7.</span> Dotfile: Comparing Traditional vs. Humanless Onboarding Times.</p>
+          </div>
+        </section>
+
+        <hr className="divider" />
+
+        <footer style={{ paddingTop: "1rem", paddingBottom: "2rem" }}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "var(--color-text-secondary)", letterSpacing: "0.08em", display: "flex", gap: "2rem", flexWrap: "wrap" }}>
+            <span>MerchantHaus</span>
+            <span>Plug in, play and process</span>
+            <span>merchanthaus.io</span>
+            <span>Market Analysis</span>
+            <span>2026</span>
+          </div>
+        </footer>
+
+      </div>
 
       <Footer />
     </div>
   );
-};
-
-export default App;
+}
