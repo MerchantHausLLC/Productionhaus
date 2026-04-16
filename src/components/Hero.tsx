@@ -44,7 +44,7 @@ export const Hero = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-neutral-900">
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full pointer-events-none">
-        <video autoPlay loop muted playsInline className="h-full w-full object-cover" poster="/hero-replacement.webp">
+        <video autoPlay loop muted playsInline className="h-full w-full object-cover" poster="/hero-dark-room.webp">
           <source src={heroVideo} type="video/webm" />
         </video>
         {/* Dark overlay */}
