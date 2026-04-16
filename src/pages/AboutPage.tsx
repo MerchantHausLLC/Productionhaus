@@ -97,6 +97,11 @@ const reasons = [
   },
 ];
 
+// ─── Section background helpers ─────────────────────────────────────────────
+const sectionBase = "bg-background text-foreground"
+const sectionAlt = "bg-[#F0F4F8] dark:bg-[#0C1017] text-foreground"
+const cellAlt = "bg-[#F0F4F8] dark:bg-[#0C1017]"
+
 // ─── Component ───────────────────────────────────────────────────────────────
 
 const AboutPage = () => {
@@ -112,33 +117,33 @@ const AboutPage = () => {
         path="/about"
       />
       <Header />
-      <main className="bg-[#0C1017] text-[#F0EBE3] min-h-screen font-inter">
+      <main className="bg-background text-foreground min-h-screen font-inter">
 
         {/* ── Hero ──────────────────────────────────────────── */}
-        <section className="relative px-6 md:px-16 lg:px-24 pt-24 pb-20 border-b border-white/[0.07] overflow-hidden">
+        <section className={`relative px-6 md:px-16 lg:px-24 pt-24 pb-20 border-b border-foreground/[0.07] overflow-hidden ${sectionAlt}`}>
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: "url('/images/about-hero.webp')" }}
           />
-          <div className="absolute inset-0 bg-[#0C1017]/75" />
+          <div className="absolute inset-0 bg-white/80 dark:bg-[#0C1017]/75" />
 
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-8">
-              <span className="block w-6 h-px bg-white/20" />
-              <span className="text-[11px] tracking-[0.12em] uppercase text-white/40 font-light">
+              <span className="block w-6 h-px bg-foreground/20" />
+              <span className="text-[11px] tracking-[0.12em] uppercase text-foreground/40 font-light">
                 About MerchantHaus
               </span>
             </div>
 
             <h1 className="text-[clamp(2.6rem,5.5vw,4.2rem)] leading-[1.06] font-normal max-w-3xl mb-7 font-ubuntu">
               A modern approach to payments — built for organizations that{" "}
-              <em className="italic text-white/35">never stop moving.</em>
+              <em className="italic text-foreground/35">never stop moving.</em>
             </h1>
 
-            <p className="text-[1.05rem] leading-relaxed text-white/50 max-w-xl font-light">
+            <p className="text-[1.05rem] leading-relaxed text-foreground/50 max-w-xl font-light">
               We believe technology should make payments invisible — reliable, secure,
               and beautifully simple to use. Through our partnership with{" "}
-              <span className="text-white/80 font-medium">NMI</span>, we deliver
+              <span className="text-foreground/80 font-medium">NMI</span>, we deliver
               everything your organization needs to accept cards, ACH, digital wallets,
               and more, without the friction.
             </p>
@@ -146,13 +151,13 @@ const AboutPage = () => {
         </section>
 
         {/* ── What We Offer ─────────────────────────────────── */}
-        <section className="px-6 md:px-16 lg:px-24 py-20 border-b border-white/[0.07]">
+        <section className={`px-6 md:px-16 lg:px-24 py-20 border-b border-foreground/[0.07] ${sectionBase}`}>
           <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12 md:gap-20">
             <div className="md:pt-2">
-              <p className="text-[5rem] leading-none font-normal text-white/[0.06] select-none mb-3 font-ubuntu">
+              <p className="text-[5rem] leading-none font-normal text-foreground/[0.06] select-none mb-3 font-ubuntu">
                 01
               </p>
-              <p className="text-[11px] tracking-[0.12em] uppercase text-white/30 font-light">
+              <p className="text-[11px] tracking-[0.12em] uppercase text-foreground/30 font-light">
                 What we offer
               </p>
             </div>
@@ -161,24 +166,24 @@ const AboutPage = () => {
               <h2 className="text-[clamp(1.7rem,2.8vw,2.4rem)] leading-[1.2] font-normal mb-4 font-ubuntu">
                 Everything you need to accept, manage, and scale payments.
               </h2>
-              <p className="text-[0.95rem] leading-[1.85] text-white/45 font-light mb-10 max-w-lg">
+              <p className="text-[0.95rem] leading-[1.85] text-foreground/45 font-light mb-10 max-w-lg">
                 Whether you're onboarding a new division or scaling enterprise-wide
                 operations, we make it fast, secure, and fully compliant.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.07]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-foreground/[0.07]">
                 {offerings.map((o, i) => (
                   <div
                     key={i}
-                    className="bg-[#0C1017] p-6 hover:bg-white/[0.025] transition-colors duration-300 group"
+                    className="bg-background p-6 hover:bg-foreground/[0.025] transition-colors duration-300 group"
                   >
-                    <span className="block text-white/30 mb-5 group-hover:text-white/55 transition-colors duration-300">
+                    <span className="block text-foreground/30 mb-5 group-hover:text-foreground/55 transition-colors duration-300">
                       {o.icon}
                     </span>
                     <p className="text-[0.88rem] font-medium mb-2.5 tracking-wide">
                       {o.label}
                     </p>
-                    <p className="text-[0.8rem] leading-relaxed text-white/40 font-light">
+                    <p className="text-[0.8rem] leading-relaxed text-foreground/40 font-light">
                       {o.body}
                     </p>
                   </div>
@@ -189,13 +194,13 @@ const AboutPage = () => {
         </section>
 
         {/* ── Our Approach ──────────────────────────────────── */}
-        <section className="px-6 md:px-16 lg:px-24 py-20 border-b border-white/[0.07]">
+        <section className={`px-6 md:px-16 lg:px-24 py-20 border-b border-foreground/[0.07] ${sectionAlt}`}>
           <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12 md:gap-20">
             <div className="md:pt-2">
-              <p className="text-[5rem] leading-none font-normal text-white/[0.06] select-none mb-3 font-ubuntu">
+              <p className="text-[5rem] leading-none font-normal text-foreground/[0.06] select-none mb-3 font-ubuntu">
                 02
               </p>
-              <p className="text-[11px] tracking-[0.12em] uppercase text-white/30 font-light">
+              <p className="text-[11px] tracking-[0.12em] uppercase text-foreground/30 font-light">
                 Our approach
               </p>
             </div>
@@ -205,16 +210,16 @@ const AboutPage = () => {
                 Three principles. Zero compromise.
               </h2>
 
-              <div className="border-t border-white/[0.07]">
+              <div className="border-t border-foreground/[0.07]">
                 {approach.map((a, i) => (
                   <div
                     key={i}
-                    className="grid grid-cols-[140px_1fr] gap-8 py-7 border-b border-white/[0.07] group cursor-default"
+                    className="grid grid-cols-[140px_1fr] gap-8 py-7 border-b border-foreground/[0.07] group cursor-default"
                   >
-                    <p className="text-[0.88rem] font-normal text-white/60 pt-0.5 group-hover:text-white/85 transition-colors duration-200 font-ubuntu">
+                    <p className="text-[0.88rem] font-normal text-foreground/60 pt-0.5 group-hover:text-foreground/85 transition-colors duration-200 font-ubuntu">
                       {a.tag}.
                     </p>
-                    <p className="text-[0.88rem] leading-[1.8] text-white/45 font-light">
+                    <p className="text-[0.88rem] leading-[1.8] text-foreground/45 font-light">
                       {a.body}
                     </p>
                   </div>
@@ -225,13 +230,13 @@ const AboutPage = () => {
         </section>
 
         {/* ── Why MerchantHaus ──────────────────────────────── */}
-        <section className="px-6 md:px-16 lg:px-24 py-20 border-b border-white/[0.07]">
+        <section className={`px-6 md:px-16 lg:px-24 py-20 border-b border-foreground/[0.07] ${sectionBase}`}>
           <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12 md:gap-20">
             <div className="md:pt-2">
-              <p className="text-[5rem] leading-none font-normal text-white/[0.06] select-none mb-3 font-ubuntu">
+              <p className="text-[5rem] leading-none font-normal text-foreground/[0.06] select-none mb-3 font-ubuntu">
                 03
               </p>
-              <p className="text-[11px] tracking-[0.12em] uppercase text-white/30 font-light">
+              <p className="text-[11px] tracking-[0.12em] uppercase text-foreground/30 font-light">
                 Why choose us
               </p>
             </div>
@@ -244,12 +249,12 @@ const AboutPage = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 {reasons.map((r, i) => (
                   <div key={i} className="flex gap-4">
-                    <span className="text-[11px] tracking-[0.08em] text-white/20 font-light mt-0.5 shrink-0 tabular-nums">
+                    <span className="text-[11px] tracking-[0.08em] text-foreground/20 font-light mt-0.5 shrink-0 tabular-nums">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <div>
                       <p className="text-[0.88rem] font-medium mb-1.5">{r.label}</p>
-                      <p className="text-[0.82rem] leading-[1.75] text-white/40 font-light">
+                      <p className="text-[0.82rem] leading-[1.75] text-foreground/40 font-light">
                         {r.body}
                       </p>
                     </div>
@@ -261,28 +266,28 @@ const AboutPage = () => {
         </section>
 
         {/* ── CTA ───────────────────────────────────────────── */}
-        <section className="px-6 md:px-16 lg:px-24 py-28">
+        <section className={`px-6 md:px-16 lg:px-24 py-28 ${sectionAlt}`}>
           <div className="max-w-2xl mx-auto text-center">
-            <p className="text-[11px] tracking-[0.12em] uppercase text-white/30 font-light mb-6">
+            <p className="text-[11px] tracking-[0.12em] uppercase text-foreground/30 font-light mb-6">
               Get started
             </p>
             <h2 className="text-[clamp(2rem,3.5vw,3.2rem)] font-normal leading-[1.12] mb-5 font-ubuntu">
               Ready to take the friction out of payments?
             </h2>
-            <p className="text-[0.95rem] text-white/40 font-light leading-relaxed mb-10 max-w-md mx-auto">
+            <p className="text-[0.95rem] text-foreground/40 font-light leading-relaxed mb-10 max-w-md mx-auto">
               Join the organizations that trust MerchantHaus to power their payments.
               Fast deployment, enterprise-grade security, and support that actually delivers.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/get-started"
-                className="px-8 py-3.5 bg-white text-[#0C1017] text-[0.82rem] tracking-[0.08em] uppercase font-semibold hover:bg-white/90 transition-colors duration-200 rounded-sm"
+                className="px-8 py-3.5 bg-foreground text-background text-[0.82rem] tracking-[0.08em] uppercase font-semibold hover:bg-foreground/90 transition-colors duration-200 rounded-sm"
               >
                 Apply Now
               </Link>
               <a
                 href="tel:15056006042"
-                className="px-8 py-3.5 border border-white/20 text-[0.82rem] tracking-[0.08em] uppercase font-medium hover:bg-white/[0.04] transition-colors duration-200 rounded-sm text-white/70"
+                className="px-8 py-3.5 border border-foreground/20 text-[0.82rem] tracking-[0.08em] uppercase font-medium hover:bg-foreground/[0.04] transition-colors duration-200 rounded-sm text-foreground/70"
               >
                 1-505-600-6042
               </a>
