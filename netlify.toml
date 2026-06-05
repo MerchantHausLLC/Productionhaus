@@ -3,6 +3,50 @@
   functions = "netlify/functions"
   publish   = "dist"
 
+# Markdown-for-agents edge function.
+# Runs on every content page and, when a client sends `Accept: text/markdown`,
+# returns a Markdown rendering of the page (~80% fewer tokens than the HTML).
+# It is registered on all paths and narrowed with `excludedPath`, which lists
+# the utility routes, API endpoints, and asset paths that must never be
+# converted. To stop converting a path, add it to `excludedPath`; to convert it
+# again, remove it. See netlify/edge-functions/markdown.ts for full docs.
+[[edge_functions]]
+  function = "markdown"
+  path = "/*"
+  excludedPath = [
+    # Utility / form / dashboard routes (no meaningful article content)
+    "/apply",
+    "/quote",
+    "/todos",
+    "/pipeline",
+    # API endpoints
+    "/.netlify/*",
+    "/api/*",
+    # Build output, public assets, and crawler/static files
+    "/assets/*",
+    "/images/*",
+    "/blog-images/*",
+    "/card-banners/*",
+    "/logos/*",
+    "/favicons/*",
+    "/trust-seals/*",
+    "/*.js",
+    "/*.css",
+    "/*.json",
+    "/*.xml",
+    "/*.txt",
+    "/*.csv",
+    "/*.svg",
+    "/*.png",
+    "/*.jpg",
+    "/*.jpeg",
+    "/*.webp",
+    "/*.webm",
+    "/*.ico",
+    "/*.woff",
+    "/*.woff2"
+  ]
+
 [[headers]]
   for = "/*"
   [headers.values]
